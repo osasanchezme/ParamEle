@@ -17,6 +17,7 @@ div.editor-container {
     height: calc(100vh - 50px);
     background: #fff;
     position: absolute;
+    top: 50px;
 }
 
 div.global-controls-container {
