@@ -1,13 +1,43 @@
+.node-header{
+    background-color: rgb(254, 254, 254);
+    color: var(--chakra-colors-gray-900);
+    font-weight: var(--chakra-fontWeights-normal);
+    text-transform: uppercase;
+    font-family: var(--chakra-fonts-mono);
+    font-size: 10px;
+    padding-inline-start: var(--chakra-space-2);
+    padding-inline-end: var(--chakra-space-2);
+    padding-top: var(--chakra-space-1);
+    padding-bottom: var(--chakra-space-1);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: var(--chakra-colors-gray-300);
+}
+
+.node-body {
+  padding: var(--chakra-space-2);
+  flex: 1 1 0%;
+  position: relative;
+  background-color: var(--chakra-colors-white);
+  font-family: var(--chakra-fonts-mono);
+}
+
+.react-flow__handle {
+  width: 8px !important;
+  height: 8px !important;
+  background-color: rgb(189, 196, 204) !important;
+  border: none !important;
+}
+
 .text-updater-node {
-    height: 50px;
-    border: 1px solid #eee;
-    padding: 5px;
-    border-radius: 5px;
-    background: white;
-  }
-  
-  .text-updater-node label {
-    display: block;
-    color: #777;
-    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: var(--chakra-colors-gray-300);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   }

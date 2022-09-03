@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
-
-const handleStyle = { left: 10 };
+import { Input } from '@chakra-ui/react'
 
 function TextUpdaterNode({ data }) {
   const onChange = useCallback((evt) => {
@@ -10,13 +9,16 @@ function TextUpdaterNode({ data }) {
 
   return (
     <div className="text-updater-node">
-      <Handle type="target" position={Position.Top} />
-      <div>
-        <label htmlFor="text">Texto:</label>
-        <input id="text" name="text" onChange={onChange} />
+      <div className="node-header">
+        Texto
       </div>
-      <Handle type="source" position={Position.Bottom} id="a" style={handleStyle} />
-      <Handle type="source" position={Position.Bottom} id="b" />
+      <div className="node-body">
+        <Handle type="target" position={Position.Left} id="text-in" />
+        <div>
+          <Input placeholder='Ingresar texto' size='xs' onChange={onChange} autoComplete="off"/>
+        </div>
+        <Handle type="source" position={Position.Right} id="text-out" />
+      </div>
     </div>
   );
 }
