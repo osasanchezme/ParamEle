@@ -10,6 +10,7 @@ import ReactFlow, {
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
+  updateEdge
 } from "react-flow-renderer";
 
 import state from "./state";
@@ -32,25 +33,36 @@ class Renderer extends React.Component {
 function Flow() {
   const state = getState();
   const [nodes, setNodes] = useState(state.model.nodes);
-  const [edges, setEdges] = useState([]);
+  const [edges, setEdges] = useState(state.model.edges);
 
   const saveRfInstance = rfInstance => storeRfInstance(rfInstance);
   const onNodesChange = useCallback(
     (changes) => {
       setNodes((nds) => applyNodeChanges(changes, nds));
-      if (getRfInstance()){
-        updateStateFromFlow();
-      }
+      updateStateFromFlow();
     },
     [setNodes]
   );
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes) => {
+      setEdges((eds) => {applyEdgeChanges(changes, eds); console.log(getRfInstance().getEdges());});
+      updateStateFromFlow();
+    },
     [setEdges]
   );
+  const onEdgeUpdate = useCallback(
+    (oldEdge, newConnection) => {
+      setEdges((els) => updateEdge(oldEdge, newConnection, els));
+      updateStateFromFlow();
+    },
+    []
+  );
   const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
-    [setEdges]
+    (connection) => {
+      setEdges((eds) => addEdge(connection, eds))
+      updateStateFromFlow();
+    },
+    []
   );
   return (
     <ReactFlow
@@ -58,6 +70,7 @@ function Flow() {
       edges={edges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onEdgeUpdate={onEdgeUpdate}
       onConnect={onConnect}
       nodeTypes={nodes_library}
       fitView

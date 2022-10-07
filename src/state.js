@@ -1,39 +1,51 @@
-import model from "./data/template-1.json"
+import model from "./data/template-1.json";
 
+// TODO - Create the settings object in a file and start populating it -- automatic model update...
 const initial_state = {
-    model: model,
+  model: model,
+};
+
+function setInitialState() {
+  window.ParamEle = {};
+  window.ParamEle.rfInstance = undefined;
+  window.ParamEle.state = initial_state;
 }
 
-function setInitialState(){
-    window.ParamEle = {};
-    window.ParamEle.rfInstance = undefined;
-    window.ParamEle.state = initial_state;
+function storeRfInstance(rfInstance) {
+  window.ParamEle.rfInstance = rfInstance;
 }
 
-function storeRfInstance(rfInstance){
-    window.ParamEle.rfInstance = rfInstance;
+function getState() {
+  return JSON.parse(JSON.stringify(window.ParamEle.state));
 }
 
-function getState(){
-    return JSON.parse(JSON.stringify(window.ParamEle.state));
+function setState(state) {
+  return (window.ParamEle.state = JSON.parse(JSON.stringify(state)));
 }
 
-function setState(state){
-    return window.ParamEle.state = JSON.parse(JSON.stringify(state));
+function getRfInstance() {
+  return window.ParamEle.rfInstance;
 }
 
-function getRfInstance(){
-    return window.ParamEle.rfInstance;
-}
-
-function updateStateFromFlow(){
+function updateStateFromFlow() {
+  setTimeout(() => {
     let rfInstance = getRfInstance();
-    let current_state = getState();
-    current_state.model.nodes = rfInstance.getNodes();
-    current_state.model.edges = rfInstance.getEdges();
-    setState(current_state);
+    if (rfInstance) {
+      let current_state = getState();
+      current_state.model.nodes = rfInstance.getNodes();
+      current_state.model.edges = rfInstance.getEdges();
+      setState(current_state);
+    }
+  }, 100);
 }
 
-const state = {setInitialState, getState, setState, storeRfInstance, updateStateFromFlow, getRfInstance};
+const state = {
+  setInitialState,
+  getState,
+  setState,
+  storeRfInstance,
+  updateStateFromFlow,
+  getRfInstance,
+};
 
 export default state;

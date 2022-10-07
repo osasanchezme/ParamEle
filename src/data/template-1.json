@@ -9,14 +9,29 @@
     {
       "id": "node-2",
       "type": "textUpdater",
-      "position": { "x": 200, "y": 0 },
+      "position": { "x": 400, "y": 0 },
       "data": { "value": 123 }
     },
     {
       "id": "node-3",
       "type": "textUpdater",
-      "position": { "x": 0, "y": 200 },
+      "position": { "x": 400, "y": 200 },
+      "data": { "value": 123 }
+    },
+    {
+      "id": "node-4",
+      "type": "textUpdater",
+      "position": { "x": 800, "y": 200 },
       "data": { "value": 123 }
     }
+  ],
+  "edges": [
+      {
+          "source": "node-1",
+          "sourceHandle": "text-out",
+          "target": "node-2",
+          "targetHandle": "text-in",
+          "id": "reactflow__edge-node-1text-out-node-2text-in"
+      }
   ]
 }
