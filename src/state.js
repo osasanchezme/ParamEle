@@ -1,8 +1,9 @@
 import model from "./data/template-1.json";
+import settings from "./settings.json"
 
-// TODO - Create the settings object in a file and start populating it -- automatic model update...
 const initial_state = {
   model: model,
+  settings: settings,
 };
 
 function setInitialState() {

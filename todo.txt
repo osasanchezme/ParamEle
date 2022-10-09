@@ -1,4 +1,4 @@
 [x] Update edges in the model on connect also handle nodes change properly
-[ ] Add value property to the node to display its value
-[ ] Create settings object for automatic reloading... and add it to the state
 [x] Deploy to github pages
+[x] Create settings object for automatic reloading... and add it to the state
+[ ] Add value property to the node to display its value
