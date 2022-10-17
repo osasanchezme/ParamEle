@@ -14,7 +14,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 
 import state from "./state";
-const {setInitialState, getState, setState, storeRfInstance, updateStateFromFlow, getRfInstance} = state;
+const {setInitialState, getState, storeRfInstance, updateStateFromFlow, getRfInstance} = state;
 setInitialState();
 
 window.getState = getState;
@@ -64,6 +64,7 @@ function Flow() {
     },
     []
   );
+
   return (
     <ReactFlow
       nodes={nodes}
