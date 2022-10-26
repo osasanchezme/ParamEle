@@ -31,4 +31,5 @@ div.global-controls-container {
     margin-right: 10px;
     z-index: 5;
     background: whitesmoke;
+    padding: 8px;
 }

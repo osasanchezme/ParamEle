@@ -1,37 +1,65 @@
 {
-  "nodes": [
-    {
-      "id": "node-1",
-      "type": "textUpdater",
-      "position": { "x": 0, "y": 0 },
-      "data": { "value": 123 }
-    },
-    {
-      "id": "node-2",
-      "type": "textUpdater",
-      "position": { "x": 400, "y": 0 },
-      "data": { "value": 123 }
-    },
-    {
-      "id": "node-3",
-      "type": "textUpdater",
-      "position": { "x": 400, "y": 200 },
-      "data": { "value": 123 }
-    },
-    {
-      "id": "node-4",
-      "type": "textUpdater",
-      "position": { "x": 800, "y": 200 },
-      "data": { "value": 123 }
+  "settings": {
+    "general": {
+      "auto_update": true,
+      "mini_map": false
     }
-  ],
-  "edges": [
+  },
+  "model": {
+    "nodes": [
       {
-          "source": "node-1",
-          "sourceHandle": "text-out",
-          "target": "node-2",
-          "targetHandle": "text-in",
-          "id": "reactflow__edge-node-1text-out-node-2text-in"
+        "id": "node-1",
+        "type": "textUpdater",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "value": 123
+        }
+      },
+      {
+        "id": "node-2",
+        "type": "textUpdater",
+        "position": {
+          "x": 400,
+          "y": 0
+        },
+        "data": {
+          "value": 123
+        }
+      },
+      {
+        "id": "node-3",
+        "type": "textUpdater",
+        "position": {
+          "x": 400,
+          "y": 200
+        },
+        "data": {
+          "value": 123
+        }
+      },
+      {
+        "id": "node-4",
+        "type": "textUpdater",
+        "position": {
+          "x": 800,
+          "y": 200
+        },
+        "data": {
+          "value": 123
+        }
       }
-  ]
+    ],
+    "edges": [
+      {
+        "source": "node-1",
+        "sourceHandle": "text-out",
+        "target": "node-2",
+        "targetHandle": "text-in",
+        "id": "reactflow__edge-node-1text-out-node-2text-in"
+      }
+    ]
+  }
 }

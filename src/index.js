@@ -13,6 +13,8 @@ import ReactFlow, {
   updateEdge
 } from "react-flow-renderer";
 
+import GlobalControlsWrapper from "./settings";
+
 import state from "./state";
 const {setInitialState, getState, storeRfInstance, updateStateFromFlow, getRfInstance} = state;
 setInitialState();
@@ -98,7 +100,9 @@ class GlobalControls extends React.Component {
     return (
       <div className="global-controls">
         <div className="global-controls-hidden"></div>
-        <div className="global-controls-container"></div>
+        <div className="global-controls-container">
+          <GlobalControlsWrapper></GlobalControlsWrapper>
+        </div>
       </div>
     );
   }

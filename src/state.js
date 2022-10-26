@@ -1,9 +1,9 @@
-import model from "./data/template-1.json";
-import settings from "./settings.json"
+import data from "./data/template-1.json";
+import settings_template from "./settings_template.json"
 
 const initial_state = {
-  model: model,
-  settings: settings,
+  model: data.model,
+  settings: data.settings,
 };
 
 function setInitialState() {
@@ -16,12 +16,18 @@ function storeRfInstance(rfInstance) {
   window.ParamEle.rfInstance = rfInstance;
 }
 
-function getState() {
-  return JSON.parse(JSON.stringify(window.ParamEle.state));
+function getState(key) {
+  let state = JSON.parse(JSON.stringify(window.ParamEle.state));
+  if (key !== undefined) state = state[key];
+  return state;
 }
 
-function setState(state) {
-  return (window.ParamEle.state = JSON.parse(JSON.stringify(state)));
+function setState(state, key) {
+  if (key !== undefined){
+    window.ParamEle.state[key] = JSON.parse(JSON.stringify(state));
+  }else{
+    window.ParamEle.state = JSON.parse(JSON.stringify(state));
+  }
 }
 
 function getRfInstance() {
@@ -29,15 +35,18 @@ function getRfInstance() {
 }
 
 function updateStateFromFlow() {
-  setTimeout(() => {
-    let rfInstance = getRfInstance();
-    if (rfInstance) {
-      let current_state = getState();
-      current_state.model.nodes = rfInstance.getNodes();
-      current_state.model.edges = rfInstance.getEdges();
-      setState(current_state);
-    }
-  }, 100);
+  let settings = getState("settings")["general"];
+  if (settings.auto_update){
+    setTimeout(() => {
+      let rfInstance = getRfInstance();
+      if (rfInstance) {
+        let current_state = getState();
+        current_state.model.nodes = rfInstance.getNodes();
+        current_state.model.edges = rfInstance.getEdges();
+        setState(current_state);
+      }
+    }, 100);
+  }
 }
 
 const state = {
