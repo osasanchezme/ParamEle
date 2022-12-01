@@ -12,11 +12,10 @@ import ReactFlow, {
   applyNodeChanges,
   updateEdge
 } from "react-flow-renderer";
-
-import GlobalControlsWrapper from "./settings";
+import GlobalControls from "./settings";
 
 import state from "./state";
-const {setInitialState, getState, storeRfInstance, updateStateFromFlow, getRfInstance} = state;
+const {setInitialState, setState,getState, storeRfInstance, updateStateFromFlow, getRfInstance} = state;
 setInitialState();
 
 window.getState = getState;
@@ -32,8 +31,8 @@ class Renderer extends React.Component {
   }
 }
 
-function Flow() {
-  const state = getState();
+function VisualEditor(props) {
+  const state = props.app_state;
   const [nodes, setNodes] = useState(state.model.nodes);
   const [edges, setEdges] = useState(state.model.edges);
 
@@ -66,56 +65,66 @@ function Flow() {
     },
     []
   );
-
-  return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onEdgeUpdate={onEdgeUpdate}
-      onConnect={onConnect}
-      nodeTypes={nodes_library}
-      fitView
-      onInit={saveRfInstance}
-    >
-      <MiniMap />
-      <Controls />
-    </ReactFlow>
-  );
-}
-
-class VisualEditor extends React.Component {
-  render() {
+  if (state.settings.general.show_map){
     return (
       <div className="editor-container">
-        <Flow></Flow>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onEdgeUpdate={onEdgeUpdate}
+        onConnect={onConnect}
+        nodeTypes={nodes_library}
+        fitView
+        onInit={saveRfInstance}
+      >
+        <MiniMap />
+        <Controls />
+      </ReactFlow>
       </div>
     );
-  }
-}
-
-class GlobalControls extends React.Component {
-  render() {
+  }else{
     return (
-      <div className="global-controls">
-        <div className="global-controls-hidden"></div>
-        <div className="global-controls-container">
-          <GlobalControlsWrapper></GlobalControlsWrapper>
-        </div>
+      <div className="editor-container">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onEdgeUpdate={onEdgeUpdate}
+        onConnect={onConnect}
+        nodeTypes={nodes_library}
+        fitView
+        onInit={saveRfInstance}
+      >
+        <Controls />
+      </ReactFlow>
       </div>
     );
   }
+  
 }
-
 class ParamEle extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = getState();
+    this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
+  }
+  changeGeneralSettingValue(key, value){
+    // TODO Check if there is a faster way! -- Update only one key
+    let curr_state = getState();
+    curr_state.settings.general[key] = value;
+    setState(curr_state);
+    this.setState(getState());
+  }
   render() {
     return (
       <ChakraProvider>
         <div className="app-cont">
           <NavBar></NavBar>
-          <GlobalControls></GlobalControls>
-          <VisualEditor></VisualEditor>
+          <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
+          <VisualEditor app_state={this.state}></VisualEditor>
           <Renderer></Renderer>
         </div>
       </ChakraProvider>

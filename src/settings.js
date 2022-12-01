@@ -1,33 +1,31 @@
 import React from "react";
 import { Switch, FormLabel, FormControl } from "@chakra-ui/react";
 import settings_template from "./settings_template.json";
-import state from "./state";
-const {getState, setState} = state;
 
 function ToggleSettings({ label, id, value, handleClick }) {
-    return (
-      <FormControl display="flex" alignItems="center">
-        <FormLabel htmlFor={id} mb="0">
-          {label}
-        </FormLabel>
-          <Switch id={id} onChange={() => handleClick(id)} isChecked={value}/>
-      </FormControl>
-    );
+  return (
+    <FormControl display="flex" alignItems="center">
+      <FormLabel htmlFor={id} mb="0">
+        {label}
+      </FormLabel>
+      <Switch
+        id={id}
+        onChange={(evt) => handleClick(id, evt.target.checked)}
+        isChecked={value}
+      />
+    </FormControl>
+  );
 }
 
-class GlobalControlsWrapper extends React.Component {
-  constructor(props){
+class GlobalControls extends React.Component {
+  constructor(props) {
     super(props);
-    this.state = getState("settings").general;
     this.handleClick = this.handleClick.bind(this);
   }
-  handleClick(id) {
-    let a = this.state;
-    a[id] = !a[id];
-    this.setState(a);
-    setState({general: a}, "settings");
+  handleClick(id, value) {
+    this.props.onSettingChange(id, value);
   }
-  render(){
+  render() {
     let general_settings = settings_template.general;
     const settingsComponent = Object.entries(general_settings).map(
       ([key, value]) => {
@@ -36,14 +34,20 @@ class GlobalControlsWrapper extends React.Component {
             label={value.label}
             id={key}
             key={key}
-            value={this.state[key]}
+            value={this.props.settings[key]}
             handleClick={this.handleClick}
           ></ToggleSettings>
         );
       }
     );
-    return settingsComponent;
+    return (
+      <div className="global-controls">
+        <div className="global-controls-hidden"></div>
+        <div className="global-controls-container">
+          {settingsComponent}
+        </div>
+      </div>);
   }
 }
 
-export default GlobalControlsWrapper;
+export default GlobalControls;

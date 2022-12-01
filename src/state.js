@@ -1,5 +1,4 @@
 import data from "./data/template-1.json";
-import settings_template from "./settings_template.json"
 
 const initial_state = {
   model: data.model,
