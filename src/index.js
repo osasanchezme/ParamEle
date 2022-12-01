@@ -65,7 +65,7 @@ function VisualEditor(props) {
     },
     []
   );
-  if (state.settings.general.show_map){
+  if (state.settings.general.mini_map){
     return (
       <div className="editor-container">
       <ReactFlow
