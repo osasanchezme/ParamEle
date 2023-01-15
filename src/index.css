@@ -11,6 +11,15 @@ div.nav-bar {
     z-index: 10;
 }
 
+div.nav-bar .nav-bar-button{
+    height: 50px;
+    border-radius: 0;
+}
+
+div.nav-bar .nav-bar-button-group{
+    margin-left: 150px;
+}
+
 div.renderer-container,
 div.editor-container {
     width: 100%;
