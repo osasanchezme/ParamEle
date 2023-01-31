@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./flowNodes.css";
 import library from "./flow-nodes/handler";
-import { ChakraProvider} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -11,6 +11,8 @@ import ReactFlow, {
   applyEdgeChanges,
   applyNodeChanges,
   updateEdge,
+  useNodesState,
+  useEdgesState,
 } from "react-flow-renderer";
 import GlobalControls from "./settings";
 import NavBar from "./components/navbar";
@@ -39,24 +41,22 @@ class Renderer extends React.Component {
 function VisualEditor(props) {
   const state = props.app_state;
 
-  const [nodes, setNodes] = useState(state.model.nodes);
-  const [edges, setEdges] = useState(state.model.edges);
+  const [nodes, setNodes] = useNodesState(state.model.nodes);
+  const [edges, setEdges] = useEdgesState(state.model.edges);
 
   const saveRfInstance = (rfInstance) => storeRfInstance(rfInstance);
 
   const onNodesChange = (changes) => {
     setNodes((nds) => applyNodeChanges(changes, nds));
-    if (changes.length > 0){
+    if (changes.length > 0) {
       // Only run the updater when data changes
       if (changes[0]["type"] === "reset") updateStateFromFlow();
     }
   };
   const onEdgesChange = (changes) => {
     console.log("Changing edges...", changes);
-    setEdges((eds) => {
-      applyEdgeChanges(changes, eds);
-    });
-    // updateStateFromFlow();
+    setEdges((eds) => applyEdgeChanges(changes, eds));
+    updateStateFromFlow();
   };
   const onEdgeUpdate = (oldEdge, newConnection) => {
     console.log("Updating edges...");
@@ -65,7 +65,6 @@ function VisualEditor(props) {
   };
   const onConnect = useCallback((connection) => {
     console.log("Connecting...");
-    console.log("Connection: ",connection);
     setEdges((eds) => addEdge(connection, eds));
     updateStateFromFlow();
   }, []);
@@ -123,12 +122,10 @@ class ParamEle extends React.Component {
     this.setState(getState());
   }
   render() {
-    console.log(this.state.model.edges);
     return (
       <ChakraProvider>
         <div className="app-cont">
-          <NavBar
-          ></NavBar>
+          <NavBar></NavBar>
           <GlobalControls
             onSettingChange={this.changeGeneralSettingValue}
             settings={this.state.settings.general}
