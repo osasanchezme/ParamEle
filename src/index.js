@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./flowNodes.css";
-import nodes_library from "./flow-nodes/handler";
+import library from "./flow-nodes/handler";
 import { ChakraProvider} from "@chakra-ui/react";
 import ReactFlow, {
   MiniMap,
@@ -26,6 +26,8 @@ const {
 } = state;
 setInitialState();
 
+const nodes_library = library.nodes;
+
 window.getState = getState;
 
 class Renderer extends React.Component {
@@ -44,20 +46,26 @@ function VisualEditor(props) {
 
   const onNodesChange = (changes) => {
     setNodes((nds) => applyNodeChanges(changes, nds));
-    updateStateFromFlow();
+    if (changes.length > 0){
+      // Only run the updater when data changes
+      if (changes[0]["type"] === "reset") updateStateFromFlow();
+    }
   };
   const onEdgesChange = (changes) => {
+    console.log("Changing edges...", changes);
     setEdges((eds) => {
       applyEdgeChanges(changes, eds);
-      console.log(getRfInstance().getEdges());
     });
-    updateStateFromFlow();
+    // updateStateFromFlow();
   };
   const onEdgeUpdate = (oldEdge, newConnection) => {
+    console.log("Updating edges...");
     setEdges((els) => updateEdge(oldEdge, newConnection, els));
     updateStateFromFlow();
   };
   const onConnect = useCallback((connection) => {
+    console.log("Connecting...");
+    console.log("Connection: ",connection);
     setEdges((eds) => addEdge(connection, eds));
     updateStateFromFlow();
   }, []);
@@ -115,6 +123,7 @@ class ParamEle extends React.Component {
     this.setState(getState());
   }
   render() {
+    console.log(this.state.model.edges);
     return (
       <ChakraProvider>
         <div className="app-cont">

@@ -20,14 +20,12 @@
       },
       {
         "id": "node-2",
-        "type": "textUpdater",
+        "type": "sumNumbers",
         "position": {
           "x": 400,
           "y": 0
         },
-        "data": {
-          "value": 123
-        }
+        "data": {}
       },
       {
         "id": "node-3",
@@ -55,11 +53,12 @@
     "edges": [
       {
         "source": "node-1",
-        "sourceHandle": "text-out",
+        "sourceHandle": "value",
         "target": "node-2",
-        "targetHandle": "text-in",
+        "targetHandle": "num-1-in",
         "id": "reactflow__edge-node-1text-out-node-2text-in"
       }
+
     ]
   }
 }

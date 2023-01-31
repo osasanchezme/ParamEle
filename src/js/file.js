@@ -34,6 +34,7 @@ const uploadJSONFile = () => {
         state.setState(state_from_file);
         let rf_instance = state.getRfInstance();
         rf_instance.setNodes(state_from_file.model.nodes);
+        // rf_instance.setEdges(state_from_file.model.edges);
       };
       fr.readAsText(user_file);
     }

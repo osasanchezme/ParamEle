@@ -26,7 +26,6 @@ function TextUpdaterNode({ data, id }) {
     <div className="text-updater-node">
       <div className="node-header">Texto</div>
       <div className="node-body">
-        <Handle type="target" position={Position.Left} id="text-in" />
         <div>
           <Input
             placeholder="Ingresar texto"
@@ -36,7 +35,7 @@ function TextUpdaterNode({ data, id }) {
             autoComplete="off"
           />
         </div>
-        <Handle type="source" position={Position.Right} id="text-out" />
+        <Handle type="source" position={Position.Right} id="value" />
       </div>
     </div>
   );

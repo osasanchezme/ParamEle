@@ -1,7 +1,15 @@
 import TextUpdaterNode from "./basicInput"
+import SumNumbersNode from "./sumNumbers"
 
-const nodes_library = {
-    textUpdater: TextUpdaterNode
+const nodes = {
+    textUpdater: TextUpdaterNode,
+    sumNumbers: SumNumbersNode.SumNumbers
 }
 
-export default nodes_library
+const execution = {
+    sumNumbers: SumNumbersNode.Exec
+}
+
+const library = {nodes, execution}
+
+export default library

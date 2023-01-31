@@ -20,6 +20,8 @@
   position: relative;
   background-color: var(--chakra-colors-white);
   font-family: var(--chakra-fonts-mono);
+  min-height: 30px;
+  min-width: 100px;
 }
 
 .react-flow__handle {
