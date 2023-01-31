@@ -1,0 +1,137 @@
+{
+    "model": {
+        "nodes": [
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-1",
+                "type": "textUpdater",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "data": {
+                    "value": 123
+                },
+                "positionAbsolute": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            {
+                "width": 102,
+                "height": 66,
+                "id": "node-2",
+                "type": "sumNumbers",
+                "position": {
+                    "x": 400,
+                    "y": 0
+                },
+                "data": {
+                    "value": 246
+                },
+                "positionAbsolute": {
+                    "x": 400,
+                    "y": 0
+                }
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-3",
+                "type": "textUpdater",
+                "position": {
+                    "x": 26.993973009573054,
+                    "y": 152.6062930412163
+                },
+                "data": {
+                    "value": 123
+                },
+                "selected": true,
+                "positionAbsolute": {
+                    "x": 26.993973009573054,
+                    "y": 152.6062930412163
+                },
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-4",
+                "type": "textUpdater",
+                "position": {
+                    "x": 800,
+                    "y": 200
+                },
+                "data": {
+                    "value": 435
+                },
+                "positionAbsolute": {
+                    "x": 800,
+                    "y": 200
+                }
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-5",
+                "type": "textUpdater",
+                "position": {
+                    "x": 800,
+                    "y": 20
+                },
+                "data": {
+                    "value": 435
+                },
+                "positionAbsolute": {
+                    "x": 800,
+                    "y": 20
+                }
+            },
+            {
+                "width": 102,
+                "height": 66,
+                "id": "node-6",
+                "type": "sumNumbers",
+                "position": {
+                    "x": 1000,
+                    "y": 20
+                },
+                "data": {},
+                "positionAbsolute": {
+                    "x": 1000,
+                    "y": 20
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-2",
+                "targetHandle": "num-1-in",
+                "id": "reactflow__edge-node-1value-node-2num-1-in"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-2",
+                "targetHandle": "num-2-in",
+                "id": "reactflow__edge-node-3value-node-2num-2-in"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-6",
+                "targetHandle": "num-2-in",
+                "id": "reactflow__edge-node-4value-node-6num-2-in"
+            }
+        ]
+    },
+    "settings": {
+        "general": {
+            "auto_update": true,
+            "mini_map": true
+        }
+    }
+}

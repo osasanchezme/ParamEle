@@ -23,9 +23,9 @@ function getState(key) {
 }
 
 function setState(state, key) {
-  if (key !== undefined){
+  if (key !== undefined) {
     window.ParamEle.state[key] = JSON.parse(JSON.stringify(state));
-  }else{
+  } else {
     window.ParamEle.state = JSON.parse(JSON.stringify(state));
   }
 }
@@ -34,10 +34,16 @@ function getRfInstance() {
   return window.ParamEle.rfInstance;
 }
 
+function updateSettingsFromLocalState(settings_obj) {
+  Object.entries(settings_obj.general).forEach(([key, value]) => {
+    window.ParamEle.changeGeneralSettingValue(key, value);
+  });
+}
+
 function updateStateFromFlow() {
   console.log("Updating local state...");
   let settings = getState("settings")["general"];
-  if (settings.auto_update){
+  if (settings.auto_update) {
     setTimeout(() => {
       let rfInstance = getRfInstance();
       if (rfInstance) {
@@ -47,8 +53,8 @@ function updateStateFromFlow() {
         current_state.model.edges = rfInstance.getEdges();
         if (JSON.stringify(current_state) !== old_state) {
           setState(current_state);
-          logic_runner.run()
-        };
+          logic_runner.run();
+        }
       }
     }, 100);
   }
@@ -61,6 +67,7 @@ const state = {
   storeRfInstance,
   updateStateFromFlow,
   getRfInstance,
+  updateSettingsFromLocalState,
 };
 
 export default state;

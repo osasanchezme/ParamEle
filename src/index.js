@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./flowNodes.css";
@@ -24,7 +24,6 @@ const {
   getState,
   storeRfInstance,
   updateStateFromFlow,
-  getRfInstance,
 } = state;
 setInitialState();
 
@@ -63,11 +62,11 @@ function VisualEditor(props) {
     setEdges((els) => updateEdge(oldEdge, newConnection, els));
     updateStateFromFlow();
   };
-  const onConnect = useCallback((connection) => {
+  const onConnect = (connection) => {
     console.log("Connecting...");
     setEdges((eds) => addEdge(connection, eds));
     updateStateFromFlow();
-  }, []);
+  };
 
   if (state.settings.general.mini_map) {
     return (
@@ -113,6 +112,8 @@ class ParamEle extends React.Component {
     super(props);
     this.state = getState();
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
+    window.ParamEle.changeGeneralSettingValue =
+      this.changeGeneralSettingValue.bind(this);
   }
   changeGeneralSettingValue(key, value) {
     // TODO Check if there is a faster way! -- Update only one key
