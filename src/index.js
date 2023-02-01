@@ -14,10 +14,11 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
-import GlobalControls from "./settings";
+import GlobalControls from "./components/settings";
 import NavBar from "./components/navbar";
 
 import state from "./state";
+import CommandsBar from "./components/commands_bar";
 const {
   setInitialState,
   setState,
@@ -110,10 +111,14 @@ function VisualEditor(props) {
 class ParamEle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = getState();
+    this.state = { ...getState(), mouse_x: 0, mouse_y: 0, mode: "wait_action" };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue =
       this.changeGeneralSettingValue.bind(this);
+    this.getMouseCoordinates = this.getMouseCoordinates.bind(this);
+    this.activateNodeCreation = this.activateNodeCreation.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    // WIP Here I am, get the coordinates passed
   }
   changeGeneralSettingValue(key, value) {
     // TODO Check if there is a faster way! -- Update only one key
@@ -122,15 +127,37 @@ class ParamEle extends React.Component {
     setState(curr_state);
     this.setState(getState());
   }
+  getMouseCoordinates(event) {
+    this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+  }
+  activateNodeCreation(event) {
+    // TODO - Revisit this conditional to make sure it never ever fails (add an ID to the container)
+    if (event.target.className === "react-flow__pane react-flow__container")
+      this.setState({ mode: "add_node" });
+  }
+  handleKeyPress(event) {
+    if (event.key === "Escape") this.setState({ mode: "wait_action" });
+  }
   render() {
     return (
       <ChakraProvider>
-        <div className="app-cont">
+        <div
+          className="app-cont"
+          tabIndex={0}
+          onKeyDown={this.handleKeyPress}
+          onMouseMove={this.getMouseCoordinates}
+          onClick={this.activateNodeCreation}
+        >
           <NavBar></NavBar>
           <GlobalControls
             onSettingChange={this.changeGeneralSettingValue}
             settings={this.state.settings.general}
           ></GlobalControls>
+          <CommandsBar
+            active={this.state.mode === "add_node"}
+            x={this.state.mouse_x}
+            y={this.state.mouse_y}
+          ></CommandsBar>
           <VisualEditor app_state={this.state}></VisualEditor>
           <Renderer></Renderer>
         </div>

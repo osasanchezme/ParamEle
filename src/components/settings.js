@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, FormLabel, FormControl } from "@chakra-ui/react";
-import settings_template from "./settings_template.json";
+import settings_template from "../settings_template.json";
 
 function ToggleSettings({ label, id, value, handleClick }) {
   return (

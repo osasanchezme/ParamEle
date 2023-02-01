@@ -6,10 +6,15 @@ const nodes = {
     sumNumbers: SumNumbersNode.SumNumbers
 }
 
+const mapping = {
+    "Entrada de texto": "textUpdater",
+    "Suma de números": "sumNumbers"
+}
+
 const execution = {
     sumNumbers: SumNumbersNode.Exec
 }
 
-const library = {nodes, execution}
+const library = {nodes, execution, mapping}
 
 export default library
