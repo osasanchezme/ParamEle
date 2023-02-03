@@ -36,7 +36,6 @@ class CommandsBar extends React.Component {
     let node_name = event.target.value;
     let last_key = event.key;
     if (last_key === "ArrowUp" || last_key === "ArrowDown") {
-      event.preventDefault();
       if (last_key === "ArrowUp") {
         let potential_next_node = this.state.selected_node - 1;
         this.setState({
@@ -63,6 +62,10 @@ class CommandsBar extends React.Component {
       });
     }
   }
+  preventArrowKeysDefault(event) {
+    let last_key = event.key;
+    if (last_key === "ArrowUp" || last_key === "ArrowDown") event.preventDefault();
+  }
   /**
    * Handles when the user places the mouse cursor over one of the node options
    * @param {MouseEvent} event
@@ -72,11 +75,11 @@ class CommandsBar extends React.Component {
       selected_node: Number(event.target.id),
     });
   }
-  
+
   handleMouseClickOnOption() {
     let node_name = this.state.nodes_to_select[this.state.selected_node];
     let node_class = available_nodes_mapping[node_name];
-    utils.addNodeToTheEditor(node_class, {x: this.props.x, y: this.props.y - top_bar_height});
+    utils.addNodeToTheEditor(node_class, { x: this.props.x, y: this.props.y - top_bar_height });
     utils.changeAppMode("wait_action");
   }
   render() {
@@ -118,7 +121,13 @@ class CommandsBar extends React.Component {
           display: bar_visible ? "block" : "none",
         }}
       >
-        <Input ref={this.inputReference} placeholder="Nombre nodo..." size="xs" onKeyDown={this.handleUserInput} />
+        <Input
+          ref={this.inputReference}
+          placeholder="Nombre nodo..."
+          size="xs"
+          onKeyUp={this.handleUserInput}
+          onKeyDown={this.preventArrowKeysDefault}
+        />
         {list_to_select}
       </div>
     );

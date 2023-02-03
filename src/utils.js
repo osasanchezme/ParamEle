@@ -21,7 +21,7 @@ function getClosestMatches(test_string, options_array) {
 }
 
 /**
- * Using longest common subsequence (LCS) algorithm
+ * Using longest common subsequence (LCS) algorithm and custom (self-made) start matching
  * @param {*} text1
  * @param {*} text2
  * @returns
@@ -43,7 +43,20 @@ function scoreCompareStrings(text1, text2) {
       return result[end1][end2];
     }
   }
-  return test(text1.length - 1, text2.length - 1);
+  function checkStartMatches(text1, text2) {
+    let limit = Math.min(text1.length, text2.length);
+    let count = 0;
+    let still_same = true;
+    for (let i = 0; i < limit; i++){
+      if (String(text1).toLowerCase()[count] === String(text2).toLowerCase()[count]){
+        if (still_same) count++
+      }else{
+        still_same = false;
+      }
+    }
+    return count;
+  }
+  return test(text1.length - 1, text2.length - 1) + checkStartMatches(text1, text2);
 }
 
 function nextNodeId() {
@@ -60,7 +73,7 @@ function nextNodeId() {
 }
 
 /**
- * 
+ *
  * @param {String} type Node type
  * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
  * @param {Object} [data] Initial data for the new node
