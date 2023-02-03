@@ -19,7 +19,7 @@ class CommandsBar extends React.Component {
     this.inputReference = React.createRef();
     this.handleUserInput = this.handleUserInput.bind(this);
     this.handleMouseOverOnOption = this.handleMouseOverOnOption.bind(this);
-    this.addNodeToTheEditor = this.addNodeToTheEditor.bind(this);
+    this.handleMouseClickOnOption = this.handleMouseClickOnOption.bind(this);
     this.state = {
       nodes_to_select: [],
       selected_node: 0,
@@ -49,7 +49,7 @@ class CommandsBar extends React.Component {
         });
       }
     } else if (last_key === "Enter") {
-      this.addNodeToTheEditor();
+      this.handleMouseClickOnOption();
     } else {
       let closest_nodes = [];
       if (node_name.length > 0) {
@@ -72,21 +72,11 @@ class CommandsBar extends React.Component {
       selected_node: Number(event.target.id),
     });
   }
-  // TODO - Move to the utils
-  addNodeToTheEditor() {
+  
+  handleMouseClickOnOption() {
     let node_name = this.state.nodes_to_select[this.state.selected_node];
     let node_class = available_nodes_mapping[node_name];
-    let rfInstance = getRfInstance();
-    let node_id = utils.nextNodeId();
-    let position = rfInstance.project({x: this.props.x, y: this.props.y - top_bar_height});
-    rfInstance.addNodes([
-      {
-        id: node_id,
-        type: node_class,
-        position,
-        data: {},
-      },
-    ]);
+    utils.addNodeToTheEditor(node_class, {x: this.props.x, y: this.props.y - top_bar_height});
     utils.changeAppMode("wait_action");
   }
   render() {
@@ -106,7 +96,7 @@ class CommandsBar extends React.Component {
             borderRadius={"base"}
             onMouseOver={this.handleMouseOverOnOption}
             id={option_i}
-            onClick={this.addNodeToTheEditor}
+            onClick={this.handleMouseClickOnOption}
           >
             <ListIcon as={MdCropSquare} />
             {option}

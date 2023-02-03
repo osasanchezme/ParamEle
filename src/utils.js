@@ -1,5 +1,5 @@
 import state from "./state";
-const {getState} = state;
+const { getState, getRfInstance } = state;
 
 /**
  *
@@ -10,14 +10,14 @@ function getClosestMatches(test_string, options_array) {
   let scores = [];
   options_array.forEach((option) => {
     scores.push({
-        name: option,
-        score: scoreCompareStrings(option, test_string)
-    })
+      name: option,
+      score: scoreCompareStrings(option, test_string),
+    });
   });
-  scores.sort(function(x, y) {
+  scores.sort(function (x, y) {
     return y.score - x.score;
-  })
-  return(scores)
+  });
+  return scores;
 }
 
 /**
@@ -27,9 +27,7 @@ function getClosestMatches(test_string, options_array) {
  * @returns
  */
 function scoreCompareStrings(text1, text2) {
-  const result = new Array(text1.length + 1)
-    .fill(null)
-    .map(() => new Array(text2.length + 1).fill(null));
+  const result = new Array(text1.length + 1).fill(null).map(() => new Array(text2.length + 1).fill(null));
   function test(end1, end2) {
     if (end1 === -1 || end2 === -1) {
       return 0;
@@ -48,23 +46,36 @@ function scoreCompareStrings(text1, text2) {
   return test(text1.length - 1, text2.length - 1);
 }
 
-function nextNodeId(){
+function nextNodeId() {
   let nodes = getState("model")["nodes"];
   let possible_id = 1;
   let node_ids = nodes.map((node) => {
     return node.id;
   });
   let found_id = false;
-  while (!found_id){
-    node_ids.includes(`node-${possible_id}`) ? possible_id ++ : found_id = true;
+  while (!found_id) {
+    node_ids.includes(`node-${possible_id}`) ? possible_id++ : (found_id = true);
   }
   return `node-${possible_id}`;
 }
 
-function changeAppMode(mode){
+/**
+ * 
+ * @param {String} type Node type
+ * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
+ * @param {Object} [data] Initial data for the new node
+ */
+function addNodeToTheEditor(type, html_position, data = {}) {
+  let rfInstance = getRfInstance();
+  let position = rfInstance.project(html_position);
+  let id = nextNodeId();
+  rfInstance.addNodes([{ id, type, position, data }]);
+}
+
+function changeAppMode(mode) {
   window.ParamEle.changeAppMode(mode);
 }
 
-const utils = { getClosestMatches, nextNodeId, changeAppMode };
+const utils = { getClosestMatches, nextNodeId, changeAppMode, addNodeToTheEditor };
 
 export default utils;
