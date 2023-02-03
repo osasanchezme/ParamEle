@@ -44,6 +44,7 @@ function updateStateFromFlow() {
   console.log("Updating local state...");
   let settings = getState("settings")["general"];
   if (settings.auto_update) {
+    // TODO -  Do not do it with timeout but using a callback in index.js
     setTimeout(() => {
       let rfInstance = getRfInstance();
       if (rfInstance) {

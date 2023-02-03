@@ -19,13 +19,7 @@ import NavBar from "./components/navbar";
 
 import state from "./state";
 import CommandsBar from "./components/commands_bar";
-const {
-  setInitialState,
-  setState,
-  getState,
-  storeRfInstance,
-  updateStateFromFlow,
-} = state;
+const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow } = state;
 setInitialState();
 
 const nodes_library = library.nodes;
@@ -49,8 +43,8 @@ function VisualEditor(props) {
   const onNodesChange = (changes) => {
     setNodes((nds) => applyNodeChanges(changes, nds));
     if (changes.length > 0) {
-      // Only run the updater when data changes
-      if (changes[0]["type"] === "reset") updateStateFromFlow();
+      // Only run the updater when data changes or a new noe is added
+      if (changes[0]["type"] === "reset" || changes[0]["type"] === "add") updateStateFromFlow();
     }
   };
   const onEdgesChange = (changes) => {
@@ -68,57 +62,40 @@ function VisualEditor(props) {
     setEdges((eds) => addEdge(connection, eds));
     updateStateFromFlow();
   };
-
+  let mini_map;
   if (state.settings.general.mini_map) {
-    return (
-      <div className="editor-container">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onEdgeUpdate={onEdgeUpdate}
-          onConnect={onConnect}
-          nodeTypes={nodes_library}
-          fitView
-          onInit={saveRfInstance}
-        >
-          <MiniMap />
-          <Controls />
-        </ReactFlow>
-      </div>
-    );
-  } else {
-    return (
-      <div className="editor-container">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onEdgeUpdate={onEdgeUpdate}
-          onConnect={onConnect}
-          nodeTypes={nodes_library}
-          fitView
-          onInit={saveRfInstance}
-        >
-          <Controls />
-        </ReactFlow>
-      </div>
-    );
+    mini_map = <MiniMap />;
   }
+  return (
+    <div className="editor-container">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onEdgeUpdate={onEdgeUpdate}
+        onConnect={onConnect}
+        nodeTypes={nodes_library}
+        fitView
+        onInit={saveRfInstance}
+      >
+        {mini_map}
+        <Controls />
+      </ReactFlow>
+    </div>
+  );
 }
 class ParamEle extends React.Component {
   constructor(props) {
     super(props);
     this.state = { ...getState(), mouse_x: 0, mouse_y: 0, mode: "wait_action" };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
-    window.ParamEle.changeGeneralSettingValue =
-      this.changeGeneralSettingValue.bind(this);
+    window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
+    this.changeAppMode = this.changeAppMode.bind(this);
+    window.ParamEle.changeAppMode = this.changeAppMode.bind(this);
     this.getMouseCoordinates = this.getMouseCoordinates.bind(this);
     this.activateNodeCreation = this.activateNodeCreation.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    // WIP Here I am, get the coordinates passed
   }
   changeGeneralSettingValue(key, value) {
     // TODO Check if there is a faster way! -- Update only one key
@@ -127,18 +104,36 @@ class ParamEle extends React.Component {
     setState(curr_state);
     this.setState(getState());
   }
+  changeAppMode(mode) {
+    this.setState({ mode });
+  }
   getMouseCoordinates(event) {
-    this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+    if (this.state.mode !== "add_node") this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
   }
   activateNodeCreation(event) {
-    // TODO - Revisit this conditional to make sure it never ever fails (add an ID to the container)
-    if (event.target.className === "react-flow__pane react-flow__container")
-      this.setState({ mode: "add_node" });
+    if (event.target.className === "react-flow__pane react-flow__container") {
+      this.setState(
+        {
+          mode: "wait_action",
+        },
+        () => {
+          this.setState({
+            mode: "add_node",
+            mouse_x: event.clientX,
+            mouse_y: event.clientY,
+          });
+        }
+      );
+    }
   }
   handleKeyPress(event) {
     if (event.key === "Escape") this.setState({ mode: "wait_action" });
   }
   render() {
+    let commands_bar;
+    if (this.state.mode === "add_node") {
+      commands_bar = <CommandsBar active={this.state.mode === "add_node"} x={this.state.mouse_x} y={this.state.mouse_y}></CommandsBar>;
+    }
     return (
       <ChakraProvider>
         <div
@@ -149,15 +144,8 @@ class ParamEle extends React.Component {
           onClick={this.activateNodeCreation}
         >
           <NavBar></NavBar>
-          <GlobalControls
-            onSettingChange={this.changeGeneralSettingValue}
-            settings={this.state.settings.general}
-          ></GlobalControls>
-          <CommandsBar
-            active={this.state.mode === "add_node"}
-            x={this.state.mouse_x}
-            y={this.state.mouse_y}
-          ></CommandsBar>
+          <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
+          {commands_bar}
           <VisualEditor app_state={this.state}></VisualEditor>
           <Renderer></Renderer>
         </div>

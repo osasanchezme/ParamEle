@@ -49,10 +49,9 @@ div.global-controls-container {
 
 div.commands-bar {
     position: absolute;
-    background-color: whitesmoke;
     z-index: 11;
     padding: var(--chakra-space-1);
-
+    background-color: var(--chakra-colors-white);
     border-width: 1px;
     border-style: solid;
     border-image: initial;

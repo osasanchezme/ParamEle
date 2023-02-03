@@ -8,6 +8,14 @@ const nodes = {
 
 const mapping = {
     "Entrada de texto": "textUpdater",
+    "Nodo": "textUpdater",
+    "Elemento": "textUpdater",
+    "Duplicar": "textUpdater",
+    "Resolver": "textUpdater",
+    "Exportar": "textUpdater",
+    "Correr": "textUpdater",
+    "Leer": "textUpdater",
+    "Importar": "textUpdater",
     "Suma de números": "sumNumbers"
 }
 
