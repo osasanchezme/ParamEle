@@ -3,7 +3,7 @@ import { Input } from "@chakra-ui/react";
 import state from "../state";
 const { getRfInstance, updateStateFromFlow } = state;
 
-function TextUpdaterNode({ data, id }) {
+function InputNumberNode({ data, id }) {
 
   const onChange = (evt) => {
     // Update the component state (At React level)
@@ -24,11 +24,11 @@ function TextUpdaterNode({ data, id }) {
 
   return (
     <div className="text-updater-node">
-      <div className="node-header">Texto</div>
+      <div className="node-header">Número</div>
       <div className="node-body">
         <div>
           <Input
-            placeholder="Ingresar texto"
+            placeholder="Ingresar número"
             size="xs"
             onChange={onChange}
             value={data.value}
@@ -41,4 +41,4 @@ function TextUpdaterNode({ data, id }) {
   );
 }
 
-export default TextUpdaterNode;
+export default InputNumberNode;

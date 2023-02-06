@@ -19,10 +19,10 @@ function SumNumbers({ data, id }) {
         />
         <div>
           <p>
-            {JSON.stringify(data.value)}
+            {JSON.stringify(data["result-out"])}
           </p>
         </div>
-        <Handle type="source" position={Position.Right} id="text-out" />
+        <Handle type="source" position={Position.Right} id="result-out" />
       </div>
     </div>
   );
@@ -31,7 +31,7 @@ function SumNumbers({ data, id }) {
 function Exec(args){
   let num_1 = Number(args["num-1-in"]);
   let num_2 = Number(args["num-2-in"]);
-  return {value: num_1 + num_2};
+  return {"result-out": num_1 + num_2};
 }
 
 const SumNumbersNode = {SumNumbers, Exec}

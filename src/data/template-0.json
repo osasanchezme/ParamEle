@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "general": {
+      "auto_update": true,
+      "mini_map": false
+    }
+  },
+  "model": {
+    "nodes": [],
+    "edges": []
+  }
+}

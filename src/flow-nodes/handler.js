@@ -1,21 +1,21 @@
-import TextUpdaterNode from "./basicInput"
+import InputNumberNode from "./basicInput"
 import SumNumbersNode from "./sumNumbers"
 
 const nodes = {
-    textUpdater: TextUpdaterNode,
+    inputNumber: InputNumberNode,
     sumNumbers: SumNumbersNode.SumNumbers
 }
 
 const mapping = {
-    "Entrada de texto": "textUpdater",
-    "Nodo": "textUpdater",
-    "Elemento": "textUpdater",
-    "Duplicar": "textUpdater",
-    "Resolver": "textUpdater",
-    "Exportar": "textUpdater",
-    "Correr": "textUpdater",
-    "Leer": "textUpdater",
-    "Importar": "textUpdater",
+    "Número": "inputNumber",
+    "Nodo": "inputNumber",
+    "Elemento": "inputNumber",
+    "Duplicar": "inputNumber",
+    "Resolver": "inputNumber",
+    "Exportar": "inputNumber",
+    "Correr": "inputNumber",
+    "Leer": "inputNumber",
+    "Importar": "inputNumber",
     "Suma de números": "sumNumbers"
 }
 

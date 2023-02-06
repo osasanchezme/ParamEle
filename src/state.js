@@ -1,4 +1,4 @@
-import data from "./data/template-1.json";
+import data from "./data/template-0.json";
 import logic_runner from "./js/globalLogicRunner";
 
 const initial_state = {

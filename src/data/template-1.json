@@ -9,7 +9,7 @@
     "nodes": [
       {
         "id": "node-1",
-        "type": "textUpdater",
+        "type": "inputNumber",
         "position": {
           "x": 0,
           "y": 0
@@ -29,7 +29,7 @@
       },
       {
         "id": "node-3",
-        "type": "textUpdater",
+        "type": "inputNumber",
         "position": {
           "x": 400,
           "y": 200
@@ -40,7 +40,7 @@
       },
       {
         "id": "node-4",
-        "type": "textUpdater",
+        "type": "inputNumber",
         "position": {
           "x": 800,
           "y": 200
