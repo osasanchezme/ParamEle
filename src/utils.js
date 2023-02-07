@@ -1,5 +1,5 @@
 import state from "./state";
-const { getState, getRfInstance } = state;
+const { getState, getRfInstance, setGlobalVariable } = state;
 
 /**
  *
@@ -82,6 +82,7 @@ function addNodeToTheEditor(type, html_position, data = {}) {
   let rfInstance = getRfInstance();
   let position = rfInstance.project(html_position);
   let id = nextNodeId();
+  setGlobalVariable("last_node_id_created", id);
   rfInstance.addNodes([{ id, type, position, data }]);
 }
 

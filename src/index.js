@@ -19,8 +19,9 @@ import NavBar from "./components/navbar";
 
 import state from "./state";
 import CommandsBar from "./components/commands_bar";
-const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow } = state;
+const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow, setInitialGlobals } = state;
 setInitialState();
+setInitialGlobals();
 
 const nodes_library = library.nodes;
 

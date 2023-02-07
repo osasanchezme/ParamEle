@@ -34,6 +34,20 @@ function getRfInstance() {
   return window.ParamEle.rfInstance;
 }
 
+function setInitialGlobals(){
+  window.ParamEle.globals = {
+    last_node_id_created: "",
+  };
+}
+
+function setGlobalVariable(key, value){
+  window.ParamEle.globals[key] = value;
+}
+
+function getGlobalVariable(key){
+  return window.ParamEle.globals[key];
+}
+
 function updateSettingsFromLocalState(settings_obj) {
   Object.entries(settings_obj.general).forEach(([key, value]) => {
     window.ParamEle.changeGeneralSettingValue(key, value);
@@ -69,6 +83,9 @@ const state = {
   updateStateFromFlow,
   getRfInstance,
   updateSettingsFromLocalState,
+  setInitialGlobals,
+  setGlobalVariable,
+  getGlobalVariable
 };
 
 export default state;

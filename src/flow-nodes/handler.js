@@ -1,26 +1,26 @@
 import InputNumberNode from "./basicInput"
 import SumNumbersNode from "./sumNumbers"
+import MultiplyNumbersNode from "./multiplyNumbers"
+import DivideNumbersNode from "./divideNumbers"
 
 const nodes = {
     inputNumber: InputNumberNode,
-    sumNumbers: SumNumbersNode.SumNumbers
+    sumNumbers: SumNumbersNode.SumNumbers,
+    multiplyNumbers: MultiplyNumbersNode.MultiplyNumbers,
+    divideNumbers: DivideNumbersNode.DivideNumbers
 }
 
 const mapping = {
     "Número": "inputNumber",
-    "Nodo": "inputNumber",
-    "Elemento": "inputNumber",
-    "Duplicar": "inputNumber",
-    "Resolver": "inputNumber",
-    "Exportar": "inputNumber",
-    "Correr": "inputNumber",
-    "Leer": "inputNumber",
-    "Importar": "inputNumber",
-    "Suma de números": "sumNumbers"
+    "Suma de números": "sumNumbers",
+    "Multiplicación de números": "multiplyNumbers",
+    "División de números": "divideNumbers"
 }
 
 const execution = {
-    sumNumbers: SumNumbersNode.Exec
+    sumNumbers: SumNumbersNode.Exec,
+    multiplyNumbers: MultiplyNumbersNode.Exec,
+    divideNumbers: DivideNumbersNode.Exec
 }
 
 const library = {nodes, execution, mapping}

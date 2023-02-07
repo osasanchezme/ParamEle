@@ -3,14 +3,11 @@ import library from "../flow-nodes/handler";
 import { Input, List, ListItem, ListIcon } from "@chakra-ui/react";
 import utils from "../utils";
 import { MdCropSquare } from "react-icons/md";
-import state from "../state";
-const { getRfInstance } = state;
 
 const top_bar_height = 50;
 const commands_bar_height = 50;
 const commands_bar_width = 100;
 const number_nodes_match = 3;
-const available_nodes = library.nodes;
 const available_nodes_mapping = library.mapping;
 
 class CommandsBar extends React.Component {

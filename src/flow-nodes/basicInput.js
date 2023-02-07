@@ -1,11 +1,16 @@
 import { Handle, Position } from "react-flow-renderer";
 import { Input } from "@chakra-ui/react";
 import state from "../state";
-const { getRfInstance, updateStateFromFlow } = state;
+import { useEffect, useRef } from "react";
+const { getRfInstance, updateStateFromFlow, getGlobalVariable, setGlobalVariable } = state;
 
 function InputNumberNode({ data, id }) {
-
+  const text_input = useRef(null);
+  useEffect(() => {
+    if (id === getGlobalVariable("last_node_id_created")) text_input.current.focus();
+  });
   const onChange = (evt) => {
+    setGlobalVariable("last_node_id_created", "");
     // Update the component state (At React level)
     let rf_instance = getRfInstance();
     rf_instance.setNodes((nds) =>
@@ -28,6 +33,7 @@ function InputNumberNode({ data, id }) {
       <div className="node-body">
         <div>
           <Input
+            ref={text_input}
             placeholder="Ingresar número"
             size="xs"
             onChange={onChange}
