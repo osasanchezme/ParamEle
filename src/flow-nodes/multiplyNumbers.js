@@ -34,6 +34,6 @@ function Exec(args){
   return {"result-out": num_1 * num_2};
 }
 
-const MultiplyNumbersNode = {MultiplyNumbers, Exec}
+const MultiplyNumbersNode = {Node: MultiplyNumbers, Exec}
 
 export default MultiplyNumbersNode;

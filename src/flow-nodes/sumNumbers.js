@@ -34,6 +34,6 @@ function Exec(args){
   return {"result-out": num_1 + num_2};
 }
 
-const SumNumbersNode = {SumNumbers, Exec}
+const SumNumbersNode = {Node: SumNumbers, Exec}
 
 export default SumNumbersNode;

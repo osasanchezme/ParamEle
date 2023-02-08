@@ -4,7 +4,7 @@ import state from "../state";
 import { useEffect, useRef } from "react";
 const { getRfInstance, updateStateFromFlow, getGlobalVariable, setGlobalVariable } = state;
 
-function InputNumberNode({ data, id }) {
+function InputNumber({ data, id }) {
   const text_input = useRef(null);
   useEffect(() => {
     if (id === getGlobalVariable("last_node_id_created")) text_input.current.focus();
@@ -46,5 +46,7 @@ function InputNumberNode({ data, id }) {
     </div>
   );
 }
+
+const InputNumberNode = {Node: InputNumber}
 
 export default InputNumberNode;
