@@ -7,4 +7,4 @@ An open-source node based editor for graphical programming.
 - [ ] Three places where app-related data is stored    
     - [ ] The native state of the ParamEle component -- Used to control and handle state-based behaviors of the app.
     - [ ] The local independent state of the app that syncs with the ReactFlow editor nodes and edges and the settings (`ParamEle.state`) -- This goes to the file exported by the user.
-    - [ ] The globals object (`ParamEle.globals`) - Used internally in the app.
+    - [ ] The globals object (`ParamEle.globals`) - Used internally in the app, to control it event based without the need of the states.

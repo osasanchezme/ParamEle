@@ -3,6 +3,8 @@ import library from "../flow-nodes/handler";
 import { Input, List, ListItem, ListIcon } from "@chakra-ui/react";
 import utils from "../utils";
 import { MdCropSquare } from "react-icons/md";
+import state from "../state";
+const { setGlobalVariable } = state;
 
 const top_bar_height = 50;
 const commands_bar_height = 50;
@@ -23,6 +25,7 @@ class CommandsBar extends React.Component {
     };
   }
   componentDidMount() {
+    setGlobalVariable("last_node_id_created", "");
     this.inputReference.current.focus();
   }
   /**
