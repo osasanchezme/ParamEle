@@ -2,7 +2,7 @@ import state from "../state";
 import library from "../flow-nodes/handler";
 
 function run() {
-  let model = state.getState()["model"];
+  let model = state.getState("model");
   let nodes = model.nodes;
   let edges = model.edges;
   let connected_nodes = {};

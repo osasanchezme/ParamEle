@@ -4,6 +4,10 @@ import logic_runner from "./js/globalLogicRunner";
 const initial_state = {
   model: data.model,
   settings: data.settings,
+  structure: getEmptyStructuralModel(),
+  globals: {
+    last_node_id_created: "",
+  },
 };
 
 function setInitialState() {
@@ -30,22 +34,16 @@ function setState(state, key) {
   }
 }
 
+function setGlobalVariable(key, value) {
+  window.ParamEle.state.globals[key] = value;
+}
+
+function getGlobalVariable(key) {
+  return window.ParamEle.state.globals[key];
+}
+
 function getRfInstance() {
   return window.ParamEle.rfInstance;
-}
-
-function setInitialGlobals(){
-  window.ParamEle.globals = {
-    last_node_id_created: "",
-  };
-}
-
-function setGlobalVariable(key, value){
-  window.ParamEle.globals[key] = value;
-}
-
-function getGlobalVariable(key){
-  return window.ParamEle.globals[key];
 }
 
 function updateSettingsFromLocalState(settings_obj) {
@@ -75,6 +73,69 @@ function updateStateFromFlow() {
   }
 }
 
+function getEmptyStructuralModel() {
+  return {
+    dataVersion: 40,
+    settings: {
+      units: {
+        length: "m",
+        section_length: "mm",
+        material_strength: "mpa",
+        density: "kg/m3",
+        force: "kn",
+        moment: "kn-m",
+        pressure: "kpa",
+        mass: "kg",
+        temperature: "degc",
+        translation: "mm",
+        stress: "mpa",
+      },
+      precision: "fixed",
+      precision_values: 3,
+      evaluation_points: 9,
+      vertical_axis: "Y",
+      member_offsets_axis: "local",
+      projection_system: "orthographic",
+      solver_timeout: 600,
+      smooth_plate_nodal_results: true,
+      extrapolate_plate_results_from_gauss_points: true,
+      buckling_johnson: false,
+      non_linear_tolerance: "1",
+      non_linear_theory: "small",
+      auto_stabilize_model: false,
+      only_solve_user_defined_load_combinations: false,
+      include_rigid_links_for_area_loads: false,
+    },
+    details: [],
+    nodes: {},
+    members: {},
+    plates: {},
+    meshed_plates: {},
+    materials: {},
+    sections: {},
+    supports: {},
+    settlements: {},
+    groups: {},
+    point_loads: {},
+    moments: {},
+    distributed_loads: {},
+    pressures: {},
+    area_loads: {},
+    member_prestress_loads: {},
+    thermal_loads: {},
+    self_weight: {},
+    load_combinations: {},
+    load_cases: {},
+    nodal_masses: {},
+    nodal_masses_conversion_map: {},
+    spectral_loads: {},
+    notional_loads: {},
+    suppress: {},
+    gridlines_and_elevations: [],
+    design_input: [],
+  };
+}
+
 const state = {
   setInitialState,
   getState,
@@ -83,9 +144,8 @@ const state = {
   updateStateFromFlow,
   getRfInstance,
   updateSettingsFromLocalState,
-  setInitialGlobals,
   setGlobalVariable,
-  getGlobalVariable
+  getGlobalVariable,
 };
 
 export default state;

@@ -19,9 +19,8 @@ import NavBar from "./components/navbar";
 
 import state from "./state";
 import CommandsBar from "./components/commands_bar";
-const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow, setInitialGlobals } = state;
+const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow } = state;
 setInitialState();
-setInitialGlobals();
 
 const nodes_library = library.nodes;
 
@@ -99,10 +98,9 @@ class ParamEle extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   changeGeneralSettingValue(key, value) {
-    // TODO Check if there is a faster way! -- Update only one key
-    let curr_state = getState();
-    curr_state.settings.general[key] = value;
-    setState(curr_state);
+    let curr_settings = getState("settings");
+    curr_settings.general[key] = value;
+    setState(curr_settings, "settings");
     this.setState(getState());
   }
   changeAppMode(mode) {

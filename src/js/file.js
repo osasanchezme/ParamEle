@@ -1,6 +1,7 @@
 import state from "../state";
 const downloadJSONFile = () => {
   let current_state = state.getState();
+  current_state = { model: current_state.model, settings: current_state.settings };
   var fileName = "modelo.json";
 
   if (typeof current_state === "object") {
