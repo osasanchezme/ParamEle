@@ -1,0 +1,189 @@
+{
+    "model": {
+        "nodes": [
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-5",
+                "type": "inputNumber",
+                "position": {
+                    "x": 159.3264876753865,
+                    "y": 234.43592413693386
+                },
+                "data": {
+                    "value": "1"
+                },
+                "positionAbsolute": {
+                    "x": 159.3264876753865,
+                    "y": 234.43592413693386
+                }
+            },
+            {
+                "width": 200,
+                "height": 100,
+                "id": "node-4",
+                "type": "structuralNode",
+                "position": {
+                    "x": 397.1554737663346,
+                    "y": 225.40444365246745
+                },
+                "data": {
+                    "node-out": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    }
+                },
+                "positionAbsolute": {
+                    "x": 397.1554737663346,
+                    "y": 225.40444365246745
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 3110,
+                "height": 80,
+                "id": "node-3",
+                "type": "structuralMember",
+                "position": {
+                    "x": 759.4477260679097,
+                    "y": 176.14920823397583
+                },
+                "data": {
+                    "member-out": {
+                        "type": "normal_continuous",
+                        "cable_length": null,
+                        "node_A": null,
+                        "node_B": null,
+                        "section_id": 1,
+                        "rotation_angle": 0,
+                        "fixity_A": "FFFFFF",
+                        "fixity_B": "FFFFFF",
+                        "offset_Ax": "0",
+                        "offset_Ay": "0",
+                        "offset_Az": "0",
+                        "offset_Bx": "0",
+                        "offset_By": "0",
+                        "offset_Bz": "0",
+                        "stiffness_A_Ry": 0,
+                        "stiffness_A_Rz": 0,
+                        "stiffness_B_Ry": 0,
+                        "stiffness_B_Rz": 0
+                    }
+                },
+                "positionAbsolute": {
+                    "x": 759.4477260679097,
+                    "y": 176.14920823397583
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-2",
+                "type": "inputNumber",
+                "position": {
+                    "x": 121.5,
+                    "y": 83
+                },
+                "data": {
+                    "value": "0"
+                },
+                "positionAbsolute": {
+                    "x": 121.5,
+                    "y": 83
+                },
+                "selected": false
+            },
+            {
+                "width": 200,
+                "height": 100,
+                "id": "node-1",
+                "type": "structuralNode",
+                "position": {
+                    "x": 363.5,
+                    "y": 71.5
+                },
+                "data": {
+                    "node-out": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    }
+                },
+                "positionAbsolute": {
+                    "x": 363.5,
+                    "y": 71.5
+                },
+                "selected": false,
+                "dragging": false
+            }
+        ],
+        "edges": [
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-1",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-2value-node-1num-x-cord"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-1",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-2value-node-1num-y-cord"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-1",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-2value-node-1num-z-cord"
+            },
+            {
+                "source": "node-1",
+                "sourceHandle": "node-out",
+                "target": "node-3",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-1node-out-node-3node-A"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-4",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-5value-node-4num-x-cord"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-4",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-5value-node-4num-y-cord"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-4",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-5value-node-4num-z-cord"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "node-out",
+                "target": "node-3",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-4node-out-node-3node-B"
+            }
+        ]
+    },
+    "settings": {
+        "general": {
+            "auto_update": true,
+            "mini_map": false
+        }
+    }
+}

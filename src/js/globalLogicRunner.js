@@ -1,8 +1,10 @@
 import state from "../state";
+import getState from "../getState";
 import library from "../flow-nodes/handler";
+import utils from "../utils";
 
 function run() {
-  let model = state.getState("model");
+  let model = getState("model");
   let nodes = model.nodes;
   let edges = model.edges;
   let connected_nodes = {};
@@ -30,8 +32,7 @@ function run() {
     connected_nodes[edge.target]["args"][edge.targetHandle] = null;
     connected_nodes[edge.target]["sources"][edge.targetHandle] = [edge.source, edge.sourceHandle];
   });
-  console.log(`Model has ${nodes.length} nodes and ${edges.length} edges`);
-  console.log(connected_nodes);
+  let structure = utils.getEmptyStructuralModel();
   // Run all the logic
   Object.entries(connected_nodes).forEach(([node_id, node]) => {
     // TODO - Make it an actual logic, gathering all the args first
@@ -42,13 +43,24 @@ function run() {
     // Execute
     let result = library.execution[nodes_type[node_id]](node.args);
     Object.entries(result).forEach(([res_id, res_val]) => {
-      nodes[nodes_i[node_id]]["data"][res_id] = res_val;
+      let actual_res_val = JSON.parse(JSON.stringify(res_val));
+      // Process the structure
+      let res_type = res_id.split("-")[0];
+      if (res_type === "node" || res_type === "member"){
+        let structure_key = res_type + "s";
+        actual_res_val = utils.nextStructuralId(structure_key, structure);
+        // Update the structure
+        structure[structure_key][actual_res_val] = res_val;
+      }
+      // Update the node data
+      nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;
     });
   });
-  
   // Update the whole ReactFlow
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(nodes);
+  // Update the structure
+  state.setState(structure, "structure");
 }
 
 const logic_runner = { run };

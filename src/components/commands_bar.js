@@ -79,7 +79,7 @@ class CommandsBar extends React.Component {
   handleMouseClickOnOption() {
     let node_name = this.state.nodes_to_select[this.state.selected_node];
     let node_class = available_nodes_mapping[node_name];
-    utils.addNodeToTheEditor(node_class, { x: this.props.x, y: this.props.y - top_bar_height });
+    state.addNodeToTheEditor(node_class, { x: this.props.x, y: this.props.y - top_bar_height });
     utils.changeAppMode("wait_action");
   }
   render() {

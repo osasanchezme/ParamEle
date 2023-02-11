@@ -1,6 +1,9 @@
 import state from "../state";
+import getState from "../getState";
+import logic_runner from "./globalLogicRunner";
+
 const downloadJSONFile = () => {
-  let current_state = state.getState();
+  let current_state = getState();
   current_state = { model: current_state.model, settings: current_state.settings };
   var fileName = "modelo.json";
 
@@ -37,6 +40,7 @@ const uploadJSONFile = () => {
         rf_instance.setNodes(state_from_file.model.nodes);
         rf_instance.setEdges(state_from_file.model.edges);
         state.updateSettingsFromLocalState(state_from_file.settings);
+        logic_runner.run();
       };
       fr.readAsText(user_file);
     }

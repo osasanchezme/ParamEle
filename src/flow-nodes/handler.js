@@ -1,6 +1,7 @@
 import InputNumberNode from "./basicInput";
 import TrigonometricNodes from "./trigoMath";
 import BasicMathNodes from "./basicMath";
+import BasicStructuralNodes from "./basicStructural";
 
 const global_library_wrapper = {
   inputNumber: { node_component: InputNumberNode, label: "Número" },
@@ -17,6 +18,9 @@ const global_library_wrapper = {
   acos: { node_component: TrigonometricNodes.MathAcosNode, label: "Arco-coseno" },
   atan: { node_component: TrigonometricNodes.MathAtanNode, label: "Arco-tangente" },
   deg2rad: { node_component: TrigonometricNodes.MathDeg2RadNode, label: "Grados -> Rad" },
+  // Basic structural
+  structuralNode: { node_component: BasicStructuralNodes.StructuralNodeNode, label: "Nodo" },
+  structuralMember: { node_component: BasicStructuralNodes.StructuralMemberNode, label: "Elemento" },
 };
 
 let nodes = {};

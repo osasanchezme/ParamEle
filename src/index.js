@@ -19,7 +19,8 @@ import NavBar from "./components/navbar";
 
 import state from "./state";
 import CommandsBar from "./components/commands_bar";
-const { setInitialState, setState, getState, storeRfInstance, updateStateFromFlow } = state;
+import getState from "./getState";
+const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
 setInitialState();
 
 const nodes_library = library.nodes;
@@ -48,17 +49,14 @@ function VisualEditor(props) {
     }
   };
   const onEdgesChange = (changes) => {
-    console.log("Changing edges...", changes);
     setEdges((eds) => applyEdgeChanges(changes, eds));
     updateStateFromFlow();
   };
   const onEdgeUpdate = (oldEdge, newConnection) => {
-    console.log("Updating edges...");
     setEdges((els) => updateEdge(oldEdge, newConnection, els));
     updateStateFromFlow();
   };
   const onConnect = (connection) => {
-    console.log("Connecting...");
     setEdges((eds) => addEdge(connection, eds));
     updateStateFromFlow();
   };

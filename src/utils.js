@@ -1,5 +1,4 @@
-import state from "./state";
-const { getState, getRfInstance, setGlobalVariable } = state;
+import getState from "./getState";
 
 /**
  *
@@ -73,23 +72,87 @@ function nextNodeId() {
 }
 
 /**
- *
- * @param {String} type Node type
- * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
- * @param {Object} [data] Initial data for the new node
+ * 
+ * @param {"nodes"|"members"} element_type 
+ * @param {object} structure - Last structure in which to find the next available ID
  */
-function addNodeToTheEditor(type, html_position, data = {}) {
-  let rfInstance = getRfInstance();
-  let position = rfInstance.project(html_position);
-  let id = nextNodeId();
-  setGlobalVariable("last_node_id_created", id);
-  rfInstance.addNodes([{ id, type, position, data }]);
+function nextStructuralId(element_type, structure){
+  let element_keys = Object.keys(structure[element_type]);
+  let next_possible_id = 1;
+  let found_next = false;
+  while(!found_next){
+    if (element_keys.includes(String(next_possible_id))) next_possible_id += 1; else found_next = true;
+  }
+  return next_possible_id;
+}
+
+function getEmptyStructuralModel() {
+  return {
+    dataVersion: 40,
+    settings: {
+      units: {
+        length: "m",
+        section_length: "mm",
+        material_strength: "mpa",
+        density: "kg/m3",
+        force: "kn",
+        moment: "kn-m",
+        pressure: "kpa",
+        mass: "kg",
+        temperature: "degc",
+        translation: "mm",
+        stress: "mpa",
+      },
+      precision: "fixed",
+      precision_values: 3,
+      evaluation_points: 9,
+      vertical_axis: "Y",
+      member_offsets_axis: "local",
+      projection_system: "orthographic",
+      solver_timeout: 600,
+      smooth_plate_nodal_results: true,
+      extrapolate_plate_results_from_gauss_points: true,
+      buckling_johnson: false,
+      non_linear_tolerance: "1",
+      non_linear_theory: "small",
+      auto_stabilize_model: false,
+      only_solve_user_defined_load_combinations: false,
+      include_rigid_links_for_area_loads: false,
+    },
+    details: [],
+    nodes: {},
+    members: {},
+    plates: {},
+    meshed_plates: {},
+    materials: {},
+    sections: {},
+    supports: {},
+    settlements: {},
+    groups: {},
+    point_loads: {},
+    moments: {},
+    distributed_loads: {},
+    pressures: {},
+    area_loads: {},
+    member_prestress_loads: {},
+    thermal_loads: {},
+    self_weight: {},
+    load_combinations: {},
+    load_cases: {},
+    nodal_masses: {},
+    nodal_masses_conversion_map: {},
+    spectral_loads: {},
+    notional_loads: {},
+    suppress: {},
+    gridlines_and_elevations: [],
+    design_input: [],
+  };
 }
 
 function changeAppMode(mode) {
   window.ParamEle.changeAppMode(mode);
 }
 
-const utils = { getClosestMatches, nextNodeId, changeAppMode, addNodeToTheEditor };
+const utils = { getClosestMatches, nextNodeId, changeAppMode, nextStructuralId, getEmptyStructuralModel };
 
 export default utils;

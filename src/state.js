@@ -1,10 +1,12 @@
 import data from "./data/template-0.json";
 import logic_runner from "./js/globalLogicRunner";
+import getState from "./getState";
+import utils from "./utils";
 
 const initial_state = {
   model: data.model,
   settings: data.settings,
-  structure: getEmptyStructuralModel(),
+  structure: utils.getEmptyStructuralModel(),
   globals: {
     last_node_id_created: "",
   },
@@ -20,17 +22,13 @@ function storeRfInstance(rfInstance) {
   window.ParamEle.rfInstance = rfInstance;
 }
 
-function getState(key) {
-  let state = JSON.parse(JSON.stringify(window.ParamEle.state));
-  if (key !== undefined) state = state[key];
-  return state;
-}
-
 function setState(state, key) {
   if (key !== undefined) {
     window.ParamEle.state[key] = JSON.parse(JSON.stringify(state));
   } else {
-    window.ParamEle.state = JSON.parse(JSON.stringify(state));
+    Object.entries(state).forEach(([state_key, state_val]) => {
+      window.ParamEle.state[state_key] = JSON.parse(JSON.stringify(state_val));
+    });
   }
 }
 
@@ -53,7 +51,6 @@ function updateSettingsFromLocalState(settings_obj) {
 }
 
 function updateStateFromFlow() {
-  console.log("Updating local state...");
   let settings = getState("settings")["general"];
   if (settings.auto_update) {
     // TODO -  Do not do it with timeout but using a callback in index.js
@@ -73,72 +70,22 @@ function updateStateFromFlow() {
   }
 }
 
-function getEmptyStructuralModel() {
-  return {
-    dataVersion: 40,
-    settings: {
-      units: {
-        length: "m",
-        section_length: "mm",
-        material_strength: "mpa",
-        density: "kg/m3",
-        force: "kn",
-        moment: "kn-m",
-        pressure: "kpa",
-        mass: "kg",
-        temperature: "degc",
-        translation: "mm",
-        stress: "mpa",
-      },
-      precision: "fixed",
-      precision_values: 3,
-      evaluation_points: 9,
-      vertical_axis: "Y",
-      member_offsets_axis: "local",
-      projection_system: "orthographic",
-      solver_timeout: 600,
-      smooth_plate_nodal_results: true,
-      extrapolate_plate_results_from_gauss_points: true,
-      buckling_johnson: false,
-      non_linear_tolerance: "1",
-      non_linear_theory: "small",
-      auto_stabilize_model: false,
-      only_solve_user_defined_load_combinations: false,
-      include_rigid_links_for_area_loads: false,
-    },
-    details: [],
-    nodes: {},
-    members: {},
-    plates: {},
-    meshed_plates: {},
-    materials: {},
-    sections: {},
-    supports: {},
-    settlements: {},
-    groups: {},
-    point_loads: {},
-    moments: {},
-    distributed_loads: {},
-    pressures: {},
-    area_loads: {},
-    member_prestress_loads: {},
-    thermal_loads: {},
-    self_weight: {},
-    load_combinations: {},
-    load_cases: {},
-    nodal_masses: {},
-    nodal_masses_conversion_map: {},
-    spectral_loads: {},
-    notional_loads: {},
-    suppress: {},
-    gridlines_and_elevations: [],
-    design_input: [],
-  };
+/**
+ *
+ * @param {String} type Node type
+ * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
+ * @param {Object} [data] Initial data for the new node
+ */
+function addNodeToTheEditor(type, html_position, data = {}) {
+  let rfInstance = getRfInstance();
+  let position = rfInstance.project(html_position);
+  let id = utils.nextNodeId();
+  setGlobalVariable("last_node_id_created", id);
+  rfInstance.addNodes([{ id, type, position, data }]);
 }
 
 const state = {
   setInitialState,
-  getState,
   setState,
   storeRfInstance,
   updateStateFromFlow,
@@ -146,6 +93,7 @@ const state = {
   updateSettingsFromLocalState,
   setGlobalVariable,
   getGlobalVariable,
+  addNodeToTheEditor,
 };
 
 export default state;
