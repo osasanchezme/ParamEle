@@ -13,12 +13,12 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
   let target_handles = target_ids.map((handle_id, handle_counter) => {
     let handle_style = {};
     if (target_ids.length > 1) handle_style = {top: 20 * (handle_counter + 1)};
-    return <Handle type="target" style={handle_style} position={Position.Left} id={handle_id} />;
+    return <Handle type="target" style={handle_style} position={Position.Left} id={handle_id} key={handle_id} />;
   });
   let source_handles = source_ids.map((handle_id, handle_counter) => {
     let handle_style = {};
     if (target_ids.length > 1) handle_style = {top: 20 * (handle_counter + 1)};
-    return <Handle type="source" style={handle_style} position={Position.Right} id={handle_id} />;
+    return <Handle type="source" style={handle_style} position={Position.Right} id={handle_id} key={handle_id} />;
   });
   return (
     <div className="text-updater-node" style={{height: 20 * (target_ids.length + 2)}}>

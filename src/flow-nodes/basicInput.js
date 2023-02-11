@@ -37,7 +37,7 @@ function InputNumber({ data, id }) {
             placeholder="Ingresar número"
             size="xs"
             onChange={onChange}
-            value={data.value}
+            value={data.value === undefined ? "" : data.value}
             autoComplete="off"
           />
         </div>
