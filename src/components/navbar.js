@@ -5,7 +5,7 @@ import file from "../js/file";
 
 const navbar_options = {
   file: [
-    { name: "Nuevo", icon: "MdInsertDriveFile"},
+    { name: "Nuevo", icon: "MdInsertDriveFile", callback: file.newFile},
     { name: "Abrir", icon: "MdFolderOpen"},
     { name: "Guardar", icon: "MdSave"},
     { name: "Exportar JSON", icon: "MdFileDownload", callback: file.downloadJSONFile},

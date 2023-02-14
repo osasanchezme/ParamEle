@@ -4,18 +4,92 @@
             {
                 "width": 102,
                 "height": 80,
-                "id": "node-11",
+                "id": "node-21",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1020.0169502629378,
-                    "y": 403.65867596296573
+                    "x": 996.1203888953257,
+                    "y": 676.0861042653037
+                },
+                "data": {
+                    "member-out": 8
+                },
+                "positionAbsolute": {
+                    "x": 996.1203888953257,
+                    "y": 676.0861042653037
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 80,
+                "id": "node-20",
+                "type": "structuralMember",
+                "position": {
+                    "x": 1007.3559479012298,
+                    "y": 527.2149474370761
+                },
+                "data": {
+                    "member-out": 7
+                },
+                "positionAbsolute": {
+                    "x": 1007.3559479012298,
+                    "y": 527.2149474370761
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 80,
+                "id": "node-19",
+                "type": "structuralMember",
+                "position": {
+                    "x": 1000.6775933264508,
+                    "y": 331.61048626760476
+                },
+                "data": {
+                    "member-out": 6
+                },
+                "positionAbsolute": {
+                    "x": 1000.6775933264508,
+                    "y": 331.61048626760476
+                }
+            },
+            {
+                "width": 102,
+                "height": 80,
+                "id": "node-18",
+                "type": "structuralMember",
+                "position": {
+                    "x": 994.7221617117305,
+                    "y": 143.14438420333508
+                },
+                "data": {
+                    "member-out": 5
+                },
+                "positionAbsolute": {
+                    "x": 994.7221617117305,
+                    "y": 143.14438420333508
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 80,
+                "id": "node-17",
+                "type": "structuralMember",
+                "position": {
+                    "x": 1853.4903600000137,
+                    "y": 393.65183170053007
                 },
                 "data": {
                     "member-out": 4
                 },
                 "positionAbsolute": {
-                    "x": 1020.0169502629378,
-                    "y": 403.65867596296573
+                    "x": 1853.4903600000137,
+                    "y": 393.65183170053007
                 },
                 "selected": false,
                 "dragging": false
@@ -23,37 +97,35 @@
             {
                 "width": 102,
                 "height": 80,
-                "id": "node-10",
+                "id": "node-16",
                 "type": "structuralMember",
                 "position": {
-                    "x": 767.2872123186221,
-                    "y": 518.9079606509921
+                    "x": 1486.955005610599,
+                    "y": 536.3243363127533
                 },
                 "data": {
                     "member-out": 3
                 },
                 "positionAbsolute": {
-                    "x": 767.2872123186221,
-                    "y": 518.9079606509921
-                },
-                "selected": false,
-                "dragging": false
+                    "x": 1486.955005610599,
+                    "y": 536.3243363127533
+                }
             },
             {
                 "width": 102,
                 "height": 80,
-                "id": "node-9",
+                "id": "node-15",
                 "type": "structuralMember",
                 "position": {
-                    "x": 758.5684410811136,
-                    "y": 355.9212958732417
+                    "x": 1479.669836304229,
+                    "y": 327.4828161968052
                 },
                 "data": {
                     "member-out": 2
                 },
                 "positionAbsolute": {
-                    "x": 758.5684410811136,
-                    "y": 355.9212958732417
+                    "x": 1479.669836304229,
+                    "y": 327.4828161968052
                 },
                 "selected": false,
                 "dragging": false
@@ -61,18 +133,132 @@
             {
                 "width": 102,
                 "height": 80,
-                "id": "node-8",
+                "id": "node-14",
                 "type": "structuralMember",
                 "position": {
-                    "x": 746.867013174795,
-                    "y": 182.92152570255897
+                    "x": 1461.9163735192037,
+                    "y": 151.44581377274693
                 },
                 "data": {
                     "member-out": 1
                 },
                 "positionAbsolute": {
-                    "x": 746.867013174795,
-                    "y": 182.92152570255897
+                    "x": 1461.9163735192037,
+                    "y": 151.44581377274693
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 100,
+                "id": "node-13",
+                "type": "structuralNode",
+                "position": {
+                    "x": 1221.8024590464809,
+                    "y": 620.4328019389062
+                },
+                "data": {
+                    "node-out": 8
+                },
+                "positionAbsolute": {
+                    "x": 1221.8024590464809,
+                    "y": 620.4328019389062
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 100,
+                "id": "node-12",
+                "type": "structuralNode",
+                "position": {
+                    "x": 1230.2291283009085,
+                    "y": 424.30014267071186
+                },
+                "data": {
+                    "node-out": 7
+                },
+                "positionAbsolute": {
+                    "x": 1230.2291283009085,
+                    "y": 424.30014267071186
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 100,
+                "id": "node-11",
+                "type": "structuralNode",
+                "position": {
+                    "x": 1229.0607664033935,
+                    "y": 228.84622196490756
+                },
+                "data": {
+                    "node-out": 6
+                },
+                "positionAbsolute": {
+                    "x": 1229.0607664033935,
+                    "y": 228.84622196490756
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 100,
+                "id": "node-10",
+                "type": "structuralNode",
+                "position": {
+                    "x": 1213.044463593938,
+                    "y": 50.79493770662832
+                },
+                "data": {
+                    "node-out": 5
+                },
+                "positionAbsolute": {
+                    "x": 1213.044463593938,
+                    "y": 50.79493770662832
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-9",
+                "type": "inputNumber",
+                "position": {
+                    "x": 645.103923095295,
+                    "y": -18.796144160981328
+                },
+                "data": {
+                    "value": "10"
+                },
+                "positionAbsolute": {
+                    "x": 645.103923095295,
+                    "y": -18.796144160981328
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 100,
+                "id": "node-8",
+                "type": "structuralNode",
+                "position": {
+                    "x": 682.2383891247276,
+                    "y": 676.1275836582963
+                },
+                "data": {
+                    "node-out": 4
+                },
+                "positionAbsolute": {
+                    "x": 682.2383891247276,
+                    "y": 676.1275836582963
                 },
                 "selected": false,
                 "dragging": false
@@ -83,15 +269,15 @@
                 "id": "node-7",
                 "type": "structuralNode",
                 "position": {
-                    "x": 582.1411218832443,
-                    "y": 570.6261902710165
+                    "x": 675.2644769989068,
+                    "y": 517.9962130694043
                 },
                 "data": {
-                    "node-out": 4
+                    "node-out": 3
                 },
                 "positionAbsolute": {
-                    "x": 582.1411218832443,
-                    "y": 570.6261902710165
+                    "x": 675.2644769989068,
+                    "y": 517.9962130694043
                 },
                 "selected": false,
                 "dragging": false
@@ -102,15 +288,15 @@
                 "id": "node-6",
                 "type": "structuralNode",
                 "position": {
-                    "x": 573.0027978070357,
-                    "y": 427.2802870559636
+                    "x": 677.3688514236735,
+                    "y": 371.347441444498
                 },
                 "data": {
-                    "node-out": 3
+                    "node-out": 2
                 },
                 "positionAbsolute": {
-                    "x": 573.0027978070357,
-                    "y": 427.2802870559636
+                    "x": 677.3688514236735,
+                    "y": 371.347441444498
                 },
                 "selected": false,
                 "dragging": false
@@ -121,34 +307,34 @@
                 "id": "node-5",
                 "type": "inputNumber",
                 "position": {
-                    "x": 53.13610293077653,
-                    "y": 496.59969380453987
+                    "x": 195.04782869351916,
+                    "y": 567.7751925291849
                 },
                 "data": {
-                    "value": "2"
+                    "value": "6"
                 },
                 "positionAbsolute": {
-                    "x": 53.13610293077653,
-                    "y": 496.59969380453987
+                    "x": 195.04782869351916,
+                    "y": 567.7751925291849
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
-                "width": 102,
-                "height": 100,
+                "width": 188,
+                "height": 67,
                 "id": "node-4",
-                "type": "structuralNode",
+                "type": "inputNumber",
                 "position": {
-                    "x": 560.8234256856136,
-                    "y": 252.40758072425916
+                    "x": 188.36436675714455,
+                    "y": 435.19159249174317
                 },
                 "data": {
-                    "node-out": 2
+                    "value": "5"
                 },
                 "positionAbsolute": {
-                    "x": 560.8234256856136,
-                    "y": 252.40758072425916
+                    "x": 188.36436675714455,
+                    "y": 435.19159249174317
                 },
                 "selected": false,
                 "dragging": false
@@ -159,15 +345,15 @@
                 "id": "node-3",
                 "type": "inputNumber",
                 "position": {
-                    "x": 30.795794729718537,
-                    "y": 331.5012813525371
+                    "x": 190.9513134620725,
+                    "y": 330.8514087263183
                 },
                 "data": {
-                    "value": "8"
+                    "value": "0"
                 },
                 "positionAbsolute": {
-                    "x": 30.795794729718537,
-                    "y": 331.5012813525371
+                    "x": 190.9513134620725,
+                    "y": 330.8514087263183
                 },
                 "selected": false,
                 "dragging": false
@@ -178,15 +364,15 @@
                 "id": "node-2",
                 "type": "structuralNode",
                 "position": {
-                    "x": 557.0356501985575,
-                    "y": 98.86607322028215
+                    "x": 676.9053487377349,
+                    "y": 188.88744246769517
                 },
                 "data": {
                     "node-out": 1
                 },
                 "positionAbsolute": {
-                    "x": 557.0356501985575,
-                    "y": 98.86607322028215
+                    "x": 676.9053487377349,
+                    "y": 188.88744246769517
                 },
                 "selected": false,
                 "dragging": false
@@ -197,15 +383,15 @@
                 "id": "node-1",
                 "type": "inputNumber",
                 "position": {
-                    "x": 49.49403061765565,
-                    "y": 157.5727158304308
+                    "x": 191.81362903038183,
+                    "y": 200.6417579116145
                 },
                 "data": {
                     "value": "0"
                 },
                 "positionAbsolute": {
-                    "x": 49.49403061765565,
-                    "y": 157.5727158304308
+                    "x": 191.81362903038183,
+                    "y": 200.6417579116145
                 },
                 "selected": false,
                 "dragging": false
@@ -216,43 +402,22 @@
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-2",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-1value-node-2num-x-cord"
-            },
-            {
-                "source": "node-1",
-                "sourceHandle": "value",
-                "target": "node-2",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-1value-node-2num-y-cord"
-            },
-            {
-                "source": "node-1",
-                "sourceHandle": "value",
-                "target": "node-2",
                 "targetHandle": "num-z-cord",
                 "id": "reactflow__edge-node-1value-node-2num-z-cord"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
-                "target": "node-4",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-4num-y-cord"
-            },
-            {
-                "source": "node-1",
-                "sourceHandle": "value",
-                "target": "node-4",
+                "target": "node-2",
                 "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-1value-node-4num-x-cord"
+                "id": "reactflow__edge-node-3value-node-2num-x-cord"
             },
             {
-                "source": "node-1",
+                "source": "node-3",
                 "sourceHandle": "value",
-                "target": "node-4",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-4num-z-cord"
+                "target": "node-2",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-3value-node-2num-y-cord"
             },
             {
                 "source": "node-1",
@@ -265,15 +430,29 @@
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-6",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-6num-y-cord"
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-3value-node-6num-x-cord"
             },
             {
-                "source": "node-5",
+                "source": "node-4",
                 "sourceHandle": "value",
                 "target": "node-6",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-5value-node-6num-x-cord"
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-4value-node-6num-y-cord"
+            },
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-7",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-1value-node-7num-z-cord"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-7",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-4value-node-7num-y-cord"
             },
             {
                 "source": "node-5",
@@ -285,72 +464,219 @@
             {
                 "source": "node-1",
                 "sourceHandle": "value",
-                "target": "node-7",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-1value-node-7num-y-cord"
-            },
-            {
-                "source": "node-1",
-                "sourceHandle": "value",
-                "target": "node-7",
+                "target": "node-8",
                 "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-7num-z-cord"
+                "id": "reactflow__edge-node-1value-node-8num-z-cord"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-8",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-3value-node-8num-y-cord"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-8",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-5value-node-8num-x-cord"
+            },
+            {
+                "source": "node-9",
+                "sourceHandle": "value",
+                "target": "node-10",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-9value-node-10num-z-cord"
+            },
+            {
+                "source": "node-9",
+                "sourceHandle": "value",
+                "target": "node-11",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-9value-node-11num-z-cord"
+            },
+            {
+                "source": "node-9",
+                "sourceHandle": "value",
+                "target": "node-12",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-9value-node-12num-z-cord"
+            },
+            {
+                "source": "node-9",
+                "sourceHandle": "value",
+                "target": "node-13",
+                "targetHandle": "num-z-cord",
+                "id": "reactflow__edge-node-9value-node-13num-z-cord"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-10",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-3value-node-10num-x-cord"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-10",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-3value-node-10num-y-cord"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-11",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-3value-node-11num-x-cord"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-11",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-4value-node-11num-y-cord"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-12",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-4value-node-12num-y-cord"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-12",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-5value-node-12num-x-cord"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-13",
+                "targetHandle": "num-x-cord",
+                "id": "reactflow__edge-node-5value-node-13num-x-cord"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-13",
+                "targetHandle": "num-y-cord",
+                "id": "reactflow__edge-node-3value-node-13num-y-cord"
+            },
+            {
+                "source": "node-10",
+                "sourceHandle": "node-out",
+                "target": "node-14",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-10node-out-node-14node-A"
+            },
+            {
+                "source": "node-11",
+                "sourceHandle": "node-out",
+                "target": "node-14",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-11node-out-node-14node-B"
+            },
+            {
+                "source": "node-11",
+                "sourceHandle": "node-out",
+                "target": "node-15",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-11node-out-node-15node-A"
+            },
+            {
+                "source": "node-12",
+                "sourceHandle": "node-out",
+                "target": "node-15",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-12node-out-node-15node-B"
+            },
+            {
+                "source": "node-12",
+                "sourceHandle": "node-out",
+                "target": "node-16",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-12node-out-node-16node-A"
+            },
+            {
+                "source": "node-13",
+                "sourceHandle": "node-out",
+                "target": "node-16",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-13node-out-node-16node-B"
+            },
+            {
+                "source": "node-13",
+                "sourceHandle": "node-out",
+                "target": "node-17",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-13node-out-node-17node-A"
+            },
+            {
+                "source": "node-10",
+                "sourceHandle": "node-out",
+                "target": "node-17",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-10node-out-node-17node-B"
             },
             {
                 "source": "node-2",
                 "sourceHandle": "node-out",
-                "target": "node-8",
+                "target": "node-18",
                 "targetHandle": "node-A",
-                "id": "reactflow__edge-node-2node-out-node-8node-A"
+                "id": "reactflow__edge-node-2node-out-node-18node-A"
             },
             {
-                "source": "node-4",
+                "source": "node-10",
                 "sourceHandle": "node-out",
-                "target": "node-8",
+                "target": "node-18",
                 "targetHandle": "node-B",
-                "id": "reactflow__edge-node-4node-out-node-8node-B"
-            },
-            {
-                "source": "node-4",
-                "sourceHandle": "node-out",
-                "target": "node-9",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-4node-out-node-9node-A"
+                "id": "reactflow__edge-node-10node-out-node-18node-B"
             },
             {
                 "source": "node-6",
                 "sourceHandle": "node-out",
-                "target": "node-9",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-6node-out-node-9node-B"
+                "target": "node-19",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-6node-out-node-19node-A"
             },
             {
-                "source": "node-6",
+                "source": "node-11",
                 "sourceHandle": "node-out",
-                "target": "node-10",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-6node-out-node-10node-A"
+                "target": "node-19",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-11node-out-node-19node-B"
             },
             {
                 "source": "node-7",
                 "sourceHandle": "node-out",
-                "target": "node-10",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-7node-out-node-10node-B"
-            },
-            {
-                "source": "node-7",
-                "sourceHandle": "node-out",
-                "target": "node-11",
+                "target": "node-20",
                 "targetHandle": "node-A",
-                "id": "reactflow__edge-node-7node-out-node-11node-A"
+                "id": "reactflow__edge-node-7node-out-node-20node-A"
             },
             {
-                "source": "node-2",
+                "source": "node-12",
                 "sourceHandle": "node-out",
-                "target": "node-11",
+                "target": "node-20",
                 "targetHandle": "node-B",
-                "id": "reactflow__edge-node-2node-out-node-11node-B"
+                "id": "reactflow__edge-node-12node-out-node-20node-B"
+            },
+            {
+                "source": "node-8",
+                "sourceHandle": "node-out",
+                "target": "node-21",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-8node-out-node-21node-A"
+            },
+            {
+                "source": "node-13",
+                "sourceHandle": "node-out",
+                "target": "node-21",
+                "targetHandle": "node-B",
+                "id": "reactflow__edge-node-13node-out-node-21node-B"
             }
         ]
     },

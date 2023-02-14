@@ -1,6 +1,7 @@
 import state from "../state";
 import getState from "../getState";
 import logic_runner from "./globalLogicRunner";
+import blank_model from "../data/template-0.json";
 
 const downloadJSONFile = () => {
   let current_state = getState();
@@ -17,6 +18,15 @@ const downloadJSONFile = () => {
   a.href = window.URL.createObjectURL(blob);
   a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
   a.click();
+};
+
+const newFile = () => {
+  state.setState(blank_model);
+  let rf_instance = state.getRfInstance();
+  rf_instance.setNodes(blank_model.model.nodes);
+  rf_instance.setEdges(blank_model.model.edges);
+  state.updateSettingsFromLocalState(blank_model.settings);
+  logic_runner.run();
 };
 
 const uploadJSONFile = () => {
@@ -47,5 +57,5 @@ const uploadJSONFile = () => {
   };
 };
 
-const file = { downloadJSONFile, uploadJSONFile };
+const file = { downloadJSONFile, uploadJSONFile, newFile };
 export default file;
