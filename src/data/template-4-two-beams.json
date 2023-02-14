@@ -251,7 +251,8 @@
     "settings": {
         "general": {
             "auto_update": true,
-            "mini_map": false
+            "mini_map": false,
+            "show_nodes": true
         }
     }
 }

@@ -1,4 +1,6 @@
-import data from "./data/template-0.json";
+// import data from "./data/template-4-two-beams.json";
+// import data from "./data/template-0.json";
+import data from "./data/template-5-frame.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
@@ -50,7 +52,7 @@ function updateSettingsFromLocalState(settings_obj) {
   });
 }
 
-function updateStateFromFlow() {
+function updateStateFromFlow(force_update = false) {
   let settings = getState("settings")["general"];
   if (settings.auto_update) {
     // TODO -  Do not do it with timeout but using a callback in index.js
@@ -61,7 +63,7 @@ function updateStateFromFlow() {
         let old_state = JSON.stringify(current_state);
         current_state.model.nodes = rfInstance.getNodes();
         current_state.model.edges = rfInstance.getEdges();
-        if (JSON.stringify(current_state) !== old_state) {
+        if (JSON.stringify(current_state) !== old_state || force_update) {
           setState(current_state);
           logic_runner.run();
         }

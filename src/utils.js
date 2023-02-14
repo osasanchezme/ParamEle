@@ -153,6 +153,10 @@ function changeAppMode(mode) {
   window.ParamEle.changeAppMode(mode);
 }
 
-const utils = { getClosestMatches, nextNodeId, changeAppMode, nextStructuralId, getEmptyStructuralModel };
+function updateRenderer(){
+  window.ParamEle.updateRenderer();
+}
+
+const utils = { getClosestMatches, nextNodeId, changeAppMode, nextStructuralId, getEmptyStructuralModel, updateRenderer };
 
 export default utils;

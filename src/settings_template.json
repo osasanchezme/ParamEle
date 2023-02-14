@@ -9,6 +9,11 @@
             "default": true,
             "label": "Mostrar mapa",
             "type": "check"
+        },
+        "show_nodes": {
+            "default": true,
+            "label": "Mostrar nodos",
+            "type": "check"
         }
     }
 }

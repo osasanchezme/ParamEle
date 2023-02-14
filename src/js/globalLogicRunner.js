@@ -61,6 +61,8 @@ function run() {
   rf_instance.setNodes(nodes);
   // Update the structure
   state.setState(structure, "structure");
+  // Update the renderer
+  utils.updateRenderer();
 }
 
 const logic_runner = { run };

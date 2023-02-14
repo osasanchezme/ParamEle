@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import Plot from "react-plotly.js";
 import "./index.css";
 import "./flowNodes.css";
 import library from "./flow-nodes/handler";
@@ -16,20 +17,54 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import GlobalControls from "./components/settings";
 import NavBar from "./components/navbar";
-
+import renderer from "./js/renderer";
 import state from "./state";
 import CommandsBar from "./components/commands_bar";
 import getState from "./getState";
+import logic_runner from "./js/globalLogicRunner";
 const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
+
 setInitialState();
 
+window.ParamEle.updateStateFromFlow = updateStateFromFlow;
+
 const nodes_library = library.nodes;
-
-window.getState = getState;
-
 class Renderer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: renderer.getData(),
+      layout: renderer.getLayout(),
+      frames: [],
+      config: {},
+    };
+    this.updateRenderer = this.updateRenderer.bind(this);
+    window.ParamEle.updateRenderer = this.updateRenderer.bind(this);
+  }
+  updateRenderer() {
+    this.setState({ data: renderer.getData() });
+  }
   render() {
-    return <div className="renderer-container"></div>;
+    // if (this.props.visible) utils.changeAppMode("renderer"); // TODO - For some reason changing the app mode gets the plot updating forever
+    return (
+      <div className="renderer-container" style={{ zIndex: this.props.visible ? 4 : 3 }}>
+        <Plot
+          data={this.state.data}
+          layout={this.state.layout}
+          frames={this.state.frames}
+          config={this.state.config}
+          onInitialized={(figure) => this.setState(figure)}
+          onUpdate={(figure) => this.setState(figure)}
+          divId={"renderer-container"}
+          // data={renderer.getData()}
+          // data={this.state.data}
+          // layout={{ height: 500 }}
+          // config={{scrollZoom: true}}
+          // onInitialized={(figure) => this.setState(figure)}
+          // onUpdate={(figure) => this.setState(figure)}
+        />
+      </div>
+    );
   }
 }
 
@@ -39,7 +74,10 @@ function VisualEditor(props) {
   const [nodes, setNodes] = useNodesState(state.model.nodes);
   const [edges, setEdges] = useEdgesState(state.model.edges);
 
-  const saveRfInstance = (rfInstance) => storeRfInstance(rfInstance);
+  const saveRfInstance = (rfInstance) => {
+    storeRfInstance(rfInstance);
+    logic_runner.run();
+  };
 
   const onNodesChange = (changes) => {
     setNodes((nds) => applyNodeChanges(changes, nds));
@@ -105,7 +143,8 @@ class ParamEle extends React.Component {
     this.setState({ mode });
   }
   getMouseCoordinates(event) {
-    if (this.state.mode !== "add_node") this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+    // TODO This is killing the app, for it is updating the state of the top parent every time the mouse moves
+    // if (this.state.mode === "wait_action") this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
   }
   activateNodeCreation(event) {
     if (event.target.className === "react-flow__pane react-flow__container") {
@@ -144,7 +183,7 @@ class ParamEle extends React.Component {
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
           <VisualEditor app_state={this.state}></VisualEditor>
-          <Renderer></Renderer>
+          <Renderer visible={!this.state.settings.general.show_nodes}></Renderer>
         </div>
       </ChakraProvider>
     );
