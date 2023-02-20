@@ -5,6 +5,80 @@
         },
         "nodes": [
             {
+                "width": 114,
+                "height": 60,
+                "id": "node-25",
+                "type": "structuralPinSupport",
+                "position": {
+                    "x": 876.1118678734687,
+                    "y": 238.91090133952034
+                },
+                "data": {
+                    "support-out": 4
+                },
+                "positionAbsolute": {
+                    "x": 876.1118678734687,
+                    "y": 238.91090133952034
+                }
+            },
+            {
+                "width": 108,
+                "height": 60,
+                "id": "node-24",
+                "type": "structuralFixedSupport",
+                "position": {
+                    "x": 860.3830328884632,
+                    "y": 428.43450746712557
+                },
+                "data": {
+                    "support-out": 3
+                },
+                "positionAbsolute": {
+                    "x": 860.3830328884632,
+                    "y": 428.43450746712557
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 114,
+                "height": 60,
+                "id": "node-23",
+                "type": "structuralPinSupport",
+                "position": {
+                    "x": 858.5175930455473,
+                    "y": 578.3071705526319
+                },
+                "data": {
+                    "support-out": 2
+                },
+                "positionAbsolute": {
+                    "x": 858.5175930455473,
+                    "y": 578.3071705526319
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 108,
+                "height": 60,
+                "id": "node-22",
+                "type": "structuralFixedSupport",
+                "position": {
+                    "x": 877.7529326012506,
+                    "y": 800.8545536960095
+                },
+                "data": {
+                    "support-out": 1
+                },
+                "positionAbsolute": {
+                    "x": 877.7529326012506,
+                    "y": 800.8545536960095
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
                 "width": 102,
                 "height": 80,
                 "id": "node-21",
@@ -20,7 +94,7 @@
                     "x": 996.1203888953257,
                     "y": 676.0861042653037
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -680,6 +754,34 @@
                 "target": "node-21",
                 "targetHandle": "node-B",
                 "id": "reactflow__edge-node-13node-out-node-21node-B"
+            },
+            {
+                "source": "node-8",
+                "sourceHandle": "node-out",
+                "target": "node-22",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-8node-out-node-22node-A"
+            },
+            {
+                "source": "node-7",
+                "sourceHandle": "node-out",
+                "target": "node-23",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-7node-out-node-23node-A"
+            },
+            {
+                "source": "node-6",
+                "sourceHandle": "node-out",
+                "target": "node-24",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-6node-out-node-24node-A"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "node-out",
+                "target": "node-25",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-2node-out-node-25node-A"
             }
         ]
     },
@@ -687,7 +789,7 @@
         "general": {
             "auto_update": true,
             "mini_map": false,
-            "show_nodes": true
+            "show_nodes": false
         }
     }
 }

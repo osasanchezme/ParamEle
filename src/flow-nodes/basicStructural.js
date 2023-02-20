@@ -30,7 +30,6 @@ function StructuralMember({ data }) {
   return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={["node-A", "node-B"]} source_ids={["member-out"]}></GenericInOutNode>;
 }
 
-// WIP - Return the next ID in the node (crate a util and global object in the state to be the structural model)
 function StructuralMemberExec(args) {
   let node_A = args["node-A"];
   let node_B = args["node-B"];
@@ -58,9 +57,57 @@ function StructuralMemberExec(args) {
   };
 }
 
+// Fixed support
+function StructuralFixedSupport({ data }) {
+  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node-A"]} source_ids={["support-out"]}></GenericInOutNode>;
+}
+
+function StructuralFixedSupportExec(args) {
+  let node = args["node-A"];
+  return {
+    "support-out": {
+      direction_code: "BBBBBB",
+      tx: 0,
+      ty: 0,
+      tz: 0,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+      type: "node",
+      node,
+      restraint_code: "FFFFFF",
+    },
+  };
+}
+
+// Pinned support
+function StructuralPinSupport({ data }) {
+  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node-A"]} source_ids={["support-out"]}></GenericInOutNode>;
+}
+
+function StructuralPinSupportExec(args) {
+  let node = args["node-A"];
+  return {
+    "support-out": {
+      direction_code: "BBBBBB",
+      tx: 0,
+      ty: 0,
+      tz: 0,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+      type: "node",
+      node,
+      restraint_code: "FFFRRR",
+    },
+  };
+}
+
 const BasicStructuralNodes = {
   StructuralNodeNode: { Node: StructuralNode, Exec: StructuralNodeExec },
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
+  StructuralFixedSupportNode: { Node: StructuralFixedSupport, Exec: StructuralFixedSupportExec },
+  StructuralPinSupportNode: { Node: StructuralPinSupport, Exec: StructuralPinSupportExec },
 };
 
 export default BasicStructuralNodes;

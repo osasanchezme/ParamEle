@@ -49,7 +49,7 @@ function getData() {
 
     plotly_data.push(member);
 
-    let member_length = Math.sqrt((node_A.x - node_B.x)**2 + (node_A.y - node_B.y)**2 + (node_A.z - node_B.z)**2);
+    let member_length = Math.sqrt((node_A.x - node_B.x) ** 2 + (node_A.y - node_B.y) ** 2 + (node_A.z - node_B.z) ** 2);
     let member_label = `Elemento  ${member_id} (${member_length} ${units.length})`;
 
     // Selection nodes along the member
@@ -60,6 +60,26 @@ function getData() {
     selection_nodes.text.push(member_label);
   });
   plotly_data.push(selection_nodes);
+
+  // Supports
+  Object.entries(structure.supports).forEach(([support_id, support_data]) => {
+    let support = {
+      x: [],
+      y: [],
+      z: [],
+      type: "scatter3d",
+      mode: "lines",
+      hoverinfo: "none",
+      line: { width: 2, color: "black" },
+    };
+    let node = structure.nodes[support_data.node];
+    let support_coords = createSupport(support_data.restraint_code, node);
+    support.x.push(...support_coords.support_x);
+    support.y.push(...support_coords.support_y);
+    support.z.push(...support_coords.support_z);
+    plotly_data.push(support);
+  });
+
   return plotly_data;
 }
 
@@ -101,10 +121,97 @@ function getLayout() {
   };
 }
 
-function getConfig(){
+function getConfig() {
   return {
-    responsive: true
+    responsive: true,
   };
+}
+
+function createSupport(restraint_code, node_object) {
+  let support_size = 0.6;
+
+  let support_x = [];
+  let support_y = [];
+  let support_z = [];
+  switch (restraint_code) {
+    case "FFFFFF":
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x + support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x + support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x - support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x - support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y + support_size);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y + support_size);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y - support_size);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y - support_size);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+      break;
+    case "FFFRRR":
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x - support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x + support_size);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y - support_size);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y + support_size);
+      support_z.push(node_object.z - support_size);
+
+      support_x.push(node_object.x);
+      support_y.push(node_object.y);
+      support_z.push(node_object.z);
+      break;
+    default:
+      break;
+  }
+  return { support_x, support_y, support_z };
 }
 
 const renderer = { getData, getLayout, getConfig };
