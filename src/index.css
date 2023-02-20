@@ -61,6 +61,8 @@ div.commands-bar {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
+/* Renderer */
+
 div.modebar-container {
     position: absolute !important;
     top: 12px !important;
@@ -71,4 +73,9 @@ div.modebar-container {
 div.modebar {
     right: unset !important;
     left: 12px;
+}
+
+#renderer-container {
+    width: 100%;
+    height: 100%;
 }

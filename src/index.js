@@ -36,7 +36,7 @@ class Renderer extends React.Component {
       data: renderer.getData(),
       layout: renderer.getLayout(),
       frames: [],
-      config: {},
+      config: renderer.getConfig(),
     };
     this.updateRenderer = this.updateRenderer.bind(this);
     window.ParamEle.updateRenderer = this.updateRenderer.bind(this);
@@ -56,12 +56,6 @@ class Renderer extends React.Component {
           onInitialized={(figure) => this.setState(figure)}
           onUpdate={(figure) => this.setState(figure)}
           divId={"renderer-container"}
-          // data={renderer.getData()}
-          // data={this.state.data}
-          // layout={{ height: 500 }}
-          // config={{scrollZoom: true}}
-          // onInitialized={(figure) => this.setState(figure)}
-          // onUpdate={(figure) => this.setState(figure)}
         />
       </div>
     );

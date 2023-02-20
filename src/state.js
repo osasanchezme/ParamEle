@@ -4,9 +4,10 @@ import data from "./data/template-5-frame.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
+import repairModel from "./js/repairModel";
 
 const initial_state = {
-  model: data.model,
+  model: repairModel(data.model),
   settings: data.settings,
   structure: utils.getEmptyStructuralModel(),
   globals: {
