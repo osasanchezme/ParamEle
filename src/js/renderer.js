@@ -4,6 +4,36 @@ function getData() {
   let units = getState("model")["units"];
   let plotly_data = [];
 
+  // Add axes
+  let axes_length = 2;
+  plotly_data.push({
+    x: [0, axes_length],
+    y: [0, 0],
+    z: [0, 0],
+    type: "scatter3d",
+    mode: "lines",
+    hoverinfo: "none",
+    line: { width: 5, color: "red" },
+  });
+  plotly_data.push({
+    x: [0, 0],
+    y: [0, axes_length],
+    z: [0, 0],
+    type: "scatter3d",
+    mode: "lines",
+    hoverinfo: "none",
+    line: { width: 5, color: "green" },
+  });
+  plotly_data.push({
+    x: [0, 0],
+    y: [0, 0],
+    z: [0, axes_length],
+    type: "scatter3d",
+    mode: "lines",
+    hoverinfo: "none",
+    line: { width: 5, color: "blue" },
+  });
+
   // Add nodes
   let nodes = {
     x: [],
