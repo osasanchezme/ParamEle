@@ -103,11 +103,44 @@ function StructuralPinSupportExec(args) {
   };
 }
 
+// Point load
+function StructuralPointLoad({ data }) {
+  return (
+    <GenericInOutNode
+      node_label={"Carga puntual"}
+      data={data}
+      target_ids={["node-A", "x_mag-value", "y_mag-value", "z_mag-value"]}
+      source_ids={["point_load-out"]}
+    ></GenericInOutNode>
+  );
+}
+
+function StructuralPointLoadExec(args) {
+  let node = args["node-A"];
+  let x_mag = Number(args["x_mag-value"]);
+  let y_mag = Number(args["y_mag-value"]);
+  let z_mag = Number(args["z_mag-value"]);
+  if (isNaN(x_mag)) x_mag = 0;
+  if (isNaN(y_mag)) y_mag = 0;
+  if (isNaN(z_mag)) z_mag = 0;
+  return {
+    "point_load-out": {
+      x_mag,
+      y_mag,
+      z_mag,
+      load_group: "LG",
+      type: "N",
+      node
+    },
+  };
+}
+
 const BasicStructuralNodes = {
   StructuralNodeNode: { Node: StructuralNode, Exec: StructuralNodeExec },
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
   StructuralFixedSupportNode: { Node: StructuralFixedSupport, Exec: StructuralFixedSupportExec },
   StructuralPinSupportNode: { Node: StructuralPinSupport, Exec: StructuralPinSupportExec },
+  StructuralPointLoadNode: { Node: StructuralPointLoad, Exec: StructuralPointLoadExec },
 };
 
 export default BasicStructuralNodes;

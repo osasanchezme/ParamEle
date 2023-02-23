@@ -1,4 +1,6 @@
 import getState from "../getState";
+import geom_utils from "../geom_utils";
+
 function getData() {
   let structure = getState("structure");
   let units = getState("model")["units"];
@@ -110,6 +112,25 @@ function getData() {
     plotly_data.push(support);
   });
 
+  // Point loads
+  Object.entries(structure.point_loads).forEach(([pl_id, pl_data]) => {
+    let pl = {
+      x: [],
+      y: [],
+      z: [],
+      type: "scatter3d",
+      mode: "lines",
+      hoverinfo: "none",
+      line: { width: 4, color: "red" },
+    };
+    let node = structure.nodes[pl_data.node];
+    let pl_coords = createPointLoad(node, pl_data.x_mag, pl_data.y_mag, pl_data.z_mag);
+    pl.x.push(...pl_coords.pl_x);
+    pl.y.push(...pl_coords.pl_y);
+    pl.z.push(...pl_coords.pl_z);
+    plotly_data.push(pl);
+  });
+
   return plotly_data;
 }
 
@@ -157,7 +178,7 @@ function getConfig() {
   };
 }
 
-function createSupport(restraint_code, node_object) {
+function createSupport(restraint_code, node) {
   let support_size = 0.6;
 
   let support_x = [];
@@ -165,83 +186,104 @@ function createSupport(restraint_code, node_object) {
   let support_z = [];
   switch (restraint_code) {
     case "FFFFFF":
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x + support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x + support_size);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x + support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x + support_size);
+      support_y.push(node.y);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x - support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x - support_size);
+      support_y.push(node.y);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x - support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x - support_size);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y + support_size);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y + support_size);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y + support_size);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x);
+      support_y.push(node.y + support_size);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y - support_size);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x);
+      support_y.push(node.y - support_size);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y - support_size);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y - support_size);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
       break;
     case "FFFRRR":
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x - support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x - support_size);
+      support_y.push(node.y);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x + support_size);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x + support_size);
+      support_y.push(node.y);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y - support_size);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x);
+      support_y.push(node.y - support_size);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y + support_size);
-      support_z.push(node_object.z - support_size);
+      support_x.push(node.x);
+      support_y.push(node.y + support_size);
+      support_z.push(node.z - support_size);
 
-      support_x.push(node_object.x);
-      support_y.push(node_object.y);
-      support_z.push(node_object.z);
+      support_x.push(node.x);
+      support_y.push(node.y);
+      support_z.push(node.z);
       break;
     default:
       break;
   }
   return { support_x, support_y, support_z };
+}
+
+function createPointLoad(node, x_mag, y_mag, z_mag) {
+  let load_size = 2;
+
+  let xi = node.x;
+  let yi = node.y;
+  let zi = node.z;
+
+  let xf = node.x - x_mag;
+  let yf = node.y - y_mag;
+  let zf = node.z - z_mag;
+
+  let pl_vector = new geom_utils.Vector(xf, yf, zf, xi, yi, zi);
+  let plotable_vector = geom_utils.getPlotableArrow(pl_vector, load_size);
+
+  let pl_x = plotable_vector.x;
+  let pl_y = plotable_vector.y;
+  let pl_z = plotable_vector.z;
+
+  return { pl_x, pl_y, pl_z };
 }
 
 const renderer = { getData, getLayout, getConfig };

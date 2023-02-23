@@ -5,6 +5,44 @@
         },
         "nodes": [
             {
+                "width": 188,
+                "height": 67,
+                "id": "node-27",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1099.4515669559023,
+                    "y": 336.52687631684074
+                },
+                "data": {
+                    "value": "10"
+                },
+                "positionAbsolute": {
+                    "x": 1099.4515669559023,
+                    "y": 336.52687631684074
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 120,
+                "id": "node-26",
+                "type": "structuralPointLoad",
+                "position": {
+                    "x": 1366.7367163456872,
+                    "y": 282.9261217931849
+                },
+                "data": {
+                    "point_load-out": 1
+                },
+                "positionAbsolute": {
+                    "x": 1366.7367163456872,
+                    "y": 282.9261217931849
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
                 "width": 114,
                 "height": 60,
                 "id": "node-25",
@@ -782,6 +820,34 @@
                 "target": "node-25",
                 "targetHandle": "node-A",
                 "id": "reactflow__edge-node-2node-out-node-25node-A"
+            },
+            {
+                "source": "node-11",
+                "sourceHandle": "node-out",
+                "target": "node-26",
+                "targetHandle": "node-A",
+                "id": "reactflow__edge-node-11node-out-node-26node-A"
+            },
+            {
+                "source": "node-27",
+                "sourceHandle": "value",
+                "target": "node-26",
+                "targetHandle": "x_mag-value",
+                "id": "reactflow__edge-node-27value-node-26x_mag-value"
+            },
+            {
+                "source": "node-27",
+                "sourceHandle": "value",
+                "target": "node-26",
+                "targetHandle": "y_mag-value",
+                "id": "reactflow__edge-node-27value-node-26y_mag-value"
+            },
+            {
+                "source": "node-27",
+                "sourceHandle": "value",
+                "target": "node-26",
+                "targetHandle": "z_mag-value",
+                "id": "reactflow__edge-node-27value-node-26z_mag-value"
             }
         ]
     },

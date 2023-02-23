@@ -23,6 +23,7 @@ const global_library_wrapper = {
   structuralMember: { node_component: BasicStructuralNodes.StructuralMemberNode, label: "Elemento" },
   structuralFixedSupport: { node_component: BasicStructuralNodes.StructuralFixedSupportNode, label: "Apoyo empotrado" },
   structuralPinSupport: { node_component: BasicStructuralNodes.StructuralPinSupportNode, label: "Apoyo articulado" },
+  structuralPointLoad: { node_component: BasicStructuralNodes.StructuralPointLoadNode, label: "Carga puntual" },
 };
 
 let nodes = {};
