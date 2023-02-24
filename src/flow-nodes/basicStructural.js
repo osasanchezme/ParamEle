@@ -1,3 +1,4 @@
+import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
 // Node
@@ -130,7 +131,31 @@ function StructuralPointLoadExec(args) {
       z_mag,
       load_group: "LG",
       type: "N",
-      node
+      node,
+    },
+  };
+}
+
+// Distributed load
+const dl_target_ids = ["member-id", "x_mag_A-value", "y_mag_A-value", "z_mag_A-value", "x_mag_B-value", "y_mag_B-value", "z_mag_B-value","position_A-value", "position_B-value-1", "load_group-name-LG"];
+function StructuralDistributedLoad({ data }) {
+  return (
+    <GenericInOutNode
+      node_label={"Carga distribuida"}
+      data={data}
+      target_ids={dl_target_ids}
+      source_ids={["distributed_load-out"]}
+    ></GenericInOutNode>
+  );
+}
+
+function StructuralDistributedLoadExec(args) {
+  let full_args = dl_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "distributed_load-out": {
+      ...structural_args,
+      axes: "global",
     },
   };
 }
@@ -141,6 +166,7 @@ const BasicStructuralNodes = {
   StructuralFixedSupportNode: { Node: StructuralFixedSupport, Exec: StructuralFixedSupportExec },
   StructuralPinSupportNode: { Node: StructuralPinSupport, Exec: StructuralPinSupportExec },
   StructuralPointLoadNode: { Node: StructuralPointLoad, Exec: StructuralPointLoadExec },
+  StructuralDistributedLoadNode: { Node: StructuralDistributedLoad, Exec: StructuralDistributedLoadExec },
 };
 
 export default BasicStructuralNodes;

@@ -66,42 +66,59 @@ class Vector {
  * @param {Number} vector_size - Actual length of the arrow
  */
 function getPlotableArrow(vector, vector_size) {
-  let alpha = (15 * Math.PI) / 180;
-  let arrow_body_factor = 0.2;
   let plot_coords = { x: [], y: [], z: [] };
-  let x_close = vector.xi;
-  let y_close = vector.yi;
-  let z_close = vector.zi;
-  let far_coords = vector.resizeVector(vector_size);
-  let resized_vector = new Vector(far_coords.x, far_coords.y, far_coords.z, x_close, y_close, z_close);
-  let x_far = far_coords.x;
-  let y_far = far_coords.y;
-  let z_far = far_coords.z;
-  // Arrow body far point
-  plot_coords.x.push(x_far);
-  plot_coords.y.push(y_far);
-  plot_coords.z.push(z_far);
-  // Arrow body node point
-  plot_coords.x.push(x_close);
-  plot_coords.y.push(y_close);
-  plot_coords.z.push(z_close);
-  // Arrow line up
-  let perp_coords_up = resized_vector.getPerpendicularVerticalPoint("end", "positive", vector_size * Math.tan(alpha));
-  let arrow_vector_up = new Vector(perp_coords_up.x, perp_coords_up.y, perp_coords_up.z, x_close, y_close, z_close);
-  let arrow_coords_up = arrow_vector_up.resizeVector(arrow_body_factor * vector_size);
-  plot_coords.x.push(arrow_coords_up.x);
-  plot_coords.y.push(arrow_coords_up.y);
-  plot_coords.z.push(arrow_coords_up.z);
-  // Arrow line down
-  let perp_coords_down = resized_vector.getPerpendicularVerticalPoint("end", "negative", vector_size * Math.tan(alpha));
-  let arrow_vector_down = new Vector(perp_coords_down.x, perp_coords_down.y, perp_coords_down.z, x_close, y_close, z_close);
-  let arrow_coords_down = arrow_vector_down.resizeVector(arrow_body_factor * vector_size);
-  plot_coords.x.push(x_close);
-  plot_coords.y.push(y_close);
-  plot_coords.z.push(z_close);
-  plot_coords.x.push(arrow_coords_down.x);
-  plot_coords.y.push(arrow_coords_down.y);
-  plot_coords.z.push(arrow_coords_down.z);
+  if (vector.getLength() !== 0) {
+    let alpha = (15 * Math.PI) / 180;
+    let arrow_body_factor = 0.2;
+    let x_close = vector.xi;
+    let y_close = vector.yi;
+    let z_close = vector.zi;
+    let far_coords = vector.resizeVector(vector_size);
+    let resized_vector = new Vector(far_coords.x, far_coords.y, far_coords.z, x_close, y_close, z_close);
+    let x_far = far_coords.x;
+    let y_far = far_coords.y;
+    let z_far = far_coords.z;
+    // Arrow body far point
+    plot_coords.x.push(x_far);
+    plot_coords.y.push(y_far);
+    plot_coords.z.push(z_far);
+    // Arrow body node point
+    plot_coords.x.push(x_close);
+    plot_coords.y.push(y_close);
+    plot_coords.z.push(z_close);
+    // Arrow line up
+    let perp_coords_up = resized_vector.getPerpendicularVerticalPoint("end", "positive", vector_size * Math.tan(alpha));
+    let arrow_vector_up = new Vector(perp_coords_up.x, perp_coords_up.y, perp_coords_up.z, x_close, y_close, z_close);
+    let arrow_coords_up = arrow_vector_up.resizeVector(arrow_body_factor * vector_size);
+    plot_coords.x.push(arrow_coords_up.x);
+    plot_coords.y.push(arrow_coords_up.y);
+    plot_coords.z.push(arrow_coords_up.z);
+    // Arrow line down
+    let perp_coords_down = resized_vector.getPerpendicularVerticalPoint("end", "negative", vector_size * Math.tan(alpha));
+    let arrow_vector_down = new Vector(perp_coords_down.x, perp_coords_down.y, perp_coords_down.z, x_close, y_close, z_close);
+    let arrow_coords_down = arrow_vector_down.resizeVector(arrow_body_factor * vector_size);
+    plot_coords.x.push(x_close);
+    plot_coords.y.push(y_close);
+    plot_coords.z.push(z_close);
+    plot_coords.x.push(arrow_coords_down.x);
+    plot_coords.y.push(arrow_coords_down.y);
+    plot_coords.z.push(arrow_coords_down.z);
+    // Arrow body node point
+    plot_coords.x.push(x_close);
+    plot_coords.y.push(y_close);
+    plot_coords.z.push(z_close);
+    // Arrow body far point
+    plot_coords.x.push(x_far);
+    plot_coords.y.push(y_far);
+    plot_coords.z.push(z_far);
+  } else {
+    let x_close = vector.xi;
+    let y_close = vector.yi;
+    let z_close = vector.zi;
+    plot_coords.x.push(x_close);
+    plot_coords.y.push(y_close);
+    plot_coords.z.push(z_close);
+  }
   return plot_coords;
 }
 

@@ -131,6 +131,39 @@ function getData() {
     plotly_data.push(pl);
   });
 
+  // Distributed loads
+  Object.entries(structure.distributed_loads).forEach(([dl_id, dl_data]) => {
+    let dl = {
+      x: [],
+      y: [],
+      z: [],
+      type: "scatter3d",
+      mode: "lines",
+      hoverinfo: "none",
+      line: { width: 4, color: "orange" },
+    };
+    let member = structure.members[dl_data.member];
+    let { node_A, node_B } = member;
+    node_A = structure.nodes[node_A];
+    node_B = structure.nodes[node_B];
+    let dl_coords = createDistributedLoad(
+      node_A,
+      node_B,
+      dl_data.x_mag_A,
+      dl_data.y_mag_A,
+      dl_data.z_mag_A,
+      dl_data.x_mag_B,
+      dl_data.y_mag_B,
+      dl_data.z_mag_B
+    );
+    for (let i in dl_coords.dl_x){
+      dl.x.push(...dl_coords.dl_x[i]);
+      dl.y.push(...dl_coords.dl_y[i]);
+      dl.z.push(...dl_coords.dl_z[i]);
+    }
+    plotly_data.push(dl);
+  });
+  console.log(plotly_data);
   return plotly_data;
 }
 
@@ -284,6 +317,48 @@ function createPointLoad(node, x_mag, y_mag, z_mag) {
   let pl_z = plotable_vector.z;
 
   return { pl_x, pl_y, pl_z };
+}
+
+function createDistributedLoad(node_A, node_B, x_mag_A, y_mag_A, z_mag_A, x_mag_B, y_mag_B, z_mag_B) {
+  let load_size = 2;
+  // Global coords for scatter
+  let dl_x = [];
+  let dl_y = [];
+  let dl_z = [];
+
+  // Start arrow
+  let xi_start = node_A.x;
+  let yi_start = node_A.y;
+  let zi_start = node_A.z;
+
+  let xf_start = node_A.x - x_mag_A;
+  let yf_start = node_A.y - y_mag_A;
+  let zf_start = node_A.z - z_mag_A;
+
+  let arrow_vector_start = new geom_utils.Vector(xf_start, yf_start, zf_start, xi_start, yi_start, zi_start);
+  let plotable_vector_start = geom_utils.getPlotableArrow(arrow_vector_start, load_size);
+
+  dl_x.push(plotable_vector_start.x);
+  dl_y.push(plotable_vector_start.y);
+  dl_z.push(plotable_vector_start.z);
+
+  // End arrow
+  let xi_end = node_B.x;
+  let yi_end = node_B.y;
+  let zi_end = node_B.z;
+
+  let xf_end = node_B.x - x_mag_B;
+  let yf_end = node_B.y - y_mag_B;
+  let zf_end = node_B.z - z_mag_B;
+
+  let arrow_vector_end = new geom_utils.Vector(xf_end, yf_end, zf_end, xi_end, yi_end, zi_end);
+  let plotable_vector_end = geom_utils.getPlotableArrow(arrow_vector_end, load_size);
+
+  dl_x.push(plotable_vector_end.x);
+  dl_y.push(plotable_vector_end.y);
+  dl_z.push(plotable_vector_end.z);
+
+  return { dl_x, dl_y, dl_z };
 }
 
 const renderer = { getData, getLayout, getConfig };

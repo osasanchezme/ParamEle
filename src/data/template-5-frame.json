@@ -7,6 +7,82 @@
             {
                 "width": 188,
                 "height": 67,
+                "id": "node-31",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1763.2555803473463,
+                    "y": 537.057222527581
+                },
+                "data": {
+                    "value": "4"
+                },
+                "positionAbsolute": {
+                    "x": 1763.2555803473463,
+                    "y": 537.057222527581
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 120,
+                "height": 240,
+                "id": "node-30",
+                "type": "structuralDistributedLoad",
+                "position": {
+                    "x": 2117.9548505436883,
+                    "y": 369.4746687826423
+                },
+                "data": {
+                    "distributed_load-out": 2
+                },
+                "positionAbsolute": {
+                    "x": 2117.9548505436883,
+                    "y": 369.4746687826423
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-29",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1054.3999685319031,
+                    "y": 853.6425423556407
+                },
+                "data": {
+                    "value": "10"
+                },
+                "positionAbsolute": {
+                    "x": 1054.3999685319031,
+                    "y": 853.6425423556407
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 120,
+                "height": 180,
+                "id": "node-28",
+                "type": "structuralDistributedLoad",
+                "position": {
+                    "x": 1351.3544448374737,
+                    "y": 683.4588761520959
+                },
+                "data": {
+                    "distributed_load-out": 1
+                },
+                "positionAbsolute": {
+                    "x": 1351.3544448374737,
+                    "y": 683.4588761520959
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
                 "id": "node-27",
                 "type": "inputNumber",
                 "position": {
@@ -20,7 +96,7 @@
                     "x": 1099.4515669559023,
                     "y": 336.52687631684074
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -122,15 +198,15 @@
                 "id": "node-21",
                 "type": "structuralMember",
                 "position": {
-                    "x": 996.1203888953257,
-                    "y": 676.0861042653037
+                    "x": 1014.0954841831119,
+                    "y": 703.5217760203459
                 },
                 "data": {
                     "member-out": 8
                 },
                 "positionAbsolute": {
-                    "x": 996.1203888953257,
-                    "y": 676.0861042653037
+                    "x": 1014.0954841831119,
+                    "y": 703.5217760203459
                 },
                 "selected": false,
                 "dragging": false
@@ -270,15 +346,15 @@
                 "id": "node-13",
                 "type": "structuralNode",
                 "position": {
-                    "x": 1221.8024590464809,
-                    "y": 620.4328019389062
+                    "x": 1219.9103437530296,
+                    "y": 522.9888643261702
                 },
                 "data": {
                     "node-out": 8
                 },
                 "positionAbsolute": {
-                    "x": 1221.8024590464809,
-                    "y": 620.4328019389062
+                    "x": 1219.9103437530296,
+                    "y": 522.9888643261702
                 },
                 "selected": false,
                 "dragging": false
@@ -848,6 +924,41 @@
                 "target": "node-26",
                 "targetHandle": "z_mag-value",
                 "id": "reactflow__edge-node-27value-node-26z_mag-value"
+            },
+            {
+                "source": "node-21",
+                "sourceHandle": "member-out",
+                "target": "node-28",
+                "targetHandle": "member-id",
+                "id": "reactflow__edge-node-21member-out-node-28member-id"
+            },
+            {
+                "source": "node-29",
+                "sourceHandle": "value",
+                "target": "node-28",
+                "targetHandle": "x_mag_A-value",
+                "id": "reactflow__edge-node-29value-node-28x_mag_A-value"
+            },
+            {
+                "source": "node-17",
+                "sourceHandle": "member-out",
+                "target": "node-30",
+                "targetHandle": "member-id",
+                "id": "reactflow__edge-node-17member-out-node-30member-id"
+            },
+            {
+                "source": "node-31",
+                "sourceHandle": "value",
+                "target": "node-30",
+                "targetHandle": "y_mag_A-value",
+                "id": "reactflow__edge-node-31value-node-30y_mag_A-value"
+            },
+            {
+                "source": "node-31",
+                "sourceHandle": "value",
+                "target": "node-30",
+                "targetHandle": "y_mag_B-value",
+                "id": "reactflow__edge-node-31value-node-30y_mag_B-value"
             }
         ]
     },

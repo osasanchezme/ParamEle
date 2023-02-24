@@ -46,7 +46,7 @@ function run() {
       let actual_res_val = JSON.parse(JSON.stringify(res_val));
       // Process the structure
       let res_type = res_id.split("-")[0];
-      if (res_type === "node" || res_type === "member" || res_type === "support" || res_type === "point_load"){
+      if (res_type === "node" || res_type === "member" || res_type === "support" || res_type === "point_load" || res_type === "distributed_load"){
         let structure_key = res_type + "s";
         actual_res_val = utils.nextStructuralId(structure_key, structure);
         // Update the structure
