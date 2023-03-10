@@ -182,6 +182,7 @@ function convertNodeToStructuralArgs(args, full_args_key_list) {
         structural_args[structural_key] = String(arg_value) === "null" ? arg_default : String(arg_value);
         break;
       case "id":
+      case "ids":
       default:
         structural_args[structural_key] = arg_value;
         break;

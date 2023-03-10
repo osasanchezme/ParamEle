@@ -25,6 +25,7 @@ const global_library_wrapper = {
   structuralPinSupport: { node_component: BasicStructuralNodes.StructuralPinSupportNode, label: "Apoyo articulado" },
   structuralPointLoad: { node_component: BasicStructuralNodes.StructuralPointLoadNode, label: "Carga puntual" },
   structuralDistributedLoad: { node_component: BasicStructuralNodes.StructuralDistributedLoadNode, label: "Carga distribuida" },
+  structuralPlate: { node_component: BasicStructuralNodes.StructuralPlateNode, label: "Placa" },
 };
 
 let nodes = {};

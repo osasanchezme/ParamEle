@@ -163,7 +163,56 @@ function getData() {
     }
     plotly_data.push(dl);
   });
-  console.log(plotly_data);
+
+  // Plates
+  let selection_nodes_plates = {
+    x: [],
+    y: [],
+    z: [],
+    type: "scatter3d",
+    mode: "markers",
+    marker: { color: "#D2DDE8", size: 5 },
+    text: [],
+    hovertemplate: "%{text} <extra></extra>",
+  };
+  Object.entries(structure.plates).forEach(([plate_id, plate_data]) => {
+    let plate = {
+      x: [],
+      y: [],
+      z: [],
+      type: "mesh3d",
+      color: "#D2DDE8",
+      hoverinfo: "none",
+      opacity: 0.5,
+    };
+    plate_data.nodes.forEach(node_id => {
+      let node_data = structure.nodes[node_id];
+      plate.x.push(node_data.x);
+      plate.y.push(node_data.y);
+      plate.z.push(node_data.z);
+    });
+    plotly_data.push(plate);
+
+    // Selection node a the middle of the plate
+    let avg_x = 0;
+    let avg_y = 0;
+    let avg_z = 0;
+    for (let i in plate.x){
+      avg_x += plate.x[i];
+      avg_y += plate.y[i];
+      avg_z += plate.z[i];
+    }
+    avg_x /= plate.x.length;
+    avg_y /= plate.y.length;
+    avg_z /= plate.z.length;
+    let plate_label = `Placa  ${plate_id}`;
+    let node_middle = { x: avg_x, y: avg_y, z: avg_z };
+    selection_nodes_plates.x.push(node_middle.x);
+    selection_nodes_plates.y.push(node_middle.y);
+    selection_nodes_plates.z.push(node_middle.z);
+    selection_nodes_plates.text.push(plate_label);
+  });
+  plotly_data.push(selection_nodes_plates)
   return plotly_data;
 }
 

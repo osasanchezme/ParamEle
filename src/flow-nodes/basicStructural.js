@@ -137,7 +137,18 @@ function StructuralPointLoadExec(args) {
 }
 
 // Distributed load
-const dl_target_ids = ["member-id", "x_mag_A-value", "y_mag_A-value", "z_mag_A-value", "x_mag_B-value", "y_mag_B-value", "z_mag_B-value","position_A-value", "position_B-value-1", "load_group-name-LG"];
+const dl_target_ids = [
+  "member-id",
+  "x_mag_A-value",
+  "y_mag_A-value",
+  "z_mag_A-value",
+  "x_mag_B-value",
+  "y_mag_B-value",
+  "z_mag_B-value",
+  "position_A-value",
+  "position_B-value-1",
+  "load_group-name-LG",
+];
 function StructuralDistributedLoad({ data }) {
   return (
     <GenericInOutNode
@@ -160,6 +171,32 @@ function StructuralDistributedLoadExec(args) {
   };
 }
 
+// Plate
+const plate_target_ids = ["nodes-ids", "thickness-value"];
+function StructuralPlate({ data }) {
+  return <GenericInOutNode node_label={"Placa"} data={data} target_ids={plate_target_ids} source_ids={["plate-out"]}></GenericInOutNode>;
+}
+
+function StructuralPlateExec(args) {
+  let full_args = plate_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "plate-out": {
+      ...structural_args,
+      material_id: 1,
+      rotZ: 0,
+      type: "auto",
+      offset: 0,
+      diaphragm: "no",
+      membrane_thickness: structural_args["thickness"],
+      shear_thickness: structural_args["thickness"],
+      bending_thickness: structural_args["thickness"],
+      state: "stress",
+      isMeshed: true,
+    },
+  };
+}
+
 const BasicStructuralNodes = {
   StructuralNodeNode: { Node: StructuralNode, Exec: StructuralNodeExec },
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
@@ -167,6 +204,7 @@ const BasicStructuralNodes = {
   StructuralPinSupportNode: { Node: StructuralPinSupport, Exec: StructuralPinSupportExec },
   StructuralPointLoadNode: { Node: StructuralPointLoad, Exec: StructuralPointLoadExec },
   StructuralDistributedLoadNode: { Node: StructuralDistributedLoad, Exec: StructuralDistributedLoadExec },
+  StructuralPlateNode: { Node: StructuralPlate, Exec: StructuralPlateExec },
 };
 
 export default BasicStructuralNodes;
