@@ -136,7 +136,6 @@ function getPlotableArrow(vector, vector_size, arrow_pos = "start", arrow_body_f
     plot_coords.y.push(y_close);
     plot_coords.z.push(z_close);
   }
-  if (arrow_pos === "end") console.log(plot_coords);
   return plot_coords;
 }
 

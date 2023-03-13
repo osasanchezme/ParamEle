@@ -5,6 +5,41 @@
         },
         "nodes": [
             {
+                "width": 120,
+                "height": 80,
+                "id": "node-37",
+                "type": "structuralRectangleSection",
+                "position": {
+                    "x": 2033.3582145168127,
+                    "y": 926.8612094329587
+                },
+                "data": {
+                    "section-out": 1
+                },
+                "positionAbsolute": {
+                    "x": 2033.3582145168127,
+                    "y": 926.8612094329587
+                }
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-36",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1698.5119828225866,
+                    "y": 889.4899782170853
+                },
+                "data": {
+                    "value": "1200"
+                },
+                "positionAbsolute": {
+                    "x": 1698.5119828225866,
+                    "y": 889.4899782170853
+                },
+                "selected": false
+            },
+            {
                 "width": 188,
                 "height": 67,
                 "id": "node-35",
@@ -20,7 +55,7 @@
                     "x": 1363.0244584044706,
                     "y": 724.5464300826029
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -48,17 +83,17 @@
                 "id": "node-33",
                 "type": "inputNumber",
                 "position": {
-                    "x": 1196.3610806699176,
-                    "y": -37.90239169895893
+                    "x": 1231.134788511212,
+                    "y": -31.140837396485033
                 },
                 "data": {
-                    "value": "0.5"
+                    "value": "500"
                 },
                 "positionAbsolute": {
-                    "x": 1196.3610806699176,
-                    "y": -37.90239169895893
+                    "x": 1231.134788511212,
+                    "y": -31.140837396485033
                 },
-                "selected": false,
+                "selected": true,
                 "dragging": false
             },
             {
@@ -1084,6 +1119,20 @@
                 "target": "node-34",
                 "targetHandle": "x_mag-value",
                 "id": "reactflow__edge-node-35value-node-34x_mag-value"
+            },
+            {
+                "source": "node-36",
+                "sourceHandle": "value",
+                "target": "node-37",
+                "targetHandle": "base-value-1",
+                "id": "reactflow__edge-node-36value-node-37base-value-1"
+            },
+            {
+                "source": "node-36",
+                "sourceHandle": "value",
+                "target": "node-37",
+                "targetHandle": "height-value-1",
+                "id": "reactflow__edge-node-36value-node-37height-value-1"
             }
         ]
     },

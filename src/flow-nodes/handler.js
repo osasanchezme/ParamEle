@@ -2,6 +2,7 @@ import InputNumberNode from "./basicInput";
 import TrigonometricNodes from "./trigoMath";
 import BasicMathNodes from "./basicMath";
 import BasicStructuralNodes from "./basicStructural";
+import StructuralSectionNodes from "./structuralSections";
 
 const global_library_wrapper = {
   inputNumber: { node_component: InputNumberNode, label: "Número" },
@@ -27,6 +28,8 @@ const global_library_wrapper = {
   structuralDistributedLoad: { node_component: BasicStructuralNodes.StructuralDistributedLoadNode, label: "Carga distribuida" },
   structuralPlate: { node_component: BasicStructuralNodes.StructuralPlateNode, label: "Placa" },
   structuralMoment: { node_component: BasicStructuralNodes.StructuralMomentNode, label: "Momento" },
+  // Section shapes
+  structuralRectangleSection: {node_component: StructuralSectionNodes.RectangleNode, label: "Secc. Rectangular"}
 };
 
 let nodes = {};

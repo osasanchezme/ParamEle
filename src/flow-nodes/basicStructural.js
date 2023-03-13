@@ -146,7 +146,7 @@ const dl_target_ids = [
   "y_mag_B-value",
   "z_mag_B-value",
   "position_A-value",
-  "position_B-value-1",
+  "position_B-value-100",
   "load_group-name-LG",
 ];
 function StructuralDistributedLoad({ data }) {
