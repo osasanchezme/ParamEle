@@ -197,6 +197,24 @@ function StructuralPlateExec(args) {
   };
 }
 
+// Point moment
+const moment_target_ids = ["node-id", "x_mag-value", "y_mag-value", "z_mag-value"];
+function StructuralMoment({ data }) {
+  return <GenericInOutNode node_label={"Momento"} data={data} target_ids={moment_target_ids} source_ids={["moment-out"]}></GenericInOutNode>;
+}
+
+function StructuralMomentExec(args) {
+  let full_args = moment_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "moment-out": {
+      ...structural_args,
+      type: "n",
+      load_group: "DL",
+    },
+  };
+}
+
 const BasicStructuralNodes = {
   StructuralNodeNode: { Node: StructuralNode, Exec: StructuralNodeExec },
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
@@ -205,6 +223,7 @@ const BasicStructuralNodes = {
   StructuralPointLoadNode: { Node: StructuralPointLoad, Exec: StructuralPointLoadExec },
   StructuralDistributedLoadNode: { Node: StructuralDistributedLoad, Exec: StructuralDistributedLoadExec },
   StructuralPlateNode: { Node: StructuralPlate, Exec: StructuralPlateExec },
+  StructuralMomentNode: { Node: StructuralMoment, Exec: StructuralMomentExec },
 };
 
 export default BasicStructuralNodes;

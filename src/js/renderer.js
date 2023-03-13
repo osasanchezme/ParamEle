@@ -213,6 +213,24 @@ function getData() {
     selection_nodes_plates.text.push(plate_label);
   });
   plotly_data.push(selection_nodes_plates)
+  // Moments
+  Object.entries(structure.moments).forEach(([mm_id, mm_data]) => {
+    let mm = {
+      x: [],
+      y: [],
+      z: [],
+      type: "scatter3d",
+      mode: "lines",
+      hoverinfo: "none",
+      line: { width: 4, color: "green" },
+    };
+    let node = structure.nodes[mm_data.node];
+    let mm_coords = createMoment(node, mm_data.x_mag, mm_data.y_mag, mm_data.z_mag);
+    mm.x.push(...mm_coords.mm_x);
+    mm.y.push(...mm_coords.mm_y);
+    mm.z.push(...mm_coords.mm_z);
+    plotly_data.push(mm);
+  });
   return plotly_data;
 }
 
@@ -366,6 +384,29 @@ function createPointLoad(node, x_mag, y_mag, z_mag) {
   let pl_z = plotable_vector.z;
 
   return { pl_x, pl_y, pl_z };
+}
+
+function createMoment(node, x_mag, y_mag, z_mag){
+  let moment_size = 2;
+  let second_arrow_size = 2 * 0.8;
+  let second_arrow_lines_size = 0.2 / 0.8;
+  let xi = node.x;
+  let yi = node.y;
+  let zi = node.z;
+
+  let xf = node.x + x_mag;
+  let yf = node.y + y_mag;
+  let zf = node.z + z_mag;
+
+  let mm_vector = new geom_utils.Vector(xf, yf, zf, xi, yi, zi);
+  let plotable_vector = geom_utils.getPlotableArrow(mm_vector, moment_size, "end");
+  let plotable_vector_2 = geom_utils.getPlotableArrow(mm_vector, second_arrow_size, "end", second_arrow_lines_size);
+
+  let mm_x = [...plotable_vector.x, ...plotable_vector_2.x];
+  let mm_y = [...plotable_vector.y, ...plotable_vector_2.y];
+  let mm_z = [...plotable_vector.z, ...plotable_vector_2.z];
+
+  return { mm_x, mm_y, mm_z };
 }
 
 function createDistributedLoad(node_A, node_B, x_mag_A, y_mag_A, z_mag_A, x_mag_B, y_mag_B, z_mag_B) {

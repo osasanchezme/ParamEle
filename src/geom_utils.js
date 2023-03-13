@@ -17,6 +17,22 @@ class Vector {
     return { x: (this.xf - this.xi) / length, y: (this.yf - this.yi) / length, z: (this.zf - this.zi) / length };
   };
 
+  changeDirection = () => {
+    let xi = Number(this.xi);
+    let yi = Number(this.yi);
+    let zi = Number(this.zi);
+    this.xi = Number(this.xf);
+    this.yi = Number(this.yf);
+    this.zi = Number(this.zf);
+    this.xf = Number(xi);
+    this.yf = Number(yi);
+    this.zf = Number(zi);
+  };
+
+  print = () => {
+    console.log(`(${this.xi}, ${this.yi}, ${this.zi}) -> (${this.xf}, ${this.yf}, ${this.zf})`);
+  };
+
   /**
    * Returns global {x, y, z} coordinates of the end point of the resized vector
    * @param {*} new_length
@@ -64,20 +80,21 @@ class Vector {
  *
  * @param {Vector} vector
  * @param {Number} vector_size - Actual length of the arrow
+ * @param {"start"|"end"} arrow_pos - Where to place the arrow head
  */
-function getPlotableArrow(vector, vector_size) {
+function getPlotableArrow(vector, vector_size, arrow_pos = "start", arrow_body_factor = 0.2, alpha = 15) {
   let plot_coords = { x: [], y: [], z: [] };
   if (vector.getLength() !== 0) {
-    let alpha = (15 * Math.PI) / 180;
-    let arrow_body_factor = 0.2;
-    let x_close = vector.xi;
-    let y_close = vector.yi;
-    let z_close = vector.zi;
+    alpha = (alpha * Math.PI) / 180;
     let far_coords = vector.resizeVector(vector_size);
-    let resized_vector = new Vector(far_coords.x, far_coords.y, far_coords.z, x_close, y_close, z_close);
-    let x_far = far_coords.x;
-    let y_far = far_coords.y;
-    let z_far = far_coords.z;
+    let resized_vector = new Vector(far_coords.x, far_coords.y, far_coords.z, vector.xi, vector.yi, vector.zi);
+    if (arrow_pos === "end") resized_vector.changeDirection();
+    let x_close = resized_vector.xi;
+    let y_close = resized_vector.yi;
+    let z_close = resized_vector.zi;
+    let x_far = resized_vector.xf;
+    let y_far = resized_vector.yf;
+    let z_far = resized_vector.zf;
     // Arrow body far point
     plot_coords.x.push(x_far);
     plot_coords.y.push(y_far);
@@ -119,6 +136,7 @@ function getPlotableArrow(vector, vector_size) {
     plot_coords.y.push(y_close);
     plot_coords.z.push(z_close);
   }
+  if (arrow_pos === "end") console.log(plot_coords);
   return plot_coords;
 }
 

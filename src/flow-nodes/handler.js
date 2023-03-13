@@ -26,6 +26,7 @@ const global_library_wrapper = {
   structuralPointLoad: { node_component: BasicStructuralNodes.StructuralPointLoadNode, label: "Carga puntual" },
   structuralDistributedLoad: { node_component: BasicStructuralNodes.StructuralDistributedLoadNode, label: "Carga distribuida" },
   structuralPlate: { node_component: BasicStructuralNodes.StructuralPlateNode, label: "Placa" },
+  structuralMoment: { node_component: BasicStructuralNodes.StructuralMomentNode, label: "Momento" },
 };
 
 let nodes = {};

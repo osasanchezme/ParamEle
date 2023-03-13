@@ -7,6 +7,44 @@
             {
                 "width": 188,
                 "height": 67,
+                "id": "node-35",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1363.0244584044706,
+                    "y": 724.5464300826029
+                },
+                "data": {
+                    "value": "10"
+                },
+                "positionAbsolute": {
+                    "x": 1363.0244584044706,
+                    "y": 724.5464300826029
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 102,
+                "height": 120,
+                "id": "node-34",
+                "type": "structuralMoment",
+                "position": {
+                    "x": 1648.6245268489724,
+                    "y": 627.6762314289125
+                },
+                "data": {
+                    "moment-out": 1
+                },
+                "positionAbsolute": {
+                    "x": 1648.6245268489724,
+                    "y": 627.6762314289125
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
                 "id": "node-33",
                 "type": "inputNumber",
                 "position": {
@@ -20,7 +58,7 @@
                     "x": 1196.3610806699176,
                     "y": -37.90239169895893
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -86,15 +124,15 @@
                 "id": "node-29",
                 "type": "inputNumber",
                 "position": {
-                    "x": 1054.3999685319031,
-                    "y": 853.6425423556407
+                    "x": 962.6268326588902,
+                    "y": 911.0007522762737
                 },
                 "data": {
                     "value": "10"
                 },
                 "positionAbsolute": {
-                    "x": 1054.3999685319031,
-                    "y": 853.6425423556407
+                    "x": 962.6268326588902,
+                    "y": 911.0007522762737
                 },
                 "selected": false,
                 "dragging": false
@@ -105,15 +143,15 @@
                 "id": "node-28",
                 "type": "structuralDistributedLoad",
                 "position": {
-                    "x": 1351.3544448374737,
-                    "y": 683.4588761520959
+                    "x": 1394.3731022779482,
+                    "y": 819.6846247135993
                 },
                 "data": {
                     "distributed_load-out": 1
                 },
                 "positionAbsolute": {
-                    "x": 1351.3544448374737,
-                    "y": 683.4588761520959
+                    "x": 1394.3731022779482,
+                    "y": 819.6846247135993
                 },
                 "selected": false,
                 "dragging": false
@@ -384,15 +422,15 @@
                 "id": "node-13",
                 "type": "structuralNode",
                 "position": {
-                    "x": 1225.7340116853718,
-                    "y": 584.7197444089983
+                    "x": 1227.4041875242285,
+                    "y": 652.361865882696
                 },
                 "data": {
                     "node-out": 8
                 },
                 "positionAbsolute": {
-                    "x": 1225.7340116853718,
-                    "y": 584.7197444089983
+                    "x": 1227.4041875242285,
+                    "y": 652.361865882696
                 },
                 "selected": false,
                 "dragging": false
@@ -1032,6 +1070,20 @@
                 "target": "node-32",
                 "targetHandle": "thickness-value",
                 "id": "reactflow__edge-node-33value-node-32thickness-value"
+            },
+            {
+                "source": "node-13",
+                "sourceHandle": "node-out",
+                "target": "node-34",
+                "targetHandle": "node-id",
+                "id": "reactflow__edge-node-13node-out-node-34node-id"
+            },
+            {
+                "source": "node-35",
+                "sourceHandle": "value",
+                "target": "node-34",
+                "targetHandle": "x_mag-value",
+                "id": "reactflow__edge-node-35value-node-34x_mag-value"
             }
         ]
     },
@@ -1039,7 +1091,7 @@
         "general": {
             "auto_update": true,
             "mini_map": false,
-            "show_nodes": true
+            "show_nodes": false
         }
     }
 }
