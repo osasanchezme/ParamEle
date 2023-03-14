@@ -13,6 +13,7 @@ const initial_state = {
   globals: {
     last_node_id_created: "",
   },
+  section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"]
 };
 
 function setInitialState() {
@@ -87,6 +88,16 @@ function addNodeToTheEditor(type, html_position, data = {}) {
   rfInstance.addNodes([{ id, type, position, data }]);
 }
 
+function getSectionColor(section_id){
+  let section_color = window.ParamEle.state.section_colors[section_id];
+  if (typeof section_color === "undefined") defineSectionColor(section_id);
+  return window.ParamEle.state.section_colors[section_id];
+}
+
+function defineSectionColor(section_id){
+  window.ParamEle.state.section_colors[Number(section_id)] = '#' + parseInt(Math.random() * 0xffffff).toString(16);
+}
+
 const state = {
   setInitialState,
   setState,
@@ -97,6 +108,7 @@ const state = {
   setGlobalVariable,
   getGlobalVariable,
   addNodeToTheEditor,
+  getSectionColor
 };
 
 export default state;

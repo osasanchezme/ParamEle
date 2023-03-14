@@ -1,5 +1,6 @@
 import getState from "../getState";
 import geom_utils from "../geom_utils";
+import state from "../state";
 
 function getData() {
   let structure = getState("structure");
@@ -62,12 +63,13 @@ function getData() {
     z: [],
     type: "scatter3d",
     mode: "markers",
-    marker: { color: "#ACADAE", size: 3 },
+    marker: { color: [], size: 3 },
     text: [],
     hovertemplate: "%{text} <extra></extra>",
   };
   Object.entries(structure.members).forEach(([member_id, member_data]) => {
-    let member = { x: [], y: [], z: [], type: "scatter3d", mode: "lines", hoverinfo: "none", line: { width: 3, color: "#ACADAE" } };
+    let section_color = state.getSectionColor(member_data.section_id);
+    let member = { x: [], y: [], z: [], type: "scatter3d", mode: "lines", hoverinfo: "none", line: { width: 3, color: section_color } };
     // Node A
     let node_A = structure.nodes[member_data.node_A];
     member.x.push(node_A.x);
@@ -90,6 +92,7 @@ function getData() {
     selection_nodes.y.push(node_middle.y);
     selection_nodes.z.push(node_middle.z);
     selection_nodes.text.push(member_label);
+    selection_nodes.marker.color.push(section_color);
   });
   plotly_data.push(selection_nodes);
 

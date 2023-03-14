@@ -7,6 +7,63 @@
             {
                 "width": 120,
                 "height": 80,
+                "id": "node-40",
+                "type": "structuralRectangleSection",
+                "position": {
+                    "x": 1547.668376615069,
+                    "y": 205.34500420615657
+                },
+                "data": {
+                    "section-out": 2
+                },
+                "positionAbsolute": {
+                    "x": 1547.668376615069,
+                    "y": 205.34500420615657
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-39",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1356.181677231849,
+                    "y": 213.25617204623882
+                },
+                "data": {
+                    "value": "300"
+                },
+                "positionAbsolute": {
+                    "x": 1356.181677231849,
+                    "y": 213.25617204623882
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 67,
+                "id": "node-38",
+                "type": "inputNumber",
+                "position": {
+                    "x": 1365.2230213450518,
+                    "y": 119.50074930788784
+                },
+                "data": {
+                    "value": "500"
+                },
+                "positionAbsolute": {
+                    "x": 1365.2230213450518,
+                    "y": 119.50074930788784
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 120,
+                "height": 80,
                 "id": "node-37",
                 "type": "structuralRectangleSection",
                 "position": {
@@ -93,7 +150,7 @@
                     "x": 1231.134788511212,
                     "y": -31.140837396485033
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -197,15 +254,15 @@
                 "id": "node-27",
                 "type": "inputNumber",
                 "position": {
-                    "x": 1099.4515669559023,
-                    "y": 336.52687631684074
+                    "x": 1199.4515669559023,
+                    "y": 344.52687631684074
                 },
                 "data": {
                     "value": "10"
                 },
                 "positionAbsolute": {
-                    "x": 1099.4515669559023,
-                    "y": 336.52687631684074
+                    "x": 1199.4515669559023,
+                    "y": 344.52687631684074
                 },
                 "selected": false,
                 "dragging": false
@@ -309,15 +366,15 @@
                 "id": "node-21",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1014.0954841831119,
-                    "y": 703.5217760203459
+                    "x": 1118.095484183112,
+                    "y": 715.5217760203459
                 },
                 "data": {
                     "member-out": 8
                 },
                 "positionAbsolute": {
-                    "x": 1014.0954841831119,
-                    "y": 703.5217760203459
+                    "x": 1118.095484183112,
+                    "y": 715.5217760203459
                 },
                 "selected": false,
                 "dragging": false
@@ -328,15 +385,15 @@
                 "id": "node-20",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1007.3559479012298,
-                    "y": 527.2149474370761
+                    "x": 1117.3559479012297,
+                    "y": 557.2149474370761
                 },
                 "data": {
                     "member-out": 7
                 },
                 "positionAbsolute": {
-                    "x": 1007.3559479012298,
-                    "y": 527.2149474370761
+                    "x": 1117.3559479012297,
+                    "y": 557.2149474370761
                 },
                 "selected": false,
                 "dragging": false
@@ -347,16 +404,18 @@
                 "id": "node-19",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1000.6775933264508,
-                    "y": 331.61048626760476
+                    "x": 1096.6775933264507,
+                    "y": 329.61048626760476
                 },
                 "data": {
                     "member-out": 6
                 },
                 "positionAbsolute": {
-                    "x": 1000.6775933264508,
-                    "y": 331.61048626760476
-                }
+                    "x": 1096.6775933264507,
+                    "y": 329.61048626760476
+                },
+                "selected": false,
+                "dragging": false
             },
             {
                 "width": 102,
@@ -364,15 +423,15 @@
                 "id": "node-18",
                 "type": "structuralMember",
                 "position": {
-                    "x": 994.7221617117305,
-                    "y": 143.14438420333508
+                    "x": 1098.7221617117305,
+                    "y": 171.14438420333508
                 },
                 "data": {
                     "member-out": 5
                 },
                 "positionAbsolute": {
-                    "x": 994.7221617117305,
-                    "y": 143.14438420333508
+                    "x": 1098.7221617117305,
+                    "y": 171.14438420333508
                 },
                 "selected": false,
                 "dragging": false
@@ -383,15 +442,15 @@
                 "id": "node-17",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1853.4903600000137,
-                    "y": 393.65183170053007
+                    "x": 1966.4104842487532,
+                    "y": 357.2259851686787
                 },
                 "data": {
                     "member-out": 4
                 },
                 "positionAbsolute": {
-                    "x": 1853.4903600000137,
-                    "y": 393.65183170053007
+                    "x": 1966.4104842487532,
+                    "y": 357.2259851686787
                 },
                 "selected": false,
                 "dragging": false
@@ -402,16 +461,18 @@
                 "id": "node-16",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1486.955005610599,
-                    "y": 536.3243363127533
+                    "x": 1638.72936615998,
+                    "y": 513.2546335092475
                 },
                 "data": {
                     "member-out": 3
                 },
                 "positionAbsolute": {
-                    "x": 1486.955005610599,
-                    "y": 536.3243363127533
-                }
+                    "x": 1638.72936615998,
+                    "y": 513.2546335092475
+                },
+                "selected": false,
+                "dragging": false
             },
             {
                 "width": 102,
@@ -419,15 +480,15 @@
                 "id": "node-15",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1684.9398999308023,
-                    "y": 389.0638352847772
+                    "x": 1760.2199827632953,
+                    "y": 374.49349667203666
                 },
                 "data": {
                     "member-out": 2
                 },
                 "positionAbsolute": {
-                    "x": 1684.9398999308023,
-                    "y": 389.0638352847772
+                    "x": 1760.2199827632953,
+                    "y": 374.49349667203666
                 },
                 "selected": false,
                 "dragging": false
@@ -438,15 +499,15 @@
                 "id": "node-14",
                 "type": "structuralMember",
                 "position": {
-                    "x": 1607.3160019213599,
-                    "y": 113.81296877454176
+                    "x": 1779.693241137629,
+                    "y": 122.26558146303242
                 },
                 "data": {
                     "member-out": 1
                 },
                 "positionAbsolute": {
-                    "x": 1607.3160019213599,
-                    "y": 113.81296877454176
+                    "x": 1779.693241137629,
+                    "y": 122.26558146303242
                 },
                 "selected": false,
                 "dragging": false
@@ -872,148 +933,148 @@
                 "source": "node-10",
                 "sourceHandle": "node-out",
                 "target": "node-14",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-10node-out-node-14node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-10node-out-node-14node_A-id"
             },
             {
                 "source": "node-11",
                 "sourceHandle": "node-out",
                 "target": "node-14",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-11node-out-node-14node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-11node-out-node-14node_B-id"
             },
             {
                 "source": "node-11",
                 "sourceHandle": "node-out",
                 "target": "node-15",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-11node-out-node-15node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-11node-out-node-15node_A-id"
             },
             {
                 "source": "node-12",
                 "sourceHandle": "node-out",
                 "target": "node-15",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-12node-out-node-15node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-12node-out-node-15node_B-id"
             },
             {
                 "source": "node-12",
                 "sourceHandle": "node-out",
                 "target": "node-16",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-12node-out-node-16node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-12node-out-node-16node_A-id"
             },
             {
                 "source": "node-13",
                 "sourceHandle": "node-out",
                 "target": "node-16",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-13node-out-node-16node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-13node-out-node-16node_B-id"
             },
             {
                 "source": "node-13",
                 "sourceHandle": "node-out",
                 "target": "node-17",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-13node-out-node-17node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-13node-out-node-17node_A-id"
             },
             {
                 "source": "node-10",
                 "sourceHandle": "node-out",
                 "target": "node-17",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-10node-out-node-17node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-10node-out-node-17node_B-id"
             },
             {
                 "source": "node-2",
                 "sourceHandle": "node-out",
                 "target": "node-18",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-2node-out-node-18node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-2node-out-node-18node_A-id"
             },
             {
                 "source": "node-10",
                 "sourceHandle": "node-out",
                 "target": "node-18",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-10node-out-node-18node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-10node-out-node-18node_B-id"
             },
             {
                 "source": "node-6",
                 "sourceHandle": "node-out",
                 "target": "node-19",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-6node-out-node-19node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-6node-out-node-19node_A-id"
             },
             {
                 "source": "node-11",
                 "sourceHandle": "node-out",
                 "target": "node-19",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-11node-out-node-19node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-11node-out-node-19node_B-id"
             },
             {
                 "source": "node-7",
                 "sourceHandle": "node-out",
                 "target": "node-20",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-7node-out-node-20node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-7node-out-node-20node_A-id"
             },
             {
                 "source": "node-12",
                 "sourceHandle": "node-out",
                 "target": "node-20",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-12node-out-node-20node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-12node-out-node-20node_B-id"
             },
             {
                 "source": "node-8",
                 "sourceHandle": "node-out",
                 "target": "node-21",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-8node-out-node-21node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-8node-out-node-21node_A-id"
             },
             {
                 "source": "node-13",
                 "sourceHandle": "node-out",
                 "target": "node-21",
-                "targetHandle": "node-B",
-                "id": "reactflow__edge-node-13node-out-node-21node-B"
+                "targetHandle": "node_B-id",
+                "id": "reactflow__edge-node-13node-out-node-21node_B-id"
             },
             {
                 "source": "node-8",
                 "sourceHandle": "node-out",
                 "target": "node-22",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-8node-out-node-22node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-8node-out-node-22node_A-id"
             },
             {
                 "source": "node-7",
                 "sourceHandle": "node-out",
                 "target": "node-23",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-7node-out-node-23node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-7node-out-node-23node_A-id"
             },
             {
                 "source": "node-6",
                 "sourceHandle": "node-out",
                 "target": "node-24",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-6node-out-node-24node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-6node-out-node-24node_A-id"
             },
             {
                 "source": "node-2",
                 "sourceHandle": "node-out",
                 "target": "node-25",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-2node-out-node-25node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-2node-out-node-25node_A-id"
             },
             {
                 "source": "node-11",
                 "sourceHandle": "node-out",
                 "target": "node-26",
-                "targetHandle": "node-A",
-                "id": "reactflow__edge-node-11node-out-node-26node-A"
+                "targetHandle": "node_A-id",
+                "id": "reactflow__edge-node-11node-out-node-26node_A-id"
             },
             {
                 "source": "node-27",
@@ -1133,6 +1194,48 @@
                 "target": "node-37",
                 "targetHandle": "height-value-1",
                 "id": "reactflow__edge-node-36value-node-37height-value-1"
+            },
+            {
+                "source": "node-38",
+                "sourceHandle": "value",
+                "target": "node-40",
+                "targetHandle": "base-value-1",
+                "id": "reactflow__edge-node-38value-node-40base-value-1"
+            },
+            {
+                "source": "node-39",
+                "sourceHandle": "value",
+                "target": "node-40",
+                "targetHandle": "height-value-1",
+                "id": "reactflow__edge-node-39value-node-40height-value-1"
+            },
+            {
+                "source": "node-40",
+                "sourceHandle": "section-out",
+                "target": "node-14",
+                "targetHandle": "section_id-value-1",
+                "id": "reactflow__edge-node-40section-out-node-14section_id-value-1"
+            },
+            {
+                "source": "node-40",
+                "sourceHandle": "section-out",
+                "target": "node-17",
+                "targetHandle": "section_id-value-1",
+                "id": "reactflow__edge-node-40section-out-node-17section_id-value-1"
+            },
+            {
+                "source": "node-40",
+                "sourceHandle": "section-out",
+                "target": "node-15",
+                "targetHandle": "section_id-value-1",
+                "id": "reactflow__edge-node-40section-out-node-15section_id-value-1"
+            },
+            {
+                "source": "node-40",
+                "sourceHandle": "section-out",
+                "target": "node-16",
+                "targetHandle": "section_id-value-1",
+                "id": "reactflow__edge-node-40section-out-node-16section_id-value-1"
             }
         ]
     },
@@ -1140,7 +1243,7 @@
         "general": {
             "auto_update": true,
             "mini_map": false,
-            "show_nodes": false
+            "show_nodes": true
         }
     }
 }

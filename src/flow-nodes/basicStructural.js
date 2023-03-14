@@ -27,20 +27,19 @@ function StructuralNodeExec(args) {
 }
 
 // Member
+const member_target_ids = ["node_A-id", "node_B-id", "section_id-value-1"];
 function StructuralMember({ data }) {
-  return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={["node-A", "node-B"]} source_ids={["member-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={member_target_ids} source_ids={["member-out"]}></GenericInOutNode>;
 }
 
 function StructuralMemberExec(args) {
-  let node_A = args["node-A"];
-  let node_B = args["node-B"];
+  let full_args = member_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
     "member-out": {
+      ...structural_args,
       type: "normal_continuous",
       cable_length: null,
-      node_A,
-      node_B,
-      section_id: 1,
       rotation_angle: 0,
       fixity_A: "FFFFFF",
       fixity_B: "FFFFFF",
@@ -60,11 +59,11 @@ function StructuralMemberExec(args) {
 
 // Fixed support
 function StructuralFixedSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node-A"]} source_ids={["support-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node_A-id"]} source_ids={["support-out"]}></GenericInOutNode>;
 }
 
 function StructuralFixedSupportExec(args) {
-  let node = args["node-A"];
+  let node = args["node_A-id"];
   return {
     "support-out": {
       direction_code: "BBBBBB",
@@ -83,11 +82,11 @@ function StructuralFixedSupportExec(args) {
 
 // Pinned support
 function StructuralPinSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node-A"]} source_ids={["support-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node_A-id"]} source_ids={["support-out"]}></GenericInOutNode>;
 }
 
 function StructuralPinSupportExec(args) {
-  let node = args["node-A"];
+  let node = args["node_A-id"];
   return {
     "support-out": {
       direction_code: "BBBBBB",
@@ -110,14 +109,14 @@ function StructuralPointLoad({ data }) {
     <GenericInOutNode
       node_label={"Carga puntual"}
       data={data}
-      target_ids={["node-A", "x_mag-value", "y_mag-value", "z_mag-value"]}
+      target_ids={["node_A-id", "x_mag-value", "y_mag-value", "z_mag-value"]}
       source_ids={["point_load-out"]}
     ></GenericInOutNode>
   );
 }
 
 function StructuralPointLoadExec(args) {
-  let node = args["node-A"];
+  let node = args["node_A-id"];
   let x_mag = Number(args["x_mag-value"]);
   let y_mag = Number(args["y_mag-value"]);
   let z_mag = Number(args["z_mag-value"]);
