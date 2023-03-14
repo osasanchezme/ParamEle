@@ -214,6 +214,22 @@ function StructuralMomentExec(args) {
   };
 }
 
+// Material
+const material_target_ids = ["name-name-Concrete", "density-value", "elasticity_modulus-value-20000", "poissons_ratio-value-0.3", "class-name-concrete"];
+function StructuralMaterial({ data }) {
+  return <GenericInOutNode node_label={"Material"} data={data} target_ids={material_target_ids} source_ids={["material-out"]}></GenericInOutNode>;
+}
+
+function StructuralMaterialExec(args) {
+  let full_args = material_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "material-out": {
+      ...structural_args,
+    },
+  };
+}
+
 const BasicStructuralNodes = {
   StructuralNodeNode: { Node: StructuralNode, Exec: StructuralNodeExec },
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
@@ -223,6 +239,7 @@ const BasicStructuralNodes = {
   StructuralDistributedLoadNode: { Node: StructuralDistributedLoad, Exec: StructuralDistributedLoadExec },
   StructuralPlateNode: { Node: StructuralPlate, Exec: StructuralPlateExec },
   StructuralMomentNode: { Node: StructuralMoment, Exec: StructuralMomentExec },
+  StructuralMaterialNode: { Node: StructuralMaterial, Exec: StructuralMaterialExec },
 };
 
 export default BasicStructuralNodes;

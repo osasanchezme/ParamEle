@@ -28,6 +28,7 @@ const global_library_wrapper = {
   structuralDistributedLoad: { node_component: BasicStructuralNodes.StructuralDistributedLoadNode, label: "Carga distribuida" },
   structuralPlate: { node_component: BasicStructuralNodes.StructuralPlateNode, label: "Placa" },
   structuralMoment: { node_component: BasicStructuralNodes.StructuralMomentNode, label: "Momento" },
+  structuralMaterial: { node_component: BasicStructuralNodes.StructuralMaterialNode, label: "Material" },
   // Section shapes
   structuralRectangleSection: {node_component: StructuralSectionNodes.RectangleNode, label: "Secc. Rectangular"}
 };

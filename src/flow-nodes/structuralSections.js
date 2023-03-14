@@ -2,7 +2,7 @@ import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
 // Rectangular
-const rectangular_target_ids = ["base-value-1", "height-value-1"];
+const rectangular_target_ids = ["material_id-id-1", "base-value-1", "height-value-1"];
 function Rectangle({ data }) {
   return <GenericInOutNode node_label={"Secc. Rectangular"} data={data} target_ids={rectangular_target_ids} source_ids={["section-out"]}></GenericInOutNode>;
 }
@@ -12,7 +12,7 @@ function RectangleExec(args) {
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
     "section-out": {
-      "material_id": 1,
+      "material_id": structural_args["material_id"],
       "info": {
         "shape": "rectangle",
         "dimensions": {

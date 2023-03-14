@@ -61,7 +61,8 @@ function run() {
         res_type === "distributed_load" ||
         res_type === "plate" ||
         res_type === "moment" ||
-        res_type === "section"
+        res_type === "section" ||
+        res_type === "material"
       ) {
         let structure_key = res_type + "s";
         actual_res_val = utils.nextStructuralId(structure_key, structure);
