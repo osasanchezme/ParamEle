@@ -239,6 +239,7 @@ function getData() {
 
 function getLayout() {
   return {
+    autosize: true,
     showlegend: false,
     margin: { b: 0, l: 0, r: 0, t: 0 },
     modebar: { orientation: "v" },

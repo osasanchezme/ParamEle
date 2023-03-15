@@ -44,10 +44,16 @@ class Renderer extends React.Component {
   updateRenderer() {
     this.setState({ data: renderer.getData() });
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.settings.side_by_side !== this.props.settings.side_by_side){
+      this.setState({ layout: {...renderer.getLayout()} })
+    }
+  }
   render() {
     // if (this.props.visible) utils.changeAppMode("renderer"); // TODO - For some reason changing the app mode gets the plot updating forever
+    let class_name = "renderer-container" + (this.props.settings.side_by_side ? " left" : "");
     return (
-      <div className="renderer-container" style={{ zIndex: this.props.visible ? 4 : 3 }}>
+      <div className={class_name} style={{ zIndex: this.props.visible ? 4 : 3 }}>
         <Plot
           data={this.state.data}
           layout={this.state.layout}
@@ -96,8 +102,9 @@ function VisualEditor(props) {
   if (state.settings.general.mini_map) {
     mini_map = <MiniMap />;
   }
+  let class_name = "editor-container" + (state.settings.general.side_by_side ? " right" : "");
   return (
-    <div className="editor-container">
+    <div className={class_name}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -177,7 +184,7 @@ class ParamEle extends React.Component {
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
           <VisualEditor app_state={this.state}></VisualEditor>
-          <Renderer visible={!this.state.settings.general.show_nodes}></Renderer>
+          <Renderer visible={!this.state.settings.general.show_nodes} settings={this.state.settings.general}></Renderer>
         </div>
       </ChakraProvider>
     );

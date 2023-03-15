@@ -14,6 +14,11 @@
             "default": true,
             "label": "Mostrar nodos",
             "type": "check"
+        },
+        "side_by_side": {
+            "default": false,
+            "label": "Dividir pantalla",
+            "type": "check"
         }
     }
 }

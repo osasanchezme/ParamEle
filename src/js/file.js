@@ -2,7 +2,7 @@ import state from "../state";
 import getState from "../getState";
 import logic_runner from "./globalLogicRunner";
 import blank_model from "../data/template-0.json";
-import repairModel from "./repairModel";
+import repair from "./repair";
 
 const downloadJSONFile = () => {
   let current_state = getState();
@@ -22,7 +22,7 @@ const downloadJSONFile = () => {
 };
 
 const newFile = () => {
-  state.setState(repairModel(blank_model));
+  state.setState(repair.repairModel(blank_model));
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(blank_model.model.nodes);
   rf_instance.setEdges(blank_model.model.edges);
@@ -48,7 +48,7 @@ const uploadJSONFile = () => {
         var state_from_file = JSON.parse(lines);
         state.setState(state_from_file);
         let rf_instance = state.getRfInstance();
-        let model = repairModel(state_from_file.model);
+        let model = repair.repairModel(state_from_file.model);
         rf_instance.setNodes(model.nodes);
         rf_instance.setEdges(model.edges);
         state.updateSettingsFromLocalState(state_from_file.settings);

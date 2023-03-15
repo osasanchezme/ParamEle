@@ -33,6 +33,15 @@ div.editor-container {
     top: 50px;
 }
 
+div.renderer-container.left {
+    width: 30%;
+}
+
+div.editor-container.right {
+    width: 70%;
+    right: 0%;
+}
+
 div.global-controls-container {
     width: 200px;
     height: 150px;
