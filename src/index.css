@@ -1,90 +1,91 @@
 .app-cont {
-    width: 100%;
+  width: 100%;
 }
 
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 div.nav-bar {
-    width: 100%;
-    height: 50px;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
-    position: absolute;
-    z-index: 10;
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  z-index: 10;
 }
 
-div.nav-bar .nav-bar-button{
-    height: 50px;
-    border-radius: 0;
+div.nav-bar .nav-bar-button {
+  height: 50px;
+  border-radius: 0;
 }
 
-div.nav-bar .nav-bar-button-group{
-    margin-left: 150px;
+div.nav-bar .nav-bar-button-group {
+  margin-left: 150px;
 }
 
 div.renderer-container,
 div.editor-container {
-    width: 100%;
-    height: calc(100vh - 50px);
-    background: #fff;
-    position: absolute;
-    top: 50px;
-}
-
-div.renderer-container.left {
-    width: 30%;
-}
-
-div.editor-container.right {
-    width: 70%;
-    right: 0%;
+  width: 100%;
+  height: calc(100vh - 50px);
+  background: #fff;
+  position: absolute;
+  top: 50px;
 }
 
 div.global-controls-container {
-    width: 200px;
-    height: 150px;
-    border-radius: 10px;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    margin-top: 13px;
-    margin-right: 10px;
-    z-index: 5;
-    background: whitesmoke;
-    padding: 8px;
+  width: 200px;
+  height: 150px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  margin-top: 13px;
+  margin-right: 10px;
+  z-index: 5;
+  background: whitesmoke;
+  padding: 8px;
 }
 
 div.commands-bar {
-    position: absolute;
-    z-index: 11;
-    padding: var(--chakra-space-1);
-    background-color: var(--chakra-colors-white);
-    border-width: 1px;
-    border-style: solid;
-    border-image: initial;
-    border-color: var(--chakra-colors-gray-300);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  position: absolute;
+  z-index: 11;
+  padding: var(--chakra-space-1);
+  background-color: var(--chakra-colors-white);
+  border-width: 1px;
+  border-style: solid;
+  border-image: initial;
+  border-color: var(--chakra-colors-gray-300);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+div.border-resizer {
+  height: calc(100vh - 50px);
+  width: 5px;
+  background-color: whitesmoke;
+  position: absolute;
+  top: 50px;
+  cursor: col-resize;
+  z-index: 4;
 }
 
 /* Renderer */
 
 div.modebar-container {
-    position: absolute !important;
-    top: 12px !important;
-    left: 0px !important;
-    right: unset !important;
+  position: absolute !important;
+  top: 12px !important;
+  left: 0px !important;
+  right: unset !important;
 }
 
 div.modebar {
-    right: unset !important;
-    left: 12px;
+  right: unset !important;
+  left: 12px;
 }
 
 #renderer-container {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }

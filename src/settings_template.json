@@ -20,5 +20,9 @@
             "label": "Dividir pantalla",
             "type": "check"
         }
+    },
+    "layout":{
+        "renderer_width": {"default": "30"},
+        "editor_width": {"default": "70"}
     }
 }

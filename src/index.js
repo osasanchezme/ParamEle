@@ -22,6 +22,7 @@ import state from "./state";
 import CommandsBar from "./components/commands_bar";
 import getState from "./getState";
 import logic_runner from "./js/globalLogicRunner";
+import ResizeBorder from "./components/resize_border";
 const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -45,15 +46,15 @@ class Renderer extends React.Component {
     this.setState({ data: renderer.getData() });
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.settings.side_by_side !== this.props.settings.side_by_side){
-      this.setState({ layout: {...renderer.getLayout()} })
+    if (prevProps.settings.side_by_side !== this.props.settings.side_by_side || prevProps.width !== this.props.width) {
+      this.updateRenderer();
     }
   }
   render() {
     // if (this.props.visible) utils.changeAppMode("renderer"); // TODO - For some reason changing the app mode gets the plot updating forever
-    let class_name = "renderer-container" + (this.props.settings.side_by_side ? " left" : "");
+    let width_value = this.props.settings.side_by_side ? String(this.props.width) + "%" : "100%";
     return (
-      <div className={class_name} style={{ zIndex: this.props.visible ? 4 : 3 }}>
+      <div className={"renderer-container"} style={{ zIndex: this.props.visible ? 4 : 3, width: width_value }}>
         <Plot
           data={this.state.data}
           layout={this.state.layout}
@@ -102,9 +103,12 @@ function VisualEditor(props) {
   if (state.settings.general.mini_map) {
     mini_map = <MiniMap />;
   }
-  let class_name = "editor-container" + (state.settings.general.side_by_side ? " right" : "");
+  let global_style = {};
+  if (state.settings.general.side_by_side) {
+    global_style = { width: String(props.width) + "%", right: "0%" };
+  }
   return (
-    <div className={class_name}>
+    <div className="editor-container" style={global_style}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -145,7 +149,12 @@ class ParamEle extends React.Component {
   }
   getMouseCoordinates(event) {
     // TODO This is killing the app, for it is updating the state of the top parent every time the mouse moves
-    // if (this.state.mode === "wait_action") this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+    if (this.state.mode === "resizing_modules") {
+      event.preventDefault();
+      // this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+      let relative_location = (event.clientX / window.innerWidth) * 100;
+      this.setState({ settings: { ...this.state.settings, layout: { renderer_width: relative_location, editor_width: 100 - relative_location } } });
+    }
   }
   activateNodeCreation(event) {
     if (event.target.className === "react-flow__pane react-flow__container") {
@@ -183,8 +192,13 @@ class ParamEle extends React.Component {
           <NavBar></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
-          <VisualEditor app_state={this.state}></VisualEditor>
-          <Renderer visible={!this.state.settings.general.show_nodes} settings={this.state.settings.general}></Renderer>
+          <VisualEditor app_state={this.state} width={this.state.settings.layout.editor_width}></VisualEditor>
+          <ResizeBorder settings={this.state.settings}></ResizeBorder>
+          <Renderer
+            visible={!this.state.settings.general.show_nodes}
+            width={this.state.settings.layout.renderer_width}
+            settings={this.state.settings.general}
+          ></Renderer>
         </div>
       </ChakraProvider>
     );
