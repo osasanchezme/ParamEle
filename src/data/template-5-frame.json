@@ -805,169 +805,169 @@
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-2",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-2num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-1value-node-2z-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-2",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-3value-node-2num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-3value-node-2x-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-2",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-2num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-3value-node-2y-value"
             },
             {
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-6",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-6num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-1value-node-6z-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-6",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-3value-node-6num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-3value-node-6x-value"
             },
             {
                 "source": "node-4",
                 "sourceHandle": "value",
                 "target": "node-6",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-4value-node-6num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-4value-node-6y-value"
             },
             {
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-7",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-7num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-1value-node-7z-value"
             },
             {
                 "source": "node-4",
                 "sourceHandle": "value",
                 "target": "node-7",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-4value-node-7num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-4value-node-7y-value"
             },
             {
                 "source": "node-5",
                 "sourceHandle": "value",
                 "target": "node-7",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-5value-node-7num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-5value-node-7x-value"
             },
             {
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-8",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-1value-node-8num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-1value-node-8z-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-8",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-8num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-3value-node-8y-value"
             },
             {
                 "source": "node-5",
                 "sourceHandle": "value",
                 "target": "node-8",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-5value-node-8num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-5value-node-8x-value"
             },
             {
                 "source": "node-9",
                 "sourceHandle": "value",
                 "target": "node-10",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-9value-node-10num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-9value-node-10z-value"
             },
             {
                 "source": "node-9",
                 "sourceHandle": "value",
                 "target": "node-11",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-9value-node-11num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-9value-node-11z-value"
             },
             {
                 "source": "node-9",
                 "sourceHandle": "value",
                 "target": "node-12",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-9value-node-12num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-9value-node-12z-value"
             },
             {
                 "source": "node-9",
                 "sourceHandle": "value",
                 "target": "node-13",
-                "targetHandle": "num-z-cord",
-                "id": "reactflow__edge-node-9value-node-13num-z-cord"
+                "targetHandle": "z-value",
+                "id": "reactflow__edge-node-9value-node-13z-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-10",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-3value-node-10num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-3value-node-10x-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-10",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-10num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-3value-node-10y-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-11",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-3value-node-11num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-3value-node-11x-value"
             },
             {
                 "source": "node-4",
                 "sourceHandle": "value",
                 "target": "node-11",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-4value-node-11num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-4value-node-11y-value"
             },
             {
                 "source": "node-4",
                 "sourceHandle": "value",
                 "target": "node-12",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-4value-node-12num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-4value-node-12y-value"
             },
             {
                 "source": "node-5",
                 "sourceHandle": "value",
                 "target": "node-12",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-5value-node-12num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-5value-node-12x-value"
             },
             {
                 "source": "node-5",
                 "sourceHandle": "value",
                 "target": "node-13",
-                "targetHandle": "num-x-cord",
-                "id": "reactflow__edge-node-5value-node-13num-x-cord"
+                "targetHandle": "x-value",
+                "id": "reactflow__edge-node-5value-node-13x-value"
             },
             {
                 "source": "node-3",
                 "sourceHandle": "value",
                 "target": "node-13",
-                "targetHandle": "num-y-cord",
-                "id": "reactflow__edge-node-3value-node-13num-y-cord"
+                "targetHandle": "y-value",
+                "id": "reactflow__edge-node-3value-node-13y-value"
             },
             {
                 "source": "node-10",

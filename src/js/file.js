@@ -22,6 +22,7 @@ const downloadJSONFile = () => {
 };
 
 const newFile = () => {
+  blank_model.settings = repair.repairSettings(blank_model.settings);
   state.setState(repair.repairModel(blank_model));
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(blank_model.model.nodes);

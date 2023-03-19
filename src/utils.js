@@ -195,6 +195,39 @@ function convertNodeToStructuralArgs(args, full_args_key_list) {
   return structural_args;
 }
 
+function getDefaultValueForArg(type, default_value){
+  switch (type) {
+    case "value":
+      if (typeof default_value === "undefined" || isNaN(Number(default_value))) default_value = 0;
+      break;
+    case "name":
+      if (typeof default_value === "undefined") default_value = "default";
+      break;
+    case "id":
+      if (typeof default_value === "undefined") default_value = 1;
+      break;
+    case "ids":
+    default:
+      default_value = null;
+      break;
+  }
+  return default_value;
+}
+
+/**
+ * 
+ * @param {String} arg_id 
+ */
+function splitArgName(arg_id){
+  let components = arg_id.split("-");
+  let default_value = getDefaultValueForArg(components[1], components[2])
+  return {
+    name: components[0],
+    type: components[1],
+    default_value
+  }
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -203,6 +236,7 @@ const utils = {
   getEmptyStructuralModel,
   updateRenderer,
   convertNodeToStructuralArgs,
+  splitArgName
 };
 
 export default utils;

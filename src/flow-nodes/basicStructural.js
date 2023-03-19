@@ -2,26 +2,24 @@ import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
 // Node
+const node_target_ids = ["x-value", "y-value", "z-value"];
 function StructuralNode({ data }) {
   return (
     <GenericInOutNode
       node_label={"Nodo"}
       data={data}
-      target_ids={["num-x-cord", "num-y-cord", "num-z-cord"]}
+      target_ids={node_target_ids}
       source_ids={["node-out"]}
     ></GenericInOutNode>
   );
 }
 
 function StructuralNodeExec(args) {
-  let x = Number(args["num-x-cord"]);
-  let y = Number(args["num-y-cord"]);
-  let z = Number(args["num-z-cord"]);
+  let full_args = node_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
     "node-out": {
-      x,
-      y,
-      z,
+      ...structural_args
     },
   };
 }
