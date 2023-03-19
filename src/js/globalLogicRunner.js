@@ -71,6 +71,7 @@ function run() {
       }
       // Update the node data
       nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;
+      nodes[nodes_i[node_id]]["data"]["input"] = res_val;
     });
   });
   // Update the whole ReactFlow

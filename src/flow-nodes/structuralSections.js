@@ -12,7 +12,7 @@ function RectangleExec(args) {
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
     "section-out": {
-      "material_id": structural_args["material_id"],
+      ...structural_args,
       "info": {
         "shape": "rectangle",
         "dimensions": {

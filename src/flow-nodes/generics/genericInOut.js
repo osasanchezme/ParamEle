@@ -30,8 +30,10 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     let target_label_style = { position: "absolute", minHeight: "var(--chakra-fontSizes-md)", borderRadius: "var(--chakra-radii-base)" };
     target_label_style["top"] = top_pos;
     top_pos += 20;
+    let input_value = label_obj.default_value;
+    if (data.input) input_value = data.input[label_obj.name];
     return (
-      <Tooltip label={`${label_obj.type} [${label_obj.default_value}]`} key={target_id + "-tooltip"} placement={"right"}>
+      <Tooltip label={`${label_obj.type} [${input_value}]`} key={target_id + "-tooltip"} placement={"right"}>
         <Tag
           size={"sm"}
           color={"gray.600"}
@@ -48,7 +50,6 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     );
   });
   top_pos = 8;
-  // source_ids = [...source_ids, "hola"]
   let source_labels = source_ids.map((source_id, source_counter) => {
     let label_obj = utils.splitArgName(source_id);
     let source_label_style = {
@@ -59,8 +60,9 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     };
     source_label_style["top"] = top_pos;
     top_pos += 20;
+    let output_value = data[`${label_obj.name}-out`];
     return (
-      <Tooltip label={`${label_obj.type} [${label_obj.default_value}]`} key={source_id + "-tooltip"} placement={"right"}>
+      <Tooltip label={`${label_obj.type} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
         <Tag
           size={"sm"}
           color={"gray.600"}
@@ -82,7 +84,6 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
       <div className="node-body">
         {target_handles}
         <div>
-          {/* <p>{JSON.stringify(data[source_ids[0]])}</p> */}
           {target_labels}
           {source_labels}
         </div>
