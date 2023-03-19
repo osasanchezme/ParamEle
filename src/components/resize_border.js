@@ -17,7 +17,11 @@ class ResizeBorder extends React.Component {
         style={{ display: visible ? "block" : "none", left: String(this.props.settings.layout.renderer_width) + "%" }}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
-      ></div>
+      >
+        <div className="small-circle up"></div>
+        <div className="small-circle middle"></div>
+        <div className="small-circle down"></div>
+      </div>
     );
   }
 }

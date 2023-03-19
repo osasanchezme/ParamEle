@@ -63,12 +63,34 @@ div.commands-bar {
 
 div.border-resizer {
   height: calc(100vh - 50px);
-  width: 5px;
+  width: 6px;
   background-color: whitesmoke;
   position: absolute;
   top: 50px;
   cursor: col-resize;
   z-index: 4;
+  padding-left: 1px;
+}
+
+div.small-circle {
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  position: absolute;
+  display: block;
+  background-color: var(--chakra-colors-gray-500);
+}
+
+div.small-circle.middle {
+  top: 50%;
+}
+
+div.small-circle.up {
+  top: calc(50% - 10px);
+}
+
+div.small-circle.down {
+  top: calc(50% + 10px);
 }
 
 /* Renderer */
