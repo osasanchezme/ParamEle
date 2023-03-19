@@ -1,8 +1,5 @@
 {
     "model": {
-        "units": {
-            "length": "m"
-        },
         "nodes": [
             {
                 "width": 102,

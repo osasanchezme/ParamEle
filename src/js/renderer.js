@@ -4,7 +4,7 @@ import state from "../state";
 
 function getData() {
   let structure = getState("structure");
-  let units = getState("model")["units"];
+  let units = structure.settings.units;
   let plotly_data = [];
 
   // Add axes
