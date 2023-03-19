@@ -129,7 +129,7 @@ function VisualEditor(props) {
 class ParamEle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...getState(), mouse_x: 0, mouse_y: 0, mode: "wait_action" };
+    this.state = { ...getState(), mouse_x: 0, mouse_y: 0, mode: "wait_action", rel_orig_x: 0, rel_orig_y: 0 };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     this.changeAppMode = this.changeAppMode.bind(this);
@@ -148,16 +148,15 @@ class ParamEle extends React.Component {
     this.setState({ mode });
   }
   getMouseCoordinates(event) {
-    // TODO This is killing the app, for it is updating the state of the top parent every time the mouse moves
     if (this.state.mode === "resizing_modules") {
       event.preventDefault();
-      // this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
       let relative_location = (event.clientX / window.innerWidth) * 100;
       this.setState({ settings: { ...this.state.settings, layout: { renderer_width: relative_location, editor_width: 100 - relative_location } } });
     }
   }
   activateNodeCreation(event) {
     if (event.target.className === "react-flow__pane react-flow__container") {
+      let bounding_rect = event.target.getBoundingClientRect();
       this.setState(
         {
           mode: "wait_action",
@@ -167,6 +166,8 @@ class ParamEle extends React.Component {
             mode: "add_node",
             mouse_x: event.clientX,
             mouse_y: event.clientY,
+            rel_orig_x: bounding_rect.left,
+            rel_orig_y: bounding_rect.top,
           });
         }
       );
@@ -178,7 +179,7 @@ class ParamEle extends React.Component {
   render() {
     let commands_bar;
     if (this.state.mode === "add_node") {
-      commands_bar = <CommandsBar active={this.state.mode === "add_node"} x={this.state.mouse_x} y={this.state.mouse_y}></CommandsBar>;
+      commands_bar = <CommandsBar active={this.state.mode === "add_node"} x={this.state.mouse_x} y={this.state.mouse_y} rel_orig_x={this.state.rel_orig_x} rel_orig_y={this.state.rel_orig_y}></CommandsBar>;
     }
     return (
       <ChakraProvider>

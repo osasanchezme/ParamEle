@@ -6,7 +6,6 @@ import { MdCropSquare } from "react-icons/md";
 import state from "../state";
 const { setGlobalVariable } = state;
 
-const top_bar_height = 50;
 const commands_bar_height = 50;
 const commands_bar_width = 100;
 const number_nodes_match = 3;
@@ -79,7 +78,7 @@ class CommandsBar extends React.Component {
   handleMouseClickOnOption() {
     let node_name = this.state.nodes_to_select[this.state.selected_node];
     let node_class = available_nodes_mapping[node_name];
-    state.addNodeToTheEditor(node_class, { x: this.props.x, y: this.props.y - top_bar_height });
+    state.addNodeToTheEditor(node_class, { x: this.props.x - this.props.rel_orig_x, y: this.props.y - this.props.rel_orig_y});
     utils.changeAppMode("wait_action");
   }
   render() {
