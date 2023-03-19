@@ -6,6 +6,10 @@ import repair from "./repair";
 
 const downloadJSONFile = () => {
   let current_state = getState();
+  current_state.model.nodes.forEach((node) => {
+    if (node.data.input) delete node.data.input;
+    return node;
+  });
   current_state = { model: current_state.model, settings: current_state.settings };
   var fileName = "modelo.json";
 
