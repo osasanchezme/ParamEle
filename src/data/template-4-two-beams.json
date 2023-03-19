@@ -11,7 +11,7 @@
                     "y": 371.1474865129577
                 },
                 "data": {
-                    "member-out": 2
+                    "member_out-id": 2
                 },
                 "positionAbsolute": {
                     "x": 627.4162857440616,
@@ -30,7 +30,7 @@
                     "y": 422.4871998418503
                 },
                 "data": {
-                    "node-out": 3
+                    "node_out-id": 3
                 },
                 "positionAbsolute": {
                     "x": 355.13244898189856,
@@ -87,7 +87,7 @@
                     "y": 227.02293360904306
                 },
                 "data": {
-                    "node-out": 2
+                    "node_out-id": 2
                 },
                 "positionAbsolute": {
                     "x": 359.93020476509565,
@@ -106,7 +106,7 @@
                     "y": 163.201288581371
                 },
                 "data": {
-                    "member-out": 1
+                    "member_out-id": 1
                 },
                 "positionAbsolute": {
                     "x": 599.2172203669251,
@@ -144,7 +144,7 @@
                     "y": 65.83528515198539
                 },
                 "data": {
-                    "node-out": 1
+                    "node_out-id": 1
                 },
                 "positionAbsolute": {
                     "x": 357.8352851519854,
@@ -178,7 +178,7 @@
             },
             {
                 "source": "node-1",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-3",
                 "targetHandle": "node-A",
                 "id": "reactflow__edge-node-1node-out-node-3node-A"
@@ -206,7 +206,7 @@
             },
             {
                 "source": "node-4",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-3",
                 "targetHandle": "node-B",
                 "id": "reactflow__edge-node-4node-out-node-3node-B"
@@ -234,14 +234,14 @@
             },
             {
                 "source": "node-4",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-8",
                 "targetHandle": "node-A",
                 "id": "reactflow__edge-node-4node-out-node-8node-A"
             },
             {
                 "source": "node-7",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-8",
                 "targetHandle": "node-B",
                 "id": "reactflow__edge-node-7node-out-node-8node-B"

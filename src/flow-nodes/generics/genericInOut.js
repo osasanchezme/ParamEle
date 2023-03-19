@@ -60,7 +60,8 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     };
     source_label_style["top"] = top_pos;
     top_pos += 20;
-    let output_value = data[`${label_obj.name}-out`];
+    let output_value = data[source_id];
+    label_obj.name = label_obj.name.replace("_out", "");
     return (
       <Tooltip label={`${label_obj.type} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
         <Tag

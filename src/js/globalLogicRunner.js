@@ -52,7 +52,8 @@ function run() {
     Object.entries(result).forEach(([res_id, res_val]) => {
       let actual_res_val = JSON.parse(JSON.stringify(res_val));
       // Process the structure
-      let res_type = res_id.split("-")[0];
+      let res_id_obj = utils.splitArgName(res_id);
+      let res_type = res_id_obj.name.replace("_out", "");
       if (
         res_type === "node" ||
         res_type === "member" ||

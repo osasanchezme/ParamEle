@@ -9,7 +9,7 @@ function StructuralNode({ data }) {
       node_label={"Nodo"}
       data={data}
       target_ids={node_target_ids}
-      source_ids={["node-out"]}
+      source_ids={["node_out-id"]}
     ></GenericInOutNode>
   );
 }
@@ -18,7 +18,7 @@ function StructuralNodeExec(args) {
   let full_args = node_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "node-out": {
+    "node_out-id": {
       ...structural_args
     },
   };
@@ -27,14 +27,14 @@ function StructuralNodeExec(args) {
 // Member
 const member_target_ids = ["node_A-id", "node_B-id", "section_id-value-1"];
 function StructuralMember({ data }) {
-  return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={member_target_ids} source_ids={["member-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={member_target_ids} source_ids={["member_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMemberExec(args) {
   let full_args = member_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "member-out": {
+    "member_out-id": {
       ...structural_args,
       type: "normal_continuous",
       cable_length: null,
@@ -57,13 +57,16 @@ function StructuralMemberExec(args) {
 
 // Fixed support
 function StructuralFixedSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node_A-id"]} source_ids={["support-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
 }
 
+// WIP
+// Fix all the edges that connect Supports, and PointLoads, replacing from node_A-id to node_A in the input files (for the template 5 only)
+
 function StructuralFixedSupportExec(args) {
-  let node = args["node_A-id"];
+  let node = args["node-id"];
   return {
-    "support-out": {
+    "support_out-id": {
       direction_code: "BBBBBB",
       tx: 0,
       ty: 0,
@@ -80,13 +83,13 @@ function StructuralFixedSupportExec(args) {
 
 // Pinned support
 function StructuralPinSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node_A-id"]} source_ids={["support-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralPinSupportExec(args) {
-  let node = args["node_A-id"];
+  let node = args["node-id"];
   return {
-    "support-out": {
+    "support_out-id": {
       direction_code: "BBBBBB",
       tx: 0,
       ty: 0,
@@ -107,14 +110,14 @@ function StructuralPointLoad({ data }) {
     <GenericInOutNode
       node_label={"Carga puntual"}
       data={data}
-      target_ids={["node_A-id", "x_mag-value", "y_mag-value", "z_mag-value"]}
-      source_ids={["point_load-out"]}
+      target_ids={["node-id", "x_mag-value", "y_mag-value", "z_mag-value"]}
+      source_ids={["point_load_out-id"]}
     ></GenericInOutNode>
   );
 }
 
 function StructuralPointLoadExec(args) {
-  let node = args["node_A-id"];
+  let node = args["node-id"];
   let x_mag = Number(args["x_mag-value"]);
   let y_mag = Number(args["y_mag-value"]);
   let z_mag = Number(args["z_mag-value"]);
@@ -122,7 +125,7 @@ function StructuralPointLoadExec(args) {
   if (isNaN(y_mag)) y_mag = 0;
   if (isNaN(z_mag)) z_mag = 0;
   return {
-    "point_load-out": {
+    "point_load_out-id": {
       x_mag,
       y_mag,
       z_mag,
@@ -152,7 +155,7 @@ function StructuralDistributedLoad({ data }) {
       node_label={"Carga distribuida"}
       data={data}
       target_ids={dl_target_ids}
-      source_ids={["distributed_load-out"]}
+      source_ids={["distributed_load_out-id"]}
     ></GenericInOutNode>
   );
 }
@@ -161,7 +164,7 @@ function StructuralDistributedLoadExec(args) {
   let full_args = dl_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "distributed_load-out": {
+    "distributed_load_out-id": {
       ...structural_args,
       axes: "global",
     },
@@ -171,14 +174,14 @@ function StructuralDistributedLoadExec(args) {
 // Plate
 const plate_target_ids = ["nodes-ids", "thickness-value"];
 function StructuralPlate({ data }) {
-  return <GenericInOutNode node_label={"Placa"} data={data} target_ids={plate_target_ids} source_ids={["plate-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Placa"} data={data} target_ids={plate_target_ids} source_ids={["plate_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralPlateExec(args) {
   let full_args = plate_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "plate-out": {
+    "plate_out-id": {
       ...structural_args,
       material_id: 1,
       rotZ: 0,
@@ -197,14 +200,14 @@ function StructuralPlateExec(args) {
 // Point moment
 const moment_target_ids = ["node-id", "x_mag-value", "y_mag-value", "z_mag-value"];
 function StructuralMoment({ data }) {
-  return <GenericInOutNode node_label={"Momento"} data={data} target_ids={moment_target_ids} source_ids={["moment-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Momento"} data={data} target_ids={moment_target_ids} source_ids={["moment_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMomentExec(args) {
   let full_args = moment_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "moment-out": {
+    "moment_out-id": {
       ...structural_args,
       type: "n",
       load_group: "DL",
@@ -215,14 +218,14 @@ function StructuralMomentExec(args) {
 // Material
 const material_target_ids = ["name-name-Concrete", "density-value", "elasticity_modulus-value-20000", "poissons_ratio-value-0.3", "class-name-concrete"];
 function StructuralMaterial({ data }) {
-  return <GenericInOutNode node_label={"Material"} data={data} target_ids={material_target_ids} source_ids={["material-out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={"Material"} data={data} target_ids={material_target_ids} source_ids={["material_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMaterialExec(args) {
   let full_args = material_target_ids;
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
-    "material-out": {
+    "material_out-id": {
       ...structural_args,
     },
   };

@@ -11,7 +11,7 @@
                     "y": 151.64952663745925
                 },
                 "data": {
-                    "result-out": 7.4
+                    "result_out": 7.4
                 },
                 "positionAbsolute": {
                     "x": 925.0918883011536,
@@ -30,7 +30,7 @@
                     "y": 114.69561855413514
                 },
                 "data": {
-                    "result-out": 6
+                    "result_out": 6
                 },
                 "positionAbsolute": {
                     "x": 670.2236642313851,
@@ -68,7 +68,7 @@
                     "y": 66.79119878603947
                 },
                 "data": {
-                    "result-out": 4.6
+                    "result_out": 4.6
                 },
                 "positionAbsolute": {
                     "x": 400.82458270106224,
@@ -133,7 +133,7 @@
             },
             {
                 "source": "node-2",
-                "sourceHandle": "result-out",
+                "sourceHandle": "result_out",
                 "target": "node-5",
                 "targetHandle": "num-1-in",
                 "id": "reactflow__edge-node-2result-out-node-5num-1-in"
@@ -147,7 +147,7 @@
             },
             {
                 "source": "node-5",
-                "sourceHandle": "result-out",
+                "sourceHandle": "result_out",
                 "target": "node-6",
                 "targetHandle": "num-1-in",
                 "id": "reactflow__edge-node-5result-out-node-6num-1-in"

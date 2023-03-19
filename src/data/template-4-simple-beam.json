@@ -28,7 +28,7 @@
                     "y": 225.40444365246745
                 },
                 "data": {
-                    "node-out": {
+                    "node_out-id": {
                         "x": 1,
                         "y": 1,
                         "z": 1
@@ -51,7 +51,7 @@
                     "y": 176.14920823397583
                 },
                 "data": {
-                    "member-out": {
+                    "member_out-id": {
                         "type": "normal_continuous",
                         "cable_length": null,
                         "node_A": null,
@@ -107,7 +107,7 @@
                     "y": 71.5
                 },
                 "data": {
-                    "node-out": {
+                    "node_out-id": {
                         "x": 0,
                         "y": 0,
                         "z": 0
@@ -145,7 +145,7 @@
             },
             {
                 "source": "node-1",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-3",
                 "targetHandle": "node-A",
                 "id": "reactflow__edge-node-1node-out-node-3node-A"
@@ -173,7 +173,7 @@
             },
             {
                 "source": "node-4",
-                "sourceHandle": "node-out",
+                "sourceHandle": "node_out-id",
                 "target": "node-3",
                 "targetHandle": "node-B",
                 "id": "reactflow__edge-node-4node-out-node-3node-B"
