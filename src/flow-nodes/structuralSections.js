@@ -1,10 +1,14 @@
 import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
+function localGetCopy(node_name){
+  return utils.getDisplayCopy("nodes", node_name);
+}
+
 // Rectangular
 const rectangular_target_ids = ["material_id-id-1", "base-value-1", "height-value-1"];
 function Rectangle({ data }) {
-  return <GenericInOutNode node_label={"Secc. Rectangular"} data={data} target_ids={rectangular_target_ids} source_ids={["section_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("RectangleNode")} data={data} target_ids={rectangular_target_ids} source_ids={["section_out-id"]}></GenericInOutNode>;
 }
 
 function RectangleExec(args) {

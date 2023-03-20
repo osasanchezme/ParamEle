@@ -14,7 +14,7 @@ const initial_state = {
     last_node_id_created: "",
   },
   section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
-  language: "es",
+  language: "en",
   words_map: {}
 };
 

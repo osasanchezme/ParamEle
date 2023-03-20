@@ -2,6 +2,7 @@ import { Handle, Position } from "react-flow-renderer";
 import { Input } from "@chakra-ui/react";
 import state from "../state";
 import { useEffect, useRef } from "react";
+import utils from "../utils";
 const { getRfInstance, updateStateFromFlow, getGlobalVariable, setGlobalVariable } = state;
 
 function InputNumber({ data, id }) {
@@ -29,7 +30,7 @@ function InputNumber({ data, id }) {
 
   return (
     <div className="text-updater-node">
-      <div className="node-header">Número</div>
+      <div className="node-header">{utils.getDisplayCopy("nodes", "InputNumberNode")}</div>
       <div className="node-body">
         <div>
           <Input
