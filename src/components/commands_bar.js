@@ -120,7 +120,7 @@ class CommandsBar extends React.Component {
       >
         <Input
           ref={this.inputReference}
-          placeholder="Nombre nodo..."
+          placeholder={utils.getDisplayCopy("commands_bar", "placeholder")}
           size="xs"
           onKeyUp={this.handleUserInput}
           onKeyDown={this.preventArrowKeysDefault}

@@ -2,25 +2,33 @@ import { Button, Stack, List, ListIcon, ListItem } from "@chakra-ui/react";
 import React from "react";
 import * as MaterialDesign from "react-icons/md";
 import file from "../js/file";
+import utils from "../utils";
 
-const navbar_options = {
-  file: [
-    { name: "Nuevo", icon: "MdInsertDriveFile", callback: file.newFile},
-    { name: "Abrir", icon: "MdFolderOpen"},
-    { name: "Guardar", icon: "MdSave"},
-    { name: "Exportar JSON", icon: "MdFileDownload", callback: file.downloadJSONFile},
-    { name: "Importar JSON", icon: "MdFileUpload", callback: file.uploadJSONFile},
-  ],
-};
+function localGetCopy(node_name) {
+  return utils.getDisplayCopy("nav_bar", node_name);
+}
+
+function getNavBarOptions() {
+  return {
+    file: [
+      { name: localGetCopy("new"), icon: "MdInsertDriveFile", callback: file.newFile },
+      { name: localGetCopy("open"), icon: "MdFolderOpen" },
+      { name: localGetCopy("save"), icon: "MdSave" },
+      { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
+      { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: file.uploadJSONFile },
+    ],
+  };
+}
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { dropdown_visible: false, mouse_on_menu: false };
     this.handleChange = this.handleChange.bind(this);
+    this.navbar_options = getNavBarOptions();
   }
   handleChange(dropdown_visible, mouse_on_menu) {
-    this.setState({dropdown_visible, mouse_on_menu});
+    this.setState({ dropdown_visible, mouse_on_menu });
   }
   render() {
     return (
@@ -39,15 +47,15 @@ class NavBar extends React.Component {
             }}
             onMouseLeave={() => {
               if (!this.state.mouse_on_menu) {
-                this.handleChange(false, false)
+                this.handleChange(false, false);
               }
             }}
           >
-            Archivo
+            {localGetCopy("file")}
           </Button>
         </Stack>
         <NavMenu
-          options={navbar_options["file"]}
+          options={this.navbar_options["file"]}
           visibility={this.state.dropdown_visible ? "visible" : "hidden"}
           handleChange={this.handleChange}
         ></NavMenu>

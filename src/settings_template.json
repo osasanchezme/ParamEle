@@ -2,22 +2,18 @@
     "general":{
         "auto_update": {
             "default": true,
-            "label": "Actualizar automáticamente",
             "type": "check"
         },
         "mini_map": {
             "default": true,
-            "label": "Mostrar mapa",
             "type": "check"
         },
         "show_nodes": {
             "default": true,
-            "label": "Mostrar nodos",
             "type": "check"
         },
         "side_by_side": {
             "default": false,
-            "label": "Dividir pantalla",
             "type": "check"
         }
     },

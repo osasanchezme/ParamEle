@@ -6,22 +6,25 @@ import getState from "./getState";
 import utils from "./utils";
 import repair from "./js/repair";
 
-const initial_state = {
-  model: repair.repairModel(data.model),
-  settings: repair.repairSettings(data.settings),
-  structure: utils.getEmptyStructuralModel(),
-  globals: {
-    last_node_id_created: "",
-  },
-  section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
-  language: "en",
-  words_map: {}
-};
-
 function setInitialState() {
+  // Get language from URL
+  let url_params = new URLSearchParams(window.location.search);
+  let language = url_params.get("lang");
+  if (language === null) language = "es";
+  // Set the initial state
   window.ParamEle = {};
   window.ParamEle.rfInstance = undefined;
-  window.ParamEle.state = initial_state;
+  window.ParamEle.state = {
+    model: repair.repairModel(data.model),
+    settings: repair.repairSettings(data.settings),
+    structure: utils.getEmptyStructuralModel(),
+    globals: {
+      last_node_id_created: "",
+    },
+    section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
+    language,
+    words_map: {}
+  };
   updateWordsMapFromLanguage();
 }
 

@@ -62,5 +62,22 @@
         "StructuralMomentNode": "Momento",
         "StructuralMaterialNode": "Material",
         "RectangleNode": "Secc. Rectangular"
+    },
+    "settings":{
+        "auto_update": "Actualizar automáticamente",
+        "mini_map": "Mostrar mapa",
+        "show_nodes": "Mostrar nodos",
+        "side_by_side": "Dividir pantalla"
+    },
+    "nav_bar":{
+        "file": "Archivo",
+        "new": "Nuevo",
+        "open": "Abrir",
+        "save": "Guardar",
+        "export_json": "Exportar JSON",
+        "import_json": "Importar JSON"
+    },
+    "commands_bar":{
+        "placeholder": "Nombre nodo..."
     }
 }

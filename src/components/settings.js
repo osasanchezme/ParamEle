@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, FormLabel, FormControl } from "@chakra-ui/react";
 import settings_template from "../settings_template.json";
+import utils from "../utils";
 
 function ToggleSettings({ label, id, value, handleClick }) {
   return (
@@ -31,7 +32,7 @@ class GlobalControls extends React.Component {
       ([key, value]) => {
         return (
           <ToggleSettings
-            label={value.label}
+            label={utils.getDisplayCopy("settings", key)}
             id={key}
             key={key}
             value={this.props.settings[key]}
