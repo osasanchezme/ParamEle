@@ -1,8 +1,13 @@
 import GenericInOutNode from "./generics/genericInOut";
+import utils from "../utils";
+
+function localGetCopy(node_name){
+  return utils.getDisplayCopy("nodes", node_name);
+}
 
 // Sum
 function MathSum({ data }) {
-  return <GenericInOutNode node_label={"Sumar"} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathSumNode")} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathSumExec(args) {
@@ -13,7 +18,7 @@ function MathSumExec(args) {
 
 // Multiply
 function MathMultiply({ data }) {
-  return <GenericInOutNode node_label={"Multiplicar"} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathMultiplyNode")} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathMultiplyExec(args) {
@@ -24,7 +29,7 @@ function MathMultiplyExec(args) {
 
 // Divide
 function MathDivide({ data }) {
-  return <GenericInOutNode node_label={"Dividir"} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathDivideNode")} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathDivideExec(args) {
@@ -35,7 +40,7 @@ function MathDivideExec(args) {
 
 // Round
 function MathRound({ data }) {
-  return <GenericInOutNode node_label={"Redondear"} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathRoundNode")} data={data} target_ids={["num-1-in", "num-2-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathRoundExec(args) {

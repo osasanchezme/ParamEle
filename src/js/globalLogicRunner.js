@@ -1,6 +1,5 @@
 import state from "../state";
 import getState from "../getState";
-import library from "../flow-nodes/handler";
 import utils from "../utils";
 
 function run() {
@@ -11,6 +10,7 @@ function run() {
   let nodes_type = {};
   let nodes_data = {};
   let nodes_i = {};
+  const library = utils.getNodesLibrary();
   // Preprocess nodes
   nodes.forEach((node) => {
     nodes_type[node.id] = node.type;

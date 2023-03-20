@@ -13,13 +13,21 @@ const initial_state = {
   globals: {
     last_node_id_created: "",
   },
-  section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"]
+  section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
+  language: "es",
+  words_map: {}
 };
 
 function setInitialState() {
   window.ParamEle = {};
   window.ParamEle.rfInstance = undefined;
   window.ParamEle.state = initial_state;
+  updateWordsMapFromLanguage();
+}
+
+function updateWordsMapFromLanguage(){
+  const words_map = require(`./data/languages/${window.ParamEle.state.language}.json`)
+  window.ParamEle.state.words_map = words_map;
 }
 
 function storeRfInstance(rfInstance) {
@@ -108,7 +116,8 @@ const state = {
   setGlobalVariable,
   getGlobalVariable,
   addNodeToTheEditor,
-  getSectionColor
+  getSectionColor,
+  updateWordsMapFromLanguage
 };
 
 export default state;

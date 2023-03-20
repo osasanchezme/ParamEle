@@ -1,12 +1,16 @@
 import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
+function localGetCopy(node_name){
+  return utils.getDisplayCopy("nodes", node_name);
+}
+
 // Node
 const node_target_ids = ["x-value", "y-value", "z-value"];
 function StructuralNode({ data }) {
   return (
     <GenericInOutNode
-      node_label={"Nodo"}
+      node_label={localGetCopy("StructuralNodeNode")}
       data={data}
       target_ids={node_target_ids}
       source_ids={["node_out-id"]}
@@ -25,9 +29,9 @@ function StructuralNodeExec(args) {
 }
 
 // Member
-const member_target_ids = ["node_A-id", "node_B-id", "section_id-value-1"];
+const member_target_ids = ["node_A-id", "node_B-id", "section_id-id-1"];
 function StructuralMember({ data }) {
-  return <GenericInOutNode node_label={"Elemento"} data={data} target_ids={member_target_ids} source_ids={["member_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralMemberNode")} data={data} target_ids={member_target_ids} source_ids={["member_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMemberExec(args) {
@@ -57,7 +61,7 @@ function StructuralMemberExec(args) {
 
 // Fixed support
 function StructuralFixedSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo empotrado"} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralFixedSupportNode")} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
 }
 
 // WIP
@@ -83,7 +87,7 @@ function StructuralFixedSupportExec(args) {
 
 // Pinned support
 function StructuralPinSupport({ data }) {
-  return <GenericInOutNode node_label={"Apoyo articulado"} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralPinSupportNode")} data={data} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralPinSupportExec(args) {
@@ -108,7 +112,7 @@ function StructuralPinSupportExec(args) {
 function StructuralPointLoad({ data }) {
   return (
     <GenericInOutNode
-      node_label={"Carga puntual"}
+      node_label={localGetCopy("StructuralPointLoadNode")}
       data={data}
       target_ids={["node-id", "x_mag-value", "y_mag-value", "z_mag-value"]}
       source_ids={["point_load_out-id"]}
@@ -152,7 +156,7 @@ const dl_target_ids = [
 function StructuralDistributedLoad({ data }) {
   return (
     <GenericInOutNode
-      node_label={"Carga distribuida"}
+      node_label={localGetCopy("StructuralDistributedLoadNode")}
       data={data}
       target_ids={dl_target_ids}
       source_ids={["distributed_load_out-id"]}
@@ -174,7 +178,7 @@ function StructuralDistributedLoadExec(args) {
 // Plate
 const plate_target_ids = ["nodes-ids", "thickness-value"];
 function StructuralPlate({ data }) {
-  return <GenericInOutNode node_label={"Placa"} data={data} target_ids={plate_target_ids} source_ids={["plate_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralPlateNode")} data={data} target_ids={plate_target_ids} source_ids={["plate_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralPlateExec(args) {
@@ -200,7 +204,7 @@ function StructuralPlateExec(args) {
 // Point moment
 const moment_target_ids = ["node-id", "x_mag-value", "y_mag-value", "z_mag-value"];
 function StructuralMoment({ data }) {
-  return <GenericInOutNode node_label={"Momento"} data={data} target_ids={moment_target_ids} source_ids={["moment_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralMomentNode")} data={data} target_ids={moment_target_ids} source_ids={["moment_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMomentExec(args) {
@@ -218,7 +222,7 @@ function StructuralMomentExec(args) {
 // Material
 const material_target_ids = ["name-name-Concrete", "density-value", "elasticity_modulus-value-20000", "poissons_ratio-value-0.3", "class-name-concrete"];
 function StructuralMaterial({ data }) {
-  return <GenericInOutNode node_label={"Material"} data={data} target_ids={material_target_ids} source_ids={["material_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("StructuralMaterialNode")} data={data} target_ids={material_target_ids} source_ids={["material_out-id"]}></GenericInOutNode>;
 }
 
 function StructuralMaterialExec(args) {

@@ -1,8 +1,13 @@
 import GenericInOutNode from "./generics/genericInOut";
+import utils from "../utils";
+
+function localGetCopy(node_name){
+  return utils.getDisplayCopy("nodes", node_name);
+}
 
 // Sine
 function MathSin({ data }) {
-  return <GenericInOutNode node_label={"Seno"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathSinNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathSinExec(args) {
@@ -12,7 +17,7 @@ function MathSinExec(args) {
 
 // Cosine
 function MathCos({ data }) {
-  return <GenericInOutNode node_label={"Coseno"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathCosNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathCosExec(args) {
@@ -22,7 +27,7 @@ function MathCosExec(args) {
 
 // Tangent
 function MathTan({ data }) {
-  return <GenericInOutNode node_label={"Tangente"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathTanNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathTanExec(args) {
@@ -32,7 +37,7 @@ function MathTanExec(args) {
 
 // Arc-sine
 function MathAsin({ data }) {
-  return <GenericInOutNode node_label={"Arco-seno"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathAsinNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathAsinExec(args) {
@@ -42,7 +47,7 @@ function MathAsinExec(args) {
 
 // Arc-cosine
 function MathAcos({ data }) {
-  return <GenericInOutNode node_label={"Arco-coseno"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathAcosNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathAcosExec(args) {
@@ -52,7 +57,7 @@ function MathAcosExec(args) {
 
 // Arc-tan
 function MathAtan({ data }) {
-  return <GenericInOutNode node_label={"Arco-tangente"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathAtanNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathAtanExec(args) {
@@ -62,7 +67,7 @@ function MathAtanExec(args) {
 
 // Deg-to-rad
 function MathDeg2Rad({ data }) {
-  return <GenericInOutNode node_label={"Grados -> Rad"} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("MathDeg2RadNode")} data={data} target_ids={["num-1-in"]} source_ids={["result_out"]}></GenericInOutNode>;
 }
 
 function MathDeg2RadExec(args) {

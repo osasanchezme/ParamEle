@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import Plot from "react-plotly.js";
 import "./index.css";
 import "./flowNodes.css";
-import library from "./flow-nodes/handler";
+import createNodesLibrary from "./flow-nodes/handler";
 import { ChakraProvider } from "@chakra-ui/react";
 import ReactFlow, {
   MiniMap,
@@ -26,10 +26,10 @@ import ResizeBorder from "./components/resize_border";
 const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
-
-window.ParamEle.updateStateFromFlow = updateStateFromFlow;
-
+const library = createNodesLibrary();
 const nodes_library = library.nodes;
+window.ParamEle.updateStateFromFlow = updateStateFromFlow;
+window.ParamEle.nodesLibrary = library;
 class Renderer extends React.Component {
   constructor(props) {
     super(props);

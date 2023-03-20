@@ -1,5 +1,4 @@
 import React from "react";
-import library from "../flow-nodes/handler";
 import { Input, List, ListItem, ListIcon } from "@chakra-ui/react";
 import utils from "../utils";
 import { MdCropSquare } from "react-icons/md";
@@ -9,8 +8,6 @@ const { setGlobalVariable } = state;
 const commands_bar_height = 50;
 const commands_bar_width = 100;
 const number_nodes_match = 3;
-const available_nodes_mapping = library.mapping;
-
 class CommandsBar extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +19,7 @@ class CommandsBar extends React.Component {
       nodes_to_select: [],
       selected_node: 0,
     };
+    this.available_nodes_mapping = utils.getNodesLibrary()["mapping"];
   }
   componentDidMount() {
     setGlobalVariable("last_node_id_created", "");
@@ -51,7 +49,7 @@ class CommandsBar extends React.Component {
     } else {
       let closest_nodes = [];
       if (node_name.length > 0) {
-        closest_nodes = utils.getClosestMatches(node_name, Object.keys(available_nodes_mapping));
+        closest_nodes = utils.getClosestMatches(node_name, Object.keys(this.available_nodes_mapping));
       }
       this.setState({
         nodes_to_select: closest_nodes.slice(0, Math.min(number_nodes_match, closest_nodes.length)).map((option) => {
@@ -77,7 +75,7 @@ class CommandsBar extends React.Component {
 
   handleMouseClickOnOption() {
     let node_name = this.state.nodes_to_select[this.state.selected_node];
-    let node_class = available_nodes_mapping[node_name];
+    let node_class = this.available_nodes_mapping[node_name];
     state.addNodeToTheEditor(node_class, { x: this.props.x - this.props.rel_orig_x, y: this.props.y - this.props.rel_orig_y});
     utils.changeAppMode("wait_action");
   }

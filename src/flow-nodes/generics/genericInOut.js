@@ -33,7 +33,7 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     let input_value = label_obj.default_value;
     if (data.input) input_value = data.input[label_obj.name];
     return (
-      <Tooltip label={`${label_obj.type} [${input_value}]`} key={target_id + "-tooltip"} placement={"right"}>
+      <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${input_value}]`} key={target_id + "-tooltip"} placement={"right"}>
         <Tag
           size={"sm"}
           color={"gray.600"}
@@ -44,7 +44,7 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
           key={target_id + "-label"}
           style={target_label_style}
         >
-          {label_obj.name}
+          {utils.getDisplayCopy("tags", label_obj.name)}
         </Tag>
       </Tooltip>
     );
@@ -63,7 +63,7 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     let output_value = data[source_id];
     label_obj.name = label_obj.name.replace("_out", "");
     return (
-      <Tooltip label={`${label_obj.type} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
+      <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
         <Tag
           size={"sm"}
           color={"gray.600"}
@@ -74,7 +74,7 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
           key={source_id + "-label"}
           style={source_label_style}
         >
-          {label_obj.name}
+          {utils.getDisplayCopy("tags", label_obj.name)}
         </Tag>
       </Tooltip>
     );

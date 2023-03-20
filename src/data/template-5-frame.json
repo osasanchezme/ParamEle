@@ -1250,29 +1250,29 @@
                 "source": "node-40",
                 "sourceHandle": "section_out-id",
                 "target": "node-14",
-                "targetHandle": "section_id-value-1",
-                "id": "reactflow__edge-node-40section-out-node-14section_id-value-1"
+                "targetHandle": "section_id-id-1",
+                "id": "reactflow__edge-node-40section-out-node-14section_id-id-1"
             },
             {
                 "source": "node-40",
                 "sourceHandle": "section_out-id",
                 "target": "node-17",
-                "targetHandle": "section_id-value-1",
-                "id": "reactflow__edge-node-40section-out-node-17section_id-value-1"
+                "targetHandle": "section_id-id-1",
+                "id": "reactflow__edge-node-40section-out-node-17section_id-id-1"
             },
             {
                 "source": "node-40",
                 "sourceHandle": "section_out-id",
                 "target": "node-15",
-                "targetHandle": "section_id-value-1",
-                "id": "reactflow__edge-node-40section-out-node-15section_id-value-1"
+                "targetHandle": "section_id-id-1",
+                "id": "reactflow__edge-node-40section-out-node-15section_id-id-1"
             },
             {
                 "source": "node-40",
                 "sourceHandle": "section_out-id",
                 "target": "node-16",
-                "targetHandle": "section_id-value-1",
-                "id": "reactflow__edge-node-40section-out-node-16section_id-value-1"
+                "targetHandle": "section_id-id-1",
+                "id": "reactflow__edge-node-40section-out-node-16section_id-id-1"
             },
             {
                 "source": "node-41",

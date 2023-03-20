@@ -157,6 +157,10 @@ function changeAppMode(mode) {
 function updateRenderer() {
   window.ParamEle.updateRenderer();
 }
+
+function getNodesLibrary(){
+  return window.ParamEle.nodesLibrary;
+}
 /**
  * Converts the arguments from a React flow node to structural arguments
  * @param {*} args
@@ -228,6 +232,11 @@ function splitArgName(arg_id){
   }
 }
 
+function getDisplayCopy(copy_group, copy_key){
+  if (window.ParamEle.state.words_map.hasOwnProperty(copy_group) && window.ParamEle.state.words_map[copy_group].hasOwnProperty(copy_key)) copy_key = window.ParamEle.state.words_map[copy_group][copy_key];
+  return copy_key;
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -236,7 +245,9 @@ const utils = {
   getEmptyStructuralModel,
   updateRenderer,
   convertNodeToStructuralArgs,
-  splitArgName
+  splitArgName,
+  getDisplayCopy,
+  getNodesLibrary
 };
 
 export default utils;
