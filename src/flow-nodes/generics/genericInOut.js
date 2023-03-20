@@ -12,6 +12,8 @@ import utils from "../../utils";
  * @returns {React.DOMElement} div element representing the ReactFlow node
  */
 function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
+  let source_copies = [];
+  let target_copies = [];
   let top_pos = 15;
   let target_handles = target_ids.map((handle_id, handle_counter) => {
     let handle_style = { top: top_pos };
@@ -32,6 +34,8 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     top_pos += 20;
     let input_value = label_obj.default_value;
     if (data.input) input_value = data.input[label_obj.name];
+    let display_copy = utils.getDisplayCopy("tags", label_obj.name);
+    target_copies.push(display_copy);
     return (
       <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${input_value}]`} key={target_id + "-tooltip"} placement={"right"}>
         <Tag
@@ -44,7 +48,7 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
           key={target_id + "-label"}
           style={target_label_style}
         >
-          {utils.getDisplayCopy("tags", label_obj.name)}
+          {display_copy}
         </Tag>
       </Tooltip>
     );
@@ -62,6 +66,8 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
     top_pos += 20;
     let output_value = data[source_id];
     label_obj.name = label_obj.name.replace("_out", "");
+    let display_copy = utils.getDisplayCopy("tags", label_obj.name);
+    source_copies.push(display_copy);
     return (
       <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
         <Tag
@@ -74,13 +80,23 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
           key={source_id + "-label"}
           style={source_label_style}
         >
-          {utils.getDisplayCopy("tags", label_obj.name)}
+          {display_copy}
         </Tag>
       </Tooltip>
     );
   });
+  // Get the longest string for defining width
+  let max_copy_length = Math.max(source_copies.length, target_copies.length);
+  let max_length = 0;
+  for (let i = 0; i < max_copy_length; i++){
+    let source_length = source_copies[i] ? source_copies[i].length : 0;
+    let target_length = target_copies[i] ? target_copies[i].length : 0;
+    let sum_length = source_length + target_length;
+    if (sum_length > max_length) max_length = sum_length;
+  }
+  let node_width = Math.max((max_length * 5) + 45, node_label.length * 8)
   return (
-    <div className="text-updater-node" style={{ height: 20 * (target_ids.length + 2) }}>
+    <div className="text-updater-node" style={{ height: 20 * (target_ids.length + 2), width: node_width }}>
       <div className="node-header">{node_label}</div>
       <div className="node-body">
         {target_handles}
