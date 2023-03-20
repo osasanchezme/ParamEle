@@ -1,6 +1,11 @@
 import getState from "../getState";
 import geom_utils from "../geom_utils";
 import state from "../state";
+import utils from "../utils";
+
+function localGetCopy(node_name){
+  return utils.getDisplayCopy("renderer", node_name);
+}
 
 function getData() {
   let structure = getState("structure");
@@ -52,7 +57,7 @@ function getData() {
     nodes.x.push(node_data.x);
     nodes.y.push(node_data.y);
     nodes.z.push(node_data.z);
-    nodes.text.push("Nodo " + node_id);
+    nodes.text.push( localGetCopy("node") + " " + node_id);
   });
   plotly_data.push(nodes);
 
@@ -84,7 +89,7 @@ function getData() {
     plotly_data.push(member);
 
     let member_length = Math.sqrt((node_A.x - node_B.x) ** 2 + (node_A.y - node_B.y) ** 2 + (node_A.z - node_B.z) ** 2);
-    let member_label = `Elemento  ${member_id} (${member_length} ${units.length})`;
+    let member_label = `${localGetCopy("member")}  ${member_id} (${member_length} ${units.length})`;
 
     // Selection nodes along the member
     let node_middle = { x: (node_A.x + node_B.x) / 2, y: (node_A.y + node_B.y) / 2, z: (node_A.z + node_B.z) / 2 };
@@ -208,7 +213,7 @@ function getData() {
     avg_x /= plate.x.length;
     avg_y /= plate.y.length;
     avg_z /= plate.z.length;
-    let plate_label = `Placa  ${plate_id}`;
+    let plate_label = `${localGetCopy("plate")}  ${plate_id}`;
     let node_middle = { x: avg_x, y: avg_y, z: avg_z };
     selection_nodes_plates.x.push(node_middle.x);
     selection_nodes_plates.y.push(node_middle.y);

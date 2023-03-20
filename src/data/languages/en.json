@@ -79,5 +79,10 @@
     },
     "commands_bar":{
         "placeholder": "Node name..."
+    },
+    "renderer":{
+        "node": "Node",
+        "member": "Member",
+        "plate": "Plate"
     }
 }

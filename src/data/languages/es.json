@@ -79,5 +79,10 @@
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."
+    },
+    "renderer":{
+        "node": "Nodo",
+        "member": "Elemento",
+        "plate": "Placa"
     }
 }
