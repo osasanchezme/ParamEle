@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Handle, Position } from "react-flow-renderer";
-import { chakra, Tag, Tooltip } from "@chakra-ui/react";
+import { HStack, Tag, Tooltip, Text, IconButton, Input } from "@chakra-ui/react";
+import { MdCheck, MdClose, MdEdit } from "react-icons/md";
 import utils from "../../utils";
+import state from "../../state";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -11,7 +13,10 @@ import utils from "../../utils";
  * @param {string[]} props.source_ids IDs of the source (output) handles for the node
  * @returns {React.DOMElement} div element representing the ReactFlow node
  */
-function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
+function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
+  const [edit_visible, setEditVisible] = useState(false);
+  const [is_editing, setIsEditing] = useState(false);
+  const label_input_ref = useRef(null);
   let source_copies = [];
   let target_copies = [];
   let top_pos = 15;
@@ -85,19 +90,69 @@ function GenericInOutNode({ data, node_label, target_ids, source_ids }) {
       </Tooltip>
     );
   });
+  // Check if the user defined a custom_label for the node
+  node_label = data.custom_label || node_label;
   // Get the longest string for defining width
   let max_copy_length = Math.max(source_copies.length, target_copies.length);
   let max_length = 0;
-  for (let i = 0; i < max_copy_length; i++){
+  for (let i = 0; i < max_copy_length; i++) {
     let source_length = source_copies[i] ? source_copies[i].length : 0;
     let target_length = target_copies[i] ? target_copies[i].length : 0;
     let sum_length = source_length + target_length;
     if (sum_length > max_length) max_length = sum_length;
   }
-  let node_width = Math.max((max_length * 5) + 45, node_label.length * 8)
+  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 12);
+  // Edit label
+  function handleMouseOver(e) {
+    setEditVisible(true);
+  }
+  function handleMouseLeave(e) {
+    setEditVisible(false);
+  }
+  function handleClickOnEdit(e) {
+    setIsEditing(true);
+  }
+  function handleClickOnSave(e) {
+    let custom_label = label_input_ref.current.value;
+    state.updateNodeData(id, { custom_label });
+    setIsEditing(false);
+  }
+  function handleClickOnCancel(e) {
+    setIsEditing(false);
+  }
+  useEffect(() => {
+    if (is_editing) label_input_ref.current.focus();
+  });
+  let edit_button =
+    edit_visible && !is_editing ? (
+      <IconButton className="node-label-edit-button" onClick={handleClickOnEdit} variant="ghost" aria-label="Edit Node Label" icon={<MdEdit />} />
+    ) : (
+      ""
+    );
+  let label_obj = <Text paddingTop="1px">{node_label}</Text>;
+  let save_button = "";
+  let cancel_button = "";
+  if (is_editing) {
+    label_obj = <Input ref={label_input_ref} className="editable-node-label" variant="unstyled" size="xs" defaultValue={node_label} placeholder={node_label} />;
+    if (edit_visible) {
+      save_button = (
+        <IconButton className="node-label-edit-button" onClick={handleClickOnSave} variant="ghost" aria-label="Save Label" icon={<MdCheck />} />
+      );
+      cancel_button = (
+        <IconButton className="node-label-edit-button" onClick={handleClickOnCancel} variant="ghost" aria-label="Discard Label" icon={<MdClose />} />
+      );
+    }
+  }
   return (
     <div className="text-updater-node" style={{ height: 20 * (target_ids.length + 2), width: node_width }}>
-      <div className="node-header">{node_label}</div>
+      <div className="node-header">
+        <HStack onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+          {label_obj}
+          {edit_button}
+          {save_button}
+          {cancel_button}
+        </HStack>
+      </div>
       <div className="node-body">
         {target_handles}
         <div>

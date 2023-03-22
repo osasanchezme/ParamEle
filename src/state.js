@@ -99,6 +99,22 @@ function addNodeToTheEditor(type, html_position, data = {}) {
   rfInstance.addNodes([{ id, type, position, data }]);
 }
 
+function updateNodeData(node_id, data_update){
+  let rf_instance = getRfInstance();
+    rf_instance.setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === node_id) {
+          node.data = {
+            ...node.data,
+            ...data_update
+          };
+        }
+        return node;
+      })
+    );
+    updateStateFromFlow();
+}
+
 function getSectionColor(section_id){
   let section_color = window.ParamEle.state.section_colors[section_id];
   if (typeof section_color === "undefined") defineSectionColor(section_id);
@@ -120,7 +136,8 @@ const state = {
   getGlobalVariable,
   addNodeToTheEditor,
   getSectionColor,
-  updateWordsMapFromLanguage
+  updateWordsMapFromLanguage,
+  updateNodeData
 };
 
 export default state;

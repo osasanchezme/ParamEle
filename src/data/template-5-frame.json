@@ -112,7 +112,7 @@
                     "x": 2183.2764515895333,
                     "y": 917.012566121612
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -314,7 +314,8 @@
                     "y": 289.76845724740406
                 },
                 "data": {
-                    "point_load_out-id": 1
+                    "point_load_out-id": 1,
+                    "custom_label": "Carga 1"
                 },
                 "positionAbsolute": {
                     "x": 1546.348022018939,
@@ -627,21 +628,22 @@
             },
             {
                 "width": 188,
-                "height": 67,
+                "height": 68,
                 "id": "node-9",
                 "type": "inputNumber",
                 "position": {
-                    "x": 645.103923095295,
-                    "y": -18.796144160981328
+                    "x": 195.10392309529504,
+                    "y": 45.20385583901867
                 },
                 "data": {
-                    "value": "10"
+                    "value": "10",
+                    "custom_label": "NIVEL SUPERIOR"
                 },
                 "positionAbsolute": {
-                    "x": 645.103923095295,
-                    "y": -18.796144160981328
+                    "x": 195.10392309529504,
+                    "y": 45.20385583901867
                 },
-                "selected": false,
+                "selected": true,
                 "dragging": false
             },
             {
@@ -703,7 +705,7 @@
             },
             {
                 "width": 188,
-                "height": 67,
+                "height": 68,
                 "id": "node-5",
                 "type": "inputNumber",
                 "position": {
@@ -711,7 +713,8 @@
                     "y": 567.7751925291849
                 },
                 "data": {
-                    "value": "6"
+                    "value": "5",
+                    "custom_label": "VANO EN X"
                 },
                 "positionAbsolute": {
                     "x": 195.04782869351916,
@@ -722,38 +725,40 @@
             },
             {
                 "width": 188,
-                "height": 67,
+                "height": 68,
                 "id": "node-4",
                 "type": "inputNumber",
                 "position": {
                     "x": 188.36436675714455,
-                    "y": 435.19159249174317
+                    "y": 434.536395789814
                 },
                 "data": {
-                    "value": "5"
+                    "value": "5",
+                    "custom_label": "VANO en Y"
                 },
                 "positionAbsolute": {
                     "x": 188.36436675714455,
-                    "y": 435.19159249174317
+                    "y": 434.536395789814
                 },
                 "selected": false,
                 "dragging": false
             },
             {
                 "width": 188,
-                "height": 67,
+                "height": 68,
                 "id": "node-3",
                 "type": "inputNumber",
                 "position": {
-                    "x": 190.9513134620725,
-                    "y": 330.8514087263183
+                    "x": 181.85701406301007,
+                    "y": 303.5685105291311
                 },
                 "data": {
-                    "value": "0"
+                    "value": "0",
+                    "custom_label": "Estación x-Y"
                 },
                 "positionAbsolute": {
-                    "x": 190.9513134620725,
-                    "y": 330.8514087263183
+                    "x": 181.85701406301007,
+                    "y": 303.5685105291311
                 },
                 "selected": false,
                 "dragging": false
@@ -779,19 +784,20 @@
             },
             {
                 "width": 188,
-                "height": 67,
+                "height": 68,
                 "id": "node-1",
                 "type": "inputNumber",
                 "position": {
-                    "x": 191.81362903038183,
-                    "y": 200.6417579116145
+                    "x": 181.9614713480642,
+                    "y": 155.9281191995577
                 },
                 "data": {
-                    "value": "0"
+                    "value": "0",
+                    "custom_label": "NIVEL BASE"
                 },
                 "positionAbsolute": {
-                    "x": 191.81362903038183,
-                    "y": 200.6417579116145
+                    "x": 181.9614713480642,
+                    "y": 155.9281191995577
                 },
                 "selected": false,
                 "dragging": false
@@ -1308,7 +1314,12 @@
         "general": {
             "auto_update": true,
             "mini_map": false,
-            "show_nodes": true
+            "show_nodes": true,
+            "side_by_side": false
+        },
+        "layout": {
+            "renderer_width": "30",
+            "editor_width": "70"
         }
     }
 }

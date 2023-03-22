@@ -14,6 +14,20 @@
     border-color: var(--chakra-colors-gray-300);
 }
 
+.node-label-edit-button{
+  height: var(--chakra-sizes-3) !important;
+  min-width: var(--chakra-sizes-3) !important;
+  border-radius: var(--chakra-radii-base) !important;
+  font-size: 0.5rem !important;
+}
+
+.editable-node-label{
+  font-size: inherit !important;
+  font-family: inherit;
+  text-transform: inherit;
+  font-weight: inherit;
+}
+
 .node-body {
   padding: var(--chakra-space-2);
   flex: 1 1 0%;
