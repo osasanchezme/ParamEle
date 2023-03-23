@@ -97,7 +97,7 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
     let sum_length = source_length + target_length;
     if (sum_length > max_length) max_length = sum_length;
   }
-  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 12);
+  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 12, 100);
   return (
     <div className="text-updater-node" style={{ height: 20 * (target_ids.length + 2), width: node_width }}>
       <EditableNodeHeader id={id} node_label={node_label}></EditableNodeHeader>

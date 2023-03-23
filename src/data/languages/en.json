@@ -84,5 +84,10 @@
         "node": "Node",
         "member": "Member",
         "plate": "Plate"
+    },
+    "tooltips": {
+        "edit": "Edit",
+        "save": "Save",
+        "discard": "Discard"
     }
 }

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { HStack, Text, IconButton, Input } from "@chakra-ui/react";
+import { HStack, Text, IconButton, Input, Tooltip, Kbd } from "@chakra-ui/react";
 import { MdCheck, MdClose, MdEdit } from "react-icons/md";
 import state from "../state";
+import utils from "../utils";
 
 function EditableNodeHeader({ node_label, id }) {
   const [edit_visible, setEditVisible] = useState(false);
@@ -24,12 +25,22 @@ function EditableNodeHeader({ node_label, id }) {
   function handleClickOnCancel(e) {
     setIsEditing(false);
   }
+  function handleKeyUp(e) {
+    let last_key = e.key;
+    if (last_key === "Enter") {
+      handleClickOnSave();
+    } else if (last_key === "Escape") {
+      handleClickOnCancel();
+    }
+  }
   useEffect(() => {
     if (is_editing) label_input_ref.current.focus();
   });
   let edit_button =
     edit_visible && !is_editing ? (
-      <IconButton className="node-label-edit-button" onClick={handleClickOnEdit} variant="ghost" aria-label="Edit Node Label" icon={<MdEdit />} />
+      <Tooltip className="clear-tooltip" label={utils.getDisplayCopy("tooltips", "edit")}>
+        <IconButton className="node-label-edit-button" onClick={handleClickOnEdit} variant="ghost" aria-label="Edit Node Label" icon={<MdEdit />} />
+      </Tooltip>
     ) : (
       ""
     );
@@ -38,14 +49,48 @@ function EditableNodeHeader({ node_label, id }) {
   let cancel_button = "";
   if (is_editing) {
     label_obj = (
-      <Input ref={label_input_ref} className="editable-node-label" variant="unstyled" size="xs" defaultValue={node_label} placeholder={node_label} />
+      <Input
+        ref={label_input_ref}
+        onKeyUp={handleKeyUp}
+        className="editable-node-label"
+        variant="unstyled"
+        size="xs"
+        defaultValue={node_label}
+        placeholder={node_label}
+      />
     );
     if (edit_visible) {
       save_button = (
-        <IconButton className="node-label-edit-button" onClick={handleClickOnSave} variant="ghost" aria-label="Save Label" icon={<MdCheck />} />
+        <Tooltip
+          className="clear-tooltip"
+          label={
+            <HStack>
+              <Text>{utils.getDisplayCopy("tooltips", "save")}</Text>
+              <Kbd>enter</Kbd>
+            </HStack>
+          }
+        >
+          <IconButton className="node-label-edit-button" onClick={handleClickOnSave} variant="ghost" aria-label="Save Label" icon={<MdCheck />} />
+        </Tooltip>
       );
       cancel_button = (
-        <IconButton className="node-label-edit-button" onClick={handleClickOnCancel} variant="ghost" aria-label="Discard Label" icon={<MdClose />} />
+        <Tooltip
+          className="clear-tooltip"
+          label={
+            <HStack>
+              <Text>{utils.getDisplayCopy("tooltips", "discard")}</Text>
+              <Kbd>esc</Kbd>
+            </HStack>
+          }
+        >
+          <IconButton
+            className="node-label-edit-button"
+            onClick={handleClickOnCancel}
+            variant="ghost"
+            aria-label="Discard Label"
+            icon={<MdClose />}
+          />
+        </Tooltip>
       );
     }
   }
