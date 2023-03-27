@@ -67,7 +67,8 @@
         "auto_update": "Actualizar automáticamente",
         "mini_map": "Mostrar mapa",
         "show_nodes": "Mostrar nodos",
-        "side_by_side": "Dividir pantalla"
+        "side_by_side": "Dividir pantalla",
+        "show_properties_panel": "Mostrar panel"
     },
     "nav_bar":{
         "file": "Archivo",

@@ -23,6 +23,7 @@ import CommandsBar from "./components/commands_bar";
 import getState from "./getState";
 import logic_runner from "./js/globalLogicRunner";
 import ResizeBorder from "./components/resize_border";
+import PropertiesPanel from "./components/properties_panel";
 const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -51,10 +52,10 @@ class Renderer extends React.Component {
     }
   }
   render() {
-    // if (this.props.visible) utils.changeAppMode("renderer"); // TODO - For some reason changing the app mode gets the plot updating forever
-    let width_value = this.props.settings.side_by_side ? String(this.props.width) + "%" : "100%";
+    let global_style = { zIndex: this.props.visible ? 4 : 3, width: String(this.props.width) + "%", right: this.props.layout.renderer_right + "%" };
+
     return (
-      <div className={"renderer-container"} style={{ zIndex: this.props.visible ? 4 : 3, width: width_value }}>
+      <div className={"renderer-container"} style={global_style}>
         <Plot
           data={this.state.data}
           layout={this.state.layout}
@@ -104,9 +105,7 @@ function VisualEditor(props) {
     mini_map = <MiniMap />;
   }
   let global_style = {};
-  if (state.settings.general.side_by_side) {
-    global_style = { width: String(props.width) + "%", right: "0%" };
-  }
+  global_style = { width: String(props.width) + "%", right: "0%" };
   return (
     <div className="editor-container" style={global_style}>
       <ReactFlow
@@ -137,12 +136,23 @@ class ParamEle extends React.Component {
     this.getMouseCoordinates = this.getMouseCoordinates.bind(this);
     this.activateNodeCreation = this.activateNodeCreation.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.updateComponentsWidth = this.updateComponentsWidth.bind(this);
   }
   changeGeneralSettingValue(key, value) {
     let curr_settings = getState("settings");
     curr_settings.general[key] = value;
     setState(curr_settings, "settings");
-    this.setState(getState());
+    this.setState(getState(), () => {
+      if (key === "show_properties_panel") {
+        if (value) {
+          this.updateComponentsWidth({ panel_width: 15 });
+        } else {
+          this.updateComponentsWidth({ panel_width: 0 });
+        }
+      } else if (key === "side_by_side") {
+        this.updateComponentsWidth({ panel_width: curr_settings.layout.panel_width });
+      }
+    });
   }
   changeAppMode(mode) {
     this.setState({ mode });
@@ -150,8 +160,83 @@ class ParamEle extends React.Component {
   getMouseCoordinates(event) {
     if (this.state.mode === "resizing_modules") {
       event.preventDefault();
-      let relative_location = (event.clientX / window.innerWidth) * 100;
-      this.setState({ settings: { ...this.state.settings, layout: { renderer_width: relative_location, editor_width: 100 - relative_location } } });
+      let current_resizer = state.getGlobalVariable("current_resizer");
+      let relative_location;
+      switch (current_resizer) {
+        case "renderer_editor":
+          relative_location = (event.clientX / window.innerWidth) * 100;
+          this.updateComponentsWidth({ relative_pos_resize_2: relative_location });
+          break;
+        case "properties_panel":
+          relative_location = (event.clientX / window.innerWidth) * 100;
+          this.updateComponentsWidth({ relative_pos_resize_1: relative_location });
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  updateComponentsWidth(required_update) {
+    let general = this.state.settings.general;
+    let layout = this.state.settings.layout;
+    let renderer_width = required_update.renderer_width;
+    let renderer_right = required_update.renderer_right;
+    let editor_width = required_update.editor_width;
+    let panel_width = required_update.panel_width;
+    let relative_pos_resize_1 = required_update.relative_pos_resize_1;
+    let relative_pos_resize_2 = required_update.relative_pos_resize_2;
+    let available_width;
+    if (typeof relative_pos_resize_1 !== "undefined") {
+      available_width = 100 - relative_pos_resize_1;
+      if (general.side_by_side) {
+        renderer_width = layout.renderer_width;
+        editor_width = available_width - renderer_width;
+        renderer_right = editor_width;
+      } else {
+        renderer_width = available_width;
+        editor_width = available_width;
+        renderer_right = 0;
+      }
+      this.setState({
+        settings: {
+          ...this.state.settings,
+          layout: { panel_width: relative_pos_resize_1, renderer_width, editor_width, renderer_right },
+        },
+      });
+    } else if (typeof relative_pos_resize_2 !== "undefined") {
+      if (general.show_properties_panel) {
+        panel_width = layout.panel_width;
+        available_width = 100 - panel_width;
+      } else {
+        panel_width = 0;
+        available_width = 100;
+      }
+      renderer_width = relative_pos_resize_2 - panel_width;
+      editor_width = available_width - renderer_width;
+      renderer_right = editor_width;
+      this.setState({
+        settings: {
+          ...this.state.settings,
+          layout: { panel_width, renderer_width, editor_width, renderer_right },
+        },
+      });
+    } else if (typeof panel_width !== "undefined") {
+      available_width = 100 - panel_width;
+      if (general.side_by_side) {
+        editor_width = layout.editor_width;
+        renderer_width = available_width - editor_width;
+        renderer_right = editor_width;
+      } else {
+        editor_width = available_width;
+        renderer_width = available_width;
+        renderer_right = 0;
+      }
+      this.setState({
+        settings: {
+          ...this.state.settings,
+          layout: { panel_width, renderer_width, editor_width, renderer_right },
+        },
+      });
     }
   }
   activateNodeCreation(event) {
@@ -179,8 +264,18 @@ class ParamEle extends React.Component {
   render() {
     let commands_bar;
     if (this.state.mode === "add_node") {
-      commands_bar = <CommandsBar active={this.state.mode === "add_node"} x={this.state.mouse_x} y={this.state.mouse_y} rel_orig_x={this.state.rel_orig_x} rel_orig_y={this.state.rel_orig_y}></CommandsBar>;
+      commands_bar = (
+        <CommandsBar
+          active={this.state.mode === "add_node"}
+          x={this.state.mouse_x}
+          y={this.state.mouse_y}
+          rel_orig_x={this.state.rel_orig_x}
+          rel_orig_y={this.state.rel_orig_y}
+        ></CommandsBar>
+      );
     }
+    let panel_plus_renderer = Number(this.state.settings.layout.renderer_width);
+    if (this.state.settings.general.show_properties_panel) panel_plus_renderer += Number(this.state.settings.layout.panel_width);
     return (
       <ChakraProvider>
         <div
@@ -193,12 +288,22 @@ class ParamEle extends React.Component {
           <NavBar></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
+          <PropertiesPanel
+            visible={this.state.settings.general.show_properties_panel}
+            width={this.state.settings.layout.panel_width}
+          ></PropertiesPanel>
+          <ResizeBorder
+            id="properties_panel"
+            visible={this.state.settings.general.show_properties_panel}
+            position={this.state.settings.layout.panel_width}
+          ></ResizeBorder>
           <VisualEditor app_state={this.state} width={this.state.settings.layout.editor_width}></VisualEditor>
-          <ResizeBorder settings={this.state.settings}></ResizeBorder>
+          <ResizeBorder id="renderer_editor" visible={this.state.settings.general.side_by_side} position={panel_plus_renderer}></ResizeBorder>
           <Renderer
             visible={!this.state.settings.general.show_nodes}
             width={this.state.settings.layout.renderer_width}
             settings={this.state.settings.general}
+            layout={this.state.settings.layout}
           ></Renderer>
         </div>
       </ChakraProvider>

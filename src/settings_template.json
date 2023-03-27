@@ -13,12 +13,18 @@
             "type": "check"
         },
         "side_by_side": {
-            "default": false,
+            "default": true,
+            "type": "check"
+        },
+        "show_properties_panel": {
+            "default": true,
             "type": "check"
         }
     },
     "layout":{
-        "renderer_width": {"default": "30"},
-        "editor_width": {"default": "70"}
+        "renderer_width": {"default": 30},
+        "editor_width": {"default": 50},
+        "panel_width": {"default": 20},
+        "renderer_right": {"default": 50}
     }
 }

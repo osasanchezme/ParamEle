@@ -20,6 +20,7 @@ function setInitialState() {
     structure: utils.getEmptyStructuralModel(),
     globals: {
       last_node_id_created: "",
+      current_resizer: "",
     },
     section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
     language,

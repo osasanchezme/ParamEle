@@ -61,6 +61,12 @@ div.commands-bar {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
+div.properties-panel {
+  height: calc(100vh - 50px);
+  position: absolute;
+  top: 50px;
+}
+
 div.border-resizer {
   height: calc(100vh - 50px);
   width: 6px;
@@ -68,7 +74,7 @@ div.border-resizer {
   position: absolute;
   top: 50px;
   cursor: col-resize;
-  z-index: 4;
+  z-index: 10;
   padding-left: 1px;
 }
 
