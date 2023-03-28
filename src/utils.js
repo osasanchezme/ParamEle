@@ -221,10 +221,12 @@ function getDefaultValueForArg(type, default_value){
 /**
  * 
  * @param {String} arg_id 
+ * @param {"target"|"source"} type 
  */
-function splitArgName(arg_id){
+function splitArgName(arg_id, type){
   let components = arg_id.split("-");
-  let default_value = getDefaultValueForArg(components[1], components[2])
+  let default_value = getDefaultValueForArg(components[1], components[2]);
+  if (type === "source") components[0] = components[0].replace("_out", "");
   return {
     name: components[0],
     type: components[1],
@@ -237,6 +239,10 @@ function getDisplayCopy(copy_group, copy_key){
   return copy_key;
 }
 
+function updatePropertiesPanel(){
+  window.ParamEle.updateNodesFromLocalState();
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -247,7 +253,8 @@ const utils = {
   convertNodeToStructuralArgs,
   splitArgName,
   getDisplayCopy,
-  getNodesLibrary
+  getNodesLibrary,
+  updatePropertiesPanel
 };
 
 export default utils;

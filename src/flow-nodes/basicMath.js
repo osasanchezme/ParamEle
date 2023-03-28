@@ -9,7 +9,7 @@ function localGetCopy(node_name) {
 function MathSum({ data, id }) {
   return (
     <GenericInOutNode
-      node_label={localGetCopy("MathSumNode")}
+      node_label={localGetCopy("sumNumbers")}
       data={data}
       id={id}
       target_ids={["num-1-in", "num-2-in"]}
@@ -28,7 +28,7 @@ function MathSumExec(args) {
 function MathMultiply({ data, id }) {
   return (
     <GenericInOutNode
-      node_label={localGetCopy("MathMultiplyNode")}
+      node_label={localGetCopy("multiplyNumbers")}
       data={data}
       id={id}
       target_ids={["num-1-in", "num-2-in"]}
@@ -47,7 +47,7 @@ function MathMultiplyExec(args) {
 function MathDivide({ data, id }) {
   return (
     <GenericInOutNode
-      node_label={localGetCopy("MathDivideNode")}
+      node_label={localGetCopy("divideNumbers")}
       data={data}
       id={id}
       target_ids={["num-1-in", "num-2-in"]}
@@ -66,7 +66,7 @@ function MathDivideExec(args) {
 function MathRound({ data, id }) {
   return (
     <GenericInOutNode
-      node_label={localGetCopy("MathRoundNode")}
+      node_label={localGetCopy("roundNumber")}
       data={data}
       id={id}
       target_ids={["num-1-in", "num-2-in"]}

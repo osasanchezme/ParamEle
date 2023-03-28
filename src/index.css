@@ -65,6 +65,7 @@ div.properties-panel {
   height: calc(100vh - 50px);
   position: absolute;
   top: 50px;
+  overflow-y: auto;
 }
 
 div.border-resizer {

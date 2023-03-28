@@ -8,7 +8,7 @@ function localGetCopy(node_name){
 // Rectangular
 const rectangular_target_ids = ["material_id-id-1", "base-value-1", "height-value-1"];
 function Rectangle({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("RectangleNode")} data={data} id={id} target_ids={rectangular_target_ids} source_ids={["section_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("structuralRectangleSection")} data={data} id={id} target_ids={rectangular_target_ids} source_ids={["section_out-id"]}></GenericInOutNode>;
 }
 
 function RectangleExec(args) {

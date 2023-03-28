@@ -52,8 +52,7 @@ function run() {
     Object.entries(result).forEach(([res_id, res_val]) => {
       let actual_res_val = JSON.parse(JSON.stringify(res_val));
       // Process the structure
-      let res_id_obj = utils.splitArgName(res_id);
-      let res_type = res_id_obj.name.replace("_out", "");
+      let res_type = utils.splitArgName(res_id, "source").name;
       if (
         res_type === "node" ||
         res_type === "member" ||
@@ -82,6 +81,8 @@ function run() {
   state.setState(structure, "structure");
   // Update the renderer
   utils.updateRenderer();
+  // Update the properties panel
+  utils.updatePropertiesPanel();
 }
 
 const logic_runner = { run };

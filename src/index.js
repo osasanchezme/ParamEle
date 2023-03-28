@@ -24,6 +24,7 @@ import getState from "./getState";
 import logic_runner from "./js/globalLogicRunner";
 import ResizeBorder from "./components/resize_border";
 import PropertiesPanel from "./components/properties_panel";
+import theme from "./theme"
 const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -137,6 +138,8 @@ class ParamEle extends React.Component {
     this.activateNodeCreation = this.activateNodeCreation.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateComponentsWidth = this.updateComponentsWidth.bind(this);
+    this.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
+    window.ParamEle.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
   }
   changeGeneralSettingValue(key, value) {
     let curr_settings = getState("settings");
@@ -153,6 +156,10 @@ class ParamEle extends React.Component {
         this.updateComponentsWidth({ panel_width: curr_settings.layout.panel_width });
       }
     });
+  }
+  updateNodesFromLocalState(){
+    let local_state = getState();
+    this.setState({model: local_state.model});
   }
   changeAppMode(mode) {
     this.setState({ mode });
@@ -277,7 +284,7 @@ class ParamEle extends React.Component {
     let panel_plus_renderer = Number(this.state.settings.layout.renderer_width);
     if (this.state.settings.general.show_properties_panel) panel_plus_renderer += Number(this.state.settings.layout.panel_width);
     return (
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <div
           className="app-cont"
           tabIndex={0}
@@ -291,6 +298,7 @@ class ParamEle extends React.Component {
           <PropertiesPanel
             visible={this.state.settings.general.show_properties_panel}
             width={this.state.settings.layout.panel_width}
+            data={this.state.model}
           ></PropertiesPanel>
           <ResizeBorder
             id="properties_panel"

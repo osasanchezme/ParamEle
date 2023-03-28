@@ -29,7 +29,7 @@ function InputNumber({ data, id }) {
     updateStateFromFlow();
   };
   // Check if the user defined a custom_label for the node
-  let node_label = utils.getDisplayCopy("nodes", "InputNumberNode");
+  let node_label = utils.getDisplayCopy("nodes", "inputNumber");
   node_label = data.custom_label || node_label;
   return (
     <div className="text-updater-node">
