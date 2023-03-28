@@ -1,5 +1,6 @@
 import { Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel, Tag } from "@chakra-ui/react";
 import utils from "../utils";
+import state from "../state";
 
 function PropertiesPanel({ visible, width, data }) {
   let top_keys = [];
@@ -8,6 +9,11 @@ function PropertiesPanel({ visible, width, data }) {
     if (!grouped_nodes.hasOwnProperty(node.type)) grouped_nodes[node.type] = [];
     grouped_nodes[node.type].push(node);
   });
+  function handleClickOnTag(e){
+    let coords_str = e.target.title;
+    let coords = coords_str.split("|");
+    state.zoomToCoordinate(Number(coords[0]), Number(coords[1]));
+  }
   Object.entries(grouped_nodes).forEach(([key, val]) => {
     top_keys.push(
       <AccordionItem key={key}>
@@ -33,7 +39,7 @@ function PropertiesPanel({ visible, width, data }) {
                         let display_copy = utils.getDisplayCopy("tags", utils.splitArgName(data_key, "target").name);
                         return (
                           <Box width="100%" key={data_key} marginBottom={"2px"}>
-                            <Tag variant={"targetBig"} size={"md"}>
+                            <Tag variant={"targetBig"} title={`${node.position.x}|${node.position.y}`} onClick={handleClickOnTag}>
                               {display_copy} : {typeof data_value == "object" ? JSON.stringify(data_value) : data_value}
                             </Tag>
                           </Box>
@@ -44,7 +50,7 @@ function PropertiesPanel({ visible, width, data }) {
                     let display_copy = utils.getDisplayCopy("tags", utils.splitArgName(data_key, "source").name);
                     return data_key !== "input" && data_key !== "custom_label" ? (
                       <Box width="100%" key={data_key}  marginBottom={"2px"}>
-                        <Tag variant={"sourceBig"}>
+                        <Tag variant={"sourceBig"} title={`${node.position.x}|${node.position.y}`} onClick={handleClickOnTag}>
                           {display_copy} : {typeof data_value == "object" ? JSON.stringify(data_value) : data_value}
                         </Tag>
                       </Box>

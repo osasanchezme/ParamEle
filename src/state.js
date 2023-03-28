@@ -116,6 +116,13 @@ function updateNodeData(node_id, data_update){
     updateStateFromFlow();
 }
 
+function zoomToCoordinate(x, y){
+  let rf_instance = getRfInstance();
+  let width = 100;
+  let height = 100;
+  rf_instance.fitBounds({x, y, width, height});
+}
+
 function getSectionColor(section_id){
   let section_color = window.ParamEle.state.section_colors[section_id];
   if (typeof section_color === "undefined") defineSectionColor(section_id);
@@ -138,7 +145,8 @@ const state = {
   addNodeToTheEditor,
   getSectionColor,
   updateWordsMapFromLanguage,
-  updateNodeData
+  updateNodeData,
+  zoomToCoordinate
 };
 
 export default state;

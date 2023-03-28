@@ -13,6 +13,7 @@ const targetTypeTagBig = definePartsStyle({
   container: {
     ...common_tag,
     fontSize: 12,
+    cursor: "pointer",
   },
 });
 
@@ -28,6 +29,7 @@ const sourceTypeTagBig = definePartsStyle({
     ...common_tag,
     bg: "gray.300",
     fontSize: 12,
+    cursor: "pointer",
   },
 });
 
