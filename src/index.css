@@ -123,3 +123,10 @@ div.modebar {
   background: var(--chakra-colors-gray-400) !important;
   color: var(--chakra-colors-gray-900) !important;
 }
+
+.panel-top-bar {
+  background-color: var(--chakra-colors-gray-300);
+  height: 28px;
+  padding: 2px;
+  font-weight: 600;
+}

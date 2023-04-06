@@ -24,8 +24,8 @@ import getState from "./getState";
 import logic_runner from "./js/globalLogicRunner";
 import ResizeBorder from "./components/resize_border";
 import PropertiesPanel from "./components/properties_panel";
-import theme from "./theme"
-const { setInitialState, setState, storeRfInstance, updateStateFromFlow } = state;
+import theme from "./theme";
+const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
 const library = createNodesLibrary();
@@ -142,24 +142,19 @@ class ParamEle extends React.Component {
     window.ParamEle.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
   }
   changeGeneralSettingValue(key, value) {
-    let curr_settings = getState("settings");
+    let curr_settings = this.state.settings;
     curr_settings.general[key] = value;
-    setState(curr_settings, "settings");
-    this.setState(getState(), () => {
+    this.setState({ settings: curr_settings }, () => {
       if (key === "show_properties_panel") {
-        if (value) {
-          this.updateComponentsWidth({ panel_width: 15 });
-        } else {
-          this.updateComponentsWidth({ panel_width: 0 });
-        }
+        this.updateComponentsWidth({ panel_width: value ? 20 : 0 });
       } else if (key === "side_by_side") {
-        this.updateComponentsWidth({ panel_width: curr_settings.layout.panel_width });
+        this.updateComponentsWidth({ panel_width: curr_settings.general.show_properties_panel ? curr_settings.layout.panel_width : 0 });
       }
     });
   }
-  updateNodesFromLocalState(){
+  updateNodesFromLocalState() {
     let local_state = getState();
-    this.setState({model: local_state.model});
+    this.setState({ model: local_state.model });
   }
   changeAppMode(mode) {
     this.setState({ mode });
@@ -230,7 +225,7 @@ class ParamEle extends React.Component {
     } else if (typeof panel_width !== "undefined") {
       available_width = 100 - panel_width;
       if (general.side_by_side) {
-        editor_width = layout.editor_width;
+        editor_width = 0.5 * available_width;
         renderer_width = available_width - editor_width;
         renderer_right = editor_width;
       } else {

@@ -90,5 +90,16 @@
         "edit": "Edit",
         "save": "Save",
         "discard": "Discard"
+    },
+    "properties_panel": {
+        "title": "EXPLORER",
+        "copy_json": "Copy structure",
+        "collapse_all": "Collapse all"
+    },
+    "notifications":{
+        "copy_title": "",
+        "copy_desc": "The structure was copied to the clipboard",
+        "copy_error_title": "",
+        "copy_error_desc": "There was an error while copying the structure"
     }
 }

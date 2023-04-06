@@ -90,5 +90,16 @@
         "edit": "Editar",
         "save": "Guardar",
         "discard": "Cancelar"
+    },
+    "properties_panel": {
+        "title": "EXPLORADOR",
+        "copy_json": "Copiar estructura",
+        "collapse_all": "Contraer todo"
+    },
+    "notifications":{
+        "copy_title": "",
+        "copy_desc": "La estructura fue copiada al portapapeles",
+        "copy_error_title": "",
+        "copy_error_desc": "Ocurrió un error al copiar la estructura"
     }
 }

@@ -5,6 +5,7 @@ import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
 import repair from "./js/repair";
+import notify from "./components/notification";
 
 function setInitialState() {
   // Get language from URL
@@ -24,13 +25,13 @@ function setInitialState() {
     },
     section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
     language,
-    words_map: {}
+    words_map: {},
   };
   updateWordsMapFromLanguage();
 }
 
-function updateWordsMapFromLanguage(){
-  const words_map = require(`./data/languages/${window.ParamEle.state.language}.json`)
+function updateWordsMapFromLanguage() {
+  const words_map = require(`./data/languages/${window.ParamEle.state.language}.json`);
   window.ParamEle.state.words_map = words_map;
 }
 
@@ -100,37 +101,49 @@ function addNodeToTheEditor(type, html_position, data = {}) {
   rfInstance.addNodes([{ id, type, position, data }]);
 }
 
-function updateNodeData(node_id, data_update){
+function updateNodeData(node_id, data_update) {
   let rf_instance = getRfInstance();
-    rf_instance.setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === node_id) {
-          node.data = {
-            ...node.data,
-            ...data_update
-          };
-        }
-        return node;
-      })
-    );
-    updateStateFromFlow();
+  rf_instance.setNodes((nds) =>
+    nds.map((node) => {
+      if (node.id === node_id) {
+        node.data = {
+          ...node.data,
+          ...data_update,
+        };
+      }
+      return node;
+    })
+  );
+  updateStateFromFlow();
 }
 
-function zoomToCoordinate(x, y){
+function zoomToCoordinate(x, y) {
   let rf_instance = getRfInstance();
   let width = 100;
   let height = 100;
-  rf_instance.fitBounds({x, y, width, height});
+  rf_instance.fitBounds({ x, y, width, height });
 }
 
-function getSectionColor(section_id){
+function getSectionColor(section_id) {
   let section_color = window.ParamEle.state.section_colors[section_id];
   if (typeof section_color === "undefined") defineSectionColor(section_id);
   return window.ParamEle.state.section_colors[section_id];
 }
 
-function defineSectionColor(section_id){
-  window.ParamEle.state.section_colors[Number(section_id)] = '#' + parseInt(Math.random() * 0xffffff).toString(16);
+function defineSectionColor(section_id) {
+  window.ParamEle.state.section_colors[Number(section_id)] = "#" + parseInt(Math.random() * 0xffffff).toString(16);
+}
+
+function copyStructureToClipboard() {
+  let structure = getState("structure");
+  navigator.clipboard
+    .writeText(JSON.stringify(structure))
+    .then((value) => {
+      notify("info", "copy", "", true);
+    })
+    .catch((value) => {
+      notify("error", "copy_error", "", true);
+    });
 }
 
 const state = {
@@ -146,7 +159,8 @@ const state = {
   getSectionColor,
   updateWordsMapFromLanguage,
   updateNodeData,
-  zoomToCoordinate
+  zoomToCoordinate,
+  copyStructureToClipboard,
 };
 
 export default state;

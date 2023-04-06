@@ -21,6 +21,13 @@
   font-size: 0.5rem !important;
 }
 
+.small-ghost-button{
+  height: var(--chakra-sizes-4) !important;
+  min-width: var(--chakra-sizes-4) !important;
+  border-radius: var(--chakra-radii-base) !important;
+  font-size: 0.8rem !important;
+}
+
 .editable-node-label{
   font-size: inherit !important;
   font-family: inherit;
