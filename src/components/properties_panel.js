@@ -16,8 +16,10 @@ import {
 import { MdCopyAll, MdUnfoldLess } from "react-icons/md";
 import utils from "../utils";
 import state from "../state";
+import { useState } from "react";
 
 function PropertiesPanel({ visible, width, data }) {
+  const [expanded_index, setExpandedIndex] = useState([]);
   let top_keys = [];
   let grouped_nodes = {};
   data.nodes.forEach((node) => {
@@ -33,12 +35,20 @@ function PropertiesPanel({ visible, width, data }) {
     state.copyStructureToClipboard();
   }
   function handleClickOnCollapse(e) {
-    // WIP - Handle collapse all...
+    setExpandedIndex([]);
   }
-  Object.entries(grouped_nodes).forEach(([key, val]) => {
+  function handleClickOnAccordionButton(e, i) {
+    let index_of_clicked = expanded_index.indexOf(i);
+    if (index_of_clicked < 0) {
+      setExpandedIndex([...expanded_index, i]);
+    } else {
+      setExpandedIndex([...expanded_index.slice(0, index_of_clicked), ...expanded_index.slice(index_of_clicked + 1, expanded_index.length)]);
+    }
+  }
+  Object.entries(grouped_nodes).forEach(([key, val], i) => {
     top_keys.push(
       <AccordionItem key={key}>
-        <AccordionButton>
+        <AccordionButton onClick={(event) => handleClickOnAccordionButton(event, i)}>
           <Box as="span" flex="1" textAlign="left">
             {utils.getDisplayCopy("nodes", key)}
           </Box>
@@ -90,7 +100,7 @@ function PropertiesPanel({ visible, width, data }) {
       <div className="panel-top-bar">
         <Grid templateColumns="repeat(15, 1fr)" gap={2}>
           <GridItem colSpan={9}>{utils.getDisplayCopy("properties_panel", "title")}</GridItem>
-          <GridItem colStart={14} colEnd={14} >
+          <GridItem colStart={14} colEnd={14}>
             <Tooltip
               className="clear-tooltip"
               label={
@@ -108,7 +118,7 @@ function PropertiesPanel({ visible, width, data }) {
               />
             </Tooltip>
           </GridItem>
-          <GridItem colStart={15} colEnd={15} >
+          <GridItem colStart={15} colEnd={15}>
             <Tooltip
               className="clear-tooltip"
               label={
@@ -128,7 +138,7 @@ function PropertiesPanel({ visible, width, data }) {
           </GridItem>
         </Grid>
       </div>
-      <Accordion allowMultiple variant={"parent"}>
+      <Accordion allowMultiple variant={"parent"} index={expanded_index}>
         {top_keys}
       </Accordion>
     </div>
