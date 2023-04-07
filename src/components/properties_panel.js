@@ -17,6 +17,7 @@ import { MdCopyAll, MdUnfoldLess } from "react-icons/md";
 import utils from "../utils";
 import state from "../state";
 import { useState } from "react";
+import ObjectInspector from "./object_inspector";
 
 function PropertiesPanel({ visible, width, data }) {
   const [expanded_index, setExpandedIndex] = useState([]);
@@ -26,10 +27,8 @@ function PropertiesPanel({ visible, width, data }) {
     if (!grouped_nodes.hasOwnProperty(node.type)) grouped_nodes[node.type] = [];
     grouped_nodes[node.type].push(node);
   });
-  function handleClickOnTag(e) {
-    let coords_str = e.target.title;
-    let coords = coords_str.split("|");
-    state.zoomToCoordinate(Number(coords[0]), Number(coords[1]));
+  function handleClickOnTag(e, node_position) {
+    state.zoomToCoordinate(Number(node_position.x), Number(node_position.y));
   }
   function handleClickOnCopy(e) {
     state.copyStructureToClipboard();
@@ -70,8 +69,11 @@ function PropertiesPanel({ visible, width, data }) {
                         let display_copy = utils.getDisplayCopy("tags", utils.splitArgName(data_key, "target").name);
                         return (
                           <Box width="100%" key={data_key} marginBottom={"2px"}>
-                            <Tag variant={"targetBig"} title={`${node.position.x}|${node.position.y}`} onClick={handleClickOnTag}>
-                              {display_copy} : {typeof data_value == "object" ? JSON.stringify(data_value) : data_value}
+                            <Tag variant={"targetBig"} onClick={(event) => handleClickOnTag(event, node.position)}>
+                              <HStack>
+                                <Text>{display_copy} : </Text>
+                                {typeof data_value == "object" ? ObjectInspector({ object: data_value }) : <Text>{data_value}</Text>}
+                              </HStack>
                             </Tag>
                           </Box>
                         );
@@ -81,8 +83,8 @@ function PropertiesPanel({ visible, width, data }) {
                     let display_copy = utils.getDisplayCopy("tags", utils.splitArgName(data_key, "source").name);
                     return data_key !== "input" && data_key !== "custom_label" ? (
                       <Box width="100%" key={data_key} marginBottom={"2px"}>
-                        <Tag variant={"sourceBig"} title={`${node.position.x}|${node.position.y}`} onClick={handleClickOnTag}>
-                          {display_copy} : {typeof data_value == "object" ? JSON.stringify(data_value) : data_value}
+                        <Tag variant={"sourceBig"} onClick={(event) => handleClickOnTag(event, node.position)}>
+                          {display_copy} : {typeof data_value == "object" ? ObjectInspector({ object: data_value }) : data_value}
                         </Tag>
                       </Box>
                     ) : null;

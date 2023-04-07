@@ -158,7 +158,7 @@ function updateRenderer() {
   window.ParamEle.updateRenderer();
 }
 
-function getNodesLibrary(){
+function getNodesLibrary() {
   return window.ParamEle.nodesLibrary;
 }
 /**
@@ -167,7 +167,7 @@ function getNodesLibrary(){
  */
 function convertNodeToStructuralArgs(args, full_args_key_list) {
   let structural_args = {};
-  full_args_key_list.forEach(arg_key => {
+  full_args_key_list.forEach((arg_key) => {
     if (!args.hasOwnProperty(arg_key)) args[arg_key] = null;
   });
   Object.entries(args).forEach(([arg_key, arg_value]) => {
@@ -199,7 +199,7 @@ function convertNodeToStructuralArgs(args, full_args_key_list) {
   return structural_args;
 }
 
-function getDefaultValueForArg(type, default_value){
+function getDefaultValueForArg(type, default_value) {
   switch (type) {
     case "value":
       if (typeof default_value === "undefined" || isNaN(Number(default_value))) default_value = 0;
@@ -219,29 +219,31 @@ function getDefaultValueForArg(type, default_value){
 }
 
 /**
- * 
- * @param {String} arg_id 
- * @param {"target"|"source"} type 
+ *
+ * @param {String} arg_id
+ * @param {"target"|"source"} type
  */
-function splitArgName(arg_id, type){
+function splitArgName(arg_id, type) {
   let components = arg_id.split("-");
   let default_value = getDefaultValueForArg(components[1], components[2]);
   if (type === "source") components[0] = components[0].replace("_out", "");
   return {
     name: components[0],
     type: components[1],
-    default_value
-  }
+    default_value,
+  };
 }
 
-function getDisplayCopy(copy_group, copy_key){
-  if (window.ParamEle.state.words_map.hasOwnProperty(copy_group) && window.ParamEle.state.words_map[copy_group].hasOwnProperty(copy_key)) copy_key = window.ParamEle.state.words_map[copy_group][copy_key];
+function getDisplayCopy(copy_group, copy_key) {
+  if (window.ParamEle.state.words_map.hasOwnProperty(copy_group) && window.ParamEle.state.words_map[copy_group].hasOwnProperty(copy_key))
+    copy_key = window.ParamEle.state.words_map[copy_group][copy_key];
   return copy_key;
 }
 
-function updatePropertiesPanel(){
+function updatePropertiesPanel() {
   window.ParamEle.updateNodesFromLocalState();
 }
+
 
 const utils = {
   getClosestMatches,
@@ -254,7 +256,7 @@ const utils = {
   splitArgName,
   getDisplayCopy,
   getNodesLibrary,
-  updatePropertiesPanel
+  updatePropertiesPanel,
 };
 
 export default utils;
