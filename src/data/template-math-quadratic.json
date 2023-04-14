@@ -1,0 +1,577 @@
+{
+    "model": {
+        "nodes": [
+            {
+                "width": 105,
+                "height": 80,
+                "id": "node-19",
+                "type": "divideNumbers",
+                "position": {
+                    "x": 2206.6130887877084,
+                    "y": 712.54568446879
+                },
+                "data": {
+                    "custom_label": "RAIZ NEG",
+                    "result_out-value": 0.18350341907227405
+                },
+                "positionAbsolute": {
+                    "x": 2206.6130887877084,
+                    "y": 712.54568446879
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 105,
+                "height": 80,
+                "id": "node-18",
+                "type": "divideNumbers",
+                "position": {
+                    "x": 2211.1862324386175,
+                    "y": 817.0327170480567
+                },
+                "data": {
+                    "result_out-value": 1.816496580927726,
+                    "custom_label": "RAIZ POS"
+                },
+                "positionAbsolute": {
+                    "x": 2211.1862324386175,
+                    "y": 817.0327170480567
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-17",
+                "type": "sumNumbers",
+                "position": {
+                    "x": 1856.0717030877122,
+                    "y": 582.6729643838787
+                },
+                "data": {
+                    "result_out-value": 1.1010205144336442,
+                    "custom_label": "NUM NEG"
+                },
+                "positionAbsolute": {
+                    "x": 1856.0717030877122,
+                    "y": 582.6729643838787
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-16",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 1616.3673091037995,
+                    "y": 489.15520624786825
+                },
+                "data": {
+                    "result_out-value": -4.898979485566356,
+                    "custom_label": "-RAÍZ"
+                },
+                "positionAbsolute": {
+                    "x": 1616.3673091037995,
+                    "y": 489.15520624786825
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-15",
+                "type": "sumNumbers",
+                "position": {
+                    "x": 1855.8722663903004,
+                    "y": 703.4219948058756
+                },
+                "data": {
+                    "custom_label": "NUM POS",
+                    "result_out-value": 10.898979485566356
+                },
+                "positionAbsolute": {
+                    "x": 1855.8722663903004,
+                    "y": 703.4219948058756
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 110,
+                "height": 80,
+                "id": "node-14",
+                "type": "rootNumber",
+                "position": {
+                    "x": 1419.1026948716121,
+                    "y": 586.9562049857547
+                },
+                "data": {
+                    "result_out-value": 4.898979485566356
+                },
+                "positionAbsolute": {
+                    "x": 1419.1026948716121,
+                    "y": 586.9562049857547
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-13",
+                "type": "sumNumbers",
+                "position": {
+                    "x": 1394.677793867793,
+                    "y": 463.1998398941639
+                },
+                "data": {
+                    "result_out-value": 24,
+                    "custom_label": "B**2 - 4AC"
+                },
+                "positionAbsolute": {
+                    "x": 1394.677793867793,
+                    "y": 463.1998398941639
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-12",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 1286.4311724676652,
+                    "y": 332.38927826761505
+                },
+                "data": {
+                    "result_out-value": -12,
+                    "custom_label": "-4AC"
+                },
+                "positionAbsolute": {
+                    "x": 1286.4311724676652,
+                    "y": 332.38927826761505
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-11",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 1859.2062337491384,
+                    "y": 822.3050984874995
+                },
+                "data": {
+                    "result_out-value": 6,
+                    "custom_label": "2A"
+                },
+                "positionAbsolute": {
+                    "x": 1859.2062337491384,
+                    "y": 822.3050984874995
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 110,
+                "height": 80,
+                "id": "node-10",
+                "type": "powerNumber",
+                "position": {
+                    "x": 1122.9229152614112,
+                    "y": 320.05945499480515
+                },
+                "data": {
+                    "result_out-value": 36,
+                    "custom_label": "B**2"
+                },
+                "positionAbsolute": {
+                    "x": 1122.9229152614112,
+                    "y": 320.05945499480515
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-9",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 1157.4146107831377,
+                    "y": 208.74452747070342
+                },
+                "data": {
+                    "custom_label": "4AC",
+                    "result_out-value": 12
+                },
+                "positionAbsolute": {
+                    "x": 1157.4146107831377,
+                    "y": 208.74452747070342
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-8",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 993.8194235539042,
+                    "y": 175.9423871877768
+                },
+                "data": {
+                    "result_out-value": 3,
+                    "custom_label": "AC"
+                },
+                "positionAbsolute": {
+                    "x": 993.8194235539042,
+                    "y": 175.9423871877768
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 115,
+                "height": 80,
+                "id": "node-7",
+                "type": "multiplyNumbers",
+                "position": {
+                    "x": 1190.137235831692,
+                    "y": 589.933473414404
+                },
+                "data": {
+                    "result_out-value": 6,
+                    "custom_label": "-B"
+                },
+                "positionAbsolute": {
+                    "x": 1190.137235831692,
+                    "y": 589.933473414404
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-6",
+                "type": "inputNumber",
+                "position": {
+                    "x": 756.2866255138063,
+                    "y": 21.967275333156337
+                },
+                "data": {
+                    "value": "2",
+                    "custom_label": "2"
+                },
+                "positionAbsolute": {
+                    "x": 756.2866255138063,
+                    "y": 21.967275333156337
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-5",
+                "type": "inputNumber",
+                "position": {
+                    "x": 755.9613977747832,
+                    "y": 106.01413282789626
+                },
+                "data": {
+                    "value": "4",
+                    "custom_label": "4"
+                },
+                "positionAbsolute": {
+                    "x": 755.9613977747832,
+                    "y": 106.01413282789626
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-4",
+                "type": "inputNumber",
+                "position": {
+                    "x": 753.9274830963975,
+                    "y": 183.08803125838233
+                },
+                "data": {
+                    "value": "-1",
+                    "custom_label": "-1"
+                },
+                "positionAbsolute": {
+                    "x": 753.9274830963975,
+                    "y": 183.08803125838233
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-3",
+                "type": "inputNumber",
+                "position": {
+                    "x": 750.8396684926622,
+                    "y": 443.5422264554653
+                },
+                "data": {
+                    "custom_label": "C",
+                    "value": "1"
+                },
+                "positionAbsolute": {
+                    "x": 750.8396684926622,
+                    "y": 443.5422264554653
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-2",
+                "type": "inputNumber",
+                "position": {
+                    "x": 749.5611368665564,
+                    "y": 354.1884981273039
+                },
+                "data": {
+                    "custom_label": "B",
+                    "value": "-6"
+                },
+                "positionAbsolute": {
+                    "x": 749.5611368665564,
+                    "y": 354.1884981273039
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-1",
+                "type": "inputNumber",
+                "position": {
+                    "x": 751.3840932958268,
+                    "y": 261.7308154750121
+                },
+                "data": {
+                    "custom_label": "A",
+                    "value": "3"
+                },
+                "positionAbsolute": {
+                    "x": 751.3840932958268,
+                    "y": 261.7308154750121
+                },
+                "selected": false,
+                "dragging": false
+            }
+        ],
+        "edges": [
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-7",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-4value-node-7num_1-value"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-7",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-2value-node-7num_2-value"
+            },
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-8",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-1value-node-8num_1-value"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-8",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-3value-node-8num_2-value"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "value",
+                "target": "node-9",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-5value-node-9num_1-value"
+            },
+            {
+                "source": "node-8",
+                "sourceHandle": "result_out-value",
+                "target": "node-9",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-8result_out-value-node-9num_2-value"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-10",
+                "targetHandle": "base-value-0",
+                "id": "reactflow__edge-node-2value-node-10base-value-0"
+            },
+            {
+                "source": "node-6",
+                "sourceHandle": "value",
+                "target": "node-10",
+                "targetHandle": "power-value-1",
+                "id": "reactflow__edge-node-6value-node-10power-value-1"
+            },
+            {
+                "source": "node-6",
+                "sourceHandle": "value",
+                "target": "node-11",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-6value-node-11num_1-value"
+            },
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-11",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-1value-node-11num_2-value"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-12",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-4value-node-12num_1-value"
+            },
+            {
+                "source": "node-9",
+                "sourceHandle": "result_out-value",
+                "target": "node-12",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-9result_out-value-node-12num_2-value"
+            },
+            {
+                "source": "node-10",
+                "sourceHandle": "result_out-value",
+                "target": "node-13",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-10result_out-value-node-13num_1-value"
+            },
+            {
+                "source": "node-12",
+                "sourceHandle": "result_out-value",
+                "target": "node-13",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-12result_out-value-node-13num_2-value"
+            },
+            {
+                "source": "node-13",
+                "sourceHandle": "result_out-value",
+                "target": "node-14",
+                "targetHandle": "base-value-1",
+                "id": "reactflow__edge-node-13result_out-value-node-14base-value-1"
+            },
+            {
+                "source": "node-7",
+                "sourceHandle": "result_out-value",
+                "target": "node-15",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-7result_out-value-node-15num_1-value"
+            },
+            {
+                "source": "node-14",
+                "sourceHandle": "result_out-value",
+                "target": "node-15",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-14result_out-value-node-15num_2-value"
+            },
+            {
+                "source": "node-14",
+                "sourceHandle": "result_out-value",
+                "target": "node-16",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-14result_out-value-node-16num_2-value"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-16",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-4value-node-16num_1-value"
+            },
+            {
+                "source": "node-7",
+                "sourceHandle": "result_out-value",
+                "target": "node-17",
+                "targetHandle": "num_1-value",
+                "id": "reactflow__edge-node-7result_out-value-node-17num_1-value"
+            },
+            {
+                "source": "node-16",
+                "sourceHandle": "result_out-value",
+                "target": "node-17",
+                "targetHandle": "num_2-value",
+                "id": "reactflow__edge-node-16result_out-value-node-17num_2-value"
+            },
+            {
+                "source": "node-15",
+                "sourceHandle": "result_out-value",
+                "target": "node-18",
+                "targetHandle": "num-value",
+                "id": "reactflow__edge-node-15result_out-value-node-18num-value"
+            },
+            {
+                "source": "node-11",
+                "sourceHandle": "result_out-value",
+                "target": "node-18",
+                "targetHandle": "den-value",
+                "id": "reactflow__edge-node-11result_out-value-node-18den-value"
+            },
+            {
+                "source": "node-17",
+                "sourceHandle": "result_out-value",
+                "target": "node-19",
+                "targetHandle": "num-value",
+                "id": "reactflow__edge-node-17result_out-value-node-19num-value"
+            },
+            {
+                "source": "node-11",
+                "sourceHandle": "result_out-value",
+                "target": "node-19",
+                "targetHandle": "den-value",
+                "id": "reactflow__edge-node-11result_out-value-node-19den-value"
+            }
+        ]
+    },
+    "settings": {
+        "general": {
+            "auto_update": true,
+            "mini_map": false,
+            "show_nodes": true,
+            "side_by_side": true,
+            "show_properties_panel": true
+        },
+        "layout": {
+            "renderer_width": 30,
+            "editor_width": 50,
+            "panel_width": 20,
+            "renderer_right": 50
+        }
+    }
+}

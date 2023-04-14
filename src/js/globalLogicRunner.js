@@ -48,7 +48,8 @@ function run() {
         node.args[arg_key] = processed_args;
     });
     // Execute
-    let result = library.execution[nodes_type[node_id]](node.args);
+    let result = library.execution[nodes_type[node_id]](node.args, nodes_data[node_id]);
+    let result_input = {};
     Object.entries(result).forEach(([res_id, res_val]) => {
       let actual_res_val = JSON.parse(JSON.stringify(res_val));
       // Process the structure
@@ -69,15 +70,21 @@ function run() {
         actual_res_val = utils.nextStructuralId(structure_key, structure);
         // Update the structure
         structure[structure_key][actual_res_val] = res_val;
+        result_input = res_val;
       }else if (res_type === "result"){
-        // For other nodes
+        // For other nodes numerical nodes
         actual_res_val = res_val.value;
         delete res_val.value;
+        result_input = res_val;
+      }else {
+        // For the rest of the nodes (Wrapper)
+        result_input = result.input;
       }
       // Update the node data
       nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;
-      nodes[nodes_i[node_id]]["data"]["input"] = res_val;
     });
+    // Set the input
+    nodes[nodes_i[node_id]]["data"]["input"] = result_input;
   });
   // Update the whole ReactFlow
   let rf_instance = state.getRfInstance();
