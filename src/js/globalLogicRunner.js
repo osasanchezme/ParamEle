@@ -64,10 +64,15 @@ function run() {
         res_type === "section" ||
         res_type === "material"
       ) {
+        // For structural nodes
         let structure_key = res_type + "s";
         actual_res_val = utils.nextStructuralId(structure_key, structure);
         // Update the structure
         structure[structure_key][actual_res_val] = res_val;
+      }else if (res_type === "result"){
+        // For other nodes
+        actual_res_val = res_val.value;
+        delete res_val.value;
       }
       // Update the node data
       nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;

@@ -31,7 +31,10 @@
         "load_group": "grupo de carga",
         "point_load": "carga puntual",
         "moment": "momento",
-        "name": "nombre"
+        "name": "nombre",
+        "result": "resultado",
+        "power": "potencia",
+        "root": "raíz"
     },
     "types": {
         "id": "ID",
@@ -45,6 +48,8 @@
         "multiplyNumbers": "Multiplicar",
         "divideNumbers": "Dividir",
         "roundNumber": "Redondear",
+        "powerNumber": "Potencia",
+        "rootNumber": "Raíz",
         "sin": "Seno",
         "cos": "Coseno",
         "tan": "Tangente",
@@ -61,7 +66,8 @@
         "structuralPlate": "Placa",
         "structuralMoment": "Momento",
         "structuralMaterial": "Material",
-        "structuralRectangleSection": "Secc. Rectangular"
+        "structuralRectangleSection": "Secc. Rectangular",
+        "nodesWrapper": "Grupo Nodos"
     },
     "settings":{
         "auto_update": "Actualizar automáticamente",

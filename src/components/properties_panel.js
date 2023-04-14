@@ -21,6 +21,7 @@ import ObjectInspector from "./object_inspector";
 
 function PropertiesPanel({ visible, width, data }) {
   const [expanded_index, setExpandedIndex] = useState([]);
+  if (!visible) return "";
   let top_keys = [];
   let grouped_nodes = {};
   data.nodes.forEach((node) => {

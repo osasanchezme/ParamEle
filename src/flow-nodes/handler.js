@@ -3,6 +3,7 @@ import TrigonometricNodes from "./trigoMath";
 import BasicMathNodes from "./basicMath";
 import BasicStructuralNodes from "./basicStructural";
 import StructuralSectionNodes from "./structuralSections";
+import NodesWrapperNode from "./nodesWrapper";
 import utils from "../utils";
 
 
@@ -17,6 +18,8 @@ function createNodesLibrary() {
     multiplyNumbers: { node_component: BasicMathNodes.MathMultiplyNode, label: localGetCopy("multiplyNumbers") },
     divideNumbers: { node_component: BasicMathNodes.MathDivideNode, label: localGetCopy("divideNumbers") },
     roundNumber: { node_component: BasicMathNodes.MathRoundNode, label: localGetCopy("roundNumber") },
+    powerNumber: { node_component: BasicMathNodes.MathPowerNode, label: localGetCopy("powerNumber") },
+    rootNumber: { node_component: BasicMathNodes.MathRootNode, label: localGetCopy("rootNumber") },
     // Trigonometric math
     sin: { node_component: TrigonometricNodes.MathSinNode, label: localGetCopy("sin") },
     cos: { node_component: TrigonometricNodes.MathCosNode, label: localGetCopy("cos") },
@@ -37,6 +40,8 @@ function createNodesLibrary() {
     structuralMaterial: { node_component: BasicStructuralNodes.StructuralMaterialNode, label: localGetCopy("structuralMaterial") },
     // Section shapes
     structuralRectangleSection: { node_component: StructuralSectionNodes.RectangleNode, label: localGetCopy("structuralRectangleSection") },
+    // Nodes Wrapper
+    nodesWrapper: {node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper")}
   };
 
   let nodes = {};

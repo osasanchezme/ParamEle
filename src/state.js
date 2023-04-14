@@ -1,6 +1,7 @@
 // import data from "./data/template-4-two-beams.json";
 // import data from "./data/template-0.json";
-import data from "./data/template-5-frame.json";
+// import data from "./data/template-5-frame.json";
+import data from "./data/template-math.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";

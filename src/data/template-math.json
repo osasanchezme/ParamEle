@@ -1,0 +1,163 @@
+{
+    "model": {
+        "nodes": [
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-6",
+                "type": "inputNumber",
+                "position": {
+                    "x": 875.3783175920536,
+                    "y": 623.5873886255436
+                },
+                "data": {
+                    "value": "2"
+                },
+                "positionAbsolute": {
+                    "x": 875.3783175920536,
+                    "y": 623.5873886255436
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 110,
+                "height": 80,
+                "id": "node-5",
+                "type": "rootNumber",
+                "position": {
+                    "x": 1177.506250166011,
+                    "y": 563.117103785575
+                },
+                "data": {
+                    "result_out-value": 15.297058540778355
+                },
+                "positionAbsolute": {
+                    "x": 1177.506250166011,
+                    "y": 563.117103785575
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-4",
+                "type": "inputNumber",
+                "position": {
+                    "x": 874.8705414624504,
+                    "y": 510.45914049054375
+                },
+                "data": {
+                    "value": "234"
+                },
+                "positionAbsolute": {
+                    "x": 874.8705414624504,
+                    "y": 510.45914049054375
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 100,
+                "height": 80,
+                "id": "node-3",
+                "type": "powerNumber",
+                "position": {
+                    "x": 1159.3161719311724,
+                    "y": 293.6199472332525
+                },
+                "data": {
+                    "result_out-value": 1
+                },
+                "positionAbsolute": {
+                    "x": 1159.3161719311724,
+                    "y": 293.6199472332525
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-2",
+                "type": "inputNumber",
+                "position": {
+                    "x": 892.6683279777028,
+                    "y": 348.94745375962094
+                },
+                "data": {
+                    "value": "5"
+                },
+                "positionAbsolute": {
+                    "x": 892.6683279777028,
+                    "y": 348.94745375962094
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-1",
+                "type": "inputNumber",
+                "position": {
+                    "x": 873.5667328262716,
+                    "y": 234.27189365855713
+                },
+                "data": {
+                    "value": "1"
+                },
+                "positionAbsolute": {
+                    "x": 873.5667328262716,
+                    "y": 234.27189365855713
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-3",
+                "targetHandle": "base-value-0",
+                "id": "reactflow__edge-node-1value-node-3base-value-0"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-3",
+                "targetHandle": "power-value-1",
+                "id": "reactflow__edge-node-2value-node-3power-value-1"
+            },
+            {
+                "source": "node-4",
+                "sourceHandle": "value",
+                "target": "node-5",
+                "targetHandle": "base-value-1",
+                "id": "reactflow__edge-node-4value-node-5base-value-1"
+            },
+            {
+                "source": "node-6",
+                "sourceHandle": "value",
+                "target": "node-5",
+                "targetHandle": "root-value-2",
+                "id": "reactflow__edge-node-6value-node-5root-value-2"
+            }
+        ]
+    },
+    "settings": {
+        "general": {
+            "auto_update": true,
+            "mini_map": false,
+            "show_nodes": true,
+            "side_by_side": true,
+            "show_properties_panel": false
+        },
+        "layout": {
+            "renderer_width": 10,
+            "editor_width": 90,
+            "panel_width": 0,
+            "renderer_right": 90
+        }
+    }
+}
