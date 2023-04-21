@@ -4,12 +4,12 @@ import utils from "../utils";
 
 function run() {
   let model = getState("model");
-  let {nodes, structure} = calculateModel(model)
+  // Restart the structure
+  state.setState(utils.getEmptyStructuralModel(), "structure");
+  let {nodes} = calculateModel(model)
   // Update the whole ReactFlow
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(nodes);
-  // Update the structure
-  state.setState(structure, "structure");
   // Update the renderer
   utils.updateRenderer();
   // Update the properties panel
@@ -50,7 +50,6 @@ function calculateModel(model){
     connected_nodes[edge.target]["args"][edge.targetHandle] = null;
     connected_nodes[edge.target]["sources"][edge.targetHandle].push({ source_node_id: edge.source, source_handle_id: edge.sourceHandle });
   });
-  let structure = utils.getEmptyStructuralModel();
   // Run all the logic
   Object.entries(connected_nodes).forEach(([node_id, node]) => {
     // TODO - Make it an actual logic, gathering all the args first
@@ -83,10 +82,14 @@ function calculateModel(model){
         res_type === "material"
       ) {
         // For structural nodes
+        // Get the global structure
+        let structure = getState("structure");
         let structure_key = res_type + "s";
         actual_res_val = utils.nextStructuralId(structure_key, structure);
         // Update the structure
         structure[structure_key][actual_res_val] = res_val;
+        // Store the global structure
+        state.setState(structure, "structure");
         result_input = res_val;
       }else if (res_type === "result"){
         // For other nodes numerical nodes
@@ -103,7 +106,7 @@ function calculateModel(model){
     // Set the input
     nodes[nodes_i[node_id]]["data"]["input"] = result_input;
   });
-  return {nodes, structure}
+  return {nodes}
 }
 
 const logic_runner = { run, calculateModel };
