@@ -2,6 +2,63 @@
     "model": {
         "nodes": [
             {
+                "width": 188,
+                "height": 68,
+                "id": "node-3",
+                "type": "inputNumber",
+                "position": {
+                    "x": -297.7789524430204,
+                    "y": 153.81336122802128
+                },
+                "data": {
+                    "value": "-2"
+                },
+                "positionAbsolute": {
+                    "x": -297.7789524430204,
+                    "y": 153.81336122802128
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-2",
+                "type": "inputNumber",
+                "position": {
+                    "x": -299.2030026386175,
+                    "y": 52.70579734062939
+                },
+                "data": {
+                    "value": "3"
+                },
+                "positionAbsolute": {
+                    "x": -299.2030026386175,
+                    "y": 52.70579734062939
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-1",
+                "type": "inputNumber",
+                "position": {
+                    "x": -302.0252506900373,
+                    "y": -35.44729663350247
+                },
+                "data": {
+                    "value": "5"
+                },
+                "positionAbsolute": {
+                    "x": -302.0252506900373,
+                    "y": -35.44729663350247
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
                 "width": 105,
                 "height": 80,
                 "id": "node-20",
@@ -15,15 +72,30 @@
                     "input_handles": [
                         {
                             "label": "A",
-                            "handle": "number-value"
+                            "handle": "value",
+                            "data_key": "value"
                         },
                         {
                             "label": "B",
-                            "handle": "number-value"
+                            "handle": "value",
+                            "data_key": "value"
                         },
                         {
                             "label": "C",
-                            "handle": "number-value"
+                            "handle": "value",
+                            "data_key": "value"
+                        }
+                    ],
+                    "output_handles": [
+                        {
+                            "label": "RAIZ NEG",
+                            "key": "result_out-value",
+                            "result_key": "root_1_out-value"
+                        },
+                        {
+                            "label": "RAIZ POS",
+                            "key": "result_out-value",
+                            "result_key": "root_2_out-value"
                         }
                     ],
                     "internal_logic": {
@@ -39,7 +111,11 @@
                                 },
                                 "data": {
                                     "custom_label": "RAIZ NEG",
-                                    "result_out-value": 0.18350341907227405
+                                    "result_out-value": -1,
+                                    "input": {
+                                        "num": -10,
+                                        "den": 10
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 2206.6130887877084,
@@ -58,8 +134,12 @@
                                     "y": 817.0327170480567
                                 },
                                 "data": {
-                                    "result_out-value": 1.816496580927726,
-                                    "custom_label": "RAIZ POS"
+                                    "result_out-value": 0.4,
+                                    "custom_label": "RAIZ POS",
+                                    "input": {
+                                        "num": 4,
+                                        "den": 10
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 2211.1862324386175,
@@ -78,8 +158,12 @@
                                     "y": 582.6729643838787
                                 },
                                 "data": {
-                                    "result_out-value": 1.1010205144336442,
-                                    "custom_label": "NUM NEG"
+                                    "result_out-value": -10,
+                                    "custom_label": "NUM NEG",
+                                    "input": {
+                                        "num_1": -3,
+                                        "num_2": -7
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1856.0717030877122,
@@ -98,8 +182,12 @@
                                     "y": 489.15520624786825
                                 },
                                 "data": {
-                                    "result_out-value": -4.898979485566356,
-                                    "custom_label": "-RAÍZ"
+                                    "result_out-value": -7,
+                                    "custom_label": "-RAÍZ",
+                                    "input": {
+                                        "num_2": 7,
+                                        "num_1": -1
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1616.3673091037995,
@@ -119,7 +207,11 @@
                                 },
                                 "data": {
                                     "custom_label": "NUM POS",
-                                    "result_out-value": 10.898979485566356
+                                    "result_out-value": 4,
+                                    "input": {
+                                        "num_1": -3,
+                                        "num_2": 7
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1855.8722663903004,
@@ -138,7 +230,11 @@
                                     "y": 586.9562049857547
                                 },
                                 "data": {
-                                    "result_out-value": 4.898979485566356
+                                    "result_out-value": 7,
+                                    "input": {
+                                        "base": 49,
+                                        "root": 2
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1419.1026948716121,
@@ -157,8 +253,12 @@
                                     "y": 463.1998398941639
                                 },
                                 "data": {
-                                    "result_out-value": 24,
-                                    "custom_label": "B**2 - 4AC"
+                                    "result_out-value": 49,
+                                    "custom_label": "B**2 - 4AC",
+                                    "input": {
+                                        "num_1": 9,
+                                        "num_2": 40
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1394.677793867793,
@@ -177,8 +277,12 @@
                                     "y": 332.38927826761505
                                 },
                                 "data": {
-                                    "result_out-value": -12,
-                                    "custom_label": "-4AC"
+                                    "result_out-value": 40,
+                                    "custom_label": "-4AC",
+                                    "input": {
+                                        "num_1": -1,
+                                        "num_2": -40
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1286.4311724676652,
@@ -197,8 +301,12 @@
                                     "y": 822.3050984874995
                                 },
                                 "data": {
-                                    "result_out-value": 6,
-                                    "custom_label": "2A"
+                                    "result_out-value": 10,
+                                    "custom_label": "2A",
+                                    "input": {
+                                        "num_1": 2,
+                                        "num_2": 5
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1859.2062337491384,
@@ -217,8 +325,12 @@
                                     "y": 320.05945499480515
                                 },
                                 "data": {
-                                    "result_out-value": 36,
-                                    "custom_label": "B**2"
+                                    "result_out-value": 9,
+                                    "custom_label": "B**2",
+                                    "input": {
+                                        "base": 3,
+                                        "power": 2
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1122.9229152614112,
@@ -238,7 +350,11 @@
                                 },
                                 "data": {
                                     "custom_label": "4AC",
-                                    "result_out-value": 12
+                                    "result_out-value": -40,
+                                    "input": {
+                                        "num_1": 4,
+                                        "num_2": -10
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1157.4146107831377,
@@ -257,8 +373,12 @@
                                     "y": 175.9423871877768
                                 },
                                 "data": {
-                                    "result_out-value": 3,
-                                    "custom_label": "AC"
+                                    "result_out-value": -10,
+                                    "custom_label": "AC",
+                                    "input": {
+                                        "num_1": 5,
+                                        "num_2": -2
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 993.8194235539042,
@@ -277,8 +397,12 @@
                                     "y": 589.933473414404
                                 },
                                 "data": {
-                                    "result_out-value": 6,
-                                    "custom_label": "-B"
+                                    "result_out-value": -3,
+                                    "custom_label": "-B",
+                                    "input": {
+                                        "num_1": -1,
+                                        "num_2": 3
+                                    }
                                 },
                                 "positionAbsolute": {
                                     "x": 1190.137235831692,
@@ -358,7 +482,7 @@
                                 },
                                 "data": {
                                     "custom_label": "C",
-                                    "value": "1"
+                                    "value": -2
                                 },
                                 "positionAbsolute": {
                                     "x": 750.8396684926622,
@@ -378,7 +502,7 @@
                                 },
                                 "data": {
                                     "custom_label": "B",
-                                    "value": "-6"
+                                    "value": 3
                                 },
                                 "positionAbsolute": {
                                     "x": 749.5611368665564,
@@ -398,7 +522,7 @@
                                 },
                                 "data": {
                                     "custom_label": "A",
-                                    "value": "3"
+                                    "value": 5
                                 },
                                 "positionAbsolute": {
                                     "x": 751.3840932958268,
@@ -586,8 +710,8 @@
                             }
                         ]
                     },
-                    "root_1_out-value": 0.18350341907227405,
-                    "root_2_out-value": 0.18350341907227405
+                    "root_1_out-value": -1,
+                    "root_2_out-value": 0.4
                 },
                 "positionAbsolute": {
                     "x": 0,
@@ -597,7 +721,29 @@
                 "dragging": false
             }
         ],
-        "edges": []
+        "edges": [
+            {
+                "source": "node-1",
+                "sourceHandle": "value",
+                "target": "node-20",
+                "targetHandle": "A-value",
+                "id": "reactflow__edge-node-1value-node-20A-value"
+            },
+            {
+                "source": "node-2",
+                "sourceHandle": "value",
+                "target": "node-20",
+                "targetHandle": "B-value",
+                "id": "reactflow__edge-node-2value-node-20B-value"
+            },
+            {
+                "source": "node-3",
+                "sourceHandle": "value",
+                "target": "node-20",
+                "targetHandle": "C-value",
+                "id": "reactflow__edge-node-3value-node-20C-value"
+            }
+        ]
     },
     "settings": {
         "general": {
@@ -605,13 +751,13 @@
             "mini_map": false,
             "show_nodes": true,
             "side_by_side": true,
-            "show_properties_panel": true
+            "show_properties_panel": false
         },
         "layout": {
-            "renderer_width": 30,
-            "editor_width": 50,
-            "panel_width": 20,
-            "renderer_right": 50
+            "renderer_width": 20,
+            "editor_width": 80,
+            "panel_width": 0,
+            "renderer_right": 80
         }
     }
 }

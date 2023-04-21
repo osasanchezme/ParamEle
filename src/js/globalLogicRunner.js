@@ -4,6 +4,23 @@ import utils from "../utils";
 
 function run() {
   let model = getState("model");
+  let {nodes, structure} = calculateModel(model)
+  // Update the whole ReactFlow
+  let rf_instance = state.getRfInstance();
+  rf_instance.setNodes(nodes);
+  // Update the structure
+  state.setState(structure, "structure");
+  // Update the renderer
+  utils.updateRenderer();
+  // Update the properties panel
+  utils.updatePropertiesPanel();
+}
+
+/**
+ * 
+ * @param {object} model - Processes a reactflow model of nodes and edges to calculate their outputs
+ */
+function calculateModel(model){
   let nodes = model.nodes;
   let edges = model.edges;
   let connected_nodes = {};
@@ -86,17 +103,9 @@ function run() {
     // Set the input
     nodes[nodes_i[node_id]]["data"]["input"] = result_input;
   });
-  // Update the whole ReactFlow
-  let rf_instance = state.getRfInstance();
-  rf_instance.setNodes(nodes);
-  // Update the structure
-  state.setState(structure, "structure");
-  // Update the renderer
-  utils.updateRenderer();
-  // Update the properties panel
-  utils.updatePropertiesPanel();
+  return {nodes, structure}
 }
 
-const logic_runner = { run };
+const logic_runner = { run, calculateModel };
 
 export default logic_runner;
