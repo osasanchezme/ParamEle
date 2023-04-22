@@ -52,21 +52,24 @@
                     "custom_label": "VIGA SIMPLE CON CARGA DISTR.",
                     "input_handles": [
                         {
-                            "label": "LONGITUD",
-                            "handle": "value",
-                            "data_key": "value"
+                            "label": "longitud",
+                            "type": "value",
+                            "node_id_to_map_to": "node-3",
+                            "data_key_to_map_to": "value"
                         },
                         {
-                            "label": "CARGA",
-                            "handle": "value",
-                            "data_key": "value"
+                            "label": "carga",
+                            "type": "value",
+                            "node_id_to_map_to": "node-7",
+                            "data_key_to_map_to": "value"
                         }
                     ],
                     "output_handles": [
                         {
-                            "label": "VIGA",
-                            "key": "member_out-id",
-                            "result_key": "wrapper_member_out-id"
+                            "label": "viga",
+                            "type": "id",
+                            "node_id_to_map_from": "node-5",
+                            "data_key_to_map_from": "member_out-id"
                         }
                     ],
                     "internal_logic": {
@@ -390,8 +393,7 @@
                                 "id": "reactflow__edge-node-4node_out-id-node-9node-id"
                             }
                         ]
-                    },
-                    "wrapper_member_out-id": 1
+                    }
                 },
                 "positionAbsolute": {
                     "x": 34.10362274648401,
@@ -406,14 +408,14 @@
                 "source": "node-1",
                 "sourceHandle": "value",
                 "target": "node-20",
-                "targetHandle": "LONGITUD-value",
+                "targetHandle": "longitud-value",
                 "id": "reactflow__edge-node-1value-node-20LONGITUD-value"
             },
             {
                 "source": "node-2",
                 "sourceHandle": "value",
                 "target": "node-20",
-                "targetHandle": "CARGA-value",
+                "targetHandle": "carga-value",
                 "id": "reactflow__edge-node-2value-node-20CARGA-value"
             }
         ]

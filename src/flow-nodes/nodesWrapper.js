@@ -16,29 +16,26 @@ function NodesWrapper({ data, id }) {
 }
 
 function NodesWrapperExec(args, data) {
-  let { source_ids, target_ids, labels, data_keys, result_keys, result_labels, result_map } = getTargetAndSourceIds(data);
+  let { source_ids, target_ids, node_ids_to_map, data_keys, node_ids_to_map_from, result_data_keys } = getTargetAndSourceIds(data);
   let structural_args = utils.convertNodeToStructuralArgs(args, target_ids);
   let { internal_logic } = data;
   // Map the input values to the internal logic
   internal_logic.nodes.forEach((node) => {
-    let {
-      data: { custom_label },
-    } = node;
-    let map_index = labels.indexOf(custom_label);
+    let { id } = node;
+    let map_index = node_ids_to_map.indexOf(id);
     if (map_index !== -1) {
-      node.data[data_keys[map_index]] = structural_args[custom_label];
+      let argument = utils.splitArgName(target_ids[map_index]);
+      node.data[data_keys[map_index]] = structural_args[argument.name];
     }
   });
   let processed_model = logic_runner.calculateModel(internal_logic);
   let output = {};
   // Map the results to the output handles
   processed_model.nodes.forEach((node) => {
-    let {
-      data: { custom_label },
-    } = node;
-    let map_index = result_labels.indexOf(custom_label);
+    let { id } = node;
+    let map_index = node_ids_to_map_from.indexOf(id);
     if (map_index !== -1) {
-      output[result_map[map_index]] = node.data[result_keys[map_index]];
+      output[source_ids[map_index]] = node.data[result_data_keys[map_index]];
     }
   });
   output.input = structural_args;
@@ -48,11 +45,10 @@ function NodesWrapperExec(args, data) {
 function getTargetAndSourceIds(data) {
   let target_ids = [];
   let source_ids = [];
-  let labels = [];
+  let node_ids_to_map = [];
+  let node_ids_to_map_from = [];
   let data_keys = [];
-  let result_labels = [];
-  let result_keys = [];
-  let result_map = [];
+  let result_data_keys = [];
   Object.entries(data).forEach(([key, val]) => {
     switch (key) {
       case "custom_label":
@@ -61,24 +57,23 @@ function getTargetAndSourceIds(data) {
         break;
       case "input_handles":
         val.forEach((in_key) => {
-          target_ids.push(`${in_key.label}-${in_key.handle}`);
-          labels.push(in_key.label);
-          data_keys.push(in_key.data_key);
+          target_ids.push(`${in_key.label}-${in_key.type}`);
+          node_ids_to_map.push(in_key.node_id_to_map_to);
+          data_keys.push(in_key.data_key_to_map_to);
         });
         break;
       case "output_handles":
         val.forEach((in_key) => {
-          result_labels.push(in_key.label);
-          result_keys.push(in_key.key);
-          result_map.push(in_key.result_key);
+          source_ids.push(`${in_key.label}-${in_key.type}`);
+          node_ids_to_map_from.push(in_key.node_id_to_map_from);
+          result_data_keys.push(in_key.data_key_to_map_from);
         });
         break;
       default:
-        source_ids.push(key);
         break;
     }
   });
-  return { source_ids, target_ids, labels, data_keys, result_labels, result_keys, result_map };
+  return { source_ids, target_ids, node_ids_to_map, data_keys, node_ids_to_map_from, result_data_keys };
 }
 
 const NodesWrapperNode = {

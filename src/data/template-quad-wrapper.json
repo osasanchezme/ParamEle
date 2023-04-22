@@ -72,30 +72,35 @@
                     "input_handles": [
                         {
                             "label": "A",
-                            "handle": "value",
-                            "data_key": "value"
+                            "type": "value",
+                            "node_id_to_map_to": "node-1",
+                            "data_key_to_map_to": "value"
                         },
                         {
                             "label": "B",
-                            "handle": "value",
-                            "data_key": "value"
+                            "type": "value",
+                            "node_id_to_map_to": "node-2",
+                            "data_key_to_map_to": "value"
                         },
                         {
                             "label": "C",
-                            "handle": "value",
-                            "data_key": "value"
+                            "type": "value",
+                            "node_id_to_map_to": "node-3",
+                            "data_key_to_map_to": "value"
                         }
                     ],
                     "output_handles": [
                         {
-                            "label": "RAIZ NEG",
-                            "key": "result_out-value",
-                            "result_key": "root_1_out-value"
+                            "label": "raiz_1",
+                            "type": "value",
+                            "node_id_to_map_from": "node-19",
+                            "data_key_to_map_from": "result_out-value"
                         },
                         {
-                            "label": "RAIZ POS",
-                            "key": "result_out-value",
-                            "result_key": "root_2_out-value"
+                            "label": "raiz_2",
+                            "type": "value",
+                            "node_id_to_map_from": "node-18",
+                            "data_key_to_map_from": "result_out-value"
                         }
                     ],
                     "internal_logic": {
