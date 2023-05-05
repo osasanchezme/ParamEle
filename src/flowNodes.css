@@ -1,34 +1,34 @@
-.node-header{
-    background-color: rgb(254, 254, 254);
-    color: var(--chakra-colors-gray-900);
-    font-weight: var(--chakra-fontWeights-normal);
-    text-transform: uppercase;
-    font-family: var(--chakra-fonts-mono);
-    font-size: 10px;
-    padding-inline-start: var(--chakra-space-2);
-    padding-inline-end: var(--chakra-space-2);
-    padding-top: var(--chakra-space-1);
-    padding-bottom: var(--chakra-space-1);
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-color: var(--chakra-colors-gray-300);
+.node-header {
+  background-color: rgb(254, 254, 254);
+  color: var(--chakra-colors-gray-900);
+  font-weight: var(--chakra-fontWeights-normal);
+  text-transform: uppercase;
+  font-family: var(--chakra-fonts-mono);
+  font-size: 10px;
+  padding-inline-start: var(--chakra-space-2);
+  padding-inline-end: var(--chakra-space-2);
+  padding-top: var(--chakra-space-1);
+  padding-bottom: var(--chakra-space-1);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: var(--chakra-colors-gray-300);
 }
 
-.node-label-edit-button{
+.node-label-edit-button {
   height: var(--chakra-sizes-3) !important;
   min-width: var(--chakra-sizes-3) !important;
   border-radius: var(--chakra-radii-base) !important;
   font-size: 0.5rem !important;
 }
 
-.small-ghost-button{
+.small-ghost-button {
   height: var(--chakra-sizes-4) !important;
   min-width: var(--chakra-sizes-4) !important;
   border-radius: var(--chakra-radii-base) !important;
   font-size: 0.8rem !important;
 }
 
-.editable-node-label{
+.editable-node-label {
   font-size: inherit !important;
   font-family: inherit;
   text-transform: inherit;
@@ -51,15 +51,19 @@
   border: none !important;
 }
 
-.text-updater-node {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    border-width: 1px;
-    border-style: solid;
-    border-image: initial;
-    border-color: var(--chakra-colors-gray-300);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  }
+.reactflow-node {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-image: initial;
+  border-color: var(--chakra-colors-gray-300);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.reactflow-node.selected {
+  border-color: var(--chakra-colors-blue-500);
+}

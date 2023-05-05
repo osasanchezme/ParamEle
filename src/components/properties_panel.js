@@ -85,7 +85,7 @@ function PropertiesPanel({ visible, width, data }) {
                     return data_key !== "input" && data_key !== "custom_label" ? (
                       <Box width="100%" key={data_key} marginBottom={"2px"}>
                         <Tag variant={"sourceBig"} onClick={(event) => handleClickOnTag(event, node.position)}>
-                          {display_copy} : {typeof data_value == "object" ? ObjectInspector({ object: data_value }) : data_value}
+                          {display_copy} : {typeof data_value == "object" ? ObjectInspector({ object: data_value }) : String(data_value)}
                         </Tag>
                       </Box>
                     ) : null;

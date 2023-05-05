@@ -31,8 +31,11 @@ function InputNumber({ data, id }) {
   // Check if the user defined a custom_label for the node
   let node_label = utils.getDisplayCopy("nodes", "inputNumber");
   node_label = data.custom_label || node_label;
+  // Define the class name
+  let class_name = "reactflow-node";
+  if (data.selected) class_name += " selected";
   return (
-    <div className="text-updater-node">
+    <div className={class_name}>
       <EditableNodeHeader id={id} node_label={node_label}></EditableNodeHeader>
       <div className="node-body">
         <div>

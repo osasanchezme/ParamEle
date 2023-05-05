@@ -65,9 +65,6 @@ function StructuralFixedSupport({ data, id }) {
   return <GenericInOutNode node_label={localGetCopy("structuralFixedSupport")} data={data} id={id} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
 }
 
-// WIP
-// Fix all the edges that connect Supports, and PointLoads, replacing from node_A-id to node_A in the input files (for the template 5 only)
-
 function StructuralFixedSupportExec(args) {
   let node = args["node-id"];
   return {

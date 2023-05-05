@@ -25,6 +25,8 @@ import logic_runner from "./js/globalLogicRunner";
 import ResizeBorder from "./components/resize_border";
 import PropertiesPanel from "./components/properties_panel";
 import theme from "./theme";
+import SelectionBox from "./components/selection_box";
+import utils from "./utils";
 const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -119,6 +121,8 @@ function VisualEditor(props) {
         nodeTypes={nodes_library}
         fitView
         onInit={saveRfInstance}
+        selectionKeyCode={null}
+        deleteKeyCode={null}
       >
         {mini_map}
         <Controls />
@@ -129,14 +133,26 @@ function VisualEditor(props) {
 class ParamEle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...getState(), mouse_x: 0, mouse_y: 0, mode: "wait_action", rel_orig_x: 0, rel_orig_y: 0 };
+    this.state = {
+      ...getState(),
+      mouse_x: 0,
+      mouse_y: 0,
+      mode: "wait_action",
+      rel_orig_x: 0,
+      rel_orig_y: 0,
+      selection_top: 0,
+      selection_left: 0,
+    };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     this.changeAppMode = this.changeAppMode.bind(this);
     window.ParamEle.changeAppMode = this.changeAppMode.bind(this);
-    this.getMouseCoordinates = this.getMouseCoordinates.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
     this.activateNodeCreation = this.activateNodeCreation.bind(this);
+    this.handleMouseClick = this.handleMouseClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
     this.updateComponentsWidth = this.updateComponentsWidth.bind(this);
     this.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
     window.ParamEle.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
@@ -159,23 +175,35 @@ class ParamEle extends React.Component {
   changeAppMode(mode) {
     this.setState({ mode });
   }
-  getMouseCoordinates(event) {
-    if (this.state.mode === "resizing_modules") {
-      event.preventDefault();
-      let current_resizer = state.getGlobalVariable("current_resizer");
-      let relative_location;
-      switch (current_resizer) {
-        case "renderer_editor":
-          relative_location = (event.clientX / window.innerWidth) * 100;
-          this.updateComponentsWidth({ relative_pos_resize_2: relative_location });
-          break;
-        case "properties_panel":
-          relative_location = (event.clientX / window.innerWidth) * 100;
-          this.updateComponentsWidth({ relative_pos_resize_1: relative_location });
-          break;
-        default:
-          break;
-      }
+  /**
+   *
+   * @param {MouseEvent} event
+   */
+  handleMouseMove(event) {
+    switch (this.state.mode) {
+      case "resizing_modules":
+        event.preventDefault();
+        let current_resizer = state.getGlobalVariable("current_resizer");
+        let relative_location;
+        switch (current_resizer) {
+          case "renderer_editor":
+            relative_location = (event.clientX / window.innerWidth) * 100;
+            this.updateComponentsWidth({ relative_pos_resize_2: relative_location });
+            break;
+          case "properties_panel":
+            relative_location = (event.clientX / window.innerWidth) * 100;
+            this.updateComponentsWidth({ relative_pos_resize_1: relative_location });
+            break;
+          default:
+            break;
+        }
+        break;
+      case "selecting_nodes":
+        event.preventDefault();
+        this.setState({ mouse_x: event.clientX, mouse_y: event.clientY });
+        break;
+      default:
+        break;
     }
   }
   updateComponentsWidth(required_update) {
@@ -242,26 +270,58 @@ class ParamEle extends React.Component {
     }
   }
   activateNodeCreation(event) {
-    if (event.target.className === "react-flow__pane react-flow__container") {
-      let bounding_rect = event.target.getBoundingClientRect();
-      this.setState(
-        {
-          mode: "wait_action",
-        },
-        () => {
-          this.setState({
-            mode: "add_node",
-            mouse_x: event.clientX,
-            mouse_y: event.clientY,
-            rel_orig_x: bounding_rect.left,
-            rel_orig_y: bounding_rect.top,
-          });
-        }
-      );
-    }
+    let bounding_rect = event.target.getBoundingClientRect();
+    this.setState(
+      {
+        mode: "wait_action",
+      },
+      () => {
+        this.setState({
+          mode: "add_node",
+          mouse_x: event.clientX,
+          mouse_y: event.clientY,
+          rel_orig_x: bounding_rect.left,
+          rel_orig_y: bounding_rect.top,
+        });
+      }
+    );
   }
   handleKeyPress(event) {
-    if (event.key === "Escape") this.setState({ mode: "wait_action" });
+    if (event.key === "Escape") {
+      this.setState({ mode: "wait_action" });
+      state.deselectAllNodes();
+    };
+  }
+  handleMouseClick(event) {
+    if (event.target.className === "react-flow__pane react-flow__container") {
+      if (!event.ctrlKey) {
+        this.activateNodeCreation(event);
+      }
+    }
+  }
+  handleMouseUp(event) {
+    if (this.state.mode === "selecting_nodes") {
+      state.highlightSelectedNodes(
+        this.state.selection_left,
+        this.state.selection_top,
+        this.state.mouse_x,
+        this.state.mouse_y,
+        this.state.rel_orig_x,
+        this.state.rel_orig_y
+      );
+    }
+    this.changeAppMode("wait_action");
+  }
+  /**
+   *
+   * @param {MouseEvent} event
+   */
+  handleMouseDown(event) {
+    if (event.target.className === "react-flow__pane react-flow__container" && event.ctrlKey) {
+      let bounding_rect = event.target.getBoundingClientRect();
+      this.changeAppMode("selecting_nodes");
+      this.setState({ selection_top: event.clientY, selection_left: event.clientX, rel_orig_x: bounding_rect.left, rel_orig_y: bounding_rect.top });
+    }
   }
   render() {
     let commands_bar;
@@ -284,8 +344,10 @@ class ParamEle extends React.Component {
           className="app-cont"
           tabIndex={0}
           onKeyDown={this.handleKeyPress}
-          onMouseMove={this.getMouseCoordinates}
-          onClick={this.activateNodeCreation}
+          onMouseMove={this.handleMouseMove}
+          onClick={this.handleMouseClick}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
         >
           <NavBar></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
@@ -308,6 +370,13 @@ class ParamEle extends React.Component {
             settings={this.state.settings.general}
             layout={this.state.settings.layout}
           ></Renderer>
+          <SelectionBox
+            visible={this.state.mode === "selecting_nodes"}
+            x={this.state.selection_left}
+            y={this.state.selection_top}
+            mouse_x={this.state.mouse_x}
+            mouse_y={this.state.mouse_y}
+          ></SelectionBox>
         </div>
       </ChakraProvider>
     );
