@@ -14,12 +14,13 @@ import state from "../../state";
  * @returns {React.DOMElement} div element representing the ReactFlow node
  */
 function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
+  // Check if the user defined a custom_label for the node
+  node_label = data.custom_label || node_label;
   let source_copies = [];
   let target_copies = [];
   let top_pos = 15;
   let target_handles = target_ids.map((handle_id, handle_counter) => {
     let handle_data = utils.splitArgName(handle_id);
-    let node_label = data.custom_label || id;
     let handle_style = { top: top_pos };
     top_pos += 20;
     return (
@@ -36,7 +37,6 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
   top_pos = 15;
   let source_handles = source_ids.map((handle_id, handle_counter) => {
     let handle_data = utils.splitArgName(handle_id);
-    let node_label = data.custom_label || id;
     let handle_style = { top: top_pos };
     top_pos += 20;
     return (
@@ -90,8 +90,6 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
       </Tooltip>
     );
   });
-  // Check if the user defined a custom_label for the node
-  node_label = data.custom_label || node_label;
   // Get the longest string for defining width
   let max_copy_length = Math.max(source_copies.length, target_copies.length);
   let max_length = 0;
@@ -101,12 +99,12 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
     let sum_length = source_length + target_length;
     if (sum_length > max_length) max_length = sum_length;
   }
-  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 12, 100);
+  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 20, 100);
   // Define the class name
   let class_name = "reactflow-node";
   if (data.selected) class_name += " selected";
   return (
-    <div className={class_name} style={{ height: 20 * (target_ids.length + 2), width: node_width }}>
+    <div className={class_name} style={{ height: 20 * (Math.max(target_ids.length, source_ids.length) + 2), width: node_width }}>
       <EditableNodeHeader id={id} node_label={node_label}></EditableNodeHeader>
       <div className="node-body">
         {target_handles}

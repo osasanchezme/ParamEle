@@ -72,6 +72,14 @@ function getRfInstance() {
   return window.ParamEle.rfInstance;
 }
 
+function getModelFromRfInstance() {
+  let rfInstance = getRfInstance();
+  return {
+    nodes: rfInstance.getNodes(),
+    edges: rfInstance.getEdges(),
+  };
+}
+
 function updateSettingsFromLocalState(settings_obj) {
   Object.entries(settings_obj.general).forEach(([key, value]) => {
     window.ParamEle.changeGeneralSettingValue(key, value);
@@ -104,7 +112,7 @@ function updateStateFromFlow(force_update = false) {
  * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
  * @param {Object} [data] Initial data for the new node
  */
-function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false) {
+function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true) {
   let rfInstance = getRfInstance();
   let position = html_position;
   if (!is_rf_position){
@@ -112,7 +120,30 @@ function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = fal
   }
   let id = utils.nextNodeId();
   setGlobalVariable("last_node_id_created", id);
-  rfInstance.addNodes([{ id, type, position, data }]);
+  if (add_to_the_editor) {
+    rfInstance.addNodes([{ id, type, position, data }]);
+  } else {
+    return { id, type, position, data };
+  }
+}
+
+function removeNodesAndEdgesFromModel(current_model, node_ids, edge_ids) {
+  let { nodes, edges } = current_model;
+  nodes.forEach((node, i) => {
+    if (node_ids.includes(node.id)) nodes[i] = null;
+  });
+  edges.forEach((edge, i) => {
+    if (edge_ids.includes(edge.id)) edges[i] = null;
+  });
+  let new_nodes = [];
+  let new_edges = [];
+  nodes.forEach((node) => {
+    if (node !== null) new_nodes.push(node);
+  });
+  edges.forEach((edge) => {
+    if (edge !== null) new_edges.push(edge);
+  });
+  return {nodes: new_nodes, edges: new_edges};
 }
 
 function updateNodeData(node_id, data_update) {
@@ -204,13 +235,13 @@ function selectHandle(event, node_id, handle_id, label, type) {
   let selected_handles = getGlobalVariable("selected_handles");
   let this_handle = {
     data_key_to_map: handle_id,
-    node_id_to_map_to: node_id,
+    node_id_to_map: node_id,
     label,
     type
   }
   let is_already_selected = false;
-  selected_handles.forEach(({node_id_to_map_to, data_key_to_map}) => {
-    if (node_id_to_map_to === node_id && data_key_to_map === handle_id) {
+  selected_handles.forEach(({node_id_to_map, data_key_to_map}) => {
+    if (node_id_to_map === node_id && data_key_to_map === handle_id) {
       is_already_selected = true;
     }
   });
@@ -220,7 +251,12 @@ function selectHandle(event, node_id, handle_id, label, type) {
   setGlobalVariable("selected_handles", selected_handles);
 }
 
-
+function setModelToEditor(model) {
+  let rf_instance = getRfInstance();
+  let {nodes, edges} = model;
+  rf_instance.setNodes(nodes);
+  rf_instance.setEdges(edges);
+}
 
 const state = {
   setInitialState,
@@ -240,6 +276,9 @@ const state = {
   highlightSelectedNodes,
   deselectAllNodes,
   selectHandle,
+  getModelFromRfInstance,
+  removeNodesAndEdgesFromModel,
+  setModelToEditor
 };
 
 export default state;

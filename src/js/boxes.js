@@ -11,6 +11,7 @@ function groupBoxes() {
   let selected_nodes = [];
   let selected_edges = [];
   let selected_node_ids = [];
+  let selected_edge_ids = [];
   let connected_nodes = [];
   nodes.forEach((node) => {
     if (node.data.selected) {
@@ -28,6 +29,7 @@ function groupBoxes() {
       connected_nodes.push(edge.source);
       connected_nodes.push(edge.target);
       selected_edges.push(edge);
+      selected_edge_ids.push(edge.id);
     }
   });
   // Remove duplicates
@@ -55,7 +57,7 @@ function groupBoxes() {
   position.y /= selected_nodes.length;
 
   // Get the input handles
-  getHandlesFromUserInteraction(groupBoxesStepTwo, { internal_logic, position }, "select_input_handles");
+  getHandlesFromUserInteraction(groupBoxesStepTwo, { internal_logic, position, selected_node_ids, selected_edge_ids }, "select_input_handles");
 }
 
 function groupBoxesStepTwo(data_to_keep) {
@@ -65,9 +67,18 @@ function groupBoxesStepTwo(data_to_keep) {
 
 function groupBoxesStepThree(data_to_keep) {
   data_to_keep = { ...data_to_keep, output_handles: state.getGlobalVariable("selected_handles") };
-  let { internal_logic, input_handles, output_handles, position } = data_to_keep;
-  // Add the wrapper node to the editor
-  state.addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true);
+  let { internal_logic, input_handles, output_handles, position, selected_node_ids, selected_edge_ids } = data_to_keep;
+
+  let { nodes, edges } = getState("model");
+  // Add the wrapper node to the original model
+  nodes.push(state.addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, false));
+
+  // Remove the selected nodes and edges from the editor
+  let new_model = state.removeNodesAndEdgesFromModel({nodes, edges}, selected_node_ids, selected_edge_ids);
+  state.setModelToEditor(new_model);
+
+  // Zoom to the new node
+  state.zoomToCoordinate(position.x, position.y);
 }
 
 function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
