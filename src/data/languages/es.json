@@ -82,7 +82,9 @@
         "open": "Abrir",
         "save": "Guardar",
         "export_json": "Exportar JSON",
-        "import_json": "Importar JSON"
+        "import_json": "Importar JSON",
+        "boxes": "Cajas",
+        "group": "Agrupar"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."
@@ -106,6 +108,14 @@
         "copy_title": "",
         "copy_desc": "La estructura fue copiada al portapapeles",
         "copy_error_title": "",
-        "copy_error_desc": "Ocurrió un error al copiar la estructura"
+        "copy_error_desc": "Ocurrió un error al copiar la estructura",
+        "no_nodes_selected_title": "Ninguna caja seleccionada",
+        "no_nodes_selected_desc": "Por favor selecciona las cajas para agrupar",
+        "unconnected_nodes_title": "Algunos nodos desconectados",
+        "unconnected_nodes_desc": "Por favor revisar selección",
+        "select_input_handles_title": "Selecciona los puntos de entrada",
+        "select_input_handles_desc": "Haz click sobre los puntos de entrada deseados",
+        "select_output_handles_title": "Selecciona los puntos de salida",
+        "select_output_handles_desc": "Haz click sobre los puntos de salida deseados"
     }
 }

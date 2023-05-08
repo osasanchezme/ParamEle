@@ -48,7 +48,7 @@ function InputNumber({ data, id }) {
             autoComplete="off"
           />
         </div>
-        <Handle type="source" position={Position.Right} id="value" />
+        <Handle type="source" position={Position.Right} id="value" onClick={(event) => state.selectHandle(event, id, "value", node_label, "value")} />
       </div>
     </div>
   );

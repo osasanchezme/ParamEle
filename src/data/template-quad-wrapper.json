@@ -73,34 +73,34 @@
                         {
                             "label": "A",
                             "type": "value",
-                            "node_id_to_map_to": "node-1",
-                            "data_key_to_map_to": "value"
+                            "node_id_to_map": "node-1",
+                            "data_key_to_map": "value"
                         },
                         {
                             "label": "B",
                             "type": "value",
-                            "node_id_to_map_to": "node-2",
-                            "data_key_to_map_to": "value"
+                            "node_id_to_map": "node-2",
+                            "data_key_to_map": "value"
                         },
                         {
                             "label": "C",
                             "type": "value",
-                            "node_id_to_map_to": "node-3",
-                            "data_key_to_map_to": "value"
+                            "node_id_to_map": "node-3",
+                            "data_key_to_map": "value"
                         }
                     ],
                     "output_handles": [
                         {
                             "label": "raiz_1",
                             "type": "value",
-                            "node_id_to_map_from": "node-19",
-                            "data_key_to_map_from": "result_out-value"
+                            "node_id_to_map": "node-19",
+                            "data_key_to_map": "result_out-value"
                         },
                         {
                             "label": "raiz_2",
                             "type": "value",
-                            "node_id_to_map_from": "node-18",
-                            "data_key_to_map_from": "result_out-value"
+                            "node_id_to_map": "node-18",
+                            "data_key_to_map": "result_out-value"
                         }
                     ],
                     "internal_logic": {

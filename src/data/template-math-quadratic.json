@@ -565,13 +565,13 @@
             "mini_map": false,
             "show_nodes": true,
             "side_by_side": true,
-            "show_properties_panel": true
+            "show_properties_panel": false
         },
         "layout": {
             "renderer_width": 30,
-            "editor_width": 50,
-            "panel_width": 20,
-            "renderer_right": 50
+            "editor_width": 70,
+            "panel_width": 0,
+            "renderer_right": 70
         }
     }
 }

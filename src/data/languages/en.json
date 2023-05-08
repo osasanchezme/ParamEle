@@ -82,7 +82,9 @@
         "open": "Open",
         "save": "Save",
         "export_json": "Export JSON",
-        "import_json": "Import JSON"
+        "import_json": "Import JSON",
+        "boxes": "Boxes",
+        "group": "Group"
     },
     "commands_bar":{
         "placeholder": "Node name..."
@@ -106,6 +108,10 @@
         "copy_title": "",
         "copy_desc": "The structure was copied to the clipboard",
         "copy_error_title": "",
-        "copy_error_desc": "There was an error while copying the structure"
+        "copy_error_desc": "There was an error while copying the structure",
+        "no_nodes_selected_title": "No box selected",
+        "no_nodes_selected_desc": "Please select the boxes to group",
+        "unconnected_nodes_title": "Some nodes are disconnected",
+        "unconnected_nodes_desc": "Please check the selection."
     }
 }

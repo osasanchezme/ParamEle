@@ -3,6 +3,7 @@ import { Handle, Position } from "react-flow-renderer";
 import { Tag, Tooltip } from "@chakra-ui/react";
 import utils from "../../utils";
 import EditableNodeHeader from "../../components/editable_node_header";
+import state from "../../state";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -17,15 +18,37 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
   let target_copies = [];
   let top_pos = 15;
   let target_handles = target_ids.map((handle_id, handle_counter) => {
+    let handle_data = utils.splitArgName(handle_id);
+    let node_label = data.custom_label || id;
     let handle_style = { top: top_pos };
     top_pos += 20;
-    return <Handle type="target" style={handle_style} position={Position.Left} id={handle_id} key={handle_id} />;
+    return (
+      <Handle
+        type="target"
+        style={handle_style}
+        position={Position.Left}
+        id={handle_id}
+        key={handle_id}
+        onClick={(event) => state.selectHandle(event, id, handle_id, node_label, handle_data.type)}
+      />
+    );
   });
   top_pos = 15;
   let source_handles = source_ids.map((handle_id, handle_counter) => {
+    let handle_data = utils.splitArgName(handle_id);
+    let node_label = data.custom_label || id;
     let handle_style = { top: top_pos };
     top_pos += 20;
-    return <Handle type="source" style={handle_style} position={Position.Right} id={handle_id} key={handle_id} />;
+    return (
+      <Handle
+        type="source"
+        style={handle_style}
+        position={Position.Right}
+        id={handle_id}
+        key={handle_id}
+        onClick={(event) => state.selectHandle(event, id, handle_id, node_label, handle_data.type)}
+      />
+    );
   });
   top_pos = 8;
   let target_labels = target_ids.map((target_id, target_counter) => {
@@ -39,12 +62,7 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
     target_copies.push(display_copy);
     return (
       <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${input_value}]`} key={target_id + "-tooltip"} placement={"right"}>
-        <Tag
-          size={"sm"}
-          key={target_id + "-label"}
-          style={target_label_style}
-          variant={"target"}
-        >
+        <Tag size={"sm"} key={target_id + "-label"} style={target_label_style} variant={"target"}>
           {display_copy}
         </Tag>
       </Tooltip>
@@ -66,12 +84,7 @@ function GenericInOutNode({ data, id, node_label, target_ids, source_ids }) {
     source_copies.push(display_copy);
     return (
       <Tooltip label={`${utils.getDisplayCopy("types", label_obj.type)} [${output_value}]`} key={source_id + "-tooltip"} placement={"right"}>
-        <Tag
-          size={"sm"}
-          key={source_id + "-label"}
-          style={source_label_style}
-          variant={"source"}
-        >
+        <Tag size={"sm"} key={source_id + "-label"} style={source_label_style} variant={"source"}>
           {display_copy}
         </Tag>
       </Tooltip>

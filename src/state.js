@@ -2,13 +2,15 @@
 // import data from "./data/template-0.json";
 // import data from "./data/template-5-frame.json";
 // import data from "./data/template-quad-wrapper.json";
-import data from "./data/template-simple-beam-wrapper.json";
+import data from "./data/template-math-quadratic.json";
+// import data from "./data/template-simple-beam-wrapper.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
 import repair from "./js/repair";
-import notify from "./components/notification";
+import notification from "./components/notification";
 import { ReactFlowInstance } from "react-flow-renderer";
+const {notify} = notification;
 
 function setInitialState() {
   // Get language from URL
@@ -25,6 +27,8 @@ function setInitialState() {
     globals: {
       last_node_id_created: "",
       current_resizer: "",
+      selected_handles: [],
+      user_interaction_step: "none", // Can be "none", "wait", "done"
     },
     section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
     language,
@@ -100,9 +104,12 @@ function updateStateFromFlow(force_update = false) {
  * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
  * @param {Object} [data] Initial data for the new node
  */
-function addNodeToTheEditor(type, html_position, data = {}) {
+function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false) {
   let rfInstance = getRfInstance();
-  let position = rfInstance.project(html_position);
+  let position = html_position;
+  if (!is_rf_position){
+    position = rfInstance.project(html_position);
+  }
   let id = utils.nextNodeId();
   setGlobalVariable("last_node_id_created", id);
   rfInstance.addNodes([{ id, type, position, data }]);
@@ -193,6 +200,28 @@ function deselectAllNodes(){
   ); 
 }
 
+function selectHandle(event, node_id, handle_id, label, type) {
+  let selected_handles = getGlobalVariable("selected_handles");
+  let this_handle = {
+    data_key_to_map: handle_id,
+    node_id_to_map_to: node_id,
+    label,
+    type
+  }
+  let is_already_selected = false;
+  selected_handles.forEach(({node_id_to_map_to, data_key_to_map}) => {
+    if (node_id_to_map_to === node_id && data_key_to_map === handle_id) {
+      is_already_selected = true;
+    }
+  });
+  if (!is_already_selected) {
+    selected_handles.push(this_handle);
+  }
+  setGlobalVariable("selected_handles", selected_handles);
+}
+
+
+
 const state = {
   setInitialState,
   setState,
@@ -209,7 +238,8 @@ const state = {
   zoomToCoordinate,
   copyStructureToClipboard,
   highlightSelectedNodes,
-  deselectAllNodes
+  deselectAllNodes,
+  selectHandle,
 };
 
 export default state;

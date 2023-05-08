@@ -25,4 +25,9 @@ function notify(status, title, description, get_from_copy = false, duration = 40
   });
 }
 
-export default notify;
+function closeAllNotifications() {
+  toast.closeAll();
+}
+
+const notification = { notify, closeAllNotifications };
+export default notification;

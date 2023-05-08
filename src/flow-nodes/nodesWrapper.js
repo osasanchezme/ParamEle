@@ -58,15 +58,15 @@ function getTargetAndSourceIds(data) {
       case "input_handles":
         val.forEach((in_key) => {
           target_ids.push(`${in_key.label}-${in_key.type}`);
-          node_ids_to_map.push(in_key.node_id_to_map_to);
-          data_keys.push(in_key.data_key_to_map_to);
+          node_ids_to_map.push(in_key.node_id_to_map);
+          data_keys.push(in_key.data_key_to_map);
         });
         break;
       case "output_handles":
         val.forEach((in_key) => {
           source_ids.push(`${in_key.label}-${in_key.type}`);
-          node_ids_to_map_from.push(in_key.node_id_to_map_from);
-          result_data_keys.push(in_key.data_key_to_map_from);
+          node_ids_to_map_from.push(in_key.node_id_to_map);
+          result_data_keys.push(in_key.data_key_to_map);
         });
         break;
       default:

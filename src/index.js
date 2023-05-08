@@ -270,27 +270,30 @@ class ParamEle extends React.Component {
     }
   }
   activateNodeCreation(event) {
-    let bounding_rect = event.target.getBoundingClientRect();
-    this.setState(
-      {
-        mode: "wait_action",
-      },
-      () => {
-        this.setState({
-          mode: "add_node",
-          mouse_x: event.clientX,
-          mouse_y: event.clientY,
-          rel_orig_x: bounding_rect.left,
-          rel_orig_y: bounding_rect.top,
-        });
-      }
-    );
+    if (this.state.mode === "wait_action") {
+      state.deselectAllNodes();
+      let bounding_rect = event.target.getBoundingClientRect();
+      this.setState({
+        mode: "add_node",
+        mouse_x: event.clientX,
+        mouse_y: event.clientY,
+        rel_orig_x: bounding_rect.left,
+        rel_orig_y: bounding_rect.top,
+      });
+    }
   }
   handleKeyPress(event) {
-    if (event.key === "Escape") {
-      this.setState({ mode: "wait_action" });
-      state.deselectAllNodes();
-    };
+    switch (event.key) {
+      case "Escape":
+        this.setState({ mode: "wait_action" });
+        state.deselectAllNodes();
+        break;
+      case "Enter":
+        state.setGlobalVariable("user_interaction_step", "done");
+        break;
+      default:
+        break;
+    }
   }
   handleMouseClick(event) {
     if (event.target.className === "react-flow__pane react-flow__container") {

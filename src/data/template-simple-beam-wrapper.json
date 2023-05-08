@@ -54,22 +54,22 @@
                         {
                             "label": "longitud",
                             "type": "value",
-                            "node_id_to_map_to": "node-3",
-                            "data_key_to_map_to": "value"
+                            "node_id_to_map": "node-3",
+                            "data_key_to_map": "value"
                         },
                         {
                             "label": "carga",
                             "type": "value",
-                            "node_id_to_map_to": "node-7",
-                            "data_key_to_map_to": "value"
+                            "node_id_to_map": "node-7",
+                            "data_key_to_map": "value"
                         }
                     ],
                     "output_handles": [
                         {
                             "label": "viga",
                             "type": "id",
-                            "node_id_to_map_from": "node-5",
-                            "data_key_to_map_from": "member_out-id"
+                            "node_id_to_map": "node-5",
+                            "data_key_to_map": "member_out-id"
                         }
                     ],
                     "internal_logic": {
