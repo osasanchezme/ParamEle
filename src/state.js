@@ -1,8 +1,8 @@
 // import data from "./data/template-4-two-beams.json";
 // import data from "./data/template-0.json";
 // import data from "./data/template-5-frame.json";
-// import data from "./data/template-quad-wrapper.json";
-import data from "./data/template-math-quadratic.json";
+import data from "./data/template-quad-wrapper.json";
+// import data from "./data/template-math-quadratic.json";
 // import data from "./data/template-simple-beam-wrapper.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
@@ -10,7 +10,7 @@ import utils from "./utils";
 import repair from "./js/repair";
 import notification from "./components/notification";
 import { ReactFlowInstance } from "react-flow-renderer";
-const {notify} = notification;
+const { notify } = notification;
 
 function setInitialState() {
   // Get language from URL
@@ -33,6 +33,8 @@ function setInitialState() {
     section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
     language,
     words_map: {},
+    model_path: ["model"], // Path to the current editable model in the state
+    model_path_print: ["model"], // Path to the current editable model in the state
   };
   updateWordsMapFromLanguage();
 }
@@ -88,6 +90,7 @@ function updateSettingsFromLocalState(settings_obj) {
 
 function updateStateFromFlow(force_update = false) {
   let settings = getState("settings")["general"];
+  let model_path = getState("model_path");
   if (settings.auto_update) {
     // TODO -  Do not do it with timeout but using a callback in index.js
     setTimeout(() => {
@@ -95,8 +98,12 @@ function updateStateFromFlow(force_update = false) {
       if (rfInstance) {
         let current_state = getState();
         let old_state = JSON.stringify(current_state);
-        current_state.model.nodes = rfInstance.getNodes();
-        current_state.model.edges = rfInstance.getEdges();
+        let model_location = current_state;
+        model_path.forEach((key) => {
+          model_location = model_location[key];
+        });
+        model_location.nodes = rfInstance.getNodes();
+        model_location.edges = rfInstance.getEdges();
         if (JSON.stringify(current_state) !== old_state || force_update) {
           setState(current_state);
           logic_runner.run();
@@ -115,7 +122,7 @@ function updateStateFromFlow(force_update = false) {
 function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true) {
   let rfInstance = getRfInstance();
   let position = html_position;
-  if (!is_rf_position){
+  if (!is_rf_position) {
     position = rfInstance.project(html_position);
   }
   let id = utils.nextNodeId();
@@ -143,7 +150,7 @@ function removeNodesAndEdgesFromModel(current_model, node_ids, edge_ids) {
   edges.forEach((edge) => {
     if (edge !== null) new_edges.push(edge);
   });
-  return {nodes: new_nodes, edges: new_edges};
+  return { nodes: new_nodes, edges: new_edges };
 }
 
 function updateNodeData(node_id, data_update) {
@@ -167,6 +174,13 @@ function zoomToCoordinate(x, y) {
   let width = 100;
   let height = 100;
   rf_instance.fitBounds({ x, y, width, height });
+}
+
+function resetView() {
+  let rf_instance = getRfInstance();
+  setTimeout(() => {
+    rf_instance.fitView();
+  }, 200);
 }
 
 function getSectionColor(section_id) {
@@ -221,14 +235,14 @@ function highlightSelectedNodes(x_i, y_i, x_f, y_f, rel_orig_x, rel_orig_y) {
   );
 }
 
-function deselectAllNodes(){
+function deselectAllNodes() {
   let rf_instance = getRfInstance();
   rf_instance.setNodes((nds) =>
     nds.map((node) => {
       if (node.data.selected) node.data.selected = false;
       return node;
     })
-  ); 
+  );
 }
 
 function selectHandle(event, node_id, handle_id, label, type) {
@@ -237,10 +251,10 @@ function selectHandle(event, node_id, handle_id, label, type) {
     data_key_to_map: handle_id,
     node_id_to_map: node_id,
     label,
-    type
-  }
+    type,
+  };
   let is_already_selected = false;
-  selected_handles.forEach(({node_id_to_map, data_key_to_map}) => {
+  selected_handles.forEach(({ node_id_to_map, data_key_to_map }) => {
     if (node_id_to_map === node_id && data_key_to_map === handle_id) {
       is_already_selected = true;
     }
@@ -253,7 +267,7 @@ function selectHandle(event, node_id, handle_id, label, type) {
 
 function setModelToEditor(model) {
   let rf_instance = getRfInstance();
-  let {nodes, edges} = model;
+  let { nodes, edges } = model;
   rf_instance.setNodes(nodes);
   rf_instance.setEdges(edges);
 }
@@ -278,7 +292,8 @@ const state = {
   selectHandle,
   getModelFromRfInstance,
   removeNodesAndEdgesFromModel,
-  setModelToEditor
+  setModelToEditor,
+  resetView,
 };
 
 export default state;

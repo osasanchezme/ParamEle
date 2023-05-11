@@ -158,6 +158,10 @@ function updateRenderer() {
   window.ParamEle.updateRenderer();
 }
 
+function updateNavigator() {
+  window.ParamEle.updateNavigator();
+}
+
 function getNodesLibrary() {
   return window.ParamEle.nodesLibrary;
 }
@@ -257,6 +261,7 @@ const utils = {
   getDisplayCopy,
   getNodesLibrary,
   updatePropertiesPanel,
+  updateNavigator
 };
 
 export default utils;

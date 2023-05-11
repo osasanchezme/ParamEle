@@ -27,6 +27,7 @@ import PropertiesPanel from "./components/properties_panel";
 import theme from "./theme";
 import SelectionBox from "./components/selection_box";
 import utils from "./utils";
+import Navigator from "./components/navigator";
 const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -366,6 +367,7 @@ class ParamEle extends React.Component {
             position={this.state.settings.layout.panel_width}
           ></ResizeBorder>
           <VisualEditor app_state={this.state} width={this.state.settings.layout.editor_width}></VisualEditor>
+          <Navigator layout={this.state.settings.layout}></Navigator>
           <ResizeBorder id="renderer_editor" visible={this.state.settings.general.side_by_side} position={panel_plus_renderer}></ResizeBorder>
           <Renderer
             visible={!this.state.settings.general.show_nodes}

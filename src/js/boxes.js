@@ -74,11 +74,50 @@ function groupBoxesStepThree(data_to_keep) {
   nodes.push(state.addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, false));
 
   // Remove the selected nodes and edges from the editor
-  let new_model = state.removeNodesAndEdgesFromModel({nodes, edges}, selected_node_ids, selected_edge_ids);
+  let new_model = state.removeNodesAndEdgesFromModel({ nodes, edges }, selected_node_ids, selected_edge_ids);
   state.setModelToEditor(new_model);
 
   // Zoom to the new node
   state.zoomToCoordinate(position.x, position.y);
+}
+
+function editInternalLogic() {
+  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
+  let { nodes } = getState("model");
+  let selected_nodes = [];
+  let selected_node_ids = [];
+  let selected_node_location = [];
+  nodes.forEach((node, i) => {
+    if (node.data.selected) {
+      selected_nodes.push(node);
+      selected_node_ids.push(node.id);
+      selected_node_location.push(i);
+    }
+  });
+  if (selected_nodes.length === 0) {
+    notify("warning", "no_nodes_selected", null, true);
+    return;
+  }
+  if (selected_nodes.length > 1) {
+    notify("warning", "more_than_one_node_selected", null, true);
+    return;
+  }
+  if (selected_nodes[0].type !== "nodesWrapper") {
+    notify("warning", "no_wrapper_node", null, true);
+    return;
+  }
+  let wrapper_node = selected_nodes[0];
+  let wrapper_node_id = selected_node_ids[0];
+  let wrapper_node_location = selected_node_location[0];
+  let internal_logic = wrapper_node.data.internal_logic;
+  let wrapper_node_name = wrapper_node.data.custom_label || wrapper_node_id;
+  let model_path = getState("model_path");
+  let model_path_print = getState("model_path_print");
+  state.setState([...model_path, "nodes", wrapper_node_location, "data", "internal_logic"], "model_path");
+  state.setState([...model_path_print, wrapper_node_name], "model_path_print");
+  state.setModelToEditor(internal_logic);
+  state.resetView();
+  utils.updateNavigator();
 }
 
 function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
@@ -99,6 +138,6 @@ function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
   }, 10000);
 }
 
-const boxes = { groupBoxes };
+const boxes = { groupBoxes, editInternalLogic };
 
 export default boxes;

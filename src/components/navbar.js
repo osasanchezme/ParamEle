@@ -23,7 +23,10 @@ function getNavBarOptions() {
     },
     boxes: {
       icon: "MdCropSquare",
-      options: [{ name: localGetCopy("group"), icon: "MdGroupWork", callback: boxes.groupBoxes }],
+      options: [
+        { name: localGetCopy("group"), icon: "MdGroupWork", callback: boxes.groupBoxes },
+        { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
+      ],
     },
   };
 }
