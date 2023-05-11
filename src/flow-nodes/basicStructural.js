@@ -101,7 +101,7 @@ function StructuralPinSupportExec(args) {
       rz: 0,
       type: "node",
       node,
-      restraint_code: "FFFRRR",
+      restraint_code: "FFFFFR",
     },
   };
 }

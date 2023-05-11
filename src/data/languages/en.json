@@ -85,7 +85,9 @@
         "import_json": "Import JSON",
         "boxes": "Boxes",
         "group": "Group",
-        "edit_logic": "Edit logic"
+        "edit_logic": "Edit logic",
+        "structure": "Structure",
+        "solve": "Solve"
     },
     "commands_bar":{
         "placeholder": "Node name..."
@@ -121,7 +123,11 @@
         "more_than_one_node_selected_title": "More than one box selected", 
         "more_than_one_node_selected_desc": "Please select only one box",
         "no_wrapper_node_title": "The selected box is not a wrapper",
-        "no_wrapper_node_desc": "Please select a wrapper box"
+        "no_wrapper_node_desc": "Please select a wrapper box",
+        "requested_solve_title": "Request sent",
+        "requested_solve_desc": "The request was sent to the server. Waiting for a response...",
+        "saved_model_title": "Model saved to the cloud",
+        "saved_model_desc": "Opening in a new tab..."
     },
     "navigator":{
         "model": "Main model"

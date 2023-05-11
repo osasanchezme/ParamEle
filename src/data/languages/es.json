@@ -85,7 +85,9 @@
         "import_json": "Importar JSON",
         "boxes": "Cajas",
         "group": "Agrupar",
-        "edit_logic": "Editar lógica"
+        "edit_logic": "Editar lógica",
+        "structure": "Estructura",
+        "solve": "Resolver"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."
@@ -121,7 +123,11 @@
         "more_than_one_node_selected_title": "Más de una caja seleccionada", 
         "more_than_one_node_selected_desc": "Por favor selecciona una única caja",
         "no_wrapper_node_title": "La caja seleccionada no es agrupadora",
-        "no_wrapper_node_desc": "Por favor selecciona una caja agrupadora"
+        "no_wrapper_node_desc": "Por favor selecciona una caja agrupadora",
+        "requested_solve_title": "Petición enviada",
+        "requested_solve_desc": "La petición fue enviada al servidor. Esperando respuesta...",
+        "saved_model_title": "Modelo guardado en la nube",
+        "saved_model_desc": "Abriendo en una pestaña nueva..."
     },
     "navigator":{
         "model": "Modelo principal"

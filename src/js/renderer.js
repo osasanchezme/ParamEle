@@ -339,7 +339,7 @@ function createSupport(restraint_code, node) {
       support_y.push(node.y);
       support_z.push(node.z);
       break;
-    case "FFFRRR":
+    case "FFFFFR":
       support_x.push(node.x);
       support_y.push(node.y);
       support_z.push(node.z);

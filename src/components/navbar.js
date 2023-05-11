@@ -3,6 +3,7 @@ import React from "react";
 import * as MaterialDesign from "react-icons/md";
 import boxes from "../js/boxes";
 import file from "../js/file";
+import structure from "../js/structure";
 import utils from "../utils";
 
 function localGetCopy(node_name) {
@@ -26,6 +27,12 @@ function getNavBarOptions() {
       options: [
         { name: localGetCopy("group"), icon: "MdGroupWork", callback: boxes.groupBoxes },
         { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
+      ],
+    },
+    structure: {
+      icon: "MdFoundation",
+      options: [
+        { name: localGetCopy("solve"), icon: "MdPlayCircle", callback: structure.solveStructure },
       ],
     },
   };

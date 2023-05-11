@@ -57,6 +57,7 @@ const uploadJSONFile = () => {
         rf_instance.setNodes(model.nodes);
         rf_instance.setEdges(model.edges);
         state.updateSettingsFromLocalState(state_from_file.settings);
+        state.resetView();
         logic_runner.run();
       };
       fr.readAsText(user_file);
