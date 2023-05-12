@@ -73,7 +73,6 @@ const solveStructure = () => {
       console.log(data);
       let already_open = false;
       notification.closeAllNotifications();
-      notification.notify("info", utils.getDisplayCopy("notifications", "response_back"), data.response.msg);
       if (data.functions) {
         data.functions.forEach((func) => {
           if (func.function === "S3D.file.save") {
@@ -83,16 +82,14 @@ const solveStructure = () => {
                 "info",
                 utils.getDisplayCopy("notifications", "saved_model"),
                 <Link href={func.data} isExternal>
-                  {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px"/>
+                  {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px" />
                 </Link>
               );
-              // setTimeout(() => {
-              //   window.open(func.data, "_blank");
-              // }, 2000);
             }
           }
         });
       }
+      if (!already_open) notification.notify("info", utils.getDisplayCopy("notifications", "response_back"), data.response.msg);
     })
     .catch((error) => {
       console.error("Error:", error);
