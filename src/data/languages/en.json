@@ -87,7 +87,13 @@
         "group": "Group",
         "edit_logic": "Edit logic",
         "structure": "Structure",
-        "solve": "Solve"
+        "solve": "Solve",
+        "settings": "Settings",
+        "save_changes": "Save",
+        "close_modal": "Close",
+        "solver_tab": "Solver",
+        "solver_username": "User",
+        "solver_key": "Key"
     },
     "commands_bar":{
         "placeholder": "Node name..."
@@ -126,8 +132,9 @@
         "no_wrapper_node_desc": "Please select a wrapper box",
         "requested_solve_title": "Request sent",
         "requested_solve_desc": "The request was sent to the server. Waiting for a response...",
-        "saved_model_title": "Model saved to the cloud",
-        "saved_model_desc": "Opening in a new tab..."
+        "saved_model": "Model saved to the cloud",
+        "open_model": "Open model",
+        "response_back": "Response:"
     },
     "navigator":{
         "model": "Main model"

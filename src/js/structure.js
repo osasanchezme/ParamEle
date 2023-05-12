@@ -1,14 +1,20 @@
 import notification from "../components/notification";
 import getState from "../getState";
+import utils from "../utils";
+import { Link, Icon } from "@chakra-ui/react";
+import { MdOpenInNew } from "react-icons/md";
 
 const solveStructure = () => {
   let structure = getState("structure");
-//   let file_name = Date.now();
+  let global_settings = getState("settings")["global"];
+  //   let file_name = Date.now();
   let file_name = "my_model_" + Date.now();
   let api_object = {
     auth: {
-      username: "oscar.sanchez@skyciv.com",
-      key: "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
+      // username: "oscar.sanchez@skyciv.com",
+      // key: "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
+      username: global_settings.solver_username,
+      key: global_settings.solver_key,
     },
     functions: [
       {
@@ -66,16 +72,23 @@ const solveStructure = () => {
       console.log("Success");
       console.log(data);
       let already_open = false;
+      notification.closeAllNotifications();
+      notification.notify("info", utils.getDisplayCopy("notifications", "response_back"), data.response.msg);
       if (data.functions) {
         data.functions.forEach((func) => {
           if (func.function === "S3D.file.save") {
             if (!already_open) {
               already_open = true;
-              notification.closeAllNotifications();
-              notification.notify("info", "saved_model", "", true);
-              setTimeout(() => {
-                window.open(func.data, "_blank");
-              }, 2000);
+              notification.notify(
+                "info",
+                utils.getDisplayCopy("notifications", "saved_model"),
+                <Link href={func.data} isExternal>
+                  {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px"/>
+                </Link>
+              );
+              // setTimeout(() => {
+              //   window.open(func.data, "_blank");
+              // }, 2000);
             }
           }
         });

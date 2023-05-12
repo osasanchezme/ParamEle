@@ -28,6 +28,7 @@ import theme from "./theme";
 import SelectionBox from "./components/selection_box";
 import utils from "./utils";
 import Navigator from "./components/navigator";
+import GlobalSettings from "./components/global_settings";
 const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -382,6 +383,7 @@ class ParamEle extends React.Component {
             mouse_x={this.state.mouse_x}
             mouse_y={this.state.mouse_y}
           ></SelectionBox>
+          <GlobalSettings></GlobalSettings>
         </div>
       </ChakraProvider>
     );

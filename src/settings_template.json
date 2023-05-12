@@ -1,5 +1,5 @@
 {
-    "general":{
+    "general": {
         "auto_update": {
             "default": true,
             "type": "check"
@@ -21,10 +21,28 @@
             "type": "check"
         }
     },
-    "layout":{
-        "renderer_width": {"default": 30},
-        "editor_width": {"default": 50},
-        "panel_width": {"default": 20},
-        "renderer_right": {"default": 50}
+    "layout": {
+        "renderer_width": {
+            "default": 30
+        },
+        "editor_width": {
+            "default": 50
+        },
+        "panel_width": {
+            "default": 20
+        },
+        "renderer_right": {
+            "default": 50
+        }
+    },
+    "global": {
+        "solver_username": {
+            "default": "oscar.sanchez@skyciv.com",
+            "type": "text"
+        },
+        "solver_key": {
+            "default": "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
+            "type": "text"
+        }
     }
 }

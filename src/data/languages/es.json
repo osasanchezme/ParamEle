@@ -74,7 +74,13 @@
         "mini_map": "Mostrar mapa",
         "show_nodes": "Mostrar nodos",
         "side_by_side": "Dividir pantalla",
-        "show_properties_panel": "Mostrar panel"
+        "show_properties_panel": "Mostrar panel",
+        "modal_title": "Configuración",
+        "save_changes": "Guardar",
+        "close_modal": "Cerrar",
+        "solver_tab": "Solucionador",
+        "solver_username": "Usuario",
+        "solver_key": "Clave"
     },
     "nav_bar":{
         "file": "Archivo",
@@ -87,7 +93,8 @@
         "group": "Agrupar",
         "edit_logic": "Editar lógica",
         "structure": "Estructura",
-        "solve": "Resolver"
+        "solve": "Resolver",
+        "settings": "Configuración"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."
@@ -126,8 +133,9 @@
         "no_wrapper_node_desc": "Por favor selecciona una caja agrupadora",
         "requested_solve_title": "Petición enviada",
         "requested_solve_desc": "La petición fue enviada al servidor. Esperando respuesta...",
-        "saved_model_title": "Modelo guardado en la nube",
-        "saved_model_desc": "Abriendo en una pestaña nueva..."
+        "saved_model": "Modelo guardado en la nube",
+        "open_model": "Abrir modelo",
+        "response_back": "Respuesta:"
     },
     "navigator":{
         "model": "Modelo principal"

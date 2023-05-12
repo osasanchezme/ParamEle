@@ -35,6 +35,10 @@ function getNavBarOptions() {
         { name: localGetCopy("solve"), icon: "MdPlayCircle", callback: structure.solveStructure },
       ],
     },
+    settings: {
+      icon: "MdSettings",
+      callback: utils.openGlobalSettings,
+    },
   };
 }
 
@@ -58,7 +62,7 @@ class NavBar extends React.Component {
               width="150px"
               className="nav-bar-button"
               leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
-              rightIcon={<MaterialDesign.MdKeyboardArrowDown />}
+              rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
               colorScheme="gray"
               variant="ghost"
               onMouseEnter={() => {
@@ -70,6 +74,11 @@ class NavBar extends React.Component {
                   this.handleChange(false, false);
                 }
               }}
+              onClick={() => {
+                if (!nav_menu_options.options) {
+                  nav_menu_options.callback();
+                }
+              }}
             >
               {localGetCopy(nav_menu_key)}
             </Button>
@@ -77,7 +86,7 @@ class NavBar extends React.Component {
         </Stack>
         <NavMenu
           left={String(150 * this.state.current_menu_index) + "px"}
-          options={this.navbar_options[this.state.current_menu]["options"]}
+          options={this.navbar_options[this.state.current_menu]["options"] || []}
           visibility={this.state.dropdown_visible ? "visible" : "hidden"}
           handleChange={this.handleChange}
         ></NavMenu>

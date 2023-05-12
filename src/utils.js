@@ -165,6 +165,10 @@ function updateNavigator() {
 function getNodesLibrary() {
   return window.ParamEle.nodesLibrary;
 }
+
+function openGlobalSettings() {
+  return window.ParamEle.openGlobalSettings();
+}
 /**
  * Converts the arguments from a React flow node to structural arguments
  * @param {*} args
@@ -261,7 +265,8 @@ const utils = {
   getDisplayCopy,
   getNodesLibrary,
   updatePropertiesPanel,
-  updateNavigator
+  updateNavigator,
+  openGlobalSettings,
 };
 
 export default utils;

@@ -51,7 +51,8 @@ const uploadJSONFile = () => {
       fr.onload = function (e) {
         let lines = e.target.result;
         var state_from_file = JSON.parse(lines);
-        state.setState(state_from_file);
+        state_from_file.settings = repair.repairSettings(state_from_file.settings);
+        state.setState(repair.repairModel(state_from_file));
         let rf_instance = state.getRfInstance();
         let model = repair.repairModel(state_from_file.model);
         rf_instance.setNodes(model.nodes);
