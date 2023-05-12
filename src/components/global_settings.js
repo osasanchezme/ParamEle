@@ -18,12 +18,15 @@ import {
   Tab,
   TabPanel,
   Input,
+  Link,
+  Icon,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import getState from "../getState";
 import { useState } from "react";
 import state from "../state";
+import { MdOpenInNew } from "react-icons/md";
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("settings", copy_key);
@@ -60,6 +63,11 @@ function GlobalSettings() {
 
             <TabPanels>
               <TabPanel>
+                <p style={{textAlign: "right"}}>
+                  <Link href="https://platform.skyciv.com/account/api" color="blue" isExternal>
+                    {localGetDisplayCopy("get_auth")} <Icon as={MdOpenInNew} mx="2px" />
+                  </Link>
+                </p>
                 <FormControl>
                   <FormLabel>{localGetDisplayCopy("solver_username")}</FormLabel>
                   <Input

@@ -80,7 +80,8 @@
         "close_modal": "Cerrar",
         "solver_tab": "Solucionador",
         "solver_username": "Usuario",
-        "solver_key": "Clave"
+        "solver_key": "Clave",
+        "get_auth": "Obtener credenciales"
     },
     "nav_bar":{
         "file": "Archivo",

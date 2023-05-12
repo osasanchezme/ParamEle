@@ -74,7 +74,14 @@
         "mini_map": "Show map",
         "show_nodes": "Show nodes",
         "side_by_side": "Split screen",
-        "show_properties_panel": "Show panel"
+        "show_properties_panel": "Show panel",
+        "modal_title": "Settings",
+        "save_changes": "Save",
+        "close_modal": "Close",
+        "solver_tab": "Solver",
+        "solver_username": "User",
+        "solver_key": "Key",
+        "get_auth": "Get credentials"  
     },
     "nav_bar":{
         "file": "File",
@@ -88,12 +95,7 @@
         "edit_logic": "Edit logic",
         "structure": "Structure",
         "solve": "Solve",
-        "settings": "Settings",
-        "save_changes": "Save",
-        "close_modal": "Close",
-        "solver_tab": "Solver",
-        "solver_username": "User",
-        "solver_key": "Key"
+        "settings": "Settings"
     },
     "commands_bar":{
         "placeholder": "Node name..."
