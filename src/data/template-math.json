@@ -11,7 +11,7 @@
                     "y": 623.5873886255436
                 },
                 "data": {
-                    "value": "2"
+                    "value-value": "2"
                 },
                 "positionAbsolute": {
                     "x": 875.3783175920536,
@@ -49,7 +49,7 @@
                     "y": 510.45914049054375
                 },
                 "data": {
-                    "value": "234"
+                    "value-value": "234"
                 },
                 "positionAbsolute": {
                     "x": 874.8705414624504,
@@ -87,7 +87,7 @@
                     "y": 348.94745375962094
                 },
                 "data": {
-                    "value": "5"
+                    "value-value": "5"
                 },
                 "positionAbsolute": {
                     "x": 892.6683279777028,
@@ -106,7 +106,7 @@
                     "y": 234.27189365855713
                 },
                 "data": {
-                    "value": "1"
+                    "value-value": "1"
                 },
                 "positionAbsolute": {
                     "x": 873.5667328262716,
@@ -117,28 +117,28 @@
         "edges": [
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-3",
                 "targetHandle": "base-value-0",
                 "id": "reactflow__edge-node-1value-node-3base-value-0"
             },
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-3",
                 "targetHandle": "power-value-1",
                 "id": "reactflow__edge-node-2value-node-3power-value-1"
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-5",
                 "targetHandle": "base-value-1",
                 "id": "reactflow__edge-node-4value-node-5base-value-1"
             },
             {
                 "source": "node-6",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-5",
                 "targetHandle": "root-value-2",
                 "id": "reactflow__edge-node-6value-node-5root-value-2"

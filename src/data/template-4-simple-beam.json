@@ -11,7 +11,7 @@
                     "y": 234.43592413693386
                 },
                 "data": {
-                    "value": "1"
+                    "value-value": "1"
                 },
                 "positionAbsolute": {
                     "x": 159.3264876753865,
@@ -89,7 +89,7 @@
                     "y": 83
                 },
                 "data": {
-                    "value": "0"
+                    "value-value": "0"
                 },
                 "positionAbsolute": {
                     "x": 121.5,
@@ -124,21 +124,21 @@
         "edges": [
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-1",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-2value-node-1x-value"
             },
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-1",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-2value-node-1y-value"
             },
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-1",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-2value-node-1z-value"
@@ -152,21 +152,21 @@
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-4",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-5value-node-4x-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-4",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-5value-node-4y-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-4",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-5value-node-4z-value"

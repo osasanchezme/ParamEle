@@ -15,7 +15,7 @@
           "y": 0
         },
         "data": {
-          "value": 123
+          "value-value": 123
         }
       },
       {
@@ -35,7 +35,7 @@
           "y": 200
         },
         "data": {
-          "value": 123
+          "value-value": 123
         }
       },
       {
@@ -46,14 +46,14 @@
           "y": 200
         },
         "data": {
-          "value": 123
+          "value-value": 123
         }
       }
     ],
     "edges": [
       {
         "source": "node-1",
-        "sourceHandle": "value",
+        "sourceHandle": "value-value",
         "target": "node-2",
         "targetHandle": "num-1-in",
         "id": "reactflow__edge-node-1text-out-node-2text-in"

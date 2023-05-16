@@ -11,7 +11,7 @@
                     "y": 153.81336122802128
                 },
                 "data": {
-                    "value": "-2"
+                    "value-value": "-2"
                 },
                 "positionAbsolute": {
                     "x": -297.7789524430204,
@@ -30,7 +30,7 @@
                     "y": 52.70579734062939
                 },
                 "data": {
-                    "value": "3"
+                    "value-value": "3"
                 },
                 "positionAbsolute": {
                     "x": -299.2030026386175,
@@ -49,7 +49,7 @@
                     "y": -35.44729663350247
                 },
                 "data": {
-                    "value": "5"
+                    "value-value": "5"
                 },
                 "positionAbsolute": {
                     "x": -302.0252506900373,
@@ -74,19 +74,19 @@
                             "label": "A",
                             "type": "value",
                             "node_id_to_map": "node-1",
-                            "data_key_to_map": "value"
+                            "data_key_to_map": "value-value"
                         },
                         {
                             "label": "B",
                             "type": "value",
                             "node_id_to_map": "node-2",
-                            "data_key_to_map": "value"
+                            "data_key_to_map": "value-value"
                         },
                         {
                             "label": "C",
                             "type": "value",
                             "node_id_to_map": "node-3",
-                            "data_key_to_map": "value"
+                            "data_key_to_map": "value-value"
                         }
                     ],
                     "output_handles": [
@@ -426,7 +426,7 @@
                                     "y": 21.967275333156337
                                 },
                                 "data": {
-                                    "value": "2",
+                                    "value-value": "2",
                                     "custom_label": "2"
                                 },
                                 "positionAbsolute": {
@@ -446,7 +446,7 @@
                                     "y": 106.01413282789626
                                 },
                                 "data": {
-                                    "value": "4",
+                                    "value-value": "4",
                                     "custom_label": "4"
                                 },
                                 "positionAbsolute": {
@@ -466,7 +466,7 @@
                                     "y": 183.08803125838233
                                 },
                                 "data": {
-                                    "value": "-1",
+                                    "value-value": "-1",
                                     "custom_label": "-1"
                                 },
                                 "positionAbsolute": {
@@ -487,7 +487,7 @@
                                 },
                                 "data": {
                                     "custom_label": "C",
-                                    "value": -2
+                                    "value-value": -2
                                 },
                                 "positionAbsolute": {
                                     "x": 750.8396684926622,
@@ -507,7 +507,7 @@
                                 },
                                 "data": {
                                     "custom_label": "B",
-                                    "value": 3
+                                    "value-value": 3
                                 },
                                 "positionAbsolute": {
                                     "x": 749.5611368665564,
@@ -527,7 +527,7 @@
                                 },
                                 "data": {
                                     "custom_label": "A",
-                                    "value": 5
+                                    "value-value": 5
                                 },
                                 "positionAbsolute": {
                                     "x": 751.3840932958268,
@@ -540,35 +540,35 @@
                         "edges": [
                             {
                                 "source": "node-4",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-7",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-4value-node-7num_1-value"
                             },
                             {
                                 "source": "node-2",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-7",
                                 "targetHandle": "num_2-value",
                                 "id": "reactflow__edge-node-2value-node-7num_2-value"
                             },
                             {
                                 "source": "node-1",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-8",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-1value-node-8num_1-value"
                             },
                             {
                                 "source": "node-3",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-8",
                                 "targetHandle": "num_2-value",
                                 "id": "reactflow__edge-node-3value-node-8num_2-value"
                             },
                             {
                                 "source": "node-5",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-9",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-5value-node-9num_1-value"
@@ -582,35 +582,35 @@
                             },
                             {
                                 "source": "node-2",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-10",
                                 "targetHandle": "base-value-0",
                                 "id": "reactflow__edge-node-2value-node-10base-value-0"
                             },
                             {
                                 "source": "node-6",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-10",
                                 "targetHandle": "power-value-1",
                                 "id": "reactflow__edge-node-6value-node-10power-value-1"
                             },
                             {
                                 "source": "node-6",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-11",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-6value-node-11num_1-value"
                             },
                             {
                                 "source": "node-1",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-11",
                                 "targetHandle": "num_2-value",
                                 "id": "reactflow__edge-node-1value-node-11num_2-value"
                             },
                             {
                                 "source": "node-4",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-12",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-4value-node-12num_1-value"
@@ -666,7 +666,7 @@
                             },
                             {
                                 "source": "node-4",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-16",
                                 "targetHandle": "num_1-value",
                                 "id": "reactflow__edge-node-4value-node-16num_1-value"
@@ -729,21 +729,21 @@
         "edges": [
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-20",
                 "targetHandle": "A-value",
                 "id": "reactflow__edge-node-1value-node-20A-value"
             },
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-20",
                 "targetHandle": "B-value",
                 "id": "reactflow__edge-node-2value-node-20B-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-20",
                 "targetHandle": "C-value",
                 "id": "reactflow__edge-node-3value-node-20C-value"

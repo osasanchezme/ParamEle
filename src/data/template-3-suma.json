@@ -49,7 +49,7 @@
                     "y": -0.8526348917679485
                 },
                 "data": {
-                    "value": "1.2"
+                    "value-value": "1.2"
                 },
                 "positionAbsolute": {
                     "x": 1.7052697835359112,
@@ -87,7 +87,7 @@
                     "y": 155.4725341426404
                 },
                 "data": {
-                    "value": "3.4"
+                    "value-value": "3.4"
                 },
                 "selected": false,
                 "positionAbsolute": {
@@ -106,7 +106,7 @@
                     "y": 199.54004171287832
                 },
                 "data": {
-                    "value": "1.4"
+                    "value-value": "1.4"
                 },
                 "positionAbsolute": {
                     "x": 349.347482530057,
@@ -119,14 +119,14 @@
         "edges": [
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-2",
                 "targetHandle": "num-1-in",
                 "id": "reactflow__edge-node-1text-out-node-2text-in"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-2",
                 "targetHandle": "num-2-in",
                 "id": "reactflow__edge-node-3value-node-2num-2-in"
@@ -140,7 +140,7 @@
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-5",
                 "targetHandle": "num-2-in",
                 "id": "reactflow__edge-node-4value-node-5num-2-in"
@@ -154,7 +154,7 @@
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-6",
                 "targetHandle": "num-2-in",
                 "id": "reactflow__edge-node-4value-node-6num-2-in"

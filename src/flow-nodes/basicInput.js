@@ -1,56 +1,21 @@
-import { Handle, Position } from "react-flow-renderer";
-import { Input } from "@chakra-ui/react";
-import state from "../state";
-import { useEffect, useRef } from "react";
+import GenericInOutNode from "./generics/genericInOut";
 import utils from "../utils";
-import EditableNodeHeader from "../components/editable_node_header";
-const { getRfInstance, updateStateFromFlow, getGlobalVariable, setGlobalVariable } = state;
+
+const node_source_ids = [];
+const node_target_ids = [];
+const node_editable_ids = ["value-value"];
 
 function InputNumber({ data, id }) {
-  const text_input = useRef(null);
-  useEffect(() => {
-    if (id === getGlobalVariable("last_node_id_created")) text_input.current.focus();
-  });
-  const onChange = (evt) => {
-    setGlobalVariable("last_node_id_created", "");
-    // Update the component state (At React level)
-    let rf_instance = getRfInstance();
-    rf_instance.setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          node.data = {
-            ...node.data,
-            value: evt.target.value,
-          };
-        }
-        return node;
-      })
-    );
-    updateStateFromFlow();
-  };
-  // Check if the user defined a custom_label for the node
-  let node_label = utils.getDisplayCopy("nodes", "inputNumber");
-  node_label = data.custom_label || node_label;
-  // Define the class name
-  let class_name = "reactflow-node";
-  if (data.selected) class_name += " selected";
   return (
-    <div className={class_name}>
-      <EditableNodeHeader id={id} node_label={node_label}></EditableNodeHeader>
-      <div className="node-body">
-        <div>
-          <Input
-            ref={text_input}
-            placeholder="Ingresar número"
-            size="xs"
-            onChange={onChange}
-            value={data.value === undefined ? "" : data.value}
-            autoComplete="off"
-          />
-        </div>
-        <Handle type="source" position={Position.Right} id="value" onClick={(event) => state.selectHandle(event, id, "value", node_label, "value")} />
-      </div>
-    </div>
+    <GenericInOutNode
+      node_label={utils.getDisplayCopy("nodes", "inputNumber")}
+      data={data}
+      id={id}
+      key={id}
+      target_ids={node_target_ids}
+      source_ids={node_source_ids}
+      editable_ids={node_editable_ids}
+    ></GenericInOutNode>
   );
 }
 

@@ -30,7 +30,7 @@
                     "y": 783.4652075417084
                 },
                 "data": {
-                    "value": "12"
+                    "value-value": "12"
                 },
                 "positionAbsolute": {
                     "x": 1683.3041000211217,
@@ -68,7 +68,7 @@
                     "y": 213.25617204623882
                 },
                 "data": {
-                    "value": "300"
+                    "value-value": "300"
                 },
                 "positionAbsolute": {
                     "x": 1356.181677231849,
@@ -87,7 +87,7 @@
                     "y": 119.50074930788784
                 },
                 "data": {
-                    "value": "500"
+                    "value-value": "500"
                 },
                 "positionAbsolute": {
                     "x": 1365.2230213450518,
@@ -125,7 +125,7 @@
                     "y": 889.4899782170853
                 },
                 "data": {
-                    "value": "1200"
+                    "value-value": "1200"
                 },
                 "positionAbsolute": {
                     "x": 1698.5119828225866,
@@ -143,7 +143,7 @@
                     "y": 724.5464300826029
                 },
                 "data": {
-                    "value": "10"
+                    "value-value": "10"
                 },
                 "positionAbsolute": {
                     "x": 1363.0244584044706,
@@ -181,7 +181,7 @@
                     "y": -31.140837396485033
                 },
                 "data": {
-                    "value": "500"
+                    "value-value": "500"
                 },
                 "positionAbsolute": {
                     "x": 1231.134788511212,
@@ -219,7 +219,7 @@
                     "y": 537.057222527581
                 },
                 "data": {
-                    "value": "4"
+                    "value-value": "4"
                 },
                 "positionAbsolute": {
                     "x": 1763.2555803473463,
@@ -257,7 +257,7 @@
                     "y": 911.0007522762737
                 },
                 "data": {
-                    "value": "10"
+                    "value-value": "10"
                 },
                 "positionAbsolute": {
                     "x": 962.6268326588902,
@@ -295,7 +295,7 @@
                     "y": 344.52687631684074
                 },
                 "data": {
-                    "value": "10"
+                    "value-value": "10"
                 },
                 "positionAbsolute": {
                     "x": 1199.4515669559023,
@@ -636,7 +636,7 @@
                     "y": 45.20385583901867
                 },
                 "data": {
-                    "value": "10",
+                    "value-value": "10",
                     "custom_label": "NIVEL SUPERIOR"
                 },
                 "positionAbsolute": {
@@ -713,7 +713,7 @@
                     "y": 567.7751925291849
                 },
                 "data": {
-                    "value": "5",
+                    "value-value": "5",
                     "custom_label": "VANO EN X"
                 },
                 "positionAbsolute": {
@@ -733,7 +733,7 @@
                     "y": 434.536395789814
                 },
                 "data": {
-                    "value": "5",
+                    "value-value": "5",
                     "custom_label": "VANO en Y"
                 },
                 "positionAbsolute": {
@@ -753,7 +753,7 @@
                     "y": 303.5685105291311
                 },
                 "data": {
-                    "value": "0",
+                    "value-value": "0",
                     "custom_label": "Estación x-Y"
                 },
                 "positionAbsolute": {
@@ -792,7 +792,7 @@
                     "y": 155.9281191995577
                 },
                 "data": {
-                    "value": "0",
+                    "value-value": "0",
                     "custom_label": "NIVEL BASE"
                 },
                 "positionAbsolute": {
@@ -806,168 +806,168 @@
         "edges": [
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-2",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-1value-node-2z-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-2",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-3value-node-2x-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-2",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-3value-node-2y-value"
             },
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-6",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-1value-node-6z-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-6",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-3value-node-6x-value"
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-6",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-4value-node-6y-value"
             },
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-7",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-1value-node-7z-value"
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-7",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-4value-node-7y-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-7",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-5value-node-7x-value"
             },
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-8",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-1value-node-8z-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-8",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-3value-node-8y-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-8",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-5value-node-8x-value"
             },
             {
                 "source": "node-9",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-10",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-9value-node-10z-value"
             },
             {
                 "source": "node-9",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-11",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-9value-node-11z-value"
             },
             {
                 "source": "node-9",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-12",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-9value-node-12z-value"
             },
             {
                 "source": "node-9",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-13",
                 "targetHandle": "z-value",
                 "id": "reactflow__edge-node-9value-node-13z-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-10",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-3value-node-10x-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-10",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-3value-node-10y-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-11",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-3value-node-11x-value"
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-11",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-4value-node-11y-value"
             },
             {
                 "source": "node-4",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-12",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-4value-node-12y-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-12",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-5value-node-12x-value"
             },
             {
                 "source": "node-5",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-13",
                 "targetHandle": "x-value",
                 "id": "reactflow__edge-node-5value-node-13x-value"
             },
             {
                 "source": "node-3",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-13",
                 "targetHandle": "y-value",
                 "id": "reactflow__edge-node-3value-node-13y-value"
@@ -1121,21 +1121,21 @@
             },
             {
                 "source": "node-27",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-26",
                 "targetHandle": "x_mag-value",
                 "id": "reactflow__edge-node-27value-node-26x_mag-value"
             },
             {
                 "source": "node-27",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-26",
                 "targetHandle": "y_mag-value",
                 "id": "reactflow__edge-node-27value-node-26y_mag-value"
             },
             {
                 "source": "node-27",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-26",
                 "targetHandle": "z_mag-value",
                 "id": "reactflow__edge-node-27value-node-26z_mag-value"
@@ -1149,7 +1149,7 @@
             },
             {
                 "source": "node-29",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-28",
                 "targetHandle": "x_mag_A-value",
                 "id": "reactflow__edge-node-29value-node-28x_mag_A-value"
@@ -1163,14 +1163,14 @@
             },
             {
                 "source": "node-31",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-30",
                 "targetHandle": "y_mag_A-value",
                 "id": "reactflow__edge-node-31value-node-30y_mag_A-value"
             },
             {
                 "source": "node-31",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-30",
                 "targetHandle": "y_mag_B-value",
                 "id": "reactflow__edge-node-31value-node-30y_mag_B-value"
@@ -1205,7 +1205,7 @@
             },
             {
                 "source": "node-33",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-32",
                 "targetHandle": "thickness-value",
                 "id": "reactflow__edge-node-33value-node-32thickness-value"
@@ -1219,35 +1219,35 @@
             },
             {
                 "source": "node-35",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-34",
                 "targetHandle": "x_mag-value",
                 "id": "reactflow__edge-node-35value-node-34x_mag-value"
             },
             {
                 "source": "node-36",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-37",
                 "targetHandle": "base-value-1",
                 "id": "reactflow__edge-node-36value-node-37base-value-1"
             },
             {
                 "source": "node-36",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-37",
                 "targetHandle": "height-value-1",
                 "id": "reactflow__edge-node-36value-node-37height-value-1"
             },
             {
                 "source": "node-38",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-40",
                 "targetHandle": "base-value-1",
                 "id": "reactflow__edge-node-38value-node-40base-value-1"
             },
             {
                 "source": "node-39",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-40",
                 "targetHandle": "height-value-1",
                 "id": "reactflow__edge-node-39value-node-40height-value-1"
@@ -1282,21 +1282,21 @@
             },
             {
                 "source": "node-41",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-42",
                 "targetHandle": "density-value",
                 "id": "reactflow__edge-node-41value-node-42density-value"
             },
             {
                 "source": "node-41",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-42",
                 "targetHandle": "elasticity_modulus-value-20000",
                 "id": "reactflow__edge-node-41value-node-42elasticity_modulus-value-20000"
             },
             {
                 "source": "node-41",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-42",
                 "targetHandle": "poissons_ratio-value-0.3",
                 "id": "reactflow__edge-node-41value-node-42poissons_ratio-value-0.3"

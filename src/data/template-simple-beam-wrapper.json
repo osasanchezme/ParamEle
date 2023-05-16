@@ -11,7 +11,7 @@
                     "y": 111.72468891262668
                 },
                 "data": {
-                    "value": "-1"
+                    "value-value": "-1"
                 },
                 "positionAbsolute": {
                     "x": -291.94313528360436,
@@ -30,7 +30,7 @@
                     "y": -11.076482170042652
                 },
                 "data": {
-                    "value": "5"
+                    "value-value": "5"
                 },
                 "positionAbsolute": {
                     "x": -282.35846533911274,
@@ -55,13 +55,13 @@
                             "label": "longitud",
                             "type": "value",
                             "node_id_to_map": "node-3",
-                            "data_key_to_map": "value"
+                            "data_key_to_map": "value-value"
                         },
                         {
                             "label": "carga",
                             "type": "value",
                             "node_id_to_map": "node-7",
-                            "data_key_to_map": "value"
+                            "data_key_to_map": "value-value"
                         }
                     ],
                     "output_handles": [
@@ -145,7 +145,7 @@
                                 },
                                 "data": {
                                     "custom_label": "CARGA",
-                                    "value": -1
+                                    "value-value": -1
                                 },
                                 "positionAbsolute": {
                                     "x": 150.92615637187248,
@@ -259,7 +259,7 @@
                                     "y": 210.22727887429681
                                 },
                                 "data": {
-                                    "value": 5,
+                                    "value-value": 5,
                                     "custom_label": "LONGITUD"
                                 },
                                 "positionAbsolute": {
@@ -304,7 +304,7 @@
                                     "y": 34.14727004861557
                                 },
                                 "data": {
-                                    "value": "0"
+                                    "value-value": "0"
                                 },
                                 "positionAbsolute": {
                                     "x": -298.1318928846855,
@@ -317,28 +317,28 @@
                         "edges": [
                             {
                                 "source": "node-1",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-2",
                                 "targetHandle": "x-value",
                                 "id": "reactflow__edge-node-1value-node-2x-value"
                             },
                             {
                                 "source": "node-1",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-2",
                                 "targetHandle": "y-value",
                                 "id": "reactflow__edge-node-1value-node-2y-value"
                             },
                             {
                                 "source": "node-1",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-2",
                                 "targetHandle": "z-value",
                                 "id": "reactflow__edge-node-1value-node-2z-value"
                             },
                             {
                                 "source": "node-3",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-4",
                                 "targetHandle": "x-value",
                                 "id": "reactflow__edge-node-3value-node-4x-value"
@@ -366,14 +366,14 @@
                             },
                             {
                                 "source": "node-7",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-6",
                                 "targetHandle": "z_mag_A-value",
                                 "id": "reactflow__edge-node-7value-node-6z_mag_A-value"
                             },
                             {
                                 "source": "node-7",
-                                "sourceHandle": "value",
+                                "sourceHandle": "value-value",
                                 "target": "node-6",
                                 "targetHandle": "z_mag_B-value",
                                 "id": "reactflow__edge-node-7value-node-6z_mag_B-value"
@@ -406,14 +406,14 @@
         "edges": [
             {
                 "source": "node-1",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-20",
                 "targetHandle": "longitud-value",
                 "id": "reactflow__edge-node-1value-node-20LONGITUD-value"
             },
             {
                 "source": "node-2",
-                "sourceHandle": "value",
+                "sourceHandle": "value-value",
                 "target": "node-20",
                 "targetHandle": "carga-value",
                 "id": "reactflow__edge-node-2value-node-20CARGA-value"
