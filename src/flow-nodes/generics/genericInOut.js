@@ -18,7 +18,7 @@ import { useEffect, useRef } from "react";
 function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [] }) {
   const first_text_input = useRef(null);
   useEffect(() => {
-    if (id === state.getGlobalVariable("last_node_id_created")) first_text_input.current.focus();
+    if (id === state.getGlobalVariable("last_node_id_created") && first_text_input.current) first_text_input.current.focus();
   });
   // Check if the user defined a custom_label for the node
   node_label = data.custom_label || node_label;

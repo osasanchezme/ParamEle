@@ -67,7 +67,8 @@
         "structuralMoment": "Moment",
         "structuralMaterial": "Material",
         "structuralRectangleSection": "Rectangular Section",
-        "nodesWrapper": "Nodes Group"
+        "nodesWrapper": "Nodes Group",
+        "variableRange": "Range"
     },
     "settings":{
         "auto_update": "Auto update",
@@ -95,7 +96,8 @@
         "edit_logic": "Edit logic",
         "structure": "Structure",
         "solve": "Solve",
-        "settings": "Settings"
+        "settings": "Settings",
+        "delete": "Delete"
     },
     "commands_bar":{
         "placeholder": "Node name..."

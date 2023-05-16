@@ -67,7 +67,8 @@
         "structuralMoment": "Momento",
         "structuralMaterial": "Material",
         "structuralRectangleSection": "Secc. Rectangular",
-        "nodesWrapper": "Grupo Nodos"
+        "nodesWrapper": "Grupo Nodos",
+        "variableRange": "Rango"
     },
     "settings":{
         "auto_update": "Actualizar automáticamente",
@@ -95,7 +96,8 @@
         "edit_logic": "Editar lógica",
         "structure": "Estructura",
         "solve": "Resolver",
-        "settings": "Configuración"
+        "settings": "Configuración",
+        "delete": "Eliminar"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."

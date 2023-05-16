@@ -27,6 +27,7 @@ function getNavBarOptions() {
       options: [
         { name: localGetCopy("group"), icon: "MdGroupWork", callback: boxes.groupBoxes },
         { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
+        { name: localGetCopy("delete"), icon: "MdDelete", callback: boxes.deleteBoxes },
       ],
     },
     structure: {

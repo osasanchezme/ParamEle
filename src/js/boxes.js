@@ -6,34 +6,15 @@ import notification from "../components/notification";
 const { notify, closeAllNotifications } = notification;
 
 function groupBoxes() {
-  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
-  let { nodes, edges } = getState("model");
-  let selected_nodes = [];
-  let selected_edges = [];
-  let selected_node_ids = [];
-  let selected_edge_ids = [];
-  let connected_nodes = [];
-  nodes.forEach((node) => {
-    if (node.data.selected) {
-      selected_nodes.push(node);
-      selected_node_ids.push(node.id);
-    }
-  });
+  // Get the selected model
+  let { selected_nodes, selected_edges, selected_node_ids, selected_edge_ids, connected_nodes } = getSelectedModel();
+
+  // Check if there are nodes selected
   if (selected_nodes.length === 0) {
     notify("warning", "no_nodes_selected", null, true);
     return;
   }
-  // Get the connected edges to the selected nodes
-  edges.forEach((edge) => {
-    if (selected_node_ids.includes(edge.source) || selected_node_ids.includes(edge.target)) {
-      connected_nodes.push(edge.source);
-      connected_nodes.push(edge.target);
-      selected_edges.push(edge);
-      selected_edge_ids.push(edge.id);
-    }
-  });
-  // Remove duplicates
-  connected_nodes = [...new Set(connected_nodes)];
+
   // Check if the model is closed
   selected_node_ids.forEach((node_id) => {
     if (!connected_nodes.includes(node_id)) {
@@ -138,6 +119,50 @@ function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
   }, 10000);
 }
 
-const boxes = { groupBoxes, editInternalLogic };
+function deleteBoxes() {
+  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
+  let { nodes, edges } = getState("model");
+  let selection = getSelectedModel();
+  let new_nodes = [];
+  let new_edges = [];
+  nodes.forEach((node) => {
+    if (!selection.selected_node_ids.includes(node.id)) new_nodes.push(node);
+  });
+  edges.forEach((edge) => {
+    if (!selection.selected_edge_ids.includes(edge.id)) new_edges.push(edge);
+  });
+  state.setModelToEditor({ nodes: new_nodes, edges: new_edges });
+}
+
+function getSelectedModel() {
+  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
+  let { nodes, edges } = getState("model");
+  let selected_nodes = [];
+  let selected_edges = [];
+  let selected_node_ids = [];
+  let selected_edge_ids = [];
+  let connected_nodes = [];
+  nodes.forEach((node) => {
+    if (node.data.selected) {
+      selected_nodes.push(node);
+      selected_node_ids.push(node.id);
+    }
+  });
+  // Get the connected edges to the selected nodes
+  edges.forEach((edge) => {
+    if (selected_node_ids.includes(edge.source) || selected_node_ids.includes(edge.target)) {
+      connected_nodes.push(edge.source);
+      connected_nodes.push(edge.target);
+      selected_edges.push(edge);
+      selected_edge_ids.push(edge.id);
+    }
+  });
+  // Remove duplicates
+  connected_nodes = [...new Set(connected_nodes)];
+
+  return { selected_nodes, selected_edges, selected_node_ids, selected_edge_ids, connected_nodes };
+}
+
+const boxes = { groupBoxes, editInternalLogic, deleteBoxes };
 
 export default boxes;
