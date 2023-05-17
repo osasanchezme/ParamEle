@@ -1,0 +1,446 @@
+{
+    "model": {
+        "nodes": [
+            {
+                "width": 150,
+                "height": 160,
+                "id": "node-1",
+                "type": "variableRange",
+                "position": {
+                    "x": -283.00275047838613,
+                    "y": -100.71508604544849
+                },
+                "data": {
+                    "start-value": "12",
+                    "end-value": "15",
+                    "step-value": "1",
+                    "slider-value": "3"
+                },
+                "positionAbsolute": {
+                    "x": -283.00275047838613,
+                    "y": -100.71508604544849
+                },
+                "selected": true,
+                "dragging": false
+            },
+            {
+                "width": 188,
+                "height": 68,
+                "id": "node-2",
+                "type": "inputNumber",
+                "position": {
+                    "x": -291.94313528360436,
+                    "y": 111.72468891262668
+                },
+                "data": {
+                    "value-value": "-1"
+                },
+                "positionAbsolute": {
+                    "x": -291.94313528360436,
+                    "y": 111.72468891262668
+                },
+                "selected": false,
+                "dragging": false
+            },
+            {
+                "width": 105,
+                "height": 80,
+                "id": "node-20",
+                "type": "nodesWrapper",
+                "position": {
+                    "x": 34.10362274648401,
+                    "y": 34.10362274648398
+                },
+                "data": {
+                    "custom_label": "VIGA SIMPLE CON CARGA DISTR.",
+                    "input_handles": [
+                        {
+                            "label": "longitud",
+                            "type": "value",
+                            "node_id_to_map": "node-3",
+                            "data_key_to_map": "value-value"
+                        },
+                        {
+                            "label": "carga",
+                            "type": "value",
+                            "node_id_to_map": "node-7",
+                            "data_key_to_map": "value-value"
+                        }
+                    ],
+                    "output_handles": [
+                        {
+                            "label": "viga",
+                            "type": "id",
+                            "node_id_to_map": "node-5",
+                            "data_key_to_map": "member_out-id"
+                        }
+                    ],
+                    "internal_logic": {
+                        "nodes": [
+                            {
+                                "width": 140,
+                                "height": 60,
+                                "id": "node-9",
+                                "type": "structuralPinSupport",
+                                "position": {
+                                    "x": 191.86714753207983,
+                                    "y": 286.5998111753325
+                                },
+                                "data": {
+                                    "support_out-id": 2,
+                                    "input": {
+                                        "direction_code": "BBBBBB",
+                                        "tx": 0,
+                                        "ty": 0,
+                                        "tz": 0,
+                                        "rx": 0,
+                                        "ry": 0,
+                                        "rz": 0,
+                                        "type": "node",
+                                        "node": 2,
+                                        "restraint_code": "FFFFFR"
+                                    }
+                                },
+                                "positionAbsolute": {
+                                    "x": 191.86714753207983,
+                                    "y": 286.5998111753325
+                                }
+                            },
+                            {
+                                "width": 140,
+                                "height": 60,
+                                "id": "node-8",
+                                "type": "structuralPinSupport",
+                                "position": {
+                                    "x": 226.0097467659548,
+                                    "y": -27.642723586495688
+                                },
+                                "data": {
+                                    "support_out-id": 1,
+                                    "input": {
+                                        "direction_code": "BBBBBB",
+                                        "tx": 0,
+                                        "ty": 0,
+                                        "tz": 0,
+                                        "rx": 0,
+                                        "ry": 0,
+                                        "rz": 0,
+                                        "type": "node",
+                                        "node": 1,
+                                        "restraint_code": "FFFFFR"
+                                    }
+                                },
+                                "positionAbsolute": {
+                                    "x": 226.0097467659548,
+                                    "y": -27.642723586495688
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 188,
+                                "height": 68,
+                                "id": "node-7",
+                                "type": "inputNumber",
+                                "position": {
+                                    "x": 150.92615637187248,
+                                    "y": 364.08246883656994
+                                },
+                                "data": {
+                                    "custom_label": "CARGA",
+                                    "value-value": -1
+                                },
+                                "positionAbsolute": {
+                                    "x": 150.92615637187248,
+                                    "y": 364.08246883656994
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 170,
+                                "height": 240,
+                                "id": "node-6",
+                                "type": "structuralDistributedLoad",
+                                "position": {
+                                    "x": 497.7115999014884,
+                                    "y": 208.4858387740558
+                                },
+                                "data": {
+                                    "distributed_load_out-id": 1,
+                                    "input": {
+                                        "member": 1,
+                                        "z_mag_A": -1,
+                                        "z_mag_B": -1,
+                                        "x_mag_A": 0,
+                                        "y_mag_A": 0,
+                                        "x_mag_B": 0,
+                                        "y_mag_B": 0,
+                                        "position_A": 0,
+                                        "position_B": 100,
+                                        "load_group": "LG",
+                                        "axes": "global"
+                                    }
+                                },
+                                "positionAbsolute": {
+                                    "x": 497.7115999014884,
+                                    "y": 208.4858387740558
+                                }
+                            },
+                            {
+                                "width": 115,
+                                "height": 100,
+                                "id": "node-5",
+                                "type": "structuralMember",
+                                "position": {
+                                    "x": 265.0409464076938,
+                                    "y": 140.5619144714547
+                                },
+                                "data": {
+                                    "custom_label": "VIGA",
+                                    "member_out-id": 1,
+                                    "input": {
+                                        "node_A": 1,
+                                        "node_B": 2,
+                                        "section_id": 1,
+                                        "type": "normal_continuous",
+                                        "cable_length": null,
+                                        "rotation_angle": 0,
+                                        "fixity_A": "FFFFFF",
+                                        "fixity_B": "FFFFFF",
+                                        "offset_Ax": "0",
+                                        "offset_Ay": "0",
+                                        "offset_Az": "0",
+                                        "offset_Bx": "0",
+                                        "offset_By": "0",
+                                        "offset_Bz": "0",
+                                        "stiffness_A_Ry": 0,
+                                        "stiffness_A_Rz": 0,
+                                        "stiffness_B_Ry": 0,
+                                        "stiffness_B_Rz": 0
+                                    }
+                                },
+                                "positionAbsolute": {
+                                    "x": 265.0409464076938,
+                                    "y": 140.5619144714547
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 100,
+                                "height": 100,
+                                "id": "node-4",
+                                "type": "structuralNode",
+                                "position": {
+                                    "x": -17.321758647640763,
+                                    "y": 201.77976066251966
+                                },
+                                "data": {
+                                    "node_out-id": 2,
+                                    "input": {
+                                        "x": 3,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "custom_label": "Nodo FINAL"
+                                },
+                                "positionAbsolute": {
+                                    "x": -17.321758647640763,
+                                    "y": 201.77976066251966
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 188,
+                                "height": 68,
+                                "id": "node-3",
+                                "type": "inputNumber",
+                                "position": {
+                                    "x": -345.91925002503547,
+                                    "y": 210.22727887429681
+                                },
+                                "data": {
+                                    "value-value": 3,
+                                    "custom_label": "LONGITUD"
+                                },
+                                "positionAbsolute": {
+                                    "x": -345.91925002503547,
+                                    "y": 210.22727887429681
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 100,
+                                "height": 100,
+                                "id": "node-2",
+                                "type": "structuralNode",
+                                "position": {
+                                    "x": -19.049830367966422,
+                                    "y": 21.383240362822008
+                                },
+                                "data": {
+                                    "custom_label": "ORIGEN",
+                                    "node_out-id": 1,
+                                    "input": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    }
+                                },
+                                "positionAbsolute": {
+                                    "x": -19.049830367966422,
+                                    "y": 21.383240362822008
+                                },
+                                "selected": false,
+                                "dragging": false
+                            },
+                            {
+                                "width": 188,
+                                "height": 68,
+                                "id": "node-1",
+                                "type": "inputNumber",
+                                "position": {
+                                    "x": -298.1318928846855,
+                                    "y": 34.14727004861557
+                                },
+                                "data": {
+                                    "value-value": "0"
+                                },
+                                "positionAbsolute": {
+                                    "x": -298.1318928846855,
+                                    "y": 34.14727004861557
+                                },
+                                "selected": false,
+                                "dragging": false
+                            }
+                        ],
+                        "edges": [
+                            {
+                                "source": "node-1",
+                                "sourceHandle": "value-value",
+                                "target": "node-2",
+                                "targetHandle": "x-value",
+                                "id": "reactflow__edge-node-1value-node-2x-value"
+                            },
+                            {
+                                "source": "node-1",
+                                "sourceHandle": "value-value",
+                                "target": "node-2",
+                                "targetHandle": "y-value",
+                                "id": "reactflow__edge-node-1value-node-2y-value"
+                            },
+                            {
+                                "source": "node-1",
+                                "sourceHandle": "value-value",
+                                "target": "node-2",
+                                "targetHandle": "z-value",
+                                "id": "reactflow__edge-node-1value-node-2z-value"
+                            },
+                            {
+                                "source": "node-3",
+                                "sourceHandle": "value-value",
+                                "target": "node-4",
+                                "targetHandle": "x-value",
+                                "id": "reactflow__edge-node-3value-node-4x-value"
+                            },
+                            {
+                                "source": "node-2",
+                                "sourceHandle": "node_out-id",
+                                "target": "node-5",
+                                "targetHandle": "node_A-id",
+                                "id": "reactflow__edge-node-2node_out-id-node-5node_A-id"
+                            },
+                            {
+                                "source": "node-4",
+                                "sourceHandle": "node_out-id",
+                                "target": "node-5",
+                                "targetHandle": "node_B-id",
+                                "id": "reactflow__edge-node-4node_out-id-node-5node_B-id"
+                            },
+                            {
+                                "source": "node-5",
+                                "sourceHandle": "member_out-id",
+                                "target": "node-6",
+                                "targetHandle": "member-id",
+                                "id": "reactflow__edge-node-5member_out-id-node-6member-id"
+                            },
+                            {
+                                "source": "node-7",
+                                "sourceHandle": "value-value",
+                                "target": "node-6",
+                                "targetHandle": "z_mag_A-value",
+                                "id": "reactflow__edge-node-7value-node-6z_mag_A-value"
+                            },
+                            {
+                                "source": "node-7",
+                                "sourceHandle": "value-value",
+                                "target": "node-6",
+                                "targetHandle": "z_mag_B-value",
+                                "id": "reactflow__edge-node-7value-node-6z_mag_B-value"
+                            },
+                            {
+                                "source": "node-2",
+                                "sourceHandle": "node_out-id",
+                                "target": "node-8",
+                                "targetHandle": "node-id",
+                                "id": "reactflow__edge-node-2node_out-id-node-8node-id"
+                            },
+                            {
+                                "source": "node-4",
+                                "sourceHandle": "node_out-id",
+                                "target": "node-9",
+                                "targetHandle": "node-id",
+                                "id": "reactflow__edge-node-4node_out-id-node-9node-id"
+                            }
+                        ]
+                    },
+                    "viga-id": 1
+                },
+                "positionAbsolute": {
+                    "x": 34.10362274648401,
+                    "y": 34.10362274648398
+                },
+                "selected": false,
+                "dragging": false
+            }
+        ],
+        "edges": [
+            {
+                "source": "node-2",
+                "sourceHandle": "value-value",
+                "target": "node-20",
+                "targetHandle": "carga-value",
+                "id": "reactflow__edge-node-2value-node-20CARGA-value"
+            },
+            {
+                "source": "node-1",
+                "sourceHandle": "slider-value",
+                "target": "node-20",
+                "targetHandle": "longitud-value",
+                "id": "reactflow__edge-node-1slider-value-node-20longitud-value"
+            }
+        ]
+    },
+    "settings": {
+        "general": {
+            "auto_update": true,
+            "mini_map": false,
+            "show_nodes": true,
+            "side_by_side": true,
+            "show_properties_panel": false
+        },
+        "layout": {
+            "renderer_width": 20,
+            "editor_width": 80,
+            "panel_width": 0,
+            "renderer_right": 80
+        },
+        "global": {
+            "solver_username": "oscar.sanchez@skyciv.com",
+            "solver_key": "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88"
+        }
+    }
+}

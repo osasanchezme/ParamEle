@@ -232,13 +232,18 @@ function getDefaultValueForArg(type, default_value) {
  * @param {"target"|"source"} type
  */
 function splitArgName(arg_id, type) {
-  let components = arg_id.split("-");
+  let string_id = typeof arg_id === "object" ? arg_id.id : arg_id;
+  let components = string_id.split("-");
   let default_value = getDefaultValueForArg(components[1], components[2]);
   if (type === "source") components[0] = components[0].replace("_out", "");
+  let show_handle = arg_id.hasOwnProperty("show_handle") ? arg_id.show_handle : true;
+  let input_type = arg_id.hasOwnProperty("input_type") ? arg_id.input_type : null;
   return {
     name: components[0],
     type: components[1],
     default_value,
+    show_handle,
+    input_type,
   };
 }
 
@@ -251,7 +256,6 @@ function getDisplayCopy(copy_group, copy_key) {
 function updatePropertiesPanel() {
   window.ParamEle.updateNodesFromLocalState();
 }
-
 
 const utils = {
   getClosestMatches,

@@ -1,4 +1,4 @@
-import InputNumberNode from "./basicInput";
+import BasicInputNodes from "./basicInput";
 import TrigonometricNodes from "./trigoMath";
 import BasicMathNodes from "./basicMath";
 import BasicStructuralNodes from "./basicStructural";
@@ -6,13 +6,13 @@ import StructuralSectionNodes from "./structuralSections";
 import NodesWrapperNode from "./nodesWrapper";
 import utils from "../utils";
 
-
 function createNodesLibrary() {
-  function localGetCopy(node_name){
+  function localGetCopy(node_name) {
     return utils.getDisplayCopy("nodes", node_name);
   }
   const global_library_wrapper = {
-    inputNumber: { node_component: InputNumberNode, label: localGetCopy("inputNumber") },
+    inputNumber: { node_component: BasicInputNodes.InputNumberNode, label: localGetCopy("inputNumber") },
+    variableRange: { node_component: BasicInputNodes.VariableRangeNode, label: localGetCopy("variableRange") },
     // Basic math
     sumNumbers: { node_component: BasicMathNodes.MathSumNode, label: localGetCopy("sumNumbers") },
     multiplyNumbers: { node_component: BasicMathNodes.MathMultiplyNode, label: localGetCopy("multiplyNumbers") },
@@ -34,14 +34,17 @@ function createNodesLibrary() {
     structuralFixedSupport: { node_component: BasicStructuralNodes.StructuralFixedSupportNode, label: localGetCopy("structuralFixedSupport") },
     structuralPinSupport: { node_component: BasicStructuralNodes.StructuralPinSupportNode, label: localGetCopy("structuralPinSupport") },
     structuralPointLoad: { node_component: BasicStructuralNodes.StructuralPointLoadNode, label: localGetCopy("structuralPointLoad") },
-    structuralDistributedLoad: { node_component: BasicStructuralNodes.StructuralDistributedLoadNode, label: localGetCopy("structuralDistributedLoad") },
+    structuralDistributedLoad: {
+      node_component: BasicStructuralNodes.StructuralDistributedLoadNode,
+      label: localGetCopy("structuralDistributedLoad"),
+    },
     structuralPlate: { node_component: BasicStructuralNodes.StructuralPlateNode, label: localGetCopy("structuralPlate") },
     structuralMoment: { node_component: BasicStructuralNodes.StructuralMomentNode, label: localGetCopy("structuralMoment") },
     structuralMaterial: { node_component: BasicStructuralNodes.StructuralMaterialNode, label: localGetCopy("structuralMaterial") },
     // Section shapes
     structuralRectangleSection: { node_component: StructuralSectionNodes.RectangleNode, label: localGetCopy("structuralRectangleSection") },
     // Nodes Wrapper
-    nodesWrapper: {node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper")}
+    nodesWrapper: { node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper") },
   };
 
   let nodes = {};

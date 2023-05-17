@@ -34,7 +34,11 @@
         "name": "name",
         "result": "result",
         "power": "power",
-        "root": "root"
+        "root": "root",
+        "value": "value",
+        "start": "start",
+        "end": "end",
+        "step": "step"
     },
     "types": {
         "id": "ID",

@@ -34,7 +34,11 @@
         "name": "nombre",
         "result": "resultado",
         "power": "potencia",
-        "root": "raíz"
+        "root": "raíz",
+        "value": "valor",
+        "start": "inicio",
+        "end": "fin",
+        "step": "paso"
     },
     "types": {
         "id": "ID",

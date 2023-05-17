@@ -3,7 +3,8 @@
 // import data from "./data/template-5-frame.json";
 // import data from "./data/template-quad-wrapper.json";
 // import data from "./data/template-math-quadratic.json";
-import data from "./data/template-simple-beam-wrapper.json";
+// import data from "./data/template-simple-beam-wrapper.json";
+import data from "./data/template-simple-beam-wrapper-with-slider.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
