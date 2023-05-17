@@ -20,6 +20,7 @@ import {
   Input,
   Link,
   Icon,
+  Select,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
@@ -27,6 +28,7 @@ import getState from "../getState";
 import { useState } from "react";
 import state from "../state";
 import { MdOpenInNew } from "react-icons/md";
+import settings_template from "../settings_template.json";
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("settings", copy_key);
@@ -47,6 +49,12 @@ function GlobalSettings() {
     state.setState(original_settings, "settings");
     onClose();
   }
+  const global_settings = settings_template["global"];
+  const settings_tabs = {};
+  Object.entries(global_settings).forEach(([setting_name, setting_options], index) => {
+    if (!settings_tabs.hasOwnProperty(setting_options["tab"])) settings_tabs[setting_options["tab"]] = [];
+    settings_tabs[setting_options["tab"]].push({ name: setting_name, type: setting_options.type, data: setting_options.data });
+  });
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -56,45 +64,65 @@ function GlobalSettings() {
         <ModalBody>
           <Tabs>
             <TabList>
-              <Tab>{localGetDisplayCopy("solver_tab")}</Tab>
-              <Tab>...</Tab>
-              <Tab>...</Tab>
+              {Object.keys(settings_tabs).map((tab_name) => (
+                <Tab key={tab_name}>{localGetDisplayCopy(tab_name)}</Tab>
+              ))}
             </TabList>
-
             <TabPanels>
-              <TabPanel>
-                <p style={{textAlign: "right"}}>
-                  <Link href="https://platform.skyciv.com/account/api" color="blue" isExternal>
-                    {localGetDisplayCopy("get_auth")} <Icon as={MdOpenInNew} mx="2px" />
-                  </Link>
-                </p>
-                <FormControl>
-                  <FormLabel>{localGetDisplayCopy("solver_username")}</FormLabel>
-                  <Input
-                    type="text"
-                    defaultValue={localSettings.solver_username}
-                    onChange={(event) => {
-                      handleChange(event, "solver_username");
-                    }}
-                  />
-                  {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-                  <FormLabel>{localGetDisplayCopy("solver_key")}</FormLabel>
-                  <Input
-                    type="text"
-                    defaultValue={localSettings.solver_key}
-                    onChange={(event) => {
-                      handleChange(event, "solver_key");
-                    }}
-                  />
-                  {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-                </FormControl>
-              </TabPanel>
-              <TabPanel>
-                <p>...</p>
-              </TabPanel>
-              <TabPanel>
-                <p>...</p>
-              </TabPanel>
+              {Object.entries(settings_tabs).map(([tab_name, tab_settings], index) => (
+                <TabPanel key={tab_name}>
+                  {tab_settings.map((setting) => {
+                    let setting_block = null;
+                    switch (setting.type) {
+                      case "text":
+                        setting_block = (
+                          <FormControl key={setting.name}>
+                            <FormLabel>{localGetDisplayCopy(setting.name)}</FormLabel>
+                            <Input
+                              type="text"
+                              defaultValue={localSettings[setting.name]}
+                              onChange={(event) => {
+                                handleChange(event, setting.name);
+                              }}
+                            />
+                          </FormControl>
+                        );
+                        break;
+                      case "link":
+                        setting_block = (
+                          <p style={{ textAlign: "right" }} key={setting.name}>
+                            <Link href={setting.data} color="blue" isExternal>
+                              {localGetDisplayCopy(setting.name)} <Icon as={MdOpenInNew} mx="2px" />
+                            </Link>
+                          </p>
+                        );
+                        break;
+                      case "dropdown":
+                        setting_block = (
+                          <FormControl key={setting.name}>
+                            <FormLabel>{localGetDisplayCopy(setting.name)}</FormLabel>
+                            <Select
+                              onChange={(event) => {
+                                handleChange(event, setting.name);
+                              }}
+                              defaultValue={localSettings[setting.name]}
+                            >
+                              {setting.data.map((option) => (
+                                <option value={option} key={option}>
+                                  {localGetDisplayCopy(option)}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        );
+                        break;
+                      default:
+                        break;
+                    }
+                    return setting_block;
+                  })}
+                </TabPanel>
+              ))}
             </TabPanels>
           </Tabs>
         </ModalBody>

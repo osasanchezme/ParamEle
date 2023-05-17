@@ -86,7 +86,11 @@
         "solver_tab": "Solver",
         "solver_username": "User",
         "solver_key": "Key",
-        "get_auth": "Get credentials"  
+        "get_auth": "Get credentials",
+        "structure_tab": "Structure",
+        "sliders_mode": "For ranges calculate...",
+        "sliders_all": "All the possibilities",
+        "sliders_single": "Only one possibility"
     },
     "nav_bar":{
         "file": "File",

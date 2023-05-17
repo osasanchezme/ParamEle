@@ -36,13 +36,29 @@
         }
     },
     "global": {
+        "get_auth": {
+            "type": "link",
+            "tab": "solver_tab",
+            "data": "https://platform.skyciv.com/account/api"
+        },
         "solver_username": {
             "default": "oscar.sanchez@skyciv.com",
-            "type": "text"
+            "type": "text",
+            "tab": "solver_tab"
         },
         "solver_key": {
             "default": "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
-            "type": "text"
+            "type": "text",
+            "tab": "solver_tab"
+        },
+        "sliders_mode": {
+            "default": "sliders_single",
+            "type": "dropdown",
+            "data": [
+                "sliders_single",
+                "sliders_all"
+            ],
+            "tab": "structure_tab"
         }
     }
 }

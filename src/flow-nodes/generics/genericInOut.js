@@ -158,7 +158,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
               placeholder=""
               size="xs"
               onChange={(event) => onChange(event, data_key)}
-              value={data[data_key] === undefined ? "" : data[data_key]}
+              defaultValue={data[data_key] === undefined ? "" : data[data_key]}
               autoComplete="off"
             />
             <InputRightElement width="2.5rem">

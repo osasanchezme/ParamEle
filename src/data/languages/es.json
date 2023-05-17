@@ -86,7 +86,11 @@
         "solver_tab": "Solucionador",
         "solver_username": "Usuario",
         "solver_key": "Clave",
-        "get_auth": "Obtener credenciales"
+        "get_auth": "Obtener credenciales",
+        "structure_tab": "Estructura",
+        "sliders_mode": "Para rangos calcular...",
+        "sliders_all": "Todas las posibilidades",
+        "sliders_single": "Una posibilidad"
     },
     "nav_bar":{
         "file": "Archivo",
