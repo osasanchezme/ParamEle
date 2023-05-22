@@ -5,7 +5,7 @@ import utils from "../../utils";
 import EditableNodeHeader from "../../components/editable_node_header";
 import state from "../../state";
 import { useEffect, useRef } from "react";
-import { MdCode } from "react-icons/md";
+import { MdCode, MdLoop } from "react-icons/md";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -218,7 +218,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
       className={class_name}
       style={{ height: 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length, width: node_width }}
     >
-      <EditableNodeHeader id={id} node_label={node_label}></EditableNodeHeader>
+      <EditableNodeHeader id={id} node_label={node_label} identifier_icon={data.iterating ? MdLoop : null}></EditableNodeHeader>
       <div className="node-body">
         {target_handles}
         <div>

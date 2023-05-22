@@ -257,6 +257,14 @@ function updatePropertiesPanel() {
   window.ParamEle.updateNodesFromLocalState();
 }
 
+function findHighestZCoordinate(nodes) {
+  let highest_z = 0;
+  Object.values(nodes).forEach((node) => {
+    if (node.z > highest_z) highest_z = node.z;
+  });
+  return highest_z;
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -271,6 +279,7 @@ const utils = {
   updatePropertiesPanel,
   updateNavigator,
   openGlobalSettings,
+  findHighestZCoordinate
 };
 
 export default utils;

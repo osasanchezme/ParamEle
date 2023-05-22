@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { HStack, Text, IconButton, Input, Tooltip, Kbd } from "@chakra-ui/react";
+import { HStack, Text, IconButton, Input, Tooltip, Kbd, Box, Icon } from "@chakra-ui/react";
 import { MdCheck, MdClose, MdEdit } from "react-icons/md";
 import state from "../state";
 import utils from "../utils";
 
-function EditableNodeHeader({ node_label, id }) {
+function EditableNodeHeader({ node_label, id, identifier_icon }) {
   const [edit_visible, setEditVisible] = useState(false);
   const [is_editing, setIsEditing] = useState(false);
   const label_input_ref = useRef(null);
@@ -102,6 +102,15 @@ function EditableNodeHeader({ node_label, id }) {
         {save_button}
         {cancel_button}
       </HStack>
+      {identifier_icon ? (
+        <Tooltip label={utils.getDisplayCopy("tooltips", "iterating_box")}>
+          <Box position="absolute" top="5px" right="3px">
+            <Icon boxSize={4} color="blue.500" as={identifier_icon} />
+          </Box>
+        </Tooltip>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

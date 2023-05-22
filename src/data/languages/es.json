@@ -90,7 +90,8 @@
         "structure_tab": "Estructura",
         "sliders_mode": "Para rangos calcular...",
         "sliders_all": "Todas las posibilidades",
-        "sliders_single": "Una posibilidad"
+        "sliders_single": "Una posibilidad",
+        "spacing_between_combinations": "Espaciamiento entre combinaciones"
     },
     "nav_bar":{
         "file": "Archivo",
@@ -118,7 +119,8 @@
     "tooltips": {
         "edit": "Editar",
         "save": "Guardar",
-        "discard": "Cancelar"
+        "discard": "Cancelar",
+        "iterating_box": "Esta caja está generando las diferentes posibilidades"
     },
     "properties_panel": {
         "title": "EXPLORADOR",
@@ -146,7 +148,9 @@
         "requested_solve_desc": "La petición fue enviada al servidor. Esperando respuesta...",
         "saved_model": "Modelo guardado en la nube",
         "open_model": "Abrir modelo",
-        "response_back": "Respuesta:"
+        "response_back": "Respuesta:",
+        "range_nodes_selected_for_grouping_title": "Selección inválida",
+        "range_nodes_selected_for_grouping_desc": "Los nodos tipo rango no se pueden agrupar"
     },
     "navigator":{
         "model": "Modelo principal"

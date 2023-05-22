@@ -59,6 +59,11 @@
                 "sliders_all"
             ],
             "tab": "structure_tab"
+        },
+        "spacing_between_combinations": {
+            "default": 1,
+            "type": "text",
+            "tab": "structure_tab"
         }
     }
 }

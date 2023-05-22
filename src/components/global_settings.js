@@ -29,6 +29,7 @@ import { useState } from "react";
 import state from "../state";
 import { MdOpenInNew } from "react-icons/md";
 import settings_template from "../settings_template.json";
+import logic_runner from "../js/globalLogicRunner";
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("settings", copy_key);
@@ -48,6 +49,7 @@ function GlobalSettings() {
     original_settings["global"] = localSettings;
     state.setState(original_settings, "settings");
     onClose();
+    logic_runner.run();
   }
   const global_settings = settings_template["global"];
   const settings_tabs = {};

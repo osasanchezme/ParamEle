@@ -90,7 +90,8 @@
         "structure_tab": "Structure",
         "sliders_mode": "For ranges calculate...",
         "sliders_all": "All the possibilities",
-        "sliders_single": "Only one possibility"
+        "sliders_single": "Only one possibility",
+        "spacing_between_combinations": "Spacing between combinations"
     },
     "nav_bar":{
         "file": "File",
@@ -118,7 +119,8 @@
     "tooltips": {
         "edit": "Edit",
         "save": "Save",
-        "discard": "Discard"
+        "discard": "Discard",
+        "iterating_box": "This box is generating all the possibilities"
     },
     "properties_panel": {
         "title": "EXPLORER",
@@ -146,7 +148,9 @@
         "requested_solve_desc": "The request was sent to the server. Waiting for a response...",
         "saved_model": "Model saved to the cloud",
         "open_model": "Open model",
-        "response_back": "Response:"
+        "response_back": "Response:",
+        "range_nodes_selected_for_grouping_title": "Invalid selection",
+        "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped"
     },
     "navigator":{
         "model": "Main model"

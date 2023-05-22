@@ -5,6 +5,7 @@
 // import data from "./data/template-math-quadratic.json";
 // import data from "./data/template-simple-beam-wrapper.json";
 import data from "./data/template-simple-beam-wrapper-with-slider.json";
+// import data from "./data/template-wrapper-frame-with-sliders.json";
 import logic_runner from "./js/globalLogicRunner";
 import getState from "./getState";
 import utils from "./utils";
@@ -30,6 +31,7 @@ function setInitialState() {
       current_resizer: "",
       selected_handles: [],
       user_interaction_step: "none", // Can be "none", "wait", "done"
+      structure_nodes_shift: 0,
     },
     section_colors: [null, "#505050", "#42810A", "#DB7093", "#F4A53A", "#843D80", "#2A56CD", "#D26A34"],
     language,

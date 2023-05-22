@@ -15,6 +15,16 @@ function groupBoxes() {
     return;
   }
 
+  // Check if there are variableRange nodes selected
+  let is_valid_selection = true;
+  selected_nodes.forEach((node) => {
+    if (node.type === "variableRange") {
+      notify("warning", "range_nodes_selected_for_grouping", null, true);
+      is_valid_selection = false;
+    }
+  });
+  if (!is_valid_selection) return;
+
   // Check if the model is closed
   selected_node_ids.forEach((node_id) => {
     if (!connected_nodes.includes(node_id)) {
