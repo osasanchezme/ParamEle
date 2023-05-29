@@ -238,12 +238,14 @@ function splitArgName(arg_id, type) {
   if (type === "source") components[0] = components[0].replace("_out", "");
   let show_handle = arg_id.hasOwnProperty("show_handle") ? arg_id.show_handle : true;
   let input_type = arg_id.hasOwnProperty("input_type") ? arg_id.input_type : null;
+  let data = arg_id.hasOwnProperty("data") ? arg_id.data : null;
   return {
     name: components[0],
     type: components[1],
     default_value,
     show_handle,
     input_type,
+    data,
   };
 }
 

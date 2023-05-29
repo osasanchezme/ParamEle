@@ -38,7 +38,9 @@
         "value": "valor",
         "start": "inicio",
         "end": "fin",
-        "step": "paso"
+        "step": "paso",
+        "shear": "cortante",
+        "axial": "axial"
     },
     "types": {
         "id": "ID",
@@ -72,7 +74,8 @@
         "structuralMaterial": "Material",
         "structuralRectangleSection": "Secc. Rectangular",
         "nodesWrapper": "Grupo Nodos",
-        "variableRange": "Rango"
+        "variableRange": "Rango",
+        "structuralMemberResult": "Resultado Elemento"
     },
     "settings":{
         "auto_update": "Actualizar automáticamente",

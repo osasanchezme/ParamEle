@@ -38,7 +38,9 @@
         "value": "value",
         "start": "start",
         "end": "end",
-        "step": "step"
+        "step": "step",
+        "shear": "shear",
+        "axial": "axial"
     },
     "types": {
         "id": "ID",
@@ -72,7 +74,8 @@
         "structuralMaterial": "Material",
         "structuralRectangleSection": "Rectangular Section",
         "nodesWrapper": "Nodes Group",
-        "variableRange": "Range"
+        "variableRange": "Range",
+        "structuralMemberResult": "Element Result"
     },
     "settings":{
         "auto_update": "Auto update",

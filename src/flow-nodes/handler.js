@@ -4,6 +4,7 @@ import BasicMathNodes from "./basicMath";
 import BasicStructuralNodes from "./basicStructural";
 import StructuralSectionNodes from "./structuralSections";
 import NodesWrapperNode from "./nodesWrapper";
+import StructuralResultsNodes from "./structuralResults";
 import utils from "../utils";
 
 function createNodesLibrary() {
@@ -45,6 +46,8 @@ function createNodesLibrary() {
     structuralRectangleSection: { node_component: StructuralSectionNodes.RectangleNode, label: localGetCopy("structuralRectangleSection") },
     // Nodes Wrapper
     nodesWrapper: { node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper") },
+    // Structural results
+    structuralMemberResult: { node_component: StructuralResultsNodes.MemberResultNode, label: localGetCopy("structuralMemberResult") },
   };
 
   let nodes = {};

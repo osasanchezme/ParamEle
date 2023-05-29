@@ -12,6 +12,8 @@
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-color: var(--chakra-colors-gray-300);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .node-label-edit-button {
@@ -42,13 +44,31 @@
   background-color: var(--chakra-colors-white);
   font-family: var(--chakra-fonts-mono);
   min-height: 30px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .react-flow__handle {
-  width: 8px !important;
+  width: 4px !important;
   height: 8px !important;
   background-color: rgb(189, 196, 204) !important;
   border: none !important;
+}
+
+.react-flow__handle.target {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  left: 0 !important;
+}
+
+.react-flow__handle.source {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  right: 0 !important;
 }
 
 .reactflow-node {
@@ -60,7 +80,7 @@
   border-image: initial;
   border-color: var(--chakra-colors-gray-300);
   border-radius: 8px;
-  overflow: hidden;
+  /* overflow: hidden; */
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
