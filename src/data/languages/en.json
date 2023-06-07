@@ -40,7 +40,10 @@
         "end": "end",
         "step": "step",
         "shear": "shear",
-        "axial": "axial"
+        "axial": "axial",
+        "result_type": "type",
+        "members": "elements",
+        "plotable": "plotable"
     },
     "types": {
         "id": "ID",
@@ -75,7 +78,8 @@
         "structuralRectangleSection": "Rectangular Section",
         "nodesWrapper": "Nodes Group",
         "variableRange": "Range",
-        "structuralMemberResult": "Element Result"
+        "structuralMemberResult": "Element Result",
+        "dataDisplay2DPlot": "2D Plot"
     },
     "settings":{
         "auto_update": "Auto update",
@@ -153,7 +157,9 @@
         "open_model": "Open model",
         "response_back": "Response:",
         "range_nodes_selected_for_grouping_title": "Invalid selection",
-        "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped"
+        "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped",
+        "results_saved_title": "Results saved",
+        "results_saved_desc": "Analysis results were successfully saved"
     },
     "navigator":{
         "model": "Main model"

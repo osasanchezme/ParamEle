@@ -267,6 +267,18 @@ function findHighestZCoordinate(nodes) {
   return highest_z;
 }
 
+function allIndexOf(arr, value) {
+  const indexes = [];
+
+  arr.forEach((element, index) => {
+    if (element === value) {
+      indexes.push(index);
+    }
+  });
+
+  return indexes;
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -281,7 +293,8 @@ const utils = {
   updatePropertiesPanel,
   updateNavigator,
   openGlobalSettings,
-  findHighestZCoordinate
+  findHighestZCoordinate,
+  allIndexOf
 };
 
 export default utils;

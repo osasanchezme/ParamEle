@@ -18,12 +18,13 @@ class SearchableDropdown extends React.Component {
       nodes_to_select: [],
       selected_node: 0,
       selected_option: "",
-      selected_option_name: "",
+      selected_option_name: this.props.current_value,
       list_visible: false,
     };
     this.available_nodes_mapping = this.props.options_map;
     this.coincidences_to_match = this.props.coincidences_to_match;
     this.onChange = this.props.onChange;
+    this.tag_text = this.props.tag_text;
   }
   componentDidMount() {
     if (!this.props.is_regular_dropdown) {
@@ -62,6 +63,7 @@ class SearchableDropdown extends React.Component {
           return { name: option, score: 0 };
         });
       }
+      if (this.props.is_regular_dropdown) this.coincidences_to_match = closest_nodes.length;
       this.setState({
         nodes_to_select: closest_nodes.slice(0, Math.min(this.coincidences_to_match, closest_nodes.length)).map((option) => {
           return option.name;
@@ -161,7 +163,7 @@ class SearchableDropdown extends React.Component {
                   borderRadius: "var(--chakra-radii-base)",
                 }}
               >
-                {utils.getDisplayCopy("tags", "result")}
+                {this.tag_text}
               </Tag>
             </InputRightElement>
           </InputGroup>

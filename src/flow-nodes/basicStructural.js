@@ -32,7 +32,7 @@ function StructuralNodeExec(args) {
 // Member
 const member_target_ids = ["node_A-id", "node_B-id", "section_id-id-1"];
 function StructuralMember({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralMember")} data={data} id={id} target_ids={member_target_ids} source_ids={["member_out-id"]}></GenericInOutNode>;
+  return <GenericInOutNode node_label={localGetCopy("structuralMember")} data={data} id={id} target_ids={member_target_ids} source_ids={["member_out-id", "member_list_out-ids"]}></GenericInOutNode>;
 }
 
 function StructuralMemberExec(args) {
@@ -57,6 +57,7 @@ function StructuralMemberExec(args) {
       stiffness_B_Ry: 0,
       stiffness_B_Rz: 0,
     },
+    "member_list_out-ids": []
   };
 }
 

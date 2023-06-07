@@ -1,5 +1,6 @@
 import notification from "../components/notification";
 import getState from "../getState";
+import state from "../state";
 import utils from "../utils";
 import { Link, Icon } from "@chakra-ui/react";
 import { MdOpenInNew } from "react-icons/md";
@@ -75,17 +76,25 @@ const solveStructure = () => {
       notification.closeAllNotifications();
       if (data.functions) {
         data.functions.forEach((func) => {
-          if (func.function === "S3D.file.save") {
-            if (!already_open) {
-              already_open = true;
-              notification.notify(
-                "info",
-                utils.getDisplayCopy("notifications", "saved_model"),
-                <Link href={func.data} isExternal>
-                  {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px" />
-                </Link>
-              );
-            }
+          switch (func.function) {
+            case "S3D.session.solve":
+              state.setState(func.data, "results");
+              notification.notify("info", "results_saved", null, true);
+              break;
+            case "S3D.session.save":
+              if (!already_open) {
+                already_open = true;
+                notification.notify(
+                  "info",
+                  utils.getDisplayCopy("notifications", "saved_model"),
+                  <Link href={func.data} isExternal>
+                    {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px" />
+                  </Link>
+                );
+              }
+              break;
+            default:
+              break;
           }
         });
       }

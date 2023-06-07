@@ -19,23 +19,29 @@ function NodesWrapperExec(args, data) {
   let { source_ids, target_ids, node_ids_to_map, data_keys, node_ids_to_map_from, result_data_keys } = getTargetAndSourceIds(data);
   let structural_args = utils.convertNodeToStructuralArgs(args, target_ids);
   let { internal_logic } = data;
+
   // Map the input values to the internal logic
   internal_logic.nodes.forEach((node) => {
     let { id } = node;
-    let map_index = node_ids_to_map.indexOf(id);
-    if (map_index !== -1) {
-      let argument = utils.splitArgName(target_ids[map_index]);
-      node.data[data_keys[map_index]] = structural_args[argument.name];
+    let map_indices = utils.allIndexOf(node_ids_to_map, id);
+    if (map_indices.length > 0) {
+      map_indices.forEach((map_index) => {
+        let argument = utils.splitArgName(target_ids[map_index]);
+        node.data[data_keys[map_index]] = structural_args[argument.name];
+      });
     }
   });
+
   let processed_model = logic_runner.calculateModel(internal_logic);
   let output = {};
   // Map the results to the output handles
   processed_model.nodes.forEach((node) => {
     let { id } = node;
-    let map_index = node_ids_to_map_from.indexOf(id);
-    if (map_index !== -1) {
-      output[source_ids[map_index]] = node.data[result_data_keys[map_index]];
+    let map_indices = utils.allIndexOf(node_ids_to_map_from, id);
+    if (map_indices.length > 0) {
+      map_indices.forEach((map_index) => {
+        output[source_ids[map_index]] = node.data[result_data_keys[map_index]];
+      });
     }
   });
   output.input = structural_args;

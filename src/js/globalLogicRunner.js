@@ -121,6 +121,7 @@ function calculateModel(model) {
       let result = library.execution[nodes_type[node_id]](node.args, nodes_data[node_id]);
       let result_input = {};
       Object.entries(result).forEach(([res_id, res_val]) => {
+        let is_push = false;
         let actual_res_val = JSON.parse(JSON.stringify(res_val));
         // Process the structure
         let res_type = utils.splitArgName(res_id, "source").name;
@@ -140,9 +141,14 @@ function calculateModel(model) {
           let structure = getState("structure");
           let structure_key = res_type + "s";
           actual_res_val = utils.nextStructuralId(structure_key, structure);
-          // Shift the nodes if needed
+          // Shift the nodes if needed and store the node ID for the lists
           if (res_type === "node") {
             res_val.z += state.getGlobalVariable("structure_nodes_shift");
+            state.setGlobalVariable("last_structural_node", actual_res_val);
+          }
+          // Store the member ID for the lists
+          if (res_type === "member") {
+            state.setGlobalVariable("last_structural_member", actual_res_val);
           }
           // Update the structure
           structure[structure_key][actual_res_val] = res_val;
@@ -154,12 +160,23 @@ function calculateModel(model) {
           actual_res_val = res_val.value;
           delete res_val.value;
           result_input = res_val;
+        } else if (res_type === "member_list") {
+          actual_res_val = state.getGlobalVariable("last_structural_member");
+          is_push = true;
         } else {
           // For the rest of the nodes (Wrapper)
           result_input = result.input;
         }
         // Update the node data
-        nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;
+        if (is_push) {
+          // Only push if not in the list
+          let current_array = nodes[nodes_i[node_id]]["data"][res_id];
+          if (!current_array) current_array = [];
+          if (current_array && !current_array.includes(actual_res_val)) current_array.push(actual_res_val);
+          nodes[nodes_i[node_id]]["data"][res_id] = current_array;
+        } else {
+          nodes[nodes_i[node_id]]["data"][res_id] = actual_res_val;
+        }
       });
       // Set the input
       nodes[nodes_i[node_id]]["data"]["input"] = result_input;

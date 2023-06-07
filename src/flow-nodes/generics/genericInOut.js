@@ -1,24 +1,13 @@
 import React from "react";
 import { Handle, Position } from "react-flow-renderer";
-import {
-  Tag,
-  Tooltip,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  Box,
-  Select,
-} from "@chakra-ui/react";
+import { Tag, Tooltip, Input, InputGroup, InputRightElement, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box } from "@chakra-ui/react";
 import utils from "../../utils";
 import EditableNodeHeader from "../../components/editable_node_header";
 import state from "../../state";
 import { useEffect, useRef } from "react";
 import { MdCode, MdLoop } from "react-icons/md";
 import SearchableDropdown from "../../components/searchable_dropdown";
+import Plot from "react-plotly.js";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -27,9 +16,10 @@ import SearchableDropdown from "../../components/searchable_dropdown";
  * @param {string[]} props.target_ids IDs of the target (input) handles for the node
  * @param {string[]} props.editable_ids IDs of the input fields that can be edited by the user
  * @param {string[]} props.source_ids IDs of the source (output) handles for the node
+ * @param {Object} props.plot_settings Settings for the plt inside the node
  * @returns {React.DOMElement} div element representing the ReactFlow node
  */
-function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [] }) {
+function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [], plot_settings }) {
   const first_text_input = useRef(null);
   useEffect(() => {
     if (id === state.getGlobalVariable("last_node_id_created") && first_text_input.current) first_text_input.current.focus();
@@ -224,9 +214,10 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
             coincidences_to_match={3}
             style={{ top: top_pos_editable_inputs, position: "fixed", width: "calc(100% - 18px)" }}
             is_regular_dropdown={true}
+            current_value={data[data_key]}
             onChange={(value) => onChange({ target: { value: value } }, data_key)}
+            tag_text={utils.getDisplayCopy("tags", editable_data.name)}
           ></SearchableDropdown>
-          // TODO, the commands bar disappears on a second click (app changes its mode to "wait_action")
         );
         break;
       default:
@@ -234,6 +225,44 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     }
     return input_component;
   });
+  // Add a plot if required
+  let plot_top_pos = top_pos_editable_inputs + 10;
+  let plot_component = "";
+  let plot_width = 0;
+  let plot_height = 0;
+  if (plot_settings) {
+    let { type, width, height } = plot_settings;
+    plot_width = width;
+    plot_height = height;
+    switch (type) {
+      case "2d":
+        plot_component = (
+          <Plot
+            style={{ position: "absolute", top: plot_top_pos }}
+            // data={data.input.plotable}
+            // frames={this.state.frames}
+            // onUpdate={(figure) => this.setState(figure)}
+            data={[
+              {
+                x: [1, 2, 3],
+
+                y: [2, 6, 3],
+
+                type: "scatter",
+
+                mode: "lines+markers",
+
+                marker: { color: "red" },
+              }
+            ]}
+            layout={{ width, height, title: "" }}
+          />
+        );
+        break;
+      default:
+        break;
+    }
+  }
   // Get the longest string for defining width
   let max_copy_length = Math.max(source_copies.length, target_copies.length);
   let max_length = 0;
@@ -243,16 +272,13 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     let sum_length = source_length + target_length;
     if (sum_length > max_length) max_length = sum_length;
   }
-  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 20, 100, editable_ids.length > 0 ? 150 : 0);
-  let node_height = 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length;
+  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 20, 100, editable_ids.length > 0 ? 150 : 0, plot_width + 20);
+  let node_height = 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length + plot_height;
   // Define the class name
   let class_name = "reactflow-node";
   if (data.selected) class_name += " selected";
   return (
-    <div
-      className={class_name}
-      style={{ height: node_height, width: node_width }}
-    >
+    <div className={class_name} style={{ height: node_height, width: node_width }}>
       <EditableNodeHeader id={id} node_label={node_label} identifier_icon={data.iterating ? MdLoop : null}></EditableNodeHeader>
       <div className="node-body">
         {target_handles}
@@ -260,6 +286,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
           {target_labels}
           {source_labels}
           {editable_fields}
+          {plot_component}
         </div>
         {source_handles}
         {editable_handles}

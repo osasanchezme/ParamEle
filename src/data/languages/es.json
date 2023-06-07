@@ -40,7 +40,10 @@
         "end": "fin",
         "step": "paso",
         "shear": "cortante",
-        "axial": "axial"
+        "axial": "axial",
+        "result_type": "tipo",
+        "members": "elementos",
+        "plotable": "graficable"
     },
     "types": {
         "id": "ID",
@@ -75,7 +78,8 @@
         "structuralRectangleSection": "Secc. Rectangular",
         "nodesWrapper": "Grupo Nodos",
         "variableRange": "Rango",
-        "structuralMemberResult": "Resultado Elemento"
+        "structuralMemberResult": "Resultado Elemento",
+        "dataDisplay2DPlot": "Gráfico 2D"
     },
     "settings":{
         "auto_update": "Actualizar automáticamente",
@@ -153,7 +157,9 @@
         "open_model": "Abrir modelo",
         "response_back": "Respuesta:",
         "range_nodes_selected_for_grouping_title": "Selección inválida",
-        "range_nodes_selected_for_grouping_desc": "Los nodos tipo rango no se pueden agrupar"
+        "range_nodes_selected_for_grouping_desc": "Los nodos tipo rango no se pueden agrupar",
+        "results_saved_title": "Resultados guardados",
+        "results_saved_desc": "Los resultados del análisis fueron guardados con éxito"
     },
     "navigator":{
         "model": "Modelo principal"

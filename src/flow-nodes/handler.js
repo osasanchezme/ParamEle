@@ -5,6 +5,7 @@ import BasicStructuralNodes from "./basicStructural";
 import StructuralSectionNodes from "./structuralSections";
 import NodesWrapperNode from "./nodesWrapper";
 import StructuralResultsNodes from "./structuralResults";
+import DataDisplayNodes from "./dataDisplay";
 import utils from "../utils";
 
 function createNodesLibrary() {
@@ -48,6 +49,8 @@ function createNodesLibrary() {
     nodesWrapper: { node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper") },
     // Structural results
     structuralMemberResult: { node_component: StructuralResultsNodes.MemberResultNode, label: localGetCopy("structuralMemberResult") },
+    // Data display
+    dataDisplay2DPlot: { node_component: DataDisplayNodes.Display2DPlotNode, label: localGetCopy("dataDisplay2DPlot") },
   };
 
   let nodes = {};
