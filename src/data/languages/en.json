@@ -43,7 +43,8 @@
         "axial": "axial",
         "result_type": "type",
         "members": "elements",
-        "plotable": "plotable"
+        "plotable": "plotable",
+        "mid-span": "mid-span"
     },
     "types": {
         "id": "ID",
@@ -159,7 +160,8 @@
         "range_nodes_selected_for_grouping_title": "Invalid selection",
         "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped",
         "results_saved_title": "Results saved",
-        "results_saved_desc": "Analysis results were successfully saved"
+        "results_saved_desc": "Analysis results were successfully saved",
+        "no_data_to_show": "No results to display"
     },
     "navigator":{
         "model": "Main model"

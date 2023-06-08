@@ -4,6 +4,7 @@ import state from "../state";
 import utils from "../utils";
 import { Link, Icon } from "@chakra-ui/react";
 import { MdOpenInNew } from "react-icons/md";
+import logic_runner from "./globalLogicRunner";
 
 const solveStructure = () => {
   let structure = getState("structure");
@@ -77,11 +78,13 @@ const solveStructure = () => {
       if (data.functions) {
         data.functions.forEach((func) => {
           switch (func.function) {
-            case "S3D.session.solve":
+            case "S3D.model.solve":
               state.setState(func.data, "results");
               notification.notify("info", "results_saved", null, true);
+              // Run the logic to get the results plot
+              logic_runner.run();
               break;
-            case "S3D.session.save":
+            case "S3D.file.save":
               if (!already_open) {
                 already_open = true;
                 notification.notify(

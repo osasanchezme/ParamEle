@@ -74,18 +74,22 @@ function calculateModel(model) {
     let step = Number(max_range_node.data["step-value"]);
     if (iterate_sliders && step > 0) {
       max_range_node.data.iterating = true;
+      let iterating_node_data = { node_label: max_range_node.data.custom_label || max_range_node.id, variation_values: [] };
       for (let j = start; j <= end; j += step) {
         let new_node_data = JSON.parse(JSON.stringify(max_range_node.data));
         new_node_data["slider-value"] = j;
         let model_combination = {};
         model_combination[max_range_node.id] = new_node_data;
         model_combinations.push(model_combination);
+        iterating_node_data.variation_values.push(j);
       }
+      state.setGlobalVariable("iterating_node_data", iterating_node_data);
     } else {
       let new_node_data = JSON.parse(JSON.stringify(max_range_node.data));
       let model_combination = {};
       model_combination[max_range_node.id] = new_node_data;
       model_combinations.push(model_combination);
+      state.setGlobalVariable("iterating_node_data", {});
     }
   }
   // If there are no range nodes, add an empty combination

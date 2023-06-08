@@ -236,28 +236,24 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     plot_height = height;
     switch (type) {
       case "2d":
-        plot_component = (
-          <Plot
-            style={{ position: "absolute", top: plot_top_pos }}
-            // data={data.input.plotable}
-            // frames={this.state.frames}
-            // onUpdate={(figure) => this.setState(figure)}
-            data={[
-              {
-                x: [1, 2, 3],
-
-                y: [2, 6, 3],
-
-                type: "scatter",
-
-                mode: "lines+markers",
-
-                marker: { color: "red" },
-              }
-            ]}
-            layout={{ width, height, title: "" }}
-          />
-        );
+        if (data && data.input && data.input.plotable) {
+          let { x, y, xaxis_title, yaxis_title, title } = data.input.plotable;
+          plot_component = (
+            <Plot
+              style={{ position: "absolute", top: plot_top_pos }}
+              data={[
+                {
+                  x,
+                  y,
+                  type: "scatter",
+                  mode: "lines+markers",
+                  marker: { color: "red" },
+                },
+              ]}
+              layout={{ width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title } }}
+            />
+          );
+        }
         break;
       default:
         break;

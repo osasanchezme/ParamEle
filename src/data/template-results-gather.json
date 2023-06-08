@@ -28,7 +28,7 @@
                     "y": 49.605678995949035
                 },
                 "data": {
-                    "result-value": "momento",
+                    "result-value": "moment",
                     "result_type-value": "mid-span",
                     "results_out-id": {
                         "member": 1
@@ -471,7 +471,7 @@
             },
             {
                 "source": "node-20",
-                "sourceHandle": "viga-id",
+                "sourceHandle": "vigas-ids",
                 "target": "node-3",
                 "targetHandle": "members-ids",
                 "id": "reactflow__edge-node-20viga-id-node-3member-ids"
@@ -494,15 +494,15 @@
             "show_properties_panel": false
         },
         "layout": {
-            "renderer_width": 20,
-            "editor_width": 80,
+            "renderer_width": 30,
+            "editor_width": 70,
             "panel_width": 0,
-            "renderer_right": 80
+            "renderer_right": 70
         },
         "global": {
             "solver_username": "oscar.sanchez@skyciv.com",
             "solver_key": "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
-            "sliders_mode": "sliders_single",
+            "sliders_mode": "sliders_all",
             "spacing_between_combinations": 1
         }
     }

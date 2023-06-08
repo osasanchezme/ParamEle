@@ -43,7 +43,8 @@
         "axial": "axial",
         "result_type": "tipo",
         "members": "elementos",
-        "plotable": "graficable"
+        "plotable": "graficable",
+        "mid-span": "mitad-vano"
     },
     "types": {
         "id": "ID",
@@ -159,7 +160,8 @@
         "range_nodes_selected_for_grouping_title": "Selección inválida",
         "range_nodes_selected_for_grouping_desc": "Los nodos tipo rango no se pueden agrupar",
         "results_saved_title": "Resultados guardados",
-        "results_saved_desc": "Los resultados del análisis fueron guardados con éxito"
+        "results_saved_desc": "Los resultados del análisis fueron guardados con éxito",
+        "no_data_to_show": "No hay resultados para mostrar"
     },
     "navigator":{
         "model": "Modelo principal"
