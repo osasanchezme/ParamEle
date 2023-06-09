@@ -26,6 +26,9 @@ function getResult(results, result_name, operation_type, element_id, lc_name) {
       case "end":
         final_result = interpolateResult(actual_result, 100);
         break;
+      case "full":
+        final_result = {y: Object.values(actual_result), x: Object.keys(actual_result).map(a => Number(a))};
+        break;
       case "min":
       case "max":
       case "average":

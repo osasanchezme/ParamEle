@@ -44,7 +44,9 @@
         "result_type": "type",
         "members": "elements",
         "plotable": "plotable",
-        "mid-span": "mid-span"
+        "mid-span": "mid-span",
+        "position": "position",
+        "full": "full"
     },
     "types": {
         "id": "ID",

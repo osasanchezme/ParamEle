@@ -44,7 +44,9 @@
         "result_type": "tipo",
         "members": "elementos",
         "plotable": "graficable",
-        "mid-span": "mitad-vano"
+        "mid-span": "mitad-vano",
+        "position": "posición",
+        "full": "completo"
     },
     "types": {
         "id": "ID",

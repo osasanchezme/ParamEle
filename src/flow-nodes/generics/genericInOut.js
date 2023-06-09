@@ -237,19 +237,25 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     switch (type) {
       case "2d":
         if (data && data.input && data.input.plotable) {
-          let { x, y, xaxis_title, yaxis_title, title } = data.input.plotable;
+          let raw_data_to_plot = data.input.plotable;
+          let data_to_plot = [];
+          raw_data_to_plot.forEach(plotable_data => {
+            let { x, y, name } = plotable_data;
+            data_to_plot.push(
+              {
+                x,
+                y,
+                name,
+                type: "scatter",
+                mode: "lines+markers"
+              }
+            )
+          });
+          let {xaxis_title, yaxis_title, title} = raw_data_to_plot[0];
           plot_component = (
             <Plot
               style={{ position: "absolute", top: plot_top_pos }}
-              data={[
-                {
-                  x,
-                  y,
-                  type: "scatter",
-                  mode: "lines+markers",
-                  marker: { color: "red" },
-                },
-              ]}
+              data={data_to_plot}
               layout={{ width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title } }}
             />
           );
