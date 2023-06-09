@@ -14,7 +14,7 @@ function localGetCopy(node_name) {
 const member_result_target_ids = ["members-ids"];
 const member_result_editable_ids = [
   { id: "result-value", show_handle: false, input_type: "dropdown", data: ["moment", "shear", "axial"] },
-  { id: "result_type-value", show_handle: false, input_type: "dropdown", data: ["mid-span", "max", "min", "average", "node_A", "node_B"] },
+  { id: "result_type-value", show_handle: false, input_type: "dropdown", data: ["mid-span", "max", "min", "average", "start", "end"] },
 ];
 function MemberResult({ data, id }) {
   return (
