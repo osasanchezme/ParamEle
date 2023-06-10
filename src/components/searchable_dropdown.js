@@ -18,7 +18,7 @@ class SearchableDropdown extends React.Component {
       nodes_to_select: [],
       selected_node: 0,
       selected_option: "",
-      selected_option_name: this.props.current_value,
+      selected_option_name: Object.keys(this.props.options_map)[Object.values(this.props.options_map).indexOf(this.props.current_value)],
       list_visible: false,
     };
     this.available_nodes_mapping = this.props.options_map;

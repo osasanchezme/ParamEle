@@ -46,7 +46,12 @@
         "plotable": "graficable",
         "mid-span": "mitad-vano",
         "position": "posición",
-        "full": "completo"
+        "full": "completo",
+        "average": "promedio",
+        "nodes": "nodos",
+        "none": "ninguno",
+        "all": "todos",
+        "plot_selector": "Filtrar"
     },
     "types": {
         "id": "ID",
@@ -82,7 +87,8 @@
         "nodesWrapper": "Grupo Nodos",
         "variableRange": "Rango",
         "structuralMemberResult": "Resultado Elemento",
-        "dataDisplay2DPlot": "Gráfico 2D"
+        "dataDisplay2DPlot": "Gráfico 2D",
+        "structuralNodeResult": "Resultado Nodal"
     },
     "settings":{
         "auto_update": "Actualizar automáticamente",

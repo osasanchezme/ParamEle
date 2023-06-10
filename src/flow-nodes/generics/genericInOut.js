@@ -239,26 +239,62 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
         if (data && data.input && data.input.plotable) {
           let raw_data_to_plot = data.input.plotable;
           let data_to_plot = [];
-          raw_data_to_plot.forEach(plotable_data => {
+          let update_menus = [
+            {
+              buttons: [
+                {
+                  args: [{ visible: true, mode: "scatter" }],
+                  label: utils.getDisplayCopy("tags", "all"),
+                  method: "restyle",
+                },
+                {
+                  args: [{ visible: false, mode: "scatter" }],
+                  label: utils.getDisplayCopy("tags", "none"),
+                  method: "restyle",
+                },
+              ],
+              direction: "down",
+              pad: { r: 0, t: 0 },
+              showactive: true,
+              type: "dropdown",
+              x: 1,
+              xanchor: "left",
+              y: 1.15,
+              yanchor: "top",
+            },
+          ];
+          raw_data_to_plot.forEach((plotable_data, index) => {
             let { x, y, name } = plotable_data;
-            data_to_plot.push(
-              {
-                x,
-                y,
-                name,
-                type: "scatter",
-                mode: "lines+markers"
-              }
-            )
+            update_menus[0].buttons.push({
+              args: [{ visible: true }, [index]],
+              label: name,
+              method: "restyle",
+            });
+            data_to_plot.push({
+              x,
+              y,
+              name,
+              type: "scatter",
+              mode: "lines+markers",
+            });
           });
-          let {xaxis_title, yaxis_title, title} = raw_data_to_plot[0];
-          plot_component = (
-            <Plot
-              style={{ position: "absolute", top: plot_top_pos }}
-              data={data_to_plot}
-              layout={{ width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title } }}
-            />
-          );
+          let { xaxis_title, yaxis_title, title } = raw_data_to_plot[0];
+          let layout = { width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title }, updatemenus: [] };
+          if (raw_data_to_plot.length > 1) {
+            layout.updatemenus = update_menus;
+            layout.annotations = [
+              {
+                text: `${utils.getDisplayCopy("tags", "plot_selector")}:`,
+                x: 1,
+                y: 1.125,
+                yref: "paper",
+                xref: "paper",
+                align: "left",
+                showarrow: false,
+              },
+            ];
+          }
+          plot_component = <Plot style={{ position: "absolute", top: plot_top_pos }} data={data_to_plot} layout={layout} />;
         }
         break;
       default:

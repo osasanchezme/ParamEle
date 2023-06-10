@@ -46,7 +46,12 @@
         "plotable": "plotable",
         "mid-span": "mid-span",
         "position": "position",
-        "full": "full"
+        "full": "full",
+        "average": "average",
+        "nodes": "nodes",
+        "none": "none",
+        "all": "all",
+        "plot_selector": "Filter"
     },
     "types": {
         "id": "ID",
@@ -82,7 +87,8 @@
         "nodesWrapper": "Nodes Group",
         "variableRange": "Range",
         "structuralMemberResult": "Element Result",
-        "dataDisplay2DPlot": "2D Plot"
+        "dataDisplay2DPlot": "2D Plot",
+        "structuralNodeResult": "Nodal Result"
     },
     "settings":{
         "auto_update": "Auto update",
