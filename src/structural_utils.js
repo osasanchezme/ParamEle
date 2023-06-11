@@ -1,16 +1,70 @@
-function getResult(results, result_name, operation_type, element_id, lc_name) {
+function getResult(results, result_name, result_direction, operation_type, element_id, lc_name) {
   let lc_results = results[lc_name];
   let actual_result = {};
   let final_result;
   switch (result_name) {
     case "moment":
-      actual_result = lc_results.member_forces.bending_moment_y[element_id];
+      switch (result_direction) {
+        case "x":
+          actual_result = lc_results.member_forces.torsion[element_id];
+          break;
+        case "y":
+          actual_result = lc_results.member_forces.bending_moment_y[element_id];
+          break;
+        case "z":
+          actual_result = lc_results.member_forces.bending_moment_z[element_id];
+          break;
+        default:
+          break;
+      }
       break;
     case "shear":
-      actual_result = lc_results.member_forces.shear_force_z[element_id];
+      switch (result_direction) {
+        case "x":
+          actual_result = lc_results.member_forces.shear_force_x[element_id];
+          break;
+        case "y":
+          actual_result = lc_results.member_forces.shear_force_y[element_id];
+          break;
+        case "z":
+          actual_result = lc_results.member_forces.shear_force_z[element_id];
+          break;
+        default:
+          break;
+      }
       break;
     case "axial":
       actual_result = lc_results.member_forces.axial_force[element_id];
+      break;
+    case "reaction":
+      switch (result_direction) {
+        case "x":
+          actual_result = lc_results.reactions[element_id]["Fx"];
+          break;
+        case "y":
+          actual_result = lc_results.reactions[element_id]["Fy"];
+          break;
+        case "z":
+          actual_result = lc_results.reactions[element_id]["Fz"];
+          break;
+        default:
+          break;
+      }
+      break;
+    case "displacement":
+      switch (result_direction) {
+        case "x":
+          actual_result = lc_results.member_displacements.displacement_x[element_id];
+          break;
+        case "y":
+          actual_result = lc_results.member_displacements.displacement_y[element_id];
+          break;
+        case "z":
+          actual_result = lc_results.member_displacements.displacement_z[element_id];
+          break;
+        default:
+          break;
+      }
       break;
     default:
       break;
@@ -27,7 +81,10 @@ function getResult(results, result_name, operation_type, element_id, lc_name) {
         final_result = interpolateResult(actual_result, 100);
         break;
       case "full":
-        final_result = {y: Object.values(actual_result), x: Object.keys(actual_result).map(a => Number(a))};
+        final_result = { y: Object.values(actual_result), x: Object.keys(actual_result).map((a) => Number(a)) };
+        break;
+      case "node":
+        final_result = actual_result;
         break;
       case "min":
       case "max":

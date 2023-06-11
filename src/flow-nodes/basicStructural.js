@@ -26,6 +26,7 @@ function StructuralNodeExec(args) {
     "node_out-id": {
       ...structural_args
     },
+    "node_list_out-ids": []
   };
 }
 

@@ -154,6 +154,9 @@ function calculateModel(model) {
           if (res_type === "member") {
             state.setGlobalVariable("last_structural_member", actual_res_val);
           }
+          if (res_type === "node") {
+            state.setGlobalVariable("last_structural_node", actual_res_val);
+          }
           // Update the structure
           structure[structure_key][actual_res_val] = res_val;
           // Store the global structure
@@ -166,6 +169,9 @@ function calculateModel(model) {
           result_input = res_val;
         } else if (res_type === "member_list") {
           actual_res_val = state.getGlobalVariable("last_structural_member");
+          is_push = true;
+        } else if (res_type === "node_list") {
+          actual_res_val = state.getGlobalVariable("last_structural_node");
           is_push = true;
         } else {
           // For the rest of the nodes (Wrapper)

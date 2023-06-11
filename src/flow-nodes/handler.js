@@ -49,6 +49,7 @@ function createNodesLibrary() {
     nodesWrapper: { node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper") },
     // Structural results
     structuralMemberResult: { node_component: StructuralResultsNodes.MemberResultNode, label: localGetCopy("structuralMemberResult") },
+    structuralNodeResult: { node_component: StructuralResultsNodes.NodeResultNode, label: localGetCopy("structuralNodeResult") },
     // Data display
     dataDisplay2DPlot: { node_component: DataDisplayNodes.Display2DPlotNode, label: localGetCopy("dataDisplay2DPlot") },
   };

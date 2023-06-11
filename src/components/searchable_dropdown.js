@@ -146,7 +146,7 @@ class SearchableDropdown extends React.Component {
               size="xs"
               onKeyUp={this.handleUserInput}
               onKeyDown={this.preventArrowKeysDefault}
-              value={this.state.selected_option_name}
+              value={this.state.selected_option_name === undefined ? "" : this.state.selected_option_name}
               onChange={this.handleInputChange}
               autoComplete="off"
               onFocus={this.handleUserInput}

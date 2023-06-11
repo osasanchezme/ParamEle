@@ -2,20 +2,75 @@
     "model": {
         "nodes": [
             {
+                "width": 520,
+                "height": 560,
+                "id": "node-6",
+                "type": "dataDisplay2DPlot",
+                "position": {
+                    "x": 691.7993758554264,
+                    "y": 166.22889114605275
+                },
+                "data": {},
+                "selected": false,
+                "positionAbsolute": {
+                    "x": 691.7993758554264,
+                    "y": 166.22889114605275
+                },
+                "dragging": false
+            },
+            {
+                "width": 150,
+                "height": 86,
+                "id": "node-5",
+                "type": "structuralNodeResult",
+                "position": {
+                    "x": 431.32140980856366,
+                    "y": 158.1578278853979
+                },
+                "data": {
+                    "result-value": "reaction",
+                    "plotable_out-plotly_data": [
+                        {
+                            "x": [
+                                12,
+                                13,
+                                14,
+                                15
+                            ],
+                            "y": [
+                                6,
+                                6.5,
+                                7,
+                                7.5
+                            ],
+                            "xaxis_title": "L",
+                            "yaxis_title": "reaction",
+                            "title": "reaction (z)"
+                        }
+                    ],
+                    "direction-value": "z"
+                },
+                "positionAbsolute": {
+                    "x": 431.32140980856366,
+                    "y": 158.1578278853979
+                },
+                "selected": false
+            },
+            {
                 "width": 100,
                 "height": 60,
                 "id": "node-4",
                 "type": "dataDisplay2DPlot",
                 "position": {
-                    "x": 734.5531424769597,
-                    "y": 86.81729410682954
+                    "x": 752.0970532104782,
+                    "y": -464.0130930108441
                 },
                 "data": {},
                 "positionAbsolute": {
-                    "x": 734.5531424769597,
-                    "y": 86.81729410682954
+                    "x": 752.0970532104782,
+                    "y": -464.0130930108441
                 },
-                "selected": true,
+                "selected": false,
                 "dragging": false
             },
             {
@@ -24,20 +79,134 @@
                 "id": "node-3",
                 "type": "structuralMemberResult",
                 "position": {
-                    "x": 429.20875861598756,
-                    "y": 49.605678995949035
+                    "x": 423.749240933746,
+                    "y": -207.02177295184475
                 },
                 "data": {
-                    "result-value": "moment",
-                    "result_type-value": "mid-span",
+                    "result-value": "displacement",
+                    "result_type-value": "full",
                     "results_out-id": {
                         "member": 1
                     },
-                    "plotable_out-plotly_data": {}
+                    "plotable_out-plotly_data": [
+                        {
+                            "x": [
+                                0,
+                                12.5,
+                                25,
+                                37.5,
+                                50,
+                                62.5,
+                                75,
+                                87.5,
+                                100
+                            ],
+                            "y": [
+                                0,
+                                -0.01,
+                                -0.029,
+                                -0.046,
+                                -0.052,
+                                -0.046,
+                                -0.029,
+                                -0.01,
+                                0
+                            ],
+                            "name": "L = 12",
+                            "xaxis_title": "position",
+                            "yaxis_title": "displacement",
+                            "title": "displacement (z)"
+                        },
+                        {
+                            "x": [
+                                0,
+                                12.5,
+                                25,
+                                37.5,
+                                50,
+                                62.5,
+                                75,
+                                87.5,
+                                100
+                            ],
+                            "y": [
+                                0,
+                                -0.014,
+                                -0.04,
+                                -0.063,
+                                -0.071,
+                                -0.063,
+                                -0.04,
+                                -0.014,
+                                0
+                            ],
+                            "name": "L = 13",
+                            "xaxis_title": "position",
+                            "yaxis_title": "displacement",
+                            "title": "displacement (z)"
+                        },
+                        {
+                            "x": [
+                                0,
+                                12.5,
+                                25,
+                                37.5,
+                                50,
+                                62.5,
+                                75,
+                                87.5,
+                                100
+                            ],
+                            "y": [
+                                0,
+                                -0.018,
+                                -0.054,
+                                -0.084,
+                                -0.096,
+                                -0.084,
+                                -0.054,
+                                -0.018,
+                                0
+                            ],
+                            "name": "L = 14",
+                            "xaxis_title": "position",
+                            "yaxis_title": "displacement",
+                            "title": "displacement (z)"
+                        },
+                        {
+                            "x": [
+                                0,
+                                12.5,
+                                25,
+                                37.5,
+                                50,
+                                62.5,
+                                75,
+                                87.5,
+                                100
+                            ],
+                            "y": [
+                                0,
+                                -0.024,
+                                -0.071,
+                                -0.111,
+                                -0.127,
+                                -0.111,
+                                -0.071,
+                                -0.024,
+                                0
+                            ],
+                            "name": "L = 15",
+                            "xaxis_title": "position",
+                            "yaxis_title": "displacement",
+                            "title": "displacement (z)"
+                        }
+                    ],
+                    "direction-value": "z"
                 },
                 "positionAbsolute": {
-                    "x": 429.20875861598756,
-                    "y": 49.605678995949035
+                    "x": 423.749240933746,
+                    "y": -207.02177295184475
                 },
                 "selected": false,
                 "dragging": false
@@ -55,13 +224,15 @@
                     "start-value": "12",
                     "end-value": "15",
                     "step-value": "1",
-                    "slider-value": "3"
+                    "slider-value": "3",
+                    "custom_label": "L",
+                    "iterating": true
                 },
                 "positionAbsolute": {
                     "x": -283.00275047838613,
                     "y": -100.71508604544849
                 },
-                "selected": false,
+                "selected": true,
                 "dragging": false
             },
             {
@@ -120,6 +291,12 @@
                             "type": "ids",
                             "node_id_to_map": "node-5",
                             "data_key_to_map": "member_list_out-ids"
+                        },
+                        {
+                            "label": "apoyo0",
+                            "type": "ids",
+                            "node_id_to_map": "node-2",
+                            "data_key_to_map": "node_list_out-ids"
                         }
                     ],
                     "internal_logic": {
@@ -134,7 +311,7 @@
                                     "y": 286.5998111753325
                                 },
                                 "data": {
-                                    "support_out-id": 2,
+                                    "support_out-id": 8,
                                     "input": {
                                         "direction_code": "BBBBBB",
                                         "tx": 0,
@@ -144,7 +321,7 @@
                                         "ry": 0,
                                         "rz": 0,
                                         "type": "node",
-                                        "node": 2,
+                                        "node": 8,
                                         "restraint_code": "FFFFFR"
                                     }
                                 },
@@ -163,7 +340,7 @@
                                     "y": -27.642723586495688
                                 },
                                 "data": {
-                                    "support_out-id": 1,
+                                    "support_out-id": 7,
                                     "input": {
                                         "direction_code": "BBBBBB",
                                         "tx": 0,
@@ -173,7 +350,7 @@
                                         "ry": 0,
                                         "rz": 0,
                                         "type": "node",
-                                        "node": 1,
+                                        "node": 7,
                                         "restraint_code": "FFFFFR"
                                     }
                                 },
@@ -214,9 +391,9 @@
                                     "y": 208.4858387740558
                                 },
                                 "data": {
-                                    "distributed_load_out-id": 1,
+                                    "distributed_load_out-id": 4,
                                     "input": {
-                                        "member": 1,
+                                        "member": 4,
                                         "z_mag_A": -1,
                                         "z_mag_B": -1,
                                         "x_mag_A": 0,
@@ -245,10 +422,10 @@
                                 },
                                 "data": {
                                     "custom_label": "VIGA",
-                                    "member_out-id": 1,
+                                    "member_out-id": 4,
                                     "input": {
-                                        "node_A": 1,
-                                        "node_B": 2,
+                                        "node_A": 7,
+                                        "node_B": 8,
                                         "section_id": 1,
                                         "type": "normal_continuous",
                                         "cable_length": null,
@@ -265,7 +442,13 @@
                                         "stiffness_A_Rz": 0,
                                         "stiffness_B_Ry": 0,
                                         "stiffness_B_Rz": 0
-                                    }
+                                    },
+                                    "member_list_out-ids": [
+                                        1,
+                                        2,
+                                        3,
+                                        4
+                                    ]
                                 },
                                 "positionAbsolute": {
                                     "x": 265.0409464076938,
@@ -284,13 +467,19 @@
                                     "y": 201.77976066251966
                                 },
                                 "data": {
-                                    "node_out-id": 2,
+                                    "node_out-id": 8,
                                     "input": {
-                                        "x": 3,
+                                        "x": 15,
                                         "y": 0,
-                                        "z": 0
+                                        "z": 3
                                     },
-                                    "custom_label": "Nodo FINAL"
+                                    "custom_label": "Nodo FINAL",
+                                    "node_list_out-ids": [
+                                        2,
+                                        4,
+                                        6,
+                                        8
+                                    ]
                                 },
                                 "positionAbsolute": {
                                     "x": -17.321758647640763,
@@ -309,7 +498,7 @@
                                     "y": 210.22727887429681
                                 },
                                 "data": {
-                                    "value-value": 3,
+                                    "value-value": 15,
                                     "custom_label": "LONGITUD"
                                 },
                                 "positionAbsolute": {
@@ -330,12 +519,18 @@
                                 },
                                 "data": {
                                     "custom_label": "ORIGEN",
-                                    "node_out-id": 1,
+                                    "node_out-id": 7,
                                     "input": {
                                         "x": 0,
                                         "y": 0,
-                                        "z": 0
-                                    }
+                                        "z": 3
+                                    },
+                                    "node_list_out-ids": [
+                                        1,
+                                        3,
+                                        5,
+                                        7
+                                    ]
                                 },
                                 "positionAbsolute": {
                                     "x": -19.049830367966422,
@@ -444,7 +639,19 @@
                             }
                         ]
                     },
-                    "viga-id": 1
+                    "viga-id": 4,
+                    "vigas-ids": [
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "apoyo0-ids": [
+                        1,
+                        3,
+                        5,
+                        7
+                    ]
                 },
                 "positionAbsolute": {
                     "x": 34.10362274648401,
@@ -482,6 +689,20 @@
                 "target": "node-4",
                 "targetHandle": "plotable-plotly_data",
                 "id": "reactflow__edge-node-3plotable_out-plotly_data-node-4plotable-plotly_data"
+            },
+            {
+                "source": "node-20",
+                "sourceHandle": "apoyo0-ids",
+                "target": "node-5",
+                "targetHandle": "nodes-ids",
+                "id": "reactflow__edge-node-20apoyo0-ids-node-5nodes-ids"
+            },
+            {
+                "source": "node-5",
+                "sourceHandle": "plotable_out-plotly_data",
+                "target": "node-6",
+                "targetHandle": "plotable-plotly_data",
+                "id": "reactflow__edge-node-5plotable_out-plotly_data-node-6plotable-plotly_data"
             }
         ]
     },

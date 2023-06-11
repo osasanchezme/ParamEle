@@ -51,7 +51,9 @@
         "nodes": "nodes",
         "none": "none",
         "all": "all",
-        "plot_selector": "Filter"
+        "plot_selector": "Filter",
+        "reaction": "reaction",
+        "displacement": "displacement"
     },
     "types": {
         "id": "ID",
