@@ -175,5 +175,28 @@
     },
     "navigator":{
         "model": "Modelo principal"
+    },
+    "auth":{
+        "title": "Cuenta",
+        "close_modal": "Cerrar",
+        "sign_up": "Crear cuenta",
+        "log_in": "Iniciar sesión",
+        "email": "Correo",
+        "password": "Contraseña",
+        "verify_password": "Repetir Contraseña",
+        "name": "Nombre",
+        "company": "Empresa o Institución",
+        "industry": "Industria",
+        "select": "Selecciona...",
+        "student": "Estudiante",
+        "teacher": "Profesor",
+        "engineer": "Ingeniería",
+        "architect": "Arquitectura",
+        "other": "Otro",
+        "show": "Mostrar",
+        "hide": "Esconder",
+        "passwords_no_match": "Las contraseñas no coinciden",
+        "cannot_be_empty": "Este campo no puede estar vacío",
+        "no_valid_email": "Este correo no parece ser válido"
     }
 }

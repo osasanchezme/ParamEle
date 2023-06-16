@@ -1,4 +1,4 @@
-import { Button, Stack, List, ListIcon, ListItem, Icon } from "@chakra-ui/react";
+import { Button, List, ListIcon, ListItem, Icon, Flex, Spacer } from "@chakra-ui/react";
 import React from "react";
 import * as MaterialDesign from "react-icons/md";
 import boxes from "../js/boxes";
@@ -32,9 +32,7 @@ function getNavBarOptions() {
     },
     structure: {
       icon: "MdFoundation",
-      options: [
-        { name: localGetCopy("solve"), icon: "MdPlayCircle", callback: structure.solveStructure },
-      ],
+      options: [{ name: localGetCopy("solve"), icon: "MdPlayCircle", callback: structure.solveStructure }],
     },
     settings: {
       icon: "MdSettings",
@@ -56,7 +54,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <div className="nav-bar">
-        <Stack direction="row" spacing={0} className="nav-bar-button-group">
+        <Flex direction="row" spacing={0} className="nav-bar-button-group">
           {Object.entries(this.navbar_options).map(([nav_menu_key, nav_menu_options], index) => (
             <Button
               key={`${nav_menu_key}-nav-bar-btn`}
@@ -84,7 +82,9 @@ class NavBar extends React.Component {
               {localGetCopy(nav_menu_key)}
             </Button>
           ))}
-        </Stack>
+          <Spacer></Spacer>
+          <Button className="nav-bar-button" onClick={utils.openAuthentication}>{utils.getDisplayCopy("auth", "title")}</Button>
+        </Flex>
         <NavMenu
           left={String(150 * this.state.current_menu_index) + "px"}
           options={this.navbar_options[this.state.current_menu]["options"] || []}

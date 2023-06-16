@@ -169,6 +169,11 @@ function getNodesLibrary() {
 function openGlobalSettings() {
   return window.ParamEle.openGlobalSettings();
 }
+
+function openAuthentication() {
+  return window.ParamEle.openAuthentication();
+}
+
 /**
  * Converts the arguments from a React flow node to structural arguments
  * @param {*} args
@@ -294,7 +299,8 @@ const utils = {
   updateNavigator,
   openGlobalSettings,
   findHighestZCoordinate,
-  allIndexOf
+  allIndexOf,
+  openAuthentication
 };
 
 export default utils;

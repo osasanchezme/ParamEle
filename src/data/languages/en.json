@@ -175,5 +175,28 @@
     },
     "navigator":{
         "model": "Main model"
+    },
+    "auth":{
+        "title": "Account",
+        "close_modal": "Close",
+        "sign_up": "Create account",
+        "log_in": "Log in",
+        "email": "Email",
+        "password": "Password",
+        "verify_password": "Repeat Password",
+        "name": "Name",
+        "company": "Company or Institution",
+        "industry": "Industry",
+        "select": "Select...",
+        "student": "Student",
+        "teacher": "Teacher",
+        "engineer": "Engineering",
+        "architect": "Architecture",
+        "other": "Other",
+        "show": "Show",
+        "hide": "Hide",
+        "passwords_no_match": "Passwords do not match",
+        "cannot_be_empty": "This field cannot be empty",
+        "no_valid_email": "This email does not seem valid"
     }
 }
