@@ -124,7 +124,10 @@
         "structure": "Structure",
         "solve": "Solve",
         "settings": "Settings",
-        "delete": "Delete"
+        "delete": "Delete",
+        "account": "Account",
+        "log_out": "Log out",
+        "user": "User"
     },
     "commands_bar":{
         "placeholder": "Node name..."

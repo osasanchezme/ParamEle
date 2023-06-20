@@ -124,7 +124,10 @@
         "structure": "Estructura",
         "solve": "Resolver",
         "settings": "Configuración",
-        "delete": "Eliminar"
+        "delete": "Eliminar",
+        "account": "Cuenta",
+        "log_out": "Cerrar sesión",
+        "user": "Usuario"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."

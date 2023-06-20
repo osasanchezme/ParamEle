@@ -174,6 +174,16 @@ function openAuthentication() {
   return window.ParamEle.openAuthentication();
 }
 
+function setUser(auth) {
+  window.ParamEle.setUser(auth);
+}
+function getUser() {
+  window.ParamEle.getUser();
+}
+function signOut() {
+  window.ParamEle.signOut();
+}
+
 /**
  * Converts the arguments from a React flow node to structural arguments
  * @param {*} args
@@ -300,7 +310,10 @@ const utils = {
   openGlobalSettings,
   findHighestZCoordinate,
   allIndexOf,
-  openAuthentication
+  openAuthentication,
+  getUser,
+  setUser,
+  signOut
 };
 
 export default utils;

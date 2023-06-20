@@ -41,17 +41,52 @@ function getNavBarOptions() {
   };
 }
 
+function getRightNavBarOptions() {
+  return {
+    account: {
+      icon: "MdAccountCircle",
+      callback: utils.openAuthentication,
+      auth_behavior: {
+        auth: { visible: false },
+        no_auth: { visible: true },
+      },
+    },
+    user: {
+      icon: "MdAccountCircle",
+      callback: utils.openAuthentication,
+      auth_behavior: {
+        auth: { visible: true },
+        no_auth: { visible: false },
+      },
+      options: [{name: localGetCopy("log_out"), icon: "MdExitToApp", callback: utils.signOut}]
+    },
+  };
+}
+
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dropdown_visible: false, mouse_on_menu: false, current_menu: "file", current_menu_index: 0 };
+    this.state = { dropdown_visible: false, mouse_on_menu: false, current_menu: "file", current_menu_index: 0, active_group: "left" };
     this.handleChange = this.handleChange.bind(this);
     this.navbar_options = getNavBarOptions();
+    this.right_navbar_options = getRightNavBarOptions();
   }
   handleChange(dropdown_visible, mouse_on_menu) {
     this.setState({ dropdown_visible, mouse_on_menu });
   }
   render() {
+    let current_options = [];
+    let right_style = "";
+    let left_style = "";
+    let right_index = 0;
+    if (this.state.active_group === "left") {
+      current_options = this.navbar_options[this.state.current_menu]["options"];
+      left_style = String(150 * this.state.current_menu_index) + "px";
+    } else if (this.state.active_group === "right") {
+      current_options = this.right_navbar_options[this.state.current_menu]["options"];
+      right_style = String(150 * this.state.current_menu_index) + "px";
+    }
+    if (!current_options) current_options = [];
     return (
       <div className="nav-bar">
         <Flex direction="row" spacing={0} className="nav-bar-button-group">
@@ -66,7 +101,7 @@ class NavBar extends React.Component {
               variant="ghost"
               onMouseEnter={() => {
                 this.handleChange(true, false);
-                this.setState({ current_menu: nav_menu_key, current_menu_index: index + 1 });
+                this.setState({ current_menu: nav_menu_key, current_menu_index: index + 1, active_group: "left" });
               }}
               onMouseLeave={() => {
                 if (!this.state.mouse_on_menu) {
@@ -83,11 +118,48 @@ class NavBar extends React.Component {
             </Button>
           ))}
           <Spacer></Spacer>
-          <Button className="nav-bar-button" onClick={utils.openAuthentication}>{utils.getDisplayCopy("auth", "title")}</Button>
+          {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
+            let display_copy = localGetCopy(nav_menu_key);
+            if (nav_menu_key === "user" && this.props.user) display_copy = this.props.user.displayName || display_copy;
+            if (
+              (this.props.user === null && nav_menu_options.auth_behavior.no_auth.visible) ||
+              (this.props.user !== null && nav_menu_options.auth_behavior.auth.visible)
+            ) {
+              right_index++;
+              return (
+                <Button
+                  key={`${nav_menu_key}-nav-bar-btn`}
+                  width="150px"
+                  className="nav-bar-button"
+                  leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
+                  rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
+                  // colorScheme="gray"
+                  // variant="ghost"
+                  onMouseEnter={() => {
+                    this.handleChange(true, false);
+                    this.setState({ current_menu: nav_menu_key, current_menu_index: right_index - 1, active_group: "right" });
+                  }}
+                  onMouseLeave={() => {
+                    if (!this.state.mouse_on_menu) {
+                      this.handleChange(false, false);
+                    }
+                  }}
+                  onClick={() => {
+                    if (!nav_menu_options.options) {
+                      nav_menu_options.callback();
+                    }
+                  }}
+                >
+                  {display_copy}
+                </Button>
+              );
+            }
+          })}
         </Flex>
         <NavMenu
-          left={String(150 * this.state.current_menu_index) + "px"}
-          options={this.navbar_options[this.state.current_menu]["options"] || []}
+          left={left_style}
+          right={right_style}
+          options={current_options}
           visibility={this.state.dropdown_visible ? "visible" : "hidden"}
           handleChange={this.handleChange}
         ></NavMenu>
@@ -119,6 +191,7 @@ class NavMenu extends React.Component {
       <List
         position="absolute"
         left={this.props.left}
+        right={this.props.right}
         spacing={0}
         border="2px"
         borderBottomRadius="md"

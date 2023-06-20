@@ -144,6 +144,7 @@ class ParamEle extends React.Component {
       rel_orig_y: 0,
       selection_top: 0,
       selection_left: 0,
+      user: null,
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -158,6 +159,10 @@ class ParamEle extends React.Component {
     this.updateComponentsWidth = this.updateComponentsWidth.bind(this);
     this.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
     window.ParamEle.updateNodesFromLocalState = this.updateNodesFromLocalState.bind(this);
+    this.getUser = this.getUser.bind(this);
+    window.ParamEle.getUser = this.getUser.bind(this);
+    this.setUser = this.setUser.bind(this);
+    window.ParamEle.setUser = this.setUser.bind(this);
   }
   changeGeneralSettingValue(key, value) {
     let curr_settings = this.state.settings;
@@ -176,6 +181,12 @@ class ParamEle extends React.Component {
   }
   changeAppMode(mode) {
     this.setState({ mode });
+  }
+  getUser() {
+    return this.state.user;
+  }
+  setUser(user) {
+    this.setState({ user });
   }
   /**
    *
@@ -354,7 +365,7 @@ class ParamEle extends React.Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
         >
-          <NavBar></NavBar>
+          <NavBar user={this.state.user}></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
           <PropertiesPanel
@@ -384,7 +395,7 @@ class ParamEle extends React.Component {
             mouse_y={this.state.mouse_y}
           ></SelectionBox>
           <GlobalSettings></GlobalSettings>
-          <Authentication></Authentication>
+          <Authentication user={this.state.user}></Authentication>
         </div>
       </ChakraProvider>
     );
