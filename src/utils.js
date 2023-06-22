@@ -174,6 +174,10 @@ function openAuthentication() {
   return window.ParamEle.openAuthentication();
 }
 
+function openFileManager(mode) {
+  return window.ParamEle.openFileManager(mode);
+}
+
 function setUser(auth) {
   window.ParamEle.setUser(auth);
 }
@@ -311,6 +315,7 @@ const utils = {
   findHighestZCoordinate,
   allIndexOf,
   openAuthentication,
+  openFileManager,
   getUser,
   setUser,
   signOut

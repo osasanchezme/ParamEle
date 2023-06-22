@@ -1,9 +1,5 @@
 import React from "react";
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,17 +13,14 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Input,
-  Icon,
-  Select,
-  InputGroup,
-  InputRightElement,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Firebase from "../js/firebase";
+import ParamEleForm from "./form";
+const { FormComponent, getDefaultState, validateInputData } = ParamEleForm;
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("auth", copy_key);
@@ -85,17 +78,6 @@ function Authentication({ user }) {
     },
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
-  function getDefaultState(fields) {
-    let default_state = {};
-    Object.entries(fields).forEach(([key, data]) => {
-      default_state[key] = {
-        value: data.default,
-        valid: true,
-        error_msg: "",
-      };
-    });
-    return default_state;
-  }
   let [authFormState, setAuthFormState] = useState(getDefaultState(auth_form_fields));
   let [logInFormState, setLogInFormState] = useState(getDefaultState(log_in_form_fields));
   let [activeTab, setActiveTab] = useState("sign_up");
@@ -121,41 +103,6 @@ function Authentication({ user }) {
       Firebase.logInUserWithEmail(logInFormState);
       onClose();
     }
-  }
-  function validateInputData(current_state, fields) {
-    let new_state = JSON.parse(JSON.stringify(current_state));
-    let valid_data = true;
-    Object.entries(fields).forEach(([key, data]) => {
-      let user_input = new_state[key].value;
-      data.validation.forEach((validation) => {
-        switch (validation.type) {
-          case "no":
-            if (user_input === validation.criteria) {
-              new_state[key].valid = false;
-              new_state[key].error_msg = validation.msg;
-              valid_data = false;
-            }
-            break;
-          case "contains":
-            if (!user_input.includes(validation.criteria)) {
-              new_state[key].valid = false;
-              new_state[key].error_msg = validation.msg;
-              valid_data = false;
-            }
-            break;
-          case "equal_key":
-            if (user_input !== new_state[validation.criteria].value) {
-              new_state[key].valid = false;
-              new_state[key].error_msg = validation.msg;
-              valid_data = false;
-            }
-            break;
-          default:
-            break;
-        }
-      });
-    });
-    return { valid_data, new_state };
   }
   function handleAuthInputChange(event, key) {
     let new_state = JSON.parse(JSON.stringify(authFormState));
@@ -190,12 +137,12 @@ function Authentication({ user }) {
               <TabPanels>
                 <TabPanel key={"sign_up"}>
                   <SimpleGrid columns={2} spacing={4}>
-                    <FormComponent fields={auth_form_fields} formState={authFormState} handleInputChange={handleAuthInputChange}></FormComponent>
+                    <FormComponent fields={auth_form_fields} formState={authFormState} handleInputChange={handleAuthInputChange} copies_key="auth"></FormComponent>
                   </SimpleGrid>
                 </TabPanel>
                 <TabPanel key={"log_in"}>
                   <SimpleGrid columns={1} spacing={4}>
-                    <FormComponent fields={log_in_form_fields} formState={logInFormState} handleInputChange={handleLogInInputChange}></FormComponent>
+                    <FormComponent fields={log_in_form_fields} formState={logInFormState} handleInputChange={handleLogInInputChange} copies_key="auth"></FormComponent>
                   </SimpleGrid>
                 </TabPanel>
               </TabPanels>
@@ -224,84 +171,6 @@ function Authentication({ user }) {
       </Modal>
     );
   }
-}
-
-function PasswordInput({ onChange }) {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-
-  return (
-    <InputGroup size="md">
-      <Input pr="4.5rem" type={show ? "text" : "password"} onChange={onChange} />
-      <InputRightElement width="6.2rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
-          {show ? localGetDisplayCopy("hide") : localGetDisplayCopy("show")}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-  );
-}
-
-function FormComponent({ fields, handleInputChange, formState }) {
-  return Object.entries(fields).map(([key, data]) => {
-    let form_component = "";
-    switch (data.type) {
-      case "text":
-      case "email":
-        form_component = (
-          <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
-            <Input
-              type={data.type}
-              onChange={(evt) => {
-                handleInputChange(evt, key);
-              }}
-            />
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
-          </FormControl>
-        );
-        break;
-      case "dropdown":
-        form_component = (
-          <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
-            <Select
-              placeholder={localGetDisplayCopy("select")}
-              onChange={(evt) => {
-                handleInputChange(evt, key);
-              }}
-            >
-              {data.data.map((option_name) => (
-                <option value={option_name} key={option_name}>
-                  {localGetDisplayCopy(option_name)}
-                </option>
-              ))}
-            </Select>
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
-          </FormControl>
-        );
-        break;
-      case "password":
-        form_component = (
-          <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
-            <PasswordInput
-              onChange={(evt) => {
-                handleInputChange(evt, key);
-              }}
-            />
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
-          </FormControl>
-        );
-        break;
-      default:
-        break;
-    }
-    return form_component;
-  });
 }
 
 export default Authentication;

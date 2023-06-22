@@ -201,5 +201,12 @@
         "passwords_no_match": "Passwords do not match",
         "cannot_be_empty": "This field cannot be empty",
         "no_valid_email": "This email does not seem valid"
+    },
+    "file_manager":{
+        "title": "My Files",
+        "open": "Open",
+        "save": "Save",
+        "folders": "folders",
+        "files": "files"
     }
 }

@@ -16,8 +16,20 @@ function getNavBarOptions() {
       icon: "MdInsertDriveFile",
       options: [
         { name: localGetCopy("new"), icon: "MdInsertDriveFile", callback: file.newFile },
-        { name: localGetCopy("open"), icon: "MdFolderOpen" },
-        { name: localGetCopy("save"), icon: "MdSave" },
+        {
+          name: localGetCopy("open"),
+          icon: "MdFolderOpen",
+          callback: () => {
+            utils.openFileManager("open");
+          },
+        },
+        {
+          name: localGetCopy("save"),
+          icon: "MdSave",
+          callback: () => {
+            utils.openFileManager("save");
+          },
+        },
         { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
         { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: file.uploadJSONFile },
       ],
@@ -58,7 +70,7 @@ function getRightNavBarOptions() {
         auth: { visible: true },
         no_auth: { visible: false },
       },
-      options: [{name: localGetCopy("log_out"), icon: "MdExitToApp", callback: utils.signOut}]
+      options: [{ name: localGetCopy("log_out"), icon: "MdExitToApp", callback: utils.signOut }],
     },
   };
 }

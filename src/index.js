@@ -29,6 +29,7 @@ import SelectionBox from "./components/selection_box";
 import Navigator from "./components/navigator";
 import GlobalSettings from "./components/global_settings";
 import Authentication from "./components/authentication";
+import FileManager from "./components/file_manager";
 const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -396,6 +397,7 @@ class ParamEle extends React.Component {
           ></SelectionBox>
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
+          <FileManager user={this.state.user}></FileManager>
         </div>
       </ChakraProvider>
     );

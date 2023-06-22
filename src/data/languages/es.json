@@ -201,5 +201,12 @@
         "passwords_no_match": "Las contraseñas no coinciden",
         "cannot_be_empty": "Este campo no puede estar vacío",
         "no_valid_email": "Este correo no parece ser válido"
+    },
+    "file_manager":{
+        "title": "Mis Archivos",
+        "open": "Abrir",
+        "save": "Guardar",
+        "folders": "carpetas",
+        "files": "archivos"
     }
 }
