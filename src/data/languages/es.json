@@ -207,6 +207,7 @@
         "open": "Abrir",
         "save": "Guardar",
         "folders": "carpetas",
-        "files": "archivos"
+        "files": "archivos",
+        "nodes": "nodos"
     }
 }

@@ -207,6 +207,7 @@
         "open": "Open",
         "save": "Save",
         "folders": "folders",
-        "files": "files"
+        "files": "files",
+        "nodes": "nodes"
     }
 }

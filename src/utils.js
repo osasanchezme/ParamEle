@@ -298,6 +298,23 @@ function allIndexOf(arr, value) {
   return indexes;
 }
 
+/**
+ * Generates a unique ID with a prefix fo (folder) or fi (file), the date in ms and 5 random letters
+ * @param {"folder", "file"} mode 
+ * @returns {string} Unique ID
+ */
+function generateUniqueID() {
+  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let uid = Date.now();
+  let prefix = "";
+  let suffix = "";
+  for (let i = 0; i < 6; i++) {
+    suffix += letters[Math.round(Math.random() * 51)];
+  }
+  uid = prefix + uid + suffix;
+  return uid;
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -318,7 +335,8 @@ const utils = {
   openFileManager,
   getUser,
   setUser,
-  signOut
+  signOut,
+  generateUniqueID
 };
 
 export default utils;
