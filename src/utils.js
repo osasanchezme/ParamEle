@@ -300,7 +300,7 @@ function allIndexOf(arr, value) {
 
 /**
  * Generates a unique ID with a prefix fo (folder) or fi (file), the date in ms and 5 random letters
- * @param {"folder", "file"} mode 
+ * @param {"folder", "file"} mode
  * @returns {string} Unique ID
  */
 function generateUniqueID() {
@@ -313,6 +313,10 @@ function generateUniqueID() {
   }
   uid = prefix + uid + suffix;
   return uid;
+}
+
+function isIdFromFolder(id) {
+  return id.substring(0, 2) === "fo";
 }
 
 const utils = {
@@ -336,7 +340,8 @@ const utils = {
   getUser,
   setUser,
   signOut,
-  generateUniqueID
+  generateUniqueID,
+  isIdFromFolder
 };
 
 export default utils;

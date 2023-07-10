@@ -208,6 +208,8 @@
         "save": "Save",
         "folders": "folders",
         "files": "files",
-        "nodes": "nodes"
+        "nodes": "nodes",
+        "loading": "Loading",
+        "no_content": "Empty Folder"
     }
 }

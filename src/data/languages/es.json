@@ -208,6 +208,8 @@
         "save": "Guardar",
         "folders": "carpetas",
         "files": "archivos",
-        "nodes": "nodos"
+        "nodes": "nodos",
+        "loading": "Cargando",
+        "no_content": "Carpeta vacía"
     }
 }

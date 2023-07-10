@@ -16,11 +16,16 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  Spinner,
+  Center,
+  VStack,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState } from "react";
-import { MdFolder, MdInsertDriveFile, MdHomeFilled } from "react-icons/md";
+import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile } from "react-icons/md";
+import Firebase from "../js/firebase";
+const { isIdFromFolder } = utils;
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
@@ -30,6 +35,7 @@ function FileManager({ user }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   let [fileManagerMode, setFileManagerMode] = useState("open");
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
+  let [fileManagerContent, setFileManagerContent] = useState(null);
   /**
    * Opens the file manager in a certain mode
    * @param {"save"|open""} mode
@@ -37,86 +43,53 @@ function FileManager({ user }) {
   window.ParamEle.openFileManager = (mode) => {
     onOpen();
     setFileManagerMode(mode);
+    getFilesDataFromDatabase();
   };
-  let test_files = {
-    Samples: {
-      role: "owner",
-      id: "fo1687874388580eygdFp",
-      shared: true,
-      last_modified: 1688859260000,
-      content: {
-        "Simple Beam": {
-          id: "fi1687874387580eigLLM",
-          role: "owner",
-          last_modified: 1688859260000,
-          stats: {
-            num_nodes: 15,
-          },
-          last_modified: 1688859260000,
-          shared: true,
-        },
-        "Complex Beam": {
-          id: "fi1687874387582rugHzl",
-          role: "owner",
-          last_modified: 1688859260000,
-          stats: {
-            num_nodes: 15,
-          },
-          last_modified: 1688859260000,
-          shared: false,
-        },
-        Advanced: {
-          role: "owner",
-          id: "fo1687874388380eygdDp",
-          shared: true,
-          last_modified: 1688859260000,
-          content: {},
-        },
-      },
-    },
-    Shared: {
-      role: "owner",
-      id: "fo1687374388480eatsFs",
-      shared: true,
-      last_modified: 1688859260000,
-      content: {
-        "Simple Beam": {
-          id: "fi1687874387580eigLLM",
-          role: "owner",
-          last_modified: 1688859260000,
-          stats: {
-            num_nodes: 15,
-          },
-          shared: true,
-        },
-        "Complex Beam": {
-          id: "fi1687874387582rugHzl",
-          role: "owner",
-          last_modified: 1688859260000,
-          stats: {
-            num_nodes: 15,
-          },
-          shared: false,
-        },
-        "New Folder": {
-          role: "owner",
-          id: "fo1687374388480eatsFs",
-          shared: true,
-          last_modified: 1688859260000,
-          content: {},
-        },
-      },
-    },
-  };
+  function getFilesDataFromDatabase() {
+    console.log("Getting data from Firebase...");
+    Firebase.getUserProjects((data) => {
+      if (JSON.stringify(data) !== JSON.stringify(fileManagerContent)) setFileManagerContent(data);
+    });
+  }
   if (user == null) {
     // utils.openAuthentication();
   } else {
-    let files_to_display = test_files;
+    let files_to_display = JSON.parse(JSON.stringify(fileManagerContent));
     fileManagerPath.forEach((folder_name, i) => {
       if (i > 0) {
-        files_to_display = files_to_display[folder_name].content;
+        files_to_display = files_to_display[folder_name].content || {};
       }
     });
+    let fileman_body = "";
+    if (files_to_display) {
+      if (Object.keys(files_to_display).length > 0) {
+        fileman_body = (
+          <SimpleGrid columns={4} spacing={5}>
+            <FileManagerView data={files_to_display} setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath}></FileManagerView>
+          </SimpleGrid>
+        );
+      } else {
+        fileman_body = (
+          <Center h="200px">
+            <VStack>
+              <Icon as={MdOutlineInsertDriveFile} boxSize={"100px"} color="gray.500" width="100%" />
+              <Box>{localGetDisplayCopy("no_content")}</Box>
+            </VStack>
+          </Center>
+        );
+      }
+    } else {
+      fileman_body = (
+        <Center h="200px">
+          <VStack>
+            <Box maxW="sm">
+              <Spinner size="xl" speed="0.8s" />
+            </Box>
+            <Box>{localGetDisplayCopy("loading")}...</Box>
+          </VStack>
+        </Center>
+      );
+    }
     return (
       <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
@@ -125,9 +98,7 @@ function FileManager({ user }) {
           <ModalCloseButton />
           <ModalBody>
             <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath}></PathNavigator>
-            <SimpleGrid columns={4} spacing={5}>
-              <FileManagerView data={files_to_display} setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath}></FileManagerView>
-            </SimpleGrid>
+            {fileman_body}
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" mr={3} onClick={onClose}>
@@ -148,7 +119,6 @@ function FileManager({ user }) {
 }
 
 function PathNavigator({ fileManagerPath, setFileManagerPath }) {
-  // WIP - There is an error
   function handleClick(event, index) {
     let new_path = [];
     for (let i = 0; i <= index; i++) {
@@ -243,8 +213,6 @@ function File({ nodes, name, lastModified, onClick }) {
   );
 }
 
-// TODO - breadcrumb navigator through the path with home button
-
 function FileManagerView({ data, setFileManagerPath, fileManagerPath }) {
   function handleClick(event, folder_name) {
     let new_path = JSON.parse(JSON.stringify(fileManagerPath));
@@ -252,16 +220,18 @@ function FileManagerView({ data, setFileManagerPath, fileManagerPath }) {
     setFileManagerPath(new_path);
   }
   let fileman_view = Object.entries(data).map(([name, content]) => {
-    if (content.hasOwnProperty("content")) {
+    if (isIdFromFolder(content.id)) {
       let num_files = 0;
       let num_folders = 0;
-      Object.values(content.content).forEach((item) => {
-        if (item.content) {
-          num_folders++;
-        } else {
-          num_files++;
-        }
-      });
+      if (content.content) {
+        Object.values(content.content).forEach((item) => {
+          if (isIdFromFolder(item.id)) {
+            num_folders++;
+          } else {
+            num_files++;
+          }
+        });
+      }
       return (
         <Folder
           files={num_files}

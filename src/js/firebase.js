@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get, child } from "firebase/database";
 import utils from "../utils";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -105,6 +105,20 @@ function updateUserProfile(validated_user_data) {
     });
 }
 
+function getUserProjects(callback) {
+  let user = auth.currentUser;
+  const dbRef = ref(getDatabase());
+  get(child(dbRef, `users/${user.uid}/projects`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      callback(snapshot.val());
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
@@ -114,6 +128,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const Firebase = { createUserWithEmail, signOutUser, logInUserWithEmail };
+const Firebase = { createUserWithEmail, signOutUser, logInUserWithEmail, getUserProjects };
 
 export default Firebase;
