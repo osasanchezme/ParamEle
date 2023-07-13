@@ -104,18 +104,6 @@ function Authentication({ user }) {
       onClose();
     }
   }
-  function handleAuthInputChange(event, key) {
-    let new_state = JSON.parse(JSON.stringify(authFormState));
-    new_state[key].value = event.target.value;
-    new_state[key].valid = true;
-    setAuthFormState(new_state);
-  }
-  function handleLogInInputChange(event, key) {
-    let new_state = JSON.parse(JSON.stringify(logInFormState));
-    new_state[key].value = event.target.value;
-    new_state[key].valid = true;
-    setLogInFormState(new_state);
-  }
   const tab_keys = ["sign_up", "log_in"];
   function handleTabsChange(index) {
     setActiveTab(tab_keys[index]);
@@ -137,12 +125,12 @@ function Authentication({ user }) {
               <TabPanels>
                 <TabPanel key={"sign_up"}>
                   <SimpleGrid columns={2} spacing={4}>
-                    <FormComponent fields={auth_form_fields} formState={authFormState} handleInputChange={handleAuthInputChange} copies_key="auth"></FormComponent>
+                    <FormComponent fields={auth_form_fields} formState={authFormState} setFormState={setAuthFormState} copies_key="auth"></FormComponent>
                   </SimpleGrid>
                 </TabPanel>
                 <TabPanel key={"log_in"}>
                   <SimpleGrid columns={1} spacing={4}>
-                    <FormComponent fields={log_in_form_fields} formState={logInFormState} handleInputChange={handleLogInInputChange} copies_key="auth"></FormComponent>
+                    <FormComponent fields={log_in_form_fields} formState={logInFormState} setFormState={setLogInFormState} copies_key="auth"></FormComponent>
                   </SimpleGrid>
                 </TabPanel>
               </TabPanels>

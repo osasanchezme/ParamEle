@@ -19,12 +19,18 @@ import {
   Spinner,
   Center,
   VStack,
+  Flex,
+  Spacer,
+  ButtonGroup,
+  Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState } from "react";
-import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile } from "react-icons/md";
+import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdCheck } from "react-icons/md";
 import Firebase from "../js/firebase";
+import PopoverForm from "./popover_form";
 const { isIdFromFolder } = utils;
 
 function localGetDisplayCopy(copy_key) {
@@ -50,6 +56,9 @@ function FileManager({ user }) {
     Firebase.getUserProjects((data) => {
       if (JSON.stringify(data) !== JSON.stringify(fileManagerContent)) setFileManagerContent(data);
     });
+  }
+  function createNewFolder(formState) {
+    console.log(`Will create a new folder using ${formState.folder_name.value}`);
   }
   if (user == null) {
     // utils.openAuthentication();
@@ -97,7 +106,30 @@ function FileManager({ user }) {
           <ModalHeader>{localGetDisplayCopy("title")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath}></PathNavigator>
+            <Flex minWidth="max-content" alignItems="center" gap="2">
+              <Box p="2">
+                <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath} />
+              </Box>
+              <Spacer />
+              <ButtonGroup gap="2">
+                <PopoverForm
+                  fields={{
+                    folder_name: {
+                      default: "",
+                      type: "text",
+                      validation: [{ type: "no", criteria: "", msg: "cannot_be_empty" }],
+                      is_first_field: true,
+                    },
+                  }}
+                  copies_key="file_manager"
+                  action_button_icon={MdCheck}
+                  action_function={createNewFolder}
+                >
+                  <IconButton variant="ghost" icon={<Icon as={MdCreateNewFolder} boxSize={6} />} />
+                </PopoverForm>
+              </ButtonGroup>
+            </Flex>
+
             {fileman_body}
           </ModalBody>
           <ModalFooter>

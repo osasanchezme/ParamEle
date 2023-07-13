@@ -210,6 +210,9 @@
         "files": "archivos",
         "nodes": "nodos",
         "loading": "Cargando",
-        "no_content": "Carpeta vacía"
+        "no_content": "Carpeta vacía",
+        "create_folder": "Crear carpeta",
+        "cannot_be_empty": "Este campo no puede estar vacío",
+        "folder_name": "Nombre de la carpeta"
     }
 }

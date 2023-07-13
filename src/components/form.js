@@ -2,9 +2,48 @@ import React from "react";
 import utils from "../utils";
 import { FormControl, FormLabel, FormErrorMessage, Button, Input, Select, InputGroup, InputRightElement } from "@chakra-ui/react";
 
-function FormComponent({ fields, handleInputChange, formState, copies_key }) {
+/**
+ * @typedef {Object} ValidationObject
+ * @property {"equal_key"|"no"|"contains"} type
+ * @property {string} criteria
+ * @property {string} msg Key of the message in the copies
+ */
+/**
+ * @typedef {Object} FormField
+ * @property {String} default Default value
+ * @property {"text"|"email"|"dropdown"|"password"} type Type of the field
+ * @property {Array.<ValidationObject>} validation
+ * @property {Boolean} is_first_field
+ */
+/**
+ *
+ * @param {Object} param0
+ * @param {Object.<string, FormField>} param0.fields
+ * @param {function(evt:InputEvent, key:String)} param0.handleInputChange Function to update the given key
+ * @param {Object} param0.formState Object that controls the state of the form directly from React's useState
+ * @param {String} param0.copies_key Key under which all the copies are found
+ * @param {String} param0.firstFieldRef Reference to the first child to be focused
+ * @param {String} param0.action_function Function to run on Enter, it should taka care of the validation
+ * @returns
+ */
+function FormComponent({ fields, setFormState, formState, copies_key, firstFieldRef, action_function }) {
   function localGetDisplayCopy(key) {
     return utils.getDisplayCopy(copies_key, key);
+  }
+  function handleInputChange(event, key) {
+    let new_state = JSON.parse(JSON.stringify(formState));
+    new_state[key].value = event.target.value;
+    new_state[key].valid = true;
+    setFormState(new_state);
+  }
+  function handleKeyUpOnField(event, key) {
+    handleInputChange(event, key);
+    let last_key = event.key;
+    if (last_key === "Enter") {
+      if (action_function) {
+        action_function();
+      }
+    }
   }
   return Object.entries(fields).map(([key, data]) => {
     let form_component = "";
@@ -15,9 +54,13 @@ function FormComponent({ fields, handleInputChange, formState, copies_key }) {
           <FormControl isInvalid={!formState[key].valid} key={key}>
             <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
             <Input
+              ref={data.is_first_field ? firstFieldRef : null}
               type={data.type}
               onChange={(evt) => {
                 handleInputChange(evt, key);
+              }}
+              onKeyUp={(evt) => {
+                handleKeyUpOnField(evt, key);
               }}
             />
             {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
@@ -33,6 +76,9 @@ function FormComponent({ fields, handleInputChange, formState, copies_key }) {
               placeholder={localGetDisplayCopy("select")}
               onChange={(evt) => {
                 handleInputChange(evt, key);
+              }}
+              onKeyUp={(evt) => {
+                handleKeyUpOnField(evt, key);
               }}
             >
               {data.data.map((option_name) => (
@@ -53,6 +99,9 @@ function FormComponent({ fields, handleInputChange, formState, copies_key }) {
             <PasswordInput
               onChange={(evt) => {
                 handleInputChange(evt, key);
+              }}
+              onKeyUp={(evt) => {
+                handleKeyUpOnField(evt, key);
               }}
             />
             {/* <FormHelperText>We'll never share your email.</FormHelperText> */}

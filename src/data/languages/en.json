@@ -210,6 +210,9 @@
         "files": "files",
         "nodes": "nodes",
         "loading": "Loading",
-        "no_content": "Empty Folder"
+        "no_content": "Empty Folder",
+        "create_folder": "Create Folder",
+        "cannot_be_empty": "This field cannot be empty",
+        "folder_name": "Folder name"
     }
 }
