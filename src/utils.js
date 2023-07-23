@@ -285,7 +285,6 @@ function findHighestZCoordinate(nodes) {
   });
   return highest_z;
 }
-
 function allIndexOf(arr, value) {
   const indexes = [];
 
@@ -300,13 +299,13 @@ function allIndexOf(arr, value) {
 
 /**
  * Generates a unique ID with a prefix fo (folder) or fi (file), the date in ms and 5 random letters
- * @param {"folder", "file"} mode
+ * @param {"folder|"file"} mode 
  * @returns {string} Unique ID
  */
-function generateUniqueID() {
+function generateUniqueID(mode) {
   const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let uid = Date.now();
-  let prefix = "";
+  let prefix = (mode === "folder" ? "fo" : "fi");
   let suffix = "";
   for (let i = 0; i < 6; i++) {
     suffix += letters[Math.round(Math.random() * 51)];

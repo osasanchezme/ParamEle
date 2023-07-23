@@ -51,24 +51,53 @@ function FileManager({ user }) {
     setFileManagerMode(mode);
     getFilesDataFromDatabase();
   };
+  /**
+   * 
+   * @param {object} data 
+   * @param {boolean} add_to_current_folder Add the data to the current folder, if false or undefined, replaces the whole data
+   */
+  function updateFileManagerData(data, add_to_current_folder) {
+    if (add_to_current_folder) {
+      let current_content = JSON.parse(JSON.stringify(fileManagerContent));
+      let current_location = current_content;
+      for (let i = 1; i < fileManagerPath.length; i++){
+        current_location = current_location[fileManagerPath[i]];
+        if (!current_location.hasOwnProperty("content")) current_location.content = {};
+        current_location = current_location.content;
+      }
+      Object.entries(data).forEach(([folder_name, folder_content]) => {
+        current_location[folder_name] = folder_content;
+      });
+      data = current_content;
+    }
+    if (JSON.stringify(data) !== JSON.stringify(fileManagerContent)) setFileManagerContent(data);
+  }
   function getFilesDataFromDatabase() {
     console.log("Getting data from Firebase...");
-    Firebase.getUserProjects((data) => {
-      if (JSON.stringify(data) !== JSON.stringify(fileManagerContent)) setFileManagerContent(data);
-    });
+    Firebase.getUserProjects(updateFileManagerData);
   }
   function createNewFolder(formState) {
-    console.log(`Will create a new folder using ${formState.folder_name.value}`);
+    let folder_name = formState.folder_name.value;
+    // TODO - Check if the name of the folder is available (locally)
+    // TODO - Add a reload button in the manager
+    // Check if the parent folder has children
+    let files_to_display = getFilesAndFoldersToDisplay();
+    let is_first_child = Object.keys(files_to_display).length === 0;
+    Firebase.createNewFolderForUser(folder_name, JSON.parse(JSON.stringify(fileManagerPath)), is_first_child, updateFileManagerData);
   }
-  if (user == null) {
-    // utils.openAuthentication();
-  } else {
+  function getFilesAndFoldersToDisplay() {
     let files_to_display = JSON.parse(JSON.stringify(fileManagerContent));
     fileManagerPath.forEach((folder_name, i) => {
       if (i > 0) {
         files_to_display = files_to_display[folder_name].content || {};
       }
     });
+    return files_to_display;
+  }
+  if (user == null) {
+    // utils.openAuthentication();
+  } else {
+    let files_to_display = getFilesAndFoldersToDisplay();
     let fileman_body = "";
     if (files_to_display) {
       if (Object.keys(files_to_display).length > 0) {
