@@ -28,7 +28,7 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState } from "react";
-import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdCheck } from "react-icons/md";
+import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdCheck, MdRefresh } from "react-icons/md";
 import Firebase from "../js/firebase";
 import PopoverForm from "./popover_form";
 const { isIdFromFolder } = utils;
@@ -42,6 +42,7 @@ function FileManager({ user }) {
   let [fileManagerMode, setFileManagerMode] = useState("open");
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
   let [fileManagerContent, setFileManagerContent] = useState(null);
+  let [fileManagerWaiting, setFileManagerWaiting] = useState(true);
   /**
    * Opens the file manager in a certain mode
    * @param {"save"|open""} mode
@@ -52,15 +53,15 @@ function FileManager({ user }) {
     getFilesDataFromDatabase();
   };
   /**
-   * 
-   * @param {object} data 
+   *
+   * @param {object} data
    * @param {boolean} add_to_current_folder Add the data to the current folder, if false or undefined, replaces the whole data
    */
   function updateFileManagerData(data, add_to_current_folder) {
     if (add_to_current_folder) {
       let current_content = JSON.parse(JSON.stringify(fileManagerContent));
       let current_location = current_content;
-      for (let i = 1; i < fileManagerPath.length; i++){
+      for (let i = 1; i < fileManagerPath.length; i++) {
         current_location = current_location[fileManagerPath[i]];
         if (!current_location.hasOwnProperty("content")) current_location.content = {};
         current_location = current_location.content;
@@ -70,16 +71,30 @@ function FileManager({ user }) {
       });
       data = current_content;
     }
+    setFileManagerWaiting(false);
     if (JSON.stringify(data) !== JSON.stringify(fileManagerContent)) setFileManagerContent(data);
   }
   function getFilesDataFromDatabase() {
+    // Display the loading spinner while data comes back
+    setFileManagerWaiting(true);
     console.log("Getting data from Firebase...");
     Firebase.getUserProjects(updateFileManagerData);
   }
+  function validateFolderName(folder_name) {
+    let files_to_display = getFilesAndFoldersToDisplay();
+    if (files_to_display.hasOwnProperty(folder_name)) {
+      return {
+        valid: false,
+        error_msg: localGetDisplayCopy("existing_folder"),
+      };
+    } else {
+      return {
+        valid: true,
+      };
+    }
+  }
   function createNewFolder(formState) {
     let folder_name = formState.folder_name.value;
-    // TODO - Check if the name of the folder is available (locally)
-    // TODO - Add a reload button in the manager
     // Check if the parent folder has children
     let files_to_display = getFilesAndFoldersToDisplay();
     let is_first_child = Object.keys(files_to_display).length === 0;
@@ -99,7 +114,7 @@ function FileManager({ user }) {
   } else {
     let files_to_display = getFilesAndFoldersToDisplay();
     let fileman_body = "";
-    if (files_to_display) {
+    if (!fileManagerWaiting) {
       if (Object.keys(files_to_display).length > 0) {
         fileman_body = (
           <SimpleGrid columns={4} spacing={5}>
@@ -146,7 +161,10 @@ function FileManager({ user }) {
                     folder_name: {
                       default: "",
                       type: "text",
-                      validation: [{ type: "no", criteria: "", msg: "cannot_be_empty" }],
+                      validation: [
+                        { type: "no", criteria: "", msg: "cannot_be_empty" },
+                        { type: "custom_function", criteria: validateFolderName, msg: "custom" },
+                      ],
                       is_first_field: true,
                     },
                   }}
@@ -156,6 +174,7 @@ function FileManager({ user }) {
                 >
                   <IconButton variant="ghost" icon={<Icon as={MdCreateNewFolder} boxSize={6} />} />
                 </PopoverForm>
+                <IconButton variant="ghost" icon={<Icon as={MdRefresh} boxSize={6} onClick={getFilesDataFromDatabase} />} />
               </ButtonGroup>
             </Flex>
 

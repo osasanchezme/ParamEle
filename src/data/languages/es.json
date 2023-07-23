@@ -213,6 +213,7 @@
         "no_content": "Carpeta vacía",
         "create_folder": "Crear carpeta",
         "cannot_be_empty": "Este campo no puede estar vacío",
-        "folder_name": "Nombre de la carpeta"
+        "folder_name": "Nombre de la carpeta",
+        "existing_folder": "Nombre de carpeta existente"
     }
 }

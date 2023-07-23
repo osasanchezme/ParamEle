@@ -160,6 +160,14 @@ function validateInputData(current_state, fields) {
             valid_data = false;
           }
           break;
+        case "custom_function":
+          let custom_validation = validation.criteria(user_input);
+          if (!custom_validation.valid) {
+            new_state[key].valid = false;
+            new_state[key].error_msg = custom_validation.error_msg;
+            valid_data = false;
+          }
+          break;
         default:
           break;
       }
