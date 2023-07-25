@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDatabase, ref as databaseRef, set, get, child, update } from "firebase/database";
-import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import { getStorage, ref as storageRef, uploadBytes, getBlob } from "firebase/storage";
 import utils from "../utils";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -186,11 +186,11 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
     created: version_id,
     role: "owner",
     shared: false,
-    history: {}
+    history: {},
   };
   new_file.history[version_id] = {
     num_nodes: 12,
-  }
+  };
   let updates = {};
   updates[db_path] = new_file;
   update(databaseRef(getDatabase()), updates)
@@ -216,6 +216,26 @@ function uploadModelToStorage(model_blob, file_name, file_id, version_id, locati
   });
 }
 
+function openFileFromCloud(file_id, version_id, callback) {
+  const storage = getStorage();
+  const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/model.json`);
+  // To get this working had to set up the CORS in GCloud
+  getBlob(model_ref)
+    .then((blob) => {
+      blob
+        .text()
+        .then((data) => {
+          callback(JSON.parse(data));
+        })
+        .catch((error) => {
+          console.log(`Error parsing the blob: ${error}`);
+        });
+    })
+    .catch((error) => {
+      console.error("Error getting the download URL:", error);
+    });
+}
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
@@ -225,6 +245,14 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-const Firebase = { createUserWithEmail, signOutUser, logInUserWithEmail, getUserProjects, createNewFolderForUser, saveFileToCloud };
+const Firebase = {
+  createUserWithEmail,
+  signOutUser,
+  logInUserWithEmail,
+  getUserProjects,
+  createNewFolderForUser,
+  saveFileToCloud,
+  openFileFromCloud,
+};
 
 export default Firebase;
