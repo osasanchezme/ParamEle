@@ -24,9 +24,12 @@ import { FormControl, FormLabel, FormErrorMessage, Button, Input, Select, InputG
  * @param {String} param0.copies_key Key under which all the copies are found
  * @param {String} param0.firstFieldRef Reference to the first child to be focused
  * @param {String} param0.action_function Function to run on Enter, it should taka care of the validation
+ * @param {"top"|"bottom"} param0.error_msg_pos Location of the error message with respect to the input field
+ * @param {boolean} param0.use_placeholders Use placeholders instead of labels
  * @returns
  */
-function FormComponent({ fields, setFormState, formState, copies_key, firstFieldRef, action_function }) {
+function FormComponent({ fields, setFormState, formState, copies_key, firstFieldRef, action_function, error_msg_pos, use_placeholders }) {
+  if (error_msg_pos !== "top") error_msg_pos = "bottom";
   function localGetDisplayCopy(key) {
     return utils.getDisplayCopy(copies_key, key);
   }
@@ -47,12 +50,15 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
   }
   return Object.entries(fields).map(([key, data]) => {
     let form_component = "";
+    let form_error_msg = <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>;
+    let form_label = use_placeholders ? "" : <FormLabel>{localGetDisplayCopy(key)}</FormLabel>;
     switch (data.type) {
       case "text":
       case "email":
         form_component = (
           <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
+            {form_label}
+            {error_msg_pos === "top" ? form_error_msg : ""}
             <Input
               ref={data.is_first_field ? firstFieldRef : null}
               type={data.type}
@@ -62,16 +68,18 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
               onKeyUp={(evt) => {
                 handleKeyUpOnField(evt, key);
               }}
+              placeholder={use_placeholders ? localGetDisplayCopy(key) : ""}
             />
             {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
+            {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );
         break;
       case "dropdown":
         form_component = (
           <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
+            {form_label}
+            {error_msg_pos === "top" ? form_error_msg : ""}
             <Select
               placeholder={localGetDisplayCopy("select")}
               onChange={(evt) => {
@@ -88,14 +96,15 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
               ))}
             </Select>
             {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
+            {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );
         break;
       case "password":
         form_component = (
           <FormControl isInvalid={!formState[key].valid} key={key}>
-            <FormLabel>{localGetDisplayCopy(key)}</FormLabel>
+            {form_label}
+            {error_msg_pos === "top" ? form_error_msg : ""}
             <PasswordInput
               onChange={(evt) => {
                 handleInputChange(evt, key);
@@ -105,7 +114,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
               }}
             />
             {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-            <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>
+            {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );
         break;

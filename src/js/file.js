@@ -4,26 +4,29 @@ import logic_runner from "./globalLogicRunner";
 import blank_model from "../data/template-0.json";
 import repair from "./repair";
 
-const downloadJSONFile = () => {
+const downloadJSONFile = () => {  
+  var fileName = "modelo.json";
+  let a = document.createElement("a");
+  a.download = fileName;
+  a.href = window.URL.createObjectURL(getModelBlob());
+  a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+  a.click();
+};
+
+const getModelBlob = () => {
   let current_state = getState();
   current_state.model.nodes.forEach((node) => {
     if (node.data.input) delete node.data.input;
     return node;
   });
   current_state = { model: current_state.model, settings: current_state.settings };
-  var fileName = "modelo.json";
 
   if (typeof current_state === "object") {
     current_state = JSON.stringify(current_state, undefined, 4);
   }
 
-  let blob = new Blob([current_state], { type: "text/json" });
-  let a = document.createElement("a");
-  a.download = fileName;
-  a.href = window.URL.createObjectURL(blob);
-  a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
-  a.click();
-};
+  return new Blob([current_state], { type: "text/json" });
+}
 
 const newFile = () => {
   blank_model.settings = repair.repairSettings(blank_model.settings);
@@ -66,5 +69,5 @@ const uploadJSONFile = () => {
   };
 };
 
-const file = { downloadJSONFile, uploadJSONFile, newFile };
+const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob };
 export default file;

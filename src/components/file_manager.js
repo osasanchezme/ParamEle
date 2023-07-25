@@ -27,11 +27,14 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdCheck, MdRefresh } from "react-icons/md";
 import Firebase from "../js/firebase";
 import PopoverForm from "./popover_form";
+import file from "../js/file";
+import ParamEleForm from "./form";
 const { isIdFromFolder } = utils;
+const { FormComponent, getDefaultState, validateInputData } = ParamEleForm;
 
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
@@ -43,6 +46,31 @@ function FileManager({ user }) {
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
   let [fileManagerContent, setFileManagerContent] = useState(null);
   let [fileManagerWaiting, setFileManagerWaiting] = useState(true);
+  const fileNameFormFields = {
+    file_name: {
+      default: "",
+      type: "text",
+      validation: [
+        { type: "no", criteria: "", msg: "cannot_be_empty" },
+        {
+          type: "custom_function",
+          criteria: (file_name) => {
+            return validateFolderName(file_name, true);
+          },
+          msg: "custom",
+        },
+      ],
+      is_first_field: true,
+    },
+  };
+  let [fileNameForm, setFileNameForm] = useState(getDefaultState(fileNameFormFields));
+  let file_name_ref = useRef(null);
+  /**
+   * Run every time the component renders to keep the focus on the file name field
+   */
+  useEffect(() => {
+    if (fileManagerMode === "save" && file_name_ref && file_name_ref.current) file_name_ref.current.focus();
+  });
   /**
    * Opens the file manager in a certain mode
    * @param {"save"|open""} mode
@@ -51,6 +79,8 @@ function FileManager({ user }) {
     onOpen();
     setFileManagerMode(mode);
     getFilesDataFromDatabase();
+    // Reset the file name form
+    setFileNameForm(getDefaultState(fileNameFormFields));
   };
   /**
    *
@@ -80,12 +110,12 @@ function FileManager({ user }) {
     console.log("Getting data from Firebase...");
     Firebase.getUserProjects(updateFileManagerData);
   }
-  function validateFolderName(folder_name) {
+  function validateFolderName(folder_name, is_file) {
     let files_to_display = getFilesAndFoldersToDisplay();
     if (files_to_display.hasOwnProperty(folder_name)) {
       return {
         valid: false,
-        error_msg: localGetDisplayCopy("existing_folder"),
+        error_msg: is_file ? localGetDisplayCopy("existing_file") : localGetDisplayCopy("existing_folder"),
       };
     } else {
       return {
@@ -108,6 +138,24 @@ function FileManager({ user }) {
       }
     });
     return files_to_display;
+  }
+  function saveFile() {
+    let { valid_data, new_state } = validateInputData(fileNameForm, fileNameFormFields);
+    setFileNameForm(new_state);
+    if (valid_data) {
+      setFileManagerWaiting(true);
+      let model_blob = file.getModelBlob();
+      let model_id = utils.generateUniqueID("file");
+      let version_id = Date.now();
+      let file_name = new_state.file_name.value;
+      Firebase.saveFileToCloud(model_blob, file_name, model_id, version_id, JSON.parse(JSON.stringify(fileManagerPath)), (new_file) => {
+        updateFileManagerData(new_file, true);
+        // Close the file manager
+        setTimeout(() => {
+          onClose();
+        }, 500);
+      });
+    }
   }
   if (user == null) {
     // utils.openAuthentication();
@@ -143,55 +191,76 @@ function FileManager({ user }) {
         </Center>
       );
     }
+    let fileman_footer = "";
+    let close_button = (
+      <Button variant="ghost" mr={3} onClick={onClose}>
+        {utils.getDisplayCopy("auth", "close_modal")}
+      </Button>
+    );
+    if (fileManagerMode === "save") {
+      fileman_footer = (
+        <>
+          <FormComponent
+            fields={fileNameFormFields}
+            formState={fileNameForm}
+            setFormState={setFileNameForm}
+            copies_key="file_manager"
+            error_msg_pos="top"
+            use_placeholders={true}
+            action_function={saveFile}
+            firstFieldRef={file_name_ref}
+          ></FormComponent>
+          {close_button}
+          <Button colorScheme="blue" onClick={saveFile}>
+            {localGetDisplayCopy("save")}
+          </Button>
+        </>
+      );
+    } else {
+      fileman_footer = (
+        <>
+          {close_button}
+          <Button colorScheme="blue">{localGetDisplayCopy("open")}</Button>
+        </>
+      );
+    }
+    let path_navigator_and_buttons = (
+      <Flex minWidth="max-content" alignItems="center" gap="2">
+        <Box p="2">
+          <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath} />
+        </Box>
+        <Spacer />
+        <ButtonGroup gap="2">
+          <PopoverForm
+            fields={{
+              folder_name: {
+                default: "",
+                type: "text",
+                validation: [
+                  { type: "no", criteria: "", msg: "cannot_be_empty" },
+                  { type: "custom_function", criteria: validateFolderName, msg: "custom" },
+                ],
+                is_first_field: true,
+              },
+            }}
+            copies_key="file_manager"
+            action_button_icon={MdCheck}
+            action_function={createNewFolder}
+          >
+            <IconButton variant="ghost" icon={<Icon as={MdCreateNewFolder} boxSize={6} />} />
+          </PopoverForm>
+          <IconButton variant="ghost" icon={<Icon as={MdRefresh} boxSize={6} onClick={getFilesDataFromDatabase} />} />
+        </ButtonGroup>
+      </Flex>
+    );
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="5xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="inside" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{localGetDisplayCopy("title")}</ModalHeader>
+          <ModalHeader>{localGetDisplayCopy("title")} {path_navigator_and_buttons}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Flex minWidth="max-content" alignItems="center" gap="2">
-              <Box p="2">
-                <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath} />
-              </Box>
-              <Spacer />
-              <ButtonGroup gap="2">
-                <PopoverForm
-                  fields={{
-                    folder_name: {
-                      default: "",
-                      type: "text",
-                      validation: [
-                        { type: "no", criteria: "", msg: "cannot_be_empty" },
-                        { type: "custom_function", criteria: validateFolderName, msg: "custom" },
-                      ],
-                      is_first_field: true,
-                    },
-                  }}
-                  copies_key="file_manager"
-                  action_button_icon={MdCheck}
-                  action_function={createNewFolder}
-                >
-                  <IconButton variant="ghost" icon={<Icon as={MdCreateNewFolder} boxSize={6} />} />
-                </PopoverForm>
-                <IconButton variant="ghost" icon={<Icon as={MdRefresh} boxSize={6} onClick={getFilesDataFromDatabase} />} />
-              </ButtonGroup>
-            </Flex>
-
-            {fileman_body}
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              {utils.getDisplayCopy("auth", "close_modal")}
-            </Button>
-            {fileManagerMode === "save" ? (
-              <Button colorScheme="blue">{localGetDisplayCopy("save")}</Button>
-            ) : fileManagerMode === "open" ? (
-              <Button colorScheme="blue">{localGetDisplayCopy("open")}</Button>
-            ) : (
-              ""
-            )}
-          </ModalFooter>
+          <ModalBody>{fileman_body}</ModalBody>
+          <ModalFooter alignItems={"end"}>{fileman_footer}</ModalFooter>
         </ModalContent>
       </Modal>
     );
@@ -207,7 +276,7 @@ function PathNavigator({ fileManagerPath, setFileManagerPath }) {
     setFileManagerPath(new_path);
   }
   return (
-    <Breadcrumb>
+    <Breadcrumb fontWeight="normal" fontSize="medium">
       {fileManagerPath.map((path, index) => {
         let path_object = "";
         if (index === 0) {
@@ -325,7 +394,9 @@ function FileManagerView({ data, setFileManagerPath, fileManagerPath }) {
         ></Folder>
       );
     } else {
-      return <File nodes={content.stats.num_nodes} lastModified={content.last_modified} name={name} key={name}></File>;
+      let current_version = content.current_version;
+      let current_stats = content.history[current_version];
+      return <File nodes={current_stats.num_nodes} lastModified={current_version} name={name} key={name}></File>;
     }
   });
   return fileman_view;
