@@ -146,6 +146,11 @@ class ParamEle extends React.Component {
       selection_top: 0,
       selection_left: 0,
       user: null,
+      file_name: null,
+      is_saved: false,
+      last_saved: null,
+      model_id: null,
+      file_path: null,
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -164,6 +169,7 @@ class ParamEle extends React.Component {
     window.ParamEle.getUser = this.getUser.bind(this);
     this.setUser = this.setUser.bind(this);
     window.ParamEle.setUser = this.setUser.bind(this);
+    this.setFileData = this.setFileData.bind(this);
   }
   changeGeneralSettingValue(key, value) {
     let curr_settings = this.state.settings;
@@ -189,6 +195,24 @@ class ParamEle extends React.Component {
   setUser(user) {
     this.setState({ user });
   }
+  setFileData({ file_name, is_saved, last_saved, model_id, file_path }) {
+    let update_obj = { file_name, is_saved, last_saved, model_id, file_path };
+    let actual_update_object = {};
+    Object.entries(update_obj).forEach(([key, val]) => {
+      if (val !== undefined) actual_update_object[key] = val;
+    });
+    this.setState(actual_update_object);
+  }
+  getFileData() {
+    return {
+      file_name: this.state.file_name,
+      is_saved: this.state.is_saved,
+      last_saved: this.state.last_saved,
+      model_id: this.state.model_id,
+      file_path: this.state.file_path,
+    };
+  }
+
   /**
    *
    * @param {MouseEvent} event
@@ -366,7 +390,11 @@ class ParamEle extends React.Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
         >
-          <NavBar user={this.state.user}></NavBar>
+          <NavBar
+            user={this.state.user}
+            file_data={this.getFileData()}
+            setFileData={this.setFileData}
+          ></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
           <PropertiesPanel
@@ -397,7 +425,7 @@ class ParamEle extends React.Component {
           ></SelectionBox>
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
-          <FileManager user={this.state.user}></FileManager>
+          <FileManager user={this.state.user} setFileData={this.setFileData}></FileManager>
         </div>
       </ChakraProvider>
     );

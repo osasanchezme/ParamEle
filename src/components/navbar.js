@@ -5,17 +5,18 @@ import boxes from "../js/boxes";
 import file from "../js/file";
 import structure from "../js/structure";
 import utils from "../utils";
+import FileStatusIndicator from "./file_status_indicator";
 
 function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions() {
+function getNavBarOptions({ new_file_callback }) {
   return {
     file: {
       icon: "MdInsertDriveFile",
       options: [
-        { name: localGetCopy("new"), icon: "MdInsertDriveFile", callback: file.newFile },
+        { name: localGetCopy("new"), icon: "MdInsertDriveFile", callback: new_file_callback },
         {
           name: localGetCopy("open"),
           icon: "MdFolderOpen",
@@ -80,7 +81,12 @@ class NavBar extends React.Component {
     super(props);
     this.state = { dropdown_visible: false, mouse_on_menu: false, current_menu: "file", current_menu_index: 0, active_group: "left" };
     this.handleChange = this.handleChange.bind(this);
-    this.navbar_options = getNavBarOptions();
+    this.navbar_options = getNavBarOptions({
+      new_file_callback: function () {
+        props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null });
+        file.newFile();
+      },
+    });
     this.right_navbar_options = getRightNavBarOptions();
   }
   handleChange(dropdown_visible, mouse_on_menu) {
@@ -130,6 +136,7 @@ class NavBar extends React.Component {
             </Button>
           ))}
           <Spacer></Spacer>
+          <FileStatusIndicator file_data={this.props.file_data} setFileData={this.props.setFileData} />
           {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
             let display_copy = localGetCopy(nav_menu_key);
             if (nav_menu_key === "user" && this.props.user) display_copy = this.props.user.displayName || display_copy;

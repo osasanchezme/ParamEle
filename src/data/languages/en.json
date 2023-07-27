@@ -127,7 +127,14 @@
         "delete": "Delete",
         "account": "Account",
         "log_out": "Log out",
-        "user": "User"
+        "user": "User",
+        "file_not_saved": "Not saved",
+        "commit_msg": "Commit message",
+        "seconds": "seconds",
+        "minutes": "minutes",
+        "hours": "hours",
+        "days": "days",
+        "last_saved": "Last saved"
     },
     "commands_bar":{
         "placeholder": "Node name..."

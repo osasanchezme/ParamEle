@@ -40,7 +40,7 @@ function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
 }
 
-function FileManager({ user }) {
+function FileManager({ user, setFileData }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   let [fileManagerMode, setFileManagerMode] = useState("open");
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
@@ -153,8 +153,11 @@ function FileManager({ user }) {
       let model_id = utils.generateUniqueID("file");
       let version_id = Date.now();
       let file_name = new_state.file_name.value;
-      Firebase.saveFileToCloud(model_blob, file_name, model_id, version_id, JSON.parse(JSON.stringify(fileManagerPath)), (new_file) => {
+      let file_path = JSON.parse(JSON.stringify(fileManagerPath));
+      Firebase.saveFileToCloud(model_blob, file_name, model_id, version_id, file_path, (new_file) => {
         updateFileManagerData(new_file, true);
+        // Update the file data in the app state
+        setFileData({ file_name, is_saved: true, last_saved: version_id, model_id, file_path });
         // Close the file manager
         closeFileManager();
       });
@@ -176,6 +179,7 @@ function FileManager({ user }) {
               mode={fileManagerMode}
               closeFileManager={closeFileManager}
               setFileManagerWaiting={setFileManagerWaiting}
+              setFileData={setFileData}
             />
           </SimpleGrid>
         );
@@ -254,7 +258,7 @@ function FileManager({ user }) {
               },
             }}
             copies_key="file_manager"
-            action_button_icon={MdCheck}
+            action_button_text={localGetDisplayCopy("create_folder")}
             action_function={createNewFolder}
           >
             <IconButton variant="ghost" icon={<Icon as={MdCreateNewFolder} boxSize={6} />} />
@@ -374,7 +378,7 @@ function File({ nodes, name, lastModified, onClick }) {
   );
 }
 
-function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, closeFileManager, setFileManagerWaiting }) {
+function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, closeFileManager, setFileManagerWaiting, setFileData }) {
   function handleClick(event, folder_name) {
     let new_path = JSON.parse(JSON.stringify(fileManagerPath));
     new_path.push(folder_name);
@@ -384,11 +388,11 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
     if (mode === "open") {
       setFileManagerWaiting(true);
       let { id, current_version } = data[file_name];
+      let file_path = JSON.parse(JSON.stringify(fileManagerPath));
       Firebase.openFileFromCloud(id, current_version, (model_data) => {
         file.setModelFromParsedBlob(model_data);
+        setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path });
         closeFileManager();
-        // WIP - Ensure the settings/layouts are saved
-        // WIP - Save and load if available the results
       });
     }
   }

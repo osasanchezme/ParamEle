@@ -1,6 +1,6 @@
 import React from "react";
 import utils from "../utils";
-import { FormControl, FormLabel, FormErrorMessage, Button, Input, Select, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { FormControl, FormLabel, FormErrorMessage, FormHelperText, Button, Input, Select, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 /**
  * @typedef {Object} ValidationObject
@@ -52,6 +52,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
     let form_component = "";
     let form_error_msg = <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>;
     let form_label = use_placeholders ? "" : <FormLabel>{localGetDisplayCopy(key)}</FormLabel>;
+    let form_helper_text = data.helper_text !== undefined ? <FormHelperText>{data.helper_text}</FormHelperText> : ""
     switch (data.type) {
       case "text":
       case "email":
@@ -70,7 +71,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
               }}
               placeholder={use_placeholders ? localGetDisplayCopy(key) : ""}
             />
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
+            {form_helper_text}
             {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );
@@ -95,7 +96,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
                 </option>
               ))}
             </Select>
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
+            {form_helper_text}
             {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );
@@ -113,7 +114,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
                 handleKeyUpOnField(evt, key);
               }}
             />
-            {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
+            {form_helper_text}
             {error_msg_pos === "bottom" ? form_error_msg : ""}
           </FormControl>
         );

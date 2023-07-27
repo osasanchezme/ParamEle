@@ -172,14 +172,17 @@ function createNewFolderForUser(folder_name, location, is_first_child, callback)
     });
 }
 
-function saveFileToCloud(model_blob, file_name, file_id, version_id, location, callback) {
-  uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback);
+function saveFileToCloud(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg) {
+  uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg);
 }
 
-function createRefToFileForUser(location, file_name, file_id, version_id, callback) {
+function createRefToFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg) {
   let db_path = getPathInDatabaseFromLocal(location);
   // Append the new file name to the path
   db_path += `/${file_name}`;
+  // Create the updates object
+  let updates = {};
+  // Create the new_file object
   let new_file = {
     id: file_id,
     current_version: version_id,
@@ -188,11 +191,19 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
     shared: false,
     history: {},
   };
-  new_file.history[version_id] = {
-    num_nodes: 12,
-  };
-  let updates = {};
-  updates[db_path] = new_file;
+  if (!is_new_version) {
+    new_file.history[version_id] = {
+      num_nodes: 12,
+    };
+    updates[db_path] = new_file;
+  } else {
+    // Set the new file equal to null not to return useless data
+    new_file = null;
+    // Update the current_version
+    updates[`${db_path}/current_version`] = version_id;
+    // Update the history
+    updates[`${db_path}/history/${version_id}`] = {num_nodes: 13, commit_msg};
+  }
   update(databaseRef(getDatabase()), updates)
     .then(() => {
       // Do not read again from the data base but only get the new data to the file manager
@@ -207,12 +218,12 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
     });
 }
 
-function uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback) {
+function uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg) {
   const storage = getStorage();
   const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/model.json`);
   uploadBytes(model_ref, model_blob).then((snapshot) => {
     console.log("File uploaded successfully!");
-    createRefToFileForUser(location, file_name, file_id, version_id, callback);
+    createRefToFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg);
   });
 }
 

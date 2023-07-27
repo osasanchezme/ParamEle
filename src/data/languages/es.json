@@ -127,7 +127,14 @@
         "delete": "Eliminar",
         "account": "Cuenta",
         "log_out": "Cerrar sesión",
-        "user": "Usuario"
+        "user": "Usuario",
+        "file_not_saved": "No guardado",
+        "commit_msg": "Mensaje de guardado",
+        "seconds": "segundos",
+        "minutes": "minutos",
+        "hours": "horas",
+        "days": "días",
+        "last_saved": "Último guardado"
     },
     "commands_bar":{
         "placeholder": "Nombre nodo..."
