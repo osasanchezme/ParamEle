@@ -224,5 +224,9 @@
         "existing_folder": "This folder name is already in use",
         "existing_file": "This file or folder name is already in use",
         "file_name": "File name"
+    },
+    "waiting_dimmer":{
+        "loading": "Loading",
+        "saving_new_version": "Saving new version"
     }
 }

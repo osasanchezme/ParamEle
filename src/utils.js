@@ -178,6 +178,18 @@ function openFileManager(mode) {
   return window.ParamEle.openFileManager(mode);
 }
 
+function showLoadingDimmer(msg) {
+  return window.ParamEle.showLoadingDimmer(msg);
+}
+
+function hideLoadingDimmer(msg) {
+  return window.ParamEle.hideLoadingDimmer(msg);
+}
+
+function setLoadingDimmerMsg(msg) {
+  return window.ParamEle.setLoadingDimmerMsg(msg);
+}
+
 function setUser(auth) {
   window.ParamEle.setUser(auth);
 }
@@ -340,7 +352,10 @@ const utils = {
   setUser,
   signOut,
   generateUniqueID,
-  isIdFromFolder
+  isIdFromFolder,
+  showLoadingDimmer,
+  setLoadingDimmerMsg,
+  hideLoadingDimmer
 };
 
 export default utils;

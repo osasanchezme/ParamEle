@@ -5,8 +5,6 @@ import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, s
 import { getDatabase, ref as databaseRef, set, get, child, update } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getBlob } from "firebase/storage";
 import utils from "../utils";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -249,10 +247,11 @@ function openFileFromCloud(file_id, version_id, callback) {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    const uid = user.uid;
     utils.setUser(user);
+    utils.hideLoadingDimmer();
   } else {
     utils.setUser(null);
+    utils.hideLoadingDimmer();
   }
 });
 

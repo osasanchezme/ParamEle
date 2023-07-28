@@ -30,6 +30,8 @@ import Navigator from "./components/navigator";
 import GlobalSettings from "./components/global_settings";
 import Authentication from "./components/authentication";
 import FileManager from "./components/file_manager";
+import { LoadingDimmer } from "./components/loading_dimmer";
+import utils from "./utils";
 const { setInitialState, storeRfInstance, updateStateFromFlow } = state;
 
 setInitialState();
@@ -170,6 +172,9 @@ class ParamEle extends React.Component {
     this.setUser = this.setUser.bind(this);
     window.ParamEle.setUser = this.setUser.bind(this);
     this.setFileData = this.setFileData.bind(this);
+  }
+  componentDidMount() {
+    utils.showLoadingDimmer();
   }
   changeGeneralSettingValue(key, value) {
     let curr_settings = this.state.settings;
@@ -390,6 +395,7 @@ class ParamEle extends React.Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
         >
+          <LoadingDimmer></LoadingDimmer>
           <NavBar
             user={this.state.user}
             file_data={this.getFileData()}

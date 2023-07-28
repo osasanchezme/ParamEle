@@ -45,7 +45,6 @@ const uploadJSONFile = () => {
   a.onchange = () => {
     if (a.files.length > 0) {
       if (typeof window.FileReader !== "function") {
-        // TODO - Create a global alert/notification manager
         alert("The file API isn't supported on this browser yet.");
         return;
       }

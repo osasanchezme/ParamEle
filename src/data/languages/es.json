@@ -224,5 +224,9 @@
         "existing_folder": "Nombre de carpeta existente",
         "existing_file": "Nombre de archivo o carpeta existente",
         "file_name": "Nombre del archivo"
+    },
+    "waiting_dimmer":{
+        "loading": "Cargando",
+        "saving_new_version": "Guardando versión nueva"
     }
 }
