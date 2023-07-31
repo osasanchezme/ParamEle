@@ -158,8 +158,27 @@ function FileManager({ user, setFileData }) {
         updateFileManagerData(new_file, true);
         // Update the file data in the app state
         setFileData({ file_name, is_saved: true, last_saved: version_id, model_id, file_path });
-        // Close the file manager
-        closeFileManager();
+        // Save the results to the cloud
+        let results_blob = file.getResultsBlob();
+        if (results_blob !== false) {
+          Firebase.saveFileToCloud(
+            results_blob,
+            file_name,
+            model_id,
+            version_id,
+            file_path,
+            (new_file) => {
+              // Close the file manager
+              closeFileManager();
+            },
+            true,
+            "",
+            "results"
+          );
+        } else {
+          // Close the file manager
+          closeFileManager();
+        }
       });
     }
   }

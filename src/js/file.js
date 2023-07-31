@@ -28,6 +28,16 @@ const getModelBlob = () => {
   return new Blob([current_state], { type: "text/json" });
 };
 
+const getResultsBlob = () => {
+  let results = getState("results");
+  if (typeof results === "object" && Object.keys(results).length > 0) {
+    results = JSON.stringify(results, undefined, 4);
+    return new Blob([results], { type: "text/json" });
+  } else {
+    return false;
+  }
+};
+
 const newFile = () => {
   blank_model.settings = repair.repairSettings(blank_model.settings);
   state.setState(repair.repairModel(blank_model));
@@ -72,5 +82,5 @@ const setModelFromParsedBlob = (state_from_file) => {
   logic_runner.run();
 };
 
-const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelFromParsedBlob };
+const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelFromParsedBlob, getResultsBlob };
 export default file;

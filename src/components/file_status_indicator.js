@@ -21,7 +21,7 @@ function FileStatusIndicator({ file_data, setFileData }) {
     }
   }
   function saveModelVersion(form_state) {
-    utils.showLoadingDimmer("saving_new_version")
+    utils.showLoadingDimmer("saving_new_version");
     let commit_msg = form_state.commit_msg.value;
     let model_blob = file.getModelBlob();
     let { model_id, file_name, file_path } = file_data;
@@ -35,7 +35,26 @@ function FileStatusIndicator({ file_data, setFileData }) {
       (new_file) => {
         // Update the file data in the app state
         setFileData({ is_saved: true, last_saved: version_id });
-        utils.hideLoadingDimmer();
+        // Save the results to the cloud
+        let results_blob = file.getResultsBlob();
+        if (results_blob !== false) {
+          utils.setLoadingDimmerMsg("saving_results");
+          Firebase.saveFileToCloud(
+            results_blob,
+            file_name,
+            model_id,
+            version_id,
+            file_path,
+            (new_file) => {
+              utils.hideLoadingDimmer();
+            },
+            true,
+            commit_msg,
+            "results"
+          );
+        } else {
+          utils.hideLoadingDimmer();
+        }
       },
       true,
       commit_msg

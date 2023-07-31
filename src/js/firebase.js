@@ -170,11 +170,50 @@ function createNewFolderForUser(folder_name, location, is_first_child, callback)
     });
 }
 
-function saveFileToCloud(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg) {
-  uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg);
+/**
+ * Saves a file to the cloud in the right location and creates a reference to the file in the database if needed
+ * @param {*} model_blob
+ * @param {*} file_name
+ * @param {*} file_id
+ * @param {*} version_id
+ * @param {*} location
+ * @param {*} callback
+ * @param {*} is_new_version
+ * @param {*} commit_msg
+ * @param {"model"|"results"} file_type
+ */
+function saveFileToCloud(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg, file_type = "model") {
+  const storage = getStorage();
+  const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/${file_type}.json`);
+  uploadBytes(model_ref, model_blob).then((snapshot) => {
+    console.log("File uploaded successfully!");
+    if (file_type === "model") {
+      createRefToModelFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg);
+    } else {
+      updateRefToResultsFileForUser(location, file_name, file_id, version_id, callback);
+    }
+  });
 }
 
-function createRefToFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg) {
+function updateRefToResultsFileForUser(location, file_name, file_id, version_id, callback) {
+  let db_path = getPathInDatabaseFromLocal(location);
+  // Append the new file name to the path
+  db_path += `/${file_name}`;
+  // Create the updates object
+  let updates = {};
+  updates[`${db_path}/history/${version_id}/results_available`] = true;
+  update(databaseRef(getDatabase()), updates)
+    .then(() => {
+      callback(true);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`There was a problem: ${errorMessage} (${errorCode})`);
+    });
+}
+
+function createRefToModelFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg) {
   let db_path = getPathInDatabaseFromLocal(location);
   // Append the new file name to the path
   db_path += `/${file_name}`;
@@ -192,6 +231,7 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
   if (!is_new_version) {
     new_file.history[version_id] = {
       num_nodes: 12,
+      results_available: false,
     };
     updates[db_path] = new_file;
   } else {
@@ -200,7 +240,7 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
     // Update the current_version
     updates[`${db_path}/current_version`] = version_id;
     // Update the history
-    updates[`${db_path}/history/${version_id}`] = {num_nodes: 13, commit_msg};
+    updates[`${db_path}/history/${version_id}`] = { num_nodes: 13, commit_msg, results_available: false };
   }
   update(databaseRef(getDatabase()), updates)
     .then(() => {
@@ -214,15 +254,6 @@ function createRefToFileForUser(location, file_name, file_id, version_id, callba
       const errorMessage = error.message;
       console.log(`There was a problem: ${errorMessage} (${errorCode})`);
     });
-}
-
-function uploadModelToStorage(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg) {
-  const storage = getStorage();
-  const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/model.json`);
-  uploadBytes(model_ref, model_blob).then((snapshot) => {
-    console.log("File uploaded successfully!");
-    createRefToFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg);
-  });
 }
 
 function openFileFromCloud(file_id, version_id, callback) {
