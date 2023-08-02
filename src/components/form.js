@@ -63,6 +63,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
             <Input
               ref={data.is_first_field ? firstFieldRef : null}
               type={data.type}
+              autoComplete="username email"
               onChange={(evt) => {
                 handleInputChange(evt, key);
               }}
@@ -132,7 +133,7 @@ function PasswordInput({ onChange }) {
 
   return (
     <InputGroup size="md">
-      <Input pr="4.5rem" type={show ? "text" : "password"} onChange={onChange} />
+      <Input pr="4.5rem" type={show ? "text" : "password"} onChange={onChange} autoComplete="password" />
       <InputRightElement width="6.2rem">
         <Button h="1.75rem" size="sm" onClick={handleClick}>
           {show ? utils.getDisplayCopy("auth", "hide") : utils.getDisplayCopy("auth", "show")}

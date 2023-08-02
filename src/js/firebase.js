@@ -113,7 +113,9 @@ function getUserProjects(callback) {
       if (snapshot.exists()) {
         callback(snapshot.val());
       } else {
-        console.log("No data available");
+        console.log("No data available for this user under projects");
+        // Return an empty object
+        callback({});
       }
     })
     .catch((error) => {
