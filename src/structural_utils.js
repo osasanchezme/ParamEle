@@ -2,73 +2,79 @@ function getResult(results, result_name, result_direction, operation_type, eleme
   let lc_results = results[lc_name];
   let actual_result = {};
   let final_result;
-  switch (result_name) {
-    case "moment":
-      switch (result_direction) {
-        case "x":
-          actual_result = lc_results.member_forces.torsion[element_id];
-          break;
-        case "y":
-          actual_result = lc_results.member_forces.bending_moment_y[element_id];
-          break;
-        case "z":
-          actual_result = lc_results.member_forces.bending_moment_z[element_id];
-          break;
-        default:
-          break;
-      }
-      break;
-    case "shear":
-      switch (result_direction) {
-        case "x":
-          actual_result = lc_results.member_forces.shear_force_x[element_id];
-          break;
-        case "y":
-          actual_result = lc_results.member_forces.shear_force_y[element_id];
-          break;
-        case "z":
-          actual_result = lc_results.member_forces.shear_force_z[element_id];
-          break;
-        default:
-          break;
-      }
-      break;
-    case "axial":
-      actual_result = lc_results.member_forces.axial_force[element_id];
-      break;
-    case "reaction":
-      switch (result_direction) {
-        case "x":
-          actual_result = lc_results.reactions[element_id]["Fx"];
-          break;
-        case "y":
-          actual_result = lc_results.reactions[element_id]["Fy"];
-          break;
-        case "z":
-          actual_result = lc_results.reactions[element_id]["Fz"];
-          break;
-        default:
-          break;
-      }
-      break;
-    case "displacement":
-      switch (result_direction) {
-        case "x":
-          actual_result = lc_results.member_displacements.displacement_x[element_id];
-          break;
-        case "y":
-          actual_result = lc_results.member_displacements.displacement_y[element_id];
-          break;
-        case "z":
-          actual_result = lc_results.member_displacements.displacement_z[element_id];
-          break;
-        default:
-          break;
-      }
-      break;
-    default:
-      break;
+  try {
+    switch (result_name) {
+      case "moment":
+        switch (result_direction) {
+          case "x":
+            actual_result = lc_results.member_forces.torsion[element_id];
+            break;
+          case "y":
+            actual_result = lc_results.member_forces.bending_moment_y[element_id];
+            break;
+          case "z":
+            actual_result = lc_results.member_forces.bending_moment_z[element_id];
+            break;
+          default:
+            break;
+        }
+        break;
+      case "shear":
+        switch (result_direction) {
+          case "x":
+            actual_result = lc_results.member_forces.shear_force_x[element_id];
+            break;
+          case "y":
+            actual_result = lc_results.member_forces.shear_force_y[element_id];
+            break;
+          case "z":
+            actual_result = lc_results.member_forces.shear_force_z[element_id];
+            break;
+          default:
+            break;
+        }
+        break;
+      case "axial":
+        actual_result = lc_results.member_forces.axial_force[element_id];
+        break;
+      case "reaction":
+        switch (result_direction) {
+          case "x":
+            actual_result = lc_results.reactions[element_id]["Fx"];
+            break;
+          case "y":
+            actual_result = lc_results.reactions[element_id]["Fy"];
+            break;
+          case "z":
+            actual_result = lc_results.reactions[element_id]["Fz"];
+            break;
+          default:
+            break;
+        }
+        break;
+      case "displacement":
+        switch (result_direction) {
+          case "x":
+            actual_result = lc_results.member_displacements.displacement_x[element_id];
+            break;
+          case "y":
+            actual_result = lc_results.member_displacements.displacement_y[element_id];
+            break;
+          case "z":
+            actual_result = lc_results.member_displacements.displacement_z[element_id];
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    // If anything turns out to be undefined return false
+    actual_result = false;
   }
+
   if (actual_result) {
     switch (operation_type) {
       case "mid-span":

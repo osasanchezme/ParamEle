@@ -123,9 +123,12 @@ function MemberResultExec(args, data) {
       plotly_data[0] = { x, y, xaxis_title: iterating_node_data.node_label, yaxis_title: result_label, title: plot_title };
     } else if (x_y_data.length > 0) {
       plotly_data = [];
-      x_y_data.forEach(({ x, y, name }) => {
-        let plot_title = `${result_label} (${result_direction})`;
-        plotly_data.push({ x, y, name, xaxis_title: position_label, yaxis_title: result_label, title: plot_title });
+      x_y_data.forEach((dataset) => {
+        if (dataset) {
+          let { x, y, name } = dataset;
+          let plot_title = `${result_label} (${result_direction})`;
+          plotly_data.push({ x, y, name, xaxis_title: position_label, yaxis_title: result_label, title: plot_title });
+        }
       });
     }
   }
