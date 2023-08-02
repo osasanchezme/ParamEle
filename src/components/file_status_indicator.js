@@ -1,15 +1,17 @@
-import { Tag } from "@chakra-ui/react";
+import { Icon, Tag } from "@chakra-ui/react";
 import utils from "../utils";
 import PopoverForm from "./popover_form";
 import { useRef } from "react";
 import Firebase from "../js/firebase";
 import file from "../js/file";
+import { MdLock, MdLockOpen } from "react-icons/md";
+import { setState } from "../state";
 
 function localGetCopy(copy_key) {
   return utils.getDisplayCopy("nav_bar", copy_key);
 }
 
-function FileStatusIndicator({ file_data, setFileData }) {
+function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock }) {
   function localOpenFileManager() {
     if (file_name === null) {
       utils.openFileManager("save");
@@ -60,12 +62,26 @@ function FileStatusIndicator({ file_data, setFileData }) {
       commit_msg
     );
   }
+  function toggleModelLock() {
+    if (model_locked) {
+      setModelLock(false);
+      // Reset results when unlocking the model
+      setState({}, "results");
+    } else {
+      setModelLock(true);
+    }
+  }
   let { file_name, is_saved, last_saved } = file_data;
   let tag_ref = useRef(null);
   let tag_element = (
     <Tag height="30px" marginTop="10px" marginRight="10px" cursor="pointer" ref={tag_ref} onMouseOver={simulateClick} onClick={localOpenFileManager}>
       {file_name !== null ? file_name : localGetCopy("file_not_saved")}
       {is_saved ? "" : " *"}
+    </Tag>
+  );
+  let tag_lock_element = (
+    <Tag height="30px" marginTop="10px" marginRight="10px" cursor="pointer" onClick={toggleModelLock}>
+      {model_locked ? <Icon as={MdLock} /> : <Icon as={MdLockOpen} />}
     </Tag>
   );
   let current_time = Date.now();
@@ -87,7 +103,12 @@ function FileStatusIndicator({ file_data, setFileData }) {
   }
   formatted_time = `${localGetCopy("last_saved")}: ${formatted_time}`;
   if (file_name === null) {
-    return tag_element;
+    return (
+      <>
+        {tag_lock_element}
+        {tag_element}
+      </>
+    );
   } else {
     return (
       <PopoverForm
@@ -105,7 +126,10 @@ function FileStatusIndicator({ file_data, setFileData }) {
         }}
         options={{ placement: "bottom" }}
       >
-        {tag_element}
+        <>
+          {tag_lock_element}
+          {tag_element}
+        </>
       </PopoverForm>
     );
   }

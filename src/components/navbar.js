@@ -11,7 +11,7 @@ function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions({ new_file_callback }) {
+function getNavBarOptions({ new_file_callback, solve_file_callback }) {
   return {
     file: {
       icon: "MdInsertDriveFile",
@@ -45,7 +45,7 @@ function getNavBarOptions({ new_file_callback }) {
     },
     structure: {
       icon: "MdFoundation",
-      options: [{ name: localGetCopy("solve"), icon: "MdPlayCircle", callback: structure.solveStructure }],
+      options: [{ name: localGetCopy("solve"), icon: "MdPlayCircle", callback: solve_file_callback }],
     },
     settings: {
       icon: "MdSettings",
@@ -86,6 +86,10 @@ class NavBar extends React.Component {
         props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null });
         file.newFile();
       },
+      solve_file_callback: function () {
+        props.setModelLock(true);
+        structure.solveStructure();
+      }
     });
     this.right_navbar_options = getRightNavBarOptions();
   }
@@ -136,7 +140,7 @@ class NavBar extends React.Component {
             </Button>
           ))}
           <Spacer></Spacer>
-          <FileStatusIndicator file_data={this.props.file_data} setFileData={this.props.setFileData} />
+          <FileStatusIndicator file_data={this.props.file_data} setFileData={this.props.setFileData} model_locked={this.props.model_locked} setModelLock={this.props.setModelLock} />
           {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
             let display_copy = localGetCopy(nav_menu_key);
             if (nav_menu_key === "user" && this.props.user) display_copy = this.props.user.displayName || display_copy;

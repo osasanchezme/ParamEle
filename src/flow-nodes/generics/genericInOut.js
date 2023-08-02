@@ -164,6 +164,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
               onChange={(event) => onChange(event, data_key)}
               defaultValue={data[data_key] === undefined ? "" : data[data_key]}
               autoComplete="off"
+              isDisabled={data.model_locked}
             />
             <InputRightElement width="2.5rem">
               <Tag size="sm" variant={"source"} style={input_label_style}>
@@ -189,6 +190,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
             colorScheme="gray"
             top={top_pos_editable_inputs}
             onChange={(value) => onChange({ target: { value: value } }, data_key)}
+            isDisabled={data.model_locked}
           >
             <SliderTrack>
               <Box position="relative" right={10} />

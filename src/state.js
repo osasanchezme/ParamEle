@@ -305,3 +305,5 @@ const state = {
 };
 
 export default state;
+
+export {updateStateFromFlow, storeRfInstance, setInitialState, setState};
