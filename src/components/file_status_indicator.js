@@ -111,6 +111,8 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
     );
   } else {
     return (
+      <>
+      {tag_lock_element}
       <PopoverForm
         action_button_text={localGetCopy("save")}
         copies_key={"nav_bar"}
@@ -125,12 +127,10 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
           },
         }}
         options={{ placement: "bottom" }}
-      >
-        <>
-          {tag_lock_element}
+      >   
           {tag_element}
-        </>
       </PopoverForm>
+      </>
     );
   }
 }
