@@ -9,8 +9,6 @@ import {
   ModalCloseButton,
   Button,
   Box,
-  Image,
-  Badge,
   SimpleGrid,
   Icon,
   Breadcrumb,
@@ -22,13 +20,12 @@ import {
   Flex,
   Spacer,
   ButtonGroup,
-  Tooltip,
   IconButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState, useRef, useEffect } from "react";
-import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdCheck, MdRefresh } from "react-icons/md";
+import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdRefresh } from "react-icons/md";
 import Firebase from "../js/firebase";
 import PopoverForm from "./popover_form";
 import file from "../js/file";
@@ -40,7 +37,7 @@ function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
 }
 
-function FileManager({ user, setFileData }) {
+function FileManager({ user, setFileData, setModelLock }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   let [fileManagerMode, setFileManagerMode] = useState("open");
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
@@ -199,6 +196,7 @@ function FileManager({ user, setFileData }) {
               closeFileManager={closeFileManager}
               setFileManagerWaiting={setFileManagerWaiting}
               setFileData={setFileData}
+              setModelLock={setModelLock}
             />
           </SimpleGrid>
         );
@@ -397,7 +395,7 @@ function File({ nodes, name, lastModified, onClick }) {
   );
 }
 
-function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, closeFileManager, setFileManagerWaiting, setFileData }) {
+function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, closeFileManager, setFileManagerWaiting, setFileData, setModelLock }) {
   function handleClick(event, folder_name) {
     let new_path = JSON.parse(JSON.stringify(fileManagerPath));
     new_path.push(folder_name);
@@ -405,13 +403,29 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
   }
   function handleClickOnFile(event, file_name) {
     if (mode === "open") {
-      setFileManagerWaiting(true);
-      let { id, current_version } = data[file_name];
+      closeFileManager();
+      utils.showLoadingDimmer("loading_model");
+      let { id, current_version, history } = data[file_name];
       let file_path = JSON.parse(JSON.stringify(fileManagerPath));
-      Firebase.openFileFromCloud(id, current_version, (model_data) => {
-        file.setModelFromParsedBlob(model_data);
+      let current_version_info = history[current_version];
+      let { results_available } = current_version_info;
+      Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
         setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path });
-        closeFileManager();
+        if (results_available) {
+          utils.setLoadingDimmerMsg("loading_results");
+          Firebase.openFileFromCloud(id, current_version, "results", (results_data) => {
+            file.setModelAndResultsFromParsedBlob(model_data, results_data);
+            // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
+            setTimeout(() => {
+              setModelLock(true);
+              utils.hideLoadingDimmer();
+            }, 1000);
+          });
+        } else {
+          file.setModelAndResultsFromParsedBlob(model_data);
+          setModelLock(false);
+          utils.hideLoadingDimmer();
+        }
       });
     }
   }

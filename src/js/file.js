@@ -63,16 +63,17 @@ const uploadJSONFile = () => {
       fr.onload = function (e) {
         let lines = e.target.result;
         var state_from_file = JSON.parse(lines);
-        setModelFromParsedBlob(state_from_file);
+        setModelAndResultsFromParsedBlob(state_from_file);
       };
       fr.readAsText(user_file);
     }
   };
 };
 
-const setModelFromParsedBlob = (state_from_file) => {
+const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) => {
   state_from_file.settings = repair.repairSettings(state_from_file.settings);
   state.setState(repair.repairModel(state_from_file));
+  if (results_from_file) state.setState(results_from_file, "results");
   let rf_instance = state.getRfInstance();
   let model = repair.repairModel(state_from_file.model);
   rf_instance.setNodes(model.nodes);
@@ -82,5 +83,5 @@ const setModelFromParsedBlob = (state_from_file) => {
   logic_runner.run();
 };
 
-const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelFromParsedBlob, getResultsBlob };
+const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelAndResultsFromParsedBlob, getResultsBlob };
 export default file;

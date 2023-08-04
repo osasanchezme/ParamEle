@@ -113,6 +113,7 @@ class ParamEle extends React.Component {
     };
   }
   setModelLock(model_locked) {
+    if (!model_locked) state.setState({}, "results");
     this.setState({ model_locked });
   }
 
@@ -337,7 +338,7 @@ class ParamEle extends React.Component {
           ></SelectionBox>
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
-          <FileManager user={this.state.user} setFileData={this.setFileData}></FileManager>
+          <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
         </div>
       </ChakraProvider>
     );

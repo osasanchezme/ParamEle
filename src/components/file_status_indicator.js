@@ -65,8 +65,6 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
   function toggleModelLock() {
     if (model_locked) {
       setModelLock(false);
-      // Reset results when unlocking the model
-      setState({}, "results");
     } else {
       setModelLock(true);
     }

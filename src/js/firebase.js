@@ -258,11 +258,11 @@ function createRefToModelFileForUser(location, file_name, file_id, version_id, c
     });
 }
 
-function openFileFromCloud(file_id, version_id, callback) {
+function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
   const storage = getStorage();
-  const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/model.json`);
+  const file_ref = storageRef(storage, `projects/${file_id}/${version_id}/${file_type}.json`);
   // To get this working had to set up the CORS in GCloud
-  getBlob(model_ref)
+  getBlob(file_ref)
     .then((blob) => {
       blob
         .text()

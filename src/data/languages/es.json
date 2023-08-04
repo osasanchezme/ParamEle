@@ -228,6 +228,8 @@
     "waiting_dimmer":{
         "loading": "Cargando",
         "saving_new_version": "Guardando versión nueva",
-        "saving_results": "Guardando resultados de análisis"
+        "saving_results": "Guardando resultados de análisis",
+        "loading_model": "Cargando modelo",
+        "loading_results": "Cargando resultados"
     }
 }
