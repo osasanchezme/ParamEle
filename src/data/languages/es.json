@@ -61,7 +61,7 @@
         "value": "valor",
         "name": "nombre"
     },
-    "nodes":{
+    "nodes": {
         "inputNumber": "Número",
         "sumNumbers": "Sumar",
         "multiplyNumbers": "Multiplicar",
@@ -92,7 +92,7 @@
         "dataDisplay2DPlot": "Gráfico 2D",
         "structuralNodeResult": "Resultado Nodal"
     },
-    "settings":{
+    "settings": {
         "auto_update": "Actualizar automáticamente",
         "mini_map": "Mostrar mapa",
         "show_nodes": "Mostrar nodos",
@@ -111,11 +111,12 @@
         "sliders_single": "Una posibilidad",
         "spacing_between_combinations": "Espaciamiento entre combinaciones"
     },
-    "nav_bar":{
+    "nav_bar": {
         "file": "Archivo",
         "new": "Nuevo",
         "open": "Abrir",
         "save": "Guardar",
+        "version_history": "Historial",
         "export_json": "Exportar JSON",
         "import_json": "Importar JSON",
         "boxes": "Cajas",
@@ -136,10 +137,10 @@
         "days": "días",
         "last_saved": "Último guardado"
     },
-    "commands_bar":{
+    "commands_bar": {
         "placeholder": "Nombre nodo..."
     },
-    "renderer":{
+    "renderer": {
         "node": "Nodo",
         "member": "Elemento",
         "plate": "Placa"
@@ -155,7 +156,7 @@
         "copy_json": "Copiar estructura",
         "collapse_all": "Contraer todo"
     },
-    "notifications":{
+    "notifications": {
         "copy_title": "",
         "copy_desc": "La estructura fue copiada al portapapeles",
         "copy_error_title": "",
@@ -168,7 +169,7 @@
         "select_input_handles_desc": "Haz click sobre los puntos de entrada deseados",
         "select_output_handles_title": "Selecciona los puntos de salida",
         "select_output_handles_desc": "Haz click sobre los puntos de salida deseados",
-        "more_than_one_node_selected_title": "Más de una caja seleccionada", 
+        "more_than_one_node_selected_title": "Más de una caja seleccionada",
         "more_than_one_node_selected_desc": "Por favor selecciona una única caja",
         "no_wrapper_node_title": "La caja seleccionada no es agrupadora",
         "no_wrapper_node_desc": "Por favor selecciona una caja agrupadora",
@@ -183,10 +184,10 @@
         "results_saved_desc": "Los resultados del análisis fueron guardados con éxito",
         "no_data_to_show": "No hay resultados para mostrar"
     },
-    "navigator":{
+    "navigator": {
         "model": "Modelo principal"
     },
-    "auth":{
+    "auth": {
         "title": "Cuenta",
         "close_modal": "Cerrar",
         "sign_up": "Crear cuenta",
@@ -209,7 +210,7 @@
         "cannot_be_empty": "Este campo no puede estar vacío",
         "no_valid_email": "Este correo no parece ser válido"
     },
-    "file_manager":{
+    "file_manager": {
         "title": "Mis Archivos",
         "open": "Abrir",
         "save": "Guardar",
@@ -225,11 +226,19 @@
         "existing_file": "Nombre de archivo o carpeta existente",
         "file_name": "Nombre del archivo"
     },
-    "waiting_dimmer":{
+    "waiting_dimmer": {
         "loading": "Cargando",
         "saving_new_version": "Guardando versión nueva",
         "saving_results": "Guardando resultados de análisis",
         "loading_model": "Cargando modelo",
         "loading_results": "Cargando resultados"
+    },
+    "version_history": {
+        "title": "Historial de versiones",
+        "results_available": "Resultados disponibles",
+        "num_nodes": "Número de nodos",
+        "commit_msg": "Mensaje de guardado",
+        "edit": "Editar",
+        "save": "Guardar"
     }
 }

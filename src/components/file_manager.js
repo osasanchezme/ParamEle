@@ -329,8 +329,7 @@ function PathNavigator({ fileManagerPath, setFileManagerPath }) {
 
 function Folder({ folders, files, name, lastModified, onClick }) {
   let [selectedFolder, setSelectedFolder] = useState(false);
-  let formatted_date = new Date(lastModified);
-  formatted_date = `${formatted_date.toDateString()}, ${formatted_date.toLocaleTimeString()}`;
+  let formatted_date = utils.getFormattedDate(lastModified);
   return (
     <Box
       maxW="sm"
@@ -363,8 +362,7 @@ function Folder({ folders, files, name, lastModified, onClick }) {
 
 function File({ nodes, name, lastModified, onClick }) {
   let [selectedFolder, setSelectedFolder] = useState(false);
-  let formatted_date = new Date(lastModified);
-  formatted_date = `${formatted_date.toDateString()}, ${formatted_date.toLocaleTimeString()}`;
+  let formatted_date = utils.getFormattedDate(lastModified);
   return (
     <Box
       maxW="sm"

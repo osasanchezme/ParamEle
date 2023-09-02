@@ -123,6 +123,25 @@ function getUserProjects(callback) {
     });
 }
 
+function getProjectData(file_path, file_name, callback) {
+  const dbRef = databaseRef(getDatabase());
+  let db_path = getPathInDatabaseFromLocal(file_path);
+  db_path += `/${file_name}`;
+  get(child(dbRef, db_path))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        callback(snapshot.val());
+      } else {
+        console.log("No data available for this user under projects");
+        // Return an empty object
+        callback({});
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 function getPathInDatabaseFromLocal(location) {
   let user = auth.currentUser;
   let db_path = `users/${user.uid}/projects`;
@@ -215,6 +234,24 @@ function updateRefToResultsFileForUser(location, file_name, file_id, version_id,
     });
 }
 
+function updateCommitMsgForUser(location, file_name, version_id, commit_msg,callback) {
+  let db_path = getPathInDatabaseFromLocal(location);
+  // Append the new file name to the path
+  db_path += `/${file_name}`;
+  // Create the updates object
+  let updates = {};
+  updates[`${db_path}/history/${version_id}/commit_msg`] = commit_msg;
+  update(databaseRef(getDatabase()), updates)
+    .then(() => {
+      callback(true);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`There was a problem: ${errorMessage} (${errorCode})`);
+    });
+}
+
 function createRefToModelFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg) {
   let db_path = getPathInDatabaseFromLocal(location);
   // Append the new file name to the path
@@ -296,6 +333,8 @@ const Firebase = {
   createNewFolderForUser,
   saveFileToCloud,
   openFileFromCloud,
+  getProjectData,
+  updateCommitMsgForUser
 };
 
 export default Firebase;

@@ -330,6 +330,15 @@ function isIdFromFolder(id) {
   return id.substring(0, 2) === "fo";
 }
 
+/**
+ * Converts a UNIX timestamp to a formatted string
+ * @param {number} timestamp 
+ */
+function getFormattedDate(timestamp) {
+  let formatted_date = new Date(timestamp);
+  return `${formatted_date.toDateString()}, ${formatted_date.toLocaleTimeString()}`;
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -355,7 +364,8 @@ const utils = {
   isIdFromFolder,
   showLoadingDimmer,
   setLoadingDimmerMsg,
-  hideLoadingDimmer
+  hideLoadingDimmer,
+  getFormattedDate
 };
 
 export default utils;

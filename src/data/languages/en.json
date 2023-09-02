@@ -116,6 +116,7 @@
         "new": "New",
         "open": "Open",
         "save": "Save",
+        "version_history": "History",
         "export_json": "Export JSON",
         "import_json": "Import JSON",
         "boxes": "Boxes",
@@ -231,5 +232,13 @@
         "saving_results": "Saving analysis results",
         "loading_model": "Loading model",
         "loading_results": "Loading results"
+    },
+    "version_history": {
+        "title": "Version history",
+        "results_available": "Results available",
+        "num_nodes": "Number of nodes",
+        "commit_msg": "Commit message",
+        "edit": "Edit",
+        "save": "Save"
     }
 }

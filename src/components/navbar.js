@@ -11,7 +11,7 @@ function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions({ new_file_callback, solve_file_callback }) {
+function getNavBarOptions({ new_file_callback, solve_file_callback, open_version_manager_callback }) {
   return {
     file: {
       icon: "MdInsertDriveFile",
@@ -31,6 +31,7 @@ function getNavBarOptions({ new_file_callback, solve_file_callback }) {
             utils.openFileManager("save");
           },
         },
+        { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: open_version_manager_callback },
         { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
         { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: file.uploadJSONFile },
       ],
@@ -89,6 +90,9 @@ class NavBar extends React.Component {
       solve_file_callback: function () {
         props.setModelLock(true);
         structure.solveStructure();
+      },
+      open_version_manager_callback: function () {
+        props.openVersionManager();
       }
     });
     this.right_navbar_options = getRightNavBarOptions();

@@ -21,6 +21,8 @@ import utils from "./utils";
 import VisualEditor from "./components/VisualEditor";
 import createNodesLibrary from "./flow-nodes/handler";
 import Renderer from "./components/Renderer";
+import VersionManager from "./components/version_manager";
+import Firebase from "./js/firebase";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -46,7 +48,9 @@ class ParamEle extends React.Component {
       last_saved: null,
       model_id: null,
       file_path: null,
+      file_history: null,
       model_locked: false,
+      is_version_manager_open: false,
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -67,6 +71,8 @@ class ParamEle extends React.Component {
     window.ParamEle.setUser = this.setUser.bind(this);
     this.setFileData = this.setFileData.bind(this);
     this.setModelLock = this.setModelLock.bind(this);
+    this.openVersionManager = this.openVersionManager.bind(this);
+    this.closeVersionManager = this.closeVersionManager.bind(this);
   }
   componentDidMount() {
     utils.showLoadingDimmer();
@@ -115,6 +121,16 @@ class ParamEle extends React.Component {
   setModelLock(model_locked) {
     if (!model_locked) state.setState({}, "results");
     this.setState({ model_locked });
+  }
+  openVersionManager() {
+    Firebase.getProjectData(this.state.file_path, this.state.file_name, (full_file_data) => {
+      this.setState({ file_history: full_file_data.history }, () => {
+        this.setState({ is_version_manager_open: true });
+      });
+    });
+  }
+  closeVersionManager() {
+    this.setState({ is_version_manager_open: false });
   }
 
   /**
@@ -301,6 +317,7 @@ class ParamEle extends React.Component {
             setFileData={this.setFileData}
             model_locked={this.state.model_locked}
             setModelLock={this.setModelLock}
+            openVersionManager={this.openVersionManager}
           ></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
@@ -339,6 +356,7 @@ class ParamEle extends React.Component {
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
           <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
+          <VersionManager isOpen={this.state.is_version_manager_open} file_history={this.state.file_history} file_name={this.state.file_name} file_path={this.state.file_path} onClose={this.closeVersionManager}></VersionManager>
         </div>
       </ChakraProvider>
     );
