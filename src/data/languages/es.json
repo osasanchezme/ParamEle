@@ -239,6 +239,8 @@
         "num_nodes": "Número de nodos",
         "commit_msg": "Mensaje de guardado",
         "edit": "Editar",
-        "save": "Guardar"
+        "save": "Guardar",
+        "close": "Cerrar",
+        "load": "Cargar"
     }
 }

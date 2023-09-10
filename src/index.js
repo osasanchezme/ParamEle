@@ -356,7 +356,7 @@ class ParamEle extends React.Component {
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
           <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
-          <VersionManager isOpen={this.state.is_version_manager_open} file_history={this.state.file_history} file_name={this.state.file_name} file_path={this.state.file_path} onClose={this.closeVersionManager}></VersionManager>
+          <VersionManager isOpen={this.state.is_version_manager_open} file_history={this.state.file_history} file_name={this.state.file_name} file_path={this.state.file_path} onClose={this.closeVersionManager} model_id={this.state.model_id} setFileData={this.setFileData} setModelLock={this.setModelLock}></VersionManager>
         </div>
       </ChakraProvider>
     );

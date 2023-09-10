@@ -3,6 +3,8 @@ import getState from "../getState";
 import logic_runner from "./globalLogicRunner";
 import blank_model from "../data/template-0.json";
 import repair from "./repair";
+import utils from "../utils";
+import Firebase from "./firebase";
 
 const downloadJSONFile = () => {
   var fileName = "modelo.json";
@@ -83,5 +85,38 @@ const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) =>
   logic_runner.run();
 };
 
-const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelAndResultsFromParsedBlob, getResultsBlob };
+/**
+ * 
+ * @param {{id:string, current_version:number, history: Object.<number, object>}} data 
+ * @param {*} file_name 
+ * @param {*} fileManagerPath 
+ * @param {*} setFileData 
+ * @param {*} setModelLock 
+ */
+const downloadAndOpenModel = (id, current_version, history, file_name, fileManagerPath, setFileData, setModelLock) => {
+  utils.showLoadingDimmer("loading_model");
+  let file_path = JSON.parse(JSON.stringify(fileManagerPath));
+  let current_version_info = history[current_version];
+  let { results_available } = current_version_info;
+  Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
+    setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path });
+    if (results_available) {
+      utils.setLoadingDimmerMsg("loading_results");
+      Firebase.openFileFromCloud(id, current_version, "results", (results_data) => {
+        setModelAndResultsFromParsedBlob(model_data, results_data);
+        // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
+        setTimeout(() => {
+          setModelLock(true);
+          utils.hideLoadingDimmer();
+        }, 1000);
+      });
+    } else {
+      setModelAndResultsFromParsedBlob(model_data);
+      setModelLock(false);
+      utils.hideLoadingDimmer();
+    }
+  });
+};
+
+const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelAndResultsFromParsedBlob, getResultsBlob, downloadAndOpenModel };
 export default file;

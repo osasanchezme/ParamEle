@@ -239,6 +239,8 @@
         "num_nodes": "Number of nodes",
         "commit_msg": "Commit message",
         "edit": "Edit",
-        "save": "Save"
+        "save": "Save",
+        "close": "Close",
+        "load": "Load"
     }
 }

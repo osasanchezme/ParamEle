@@ -402,29 +402,8 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
   function handleClickOnFile(event, file_name) {
     if (mode === "open") {
       closeFileManager();
-      utils.showLoadingDimmer("loading_model");
       let { id, current_version, history } = data[file_name];
-      let file_path = JSON.parse(JSON.stringify(fileManagerPath));
-      let current_version_info = history[current_version];
-      let { results_available } = current_version_info;
-      Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
-        setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path });
-        if (results_available) {
-          utils.setLoadingDimmerMsg("loading_results");
-          Firebase.openFileFromCloud(id, current_version, "results", (results_data) => {
-            file.setModelAndResultsFromParsedBlob(model_data, results_data);
-            // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
-            setTimeout(() => {
-              setModelLock(true);
-              utils.hideLoadingDimmer();
-            }, 1000);
-          });
-        } else {
-          file.setModelAndResultsFromParsedBlob(model_data);
-          setModelLock(false);
-          utils.hideLoadingDimmer();
-        }
-      });
+      file.downloadAndOpenModel(id, current_version, history, file_name, fileManagerPath, setFileData, setModelLock);
     }
   }
   let fileman_view = Object.entries(data).map(([name, content]) => {
