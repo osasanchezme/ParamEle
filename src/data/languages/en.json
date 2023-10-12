@@ -182,7 +182,8 @@
         "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped",
         "results_saved_title": "Results saved",
         "results_saved_desc": "Analysis results were successfully saved",
-        "no_data_to_show": "No results to display"
+        "no_data_to_show": "No results to display",
+        "cannot_delete_version": "Cannot delete this version as it is the current one"
     },
     "navigator":{
         "model": "Main model"
@@ -241,6 +242,13 @@
         "edit": "Edit",
         "save": "Save",
         "close": "Close",
-        "load": "Load"
+        "load": "Load",
+        "delete": "Delete"
+    },
+    "confirmation_dialog": {
+        "title": "Confirmation",
+        "delete_version": "Are you sure you want to delete this version?",
+        "ok": "OK",
+        "cancel": "Cancel"
     }
 }

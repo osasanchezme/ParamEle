@@ -2,9 +2,10 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getDatabase, ref as databaseRef, set, get, child, update } from "firebase/database";
-import { getStorage, ref as storageRef, uploadBytes, getBlob } from "firebase/storage";
+import { getDatabase, ref as databaseRef, set, get, child, update, remove } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getBlob, deleteObject } from "firebase/storage";
 import utils from "../utils";
+import { notify } from "../components/notification";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -234,7 +235,7 @@ function updateRefToResultsFileForUser(location, file_name, file_id, version_id,
     });
 }
 
-function updateCommitMsgForUser(location, file_name, version_id, commit_msg,callback) {
+function updateCommitMsgForUser(location, file_name, version_id, commit_msg, callback) {
   let db_path = getPathInDatabaseFromLocal(location);
   // Append the new file name to the path
   db_path += `/${file_name}`;
@@ -315,6 +316,52 @@ function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
     });
 }
 
+function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, results_available, current_version) {
+  // Delete the file (both model and results)
+  const storage = getStorage();
+  // WIP - This conditional for the current version did not work
+  if (current_version === version_id) {
+    notify("warning", "cannot_delete_version")
+    return;
+  }
+  deleteFile("model", function() {
+    if (results_available) {
+      deleteFile("model", deleteVersionReference);
+    } else {
+      deleteVersionReference();
+    }
+  });
+
+  function deleteVersionReference() {
+    let db_path = getPathInDatabaseFromLocal(file_path);
+    // Append the file name and version_id to the path
+    db_path += `/${file_name}/history/${version_id}`;
+    remove(databaseRef(db_path))
+      .then(() => {
+        console.log("Deleted the reference");
+      })
+      .catch((error) => {
+        console.error("Error deleting the version reference: ", error);
+      });
+  }
+  /**
+   * Deletes a file from the storage
+   * @param {"model"|"results"} type
+   * @param {Function} success_callback
+   */
+  function deleteFile(type, success_callback) {
+    const file_ref = storageRef(storage, `projects/${model_id}/${version_id}/${type}.json`);
+    deleteObject(file_ref)
+      .then(() => {
+        console.log(`Deleted the ${type}!`);
+        success_callback();
+      })
+      .catch((error) => {
+        console.error("Error deleting the version folder: ", error);
+      });
+  }
+}
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     utils.setUser(user);
@@ -334,7 +381,8 @@ const Firebase = {
   saveFileToCloud,
   openFileFromCloud,
   getProjectData,
-  updateCommitMsgForUser
+  updateCommitMsgForUser,
+  deleteFileVersionFromCloud,
 };
 
 export default Firebase;

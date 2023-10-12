@@ -84,7 +84,7 @@ class NavBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.navbar_options = getNavBarOptions({
       new_file_callback: function () {
-        props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null });
+        props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
         file.newFile();
       },
       solve_file_callback: function () {

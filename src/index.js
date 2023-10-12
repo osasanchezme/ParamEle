@@ -23,6 +23,7 @@ import createNodesLibrary from "./flow-nodes/handler";
 import Renderer from "./components/Renderer";
 import VersionManager from "./components/version_manager";
 import Firebase from "./js/firebase";
+import { ConfirmationDialog } from "./components/confirmation_dialog";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -50,7 +51,11 @@ class ParamEle extends React.Component {
       file_path: null,
       file_history: null,
       model_locked: false,
+      current_version: null,
       is_version_manager_open: false,
+      is_confirmation_open: false,
+      confirmation_msg: false,
+      confirmation_callbacks: false,
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -73,6 +78,8 @@ class ParamEle extends React.Component {
     this.setModelLock = this.setModelLock.bind(this);
     this.openVersionManager = this.openVersionManager.bind(this);
     this.closeVersionManager = this.closeVersionManager.bind(this);
+    this.openConfirmationDialog = this.openConfirmationDialog.bind(this);
+    this.closeConfirmationDialog = this.closeConfirmationDialog.bind(this);
   }
   componentDidMount() {
     utils.showLoadingDimmer();
@@ -101,8 +108,8 @@ class ParamEle extends React.Component {
   setUser(user) {
     this.setState({ user });
   }
-  setFileData({ file_name, is_saved, last_saved, model_id, file_path }) {
-    let update_obj = { file_name, is_saved, last_saved, model_id, file_path };
+  setFileData({ file_name, is_saved, last_saved, model_id, file_path, current_version }) {
+    let update_obj = { file_name, is_saved, last_saved, model_id, file_path, current_version };
     let actual_update_object = {};
     Object.entries(update_obj).forEach(([key, val]) => {
       if (val !== undefined) actual_update_object[key] = val;
@@ -131,6 +138,12 @@ class ParamEle extends React.Component {
   }
   closeVersionManager() {
     this.setState({ is_version_manager_open: false });
+  }
+  openConfirmationDialog(message, callbacks) {
+    this.setState({ is_confirmation_open: true, confirmation_msg: message, confirmation_callbacks: callbacks });
+  }
+  closeConfirmationDialog() {
+    this.setState({ is_confirmation_open: false });
   }
 
   /**
@@ -311,6 +324,12 @@ class ParamEle extends React.Component {
           onMouseUp={this.handleMouseUp}
         >
           <LoadingDimmer></LoadingDimmer>
+          <ConfirmationDialog
+            isDialogOpen={this.state.is_confirmation_open}
+            closeDialog={this.closeConfirmationDialog}
+            callbacks={this.state.confirmation_callbacks}
+            message_copy={this.state.confirmation_msg}
+          ></ConfirmationDialog>
           <NavBar
             user={this.state.user}
             file_data={this.getFileData()}
@@ -356,7 +375,18 @@ class ParamEle extends React.Component {
           <GlobalSettings></GlobalSettings>
           <Authentication user={this.state.user}></Authentication>
           <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
-          <VersionManager isOpen={this.state.is_version_manager_open} file_history={this.state.file_history} file_name={this.state.file_name} file_path={this.state.file_path} onClose={this.closeVersionManager} model_id={this.state.model_id} setFileData={this.setFileData} setModelLock={this.setModelLock}></VersionManager>
+          <VersionManager
+            isOpen={this.state.is_version_manager_open}
+            file_history={this.state.file_history}
+            file_name={this.state.file_name}
+            file_path={this.state.file_path}
+            onClose={this.closeVersionManager}
+            model_id={this.state.model_id}
+            current_version={this.state.current_version}
+            setFileData={this.setFileData}
+            setModelLock={this.setModelLock}
+            openConfirmationDialog={this.openConfirmationDialog}
+          ></VersionManager>
         </div>
       </ChakraProvider>
     );

@@ -31,3 +31,4 @@ function closeAllNotifications() {
 
 const notification = { notify, closeAllNotifications };
 export default notification;
+export {notify, closeAllNotifications};

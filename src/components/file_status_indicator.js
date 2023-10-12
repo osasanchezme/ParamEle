@@ -36,7 +36,7 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
       file_path,
       (new_file) => {
         // Update the file data in the app state
-        setFileData({ is_saved: true, last_saved: version_id });
+        setFileData({ is_saved: true, last_saved: version_id, current_version: version_id });
         // Save the results to the cloud
         let results_blob = file.getResultsBlob();
         if (results_blob !== false) {

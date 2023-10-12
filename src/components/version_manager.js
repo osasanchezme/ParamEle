@@ -23,9 +23,11 @@ import {
   Flex,
   Spacer,
   Center,
+  Tooltip,
+  ButtonGroup,
 } from "@chakra-ui/react";
 
-import { MdCancel, MdCheckCircle, MdEdit, MdSave } from "react-icons/md";
+import { MdCancel, MdCheckCircle, MdDelete, MdEdit, MdSave } from "react-icons/md";
 
 import utils from "../utils";
 import Firebase from "../js/firebase";
@@ -36,7 +38,7 @@ function localGetDisplayCopy(key) {
   return utils.getDisplayCopy("version_history", key);
 }
 
-function VersionManager({ isOpen, onClose, file_history, file_name, file_path, model_id, setFileData, setModelLock }) {
+function VersionManager({ isOpen, onClose, file_history, file_name, file_path, model_id, current_version, setFileData, setModelLock, openConfirmationDialog }) {
   let versions_list = [];
   if (file_history) {
     versions_list = Object.entries(file_history).map(([version_key, version_data]) => (
@@ -47,10 +49,12 @@ function VersionManager({ isOpen, onClose, file_history, file_name, file_path, m
         file_name={file_name}
         file_path={file_path}
         model_id={model_id}
+        current_version={current_version}
         setFileData={setFileData}
         setModelLock={setModelLock}
         file_history={file_history}
         closeVersionManager={onClose}
+        openConfirmationDialog={openConfirmationDialog}
       ></VersionItem>
     ));
   }
@@ -67,9 +71,19 @@ function VersionManager({ isOpen, onClose, file_history, file_name, file_path, m
     </Modal>
   );
 }
-// WIP - Add tooltips to the icon buttons
-// WIP - Add button to delete version
-function VersionItem({ version_key, version_data, file_name, file_path, model_id, setFileData, setModelLock, file_history, closeVersionManager }) {
+function VersionItem({
+  version_key,
+  version_data,
+  file_name,
+  file_path,
+  model_id,
+  current_version,
+  setFileData,
+  setModelLock,
+  file_history,
+  closeVersionManager,
+  openConfirmationDialog,
+}) {
   let reportable_props = ["num_nodes", "results_available"];
   const [commitMsgActive, setCommitMsgActive] = useState(false);
   const [commitMsg, setCommitMsg] = useState(version_data.commit_msg);
@@ -95,6 +109,25 @@ function VersionItem({ version_key, version_data, file_name, file_path, model_id
   function handleClickOnLoadButton() {
     file.downloadAndOpenModel(model_id, version_key, file_history, file_name, file_path, setFileData, setModelLock);
     closeVersionManager();
+  }
+  function handleClickOnDeleteButton() {
+    let dialog_callbacks = [
+      {
+        run: () => {
+          Firebase.deleteFileVersionFromCloud(file_name, file_path, model_id, version_key, version_data.results_available, current_version)
+          // WIP - Actually delete the version in firebase
+        },
+        copy: "ok",
+        color: "red",
+      },
+      {
+        run: () => {},
+        copy: "cancel",
+        color: "gray",
+        action: "close"
+      },
+    ];
+    openConfirmationDialog("delete_version", dialog_callbacks);
   }
   let version_props = Object.entries(version_data).map(([prop_key, prop_val]) => {
     let table_row = "";
@@ -148,13 +181,17 @@ function VersionItem({ version_key, version_data, file_name, file_path, model_id
       <Td borderBottom="none">{localGetDisplayCopy(localGetDisplayCopy("commit_msg"))}:</Td>
       <Td textAlign="center" borderBottom="none">
         {commitMsgActive ? (
-          <Tag size="sm" backgroundColor="blue.600" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
-            {isButtonLoading ? <Spinner size="xs" speed="0.7s" /> : <Icon as={MdSave} />}
-          </Tag>
+          <Tooltip label={localGetDisplayCopy("save")}>
+            <Tag size="sm" backgroundColor="blue.600" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
+              {isButtonLoading ? <Spinner size="xs" speed="0.7s" /> : <Icon as={MdSave} />}
+            </Tag>
+          </Tooltip>
         ) : (
-          <Tag size="sm" backgroundColor="gray.500" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
-            <Icon as={MdEdit} />
-          </Tag>
+          <Tooltip label={localGetDisplayCopy("edit")}>
+            <Tag size="sm" backgroundColor="gray.500" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
+              <Icon as={MdEdit} />
+            </Tag>
+          </Tooltip>
         )}
       </Td>
     </Tr>
@@ -167,9 +204,16 @@ function VersionItem({ version_key, version_data, file_name, file_path, model_id
             <Text fontWeight="bold">{utils.getFormattedDate(Number(version_key))}</Text>
           </Center>
           <Spacer />
-          <Button size="sm" colorScheme="blue" onClick={handleClickOnLoadButton}>
-            {localGetDisplayCopy("load")}
-          </Button>
+          <ButtonGroup size="sm">
+            <Tooltip label={localGetDisplayCopy("delete")}>
+              <Button colorScheme="red" onClick={handleClickOnDeleteButton} padding={0.5}>
+                <Icon as={MdDelete} />
+              </Button>
+            </Tooltip>
+            <Button colorScheme="blue" onClick={handleClickOnLoadButton}>
+              {localGetDisplayCopy("load")}
+            </Button>
+          </ButtonGroup>
         </Flex>
         <TableContainer marginTop="3">
           <Table size="sm">

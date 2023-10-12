@@ -99,7 +99,7 @@ const downloadAndOpenModel = (id, current_version, history, file_name, fileManag
   let current_version_info = history[current_version];
   let { results_available } = current_version_info;
   Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
-    setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path });
+    setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path, current_version });
     if (results_available) {
       utils.setLoadingDimmerMsg("loading_results");
       Firebase.openFileFromCloud(id, current_version, "results", (results_data) => {
