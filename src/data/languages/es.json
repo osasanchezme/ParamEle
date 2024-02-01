@@ -183,7 +183,8 @@
         "results_saved_title": "Resultados guardados",
         "results_saved_desc": "Los resultados del análisis fueron guardados con éxito",
         "no_data_to_show": "No hay resultados para mostrar",
-        "cannot_delete_version": "No se puede eliminar esta versión por ser la actual"
+        "cannot_delete_version_title": "No se puede eliminar",
+        "cannot_delete_version_desc": "Esta es la versión actual, cámbiala antes de eliminarla"
     },
     "navigator": {
         "model": "Modelo principal"

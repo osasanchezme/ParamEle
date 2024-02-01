@@ -1,5 +1,6 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import utils from "../utils";
+import { useState } from "react";
 
 function localGetDisplayCopy(key) {
   return utils.getDisplayCopy("confirmation_dialog", key);
@@ -11,22 +12,34 @@ function localGetDisplayCopy(key) {
  * @returns
  */
 function ConfirmationDialog({ isDialogOpen, closeDialog, callbacks, message_copy }) {
+  let [running, setRunning] = useState(false);
+  let [running_button, setRunningButton] = useState('');
   let callback_buttons = "";
   if (callbacks) {
     callback_buttons = callbacks.map((callback) => {
       let callback_function = () => {
-        callback.run();
+        setRunningButton(callback.copy);
+        setRunning(true);
+        callback.run(() => {
+          setRunning(false);
+          setRunningButton('');
+          closeDialog();
+        });
       };
       if (callback.action) {
         if (callback.action === "close") {
           callback_function = () => {
+            setRunningButton(callback.copy);
+            setRunning(true);
             callback.run();
+            setRunning(false);
+            setRunningButton('');
             closeDialog();
           };
         }
       }
       return (
-        <Button mr={3} key={callback.copy} colorScheme={callback.color} onClick={callback_function}>
+        <Button mr={3} key={callback.copy} colorScheme={callback.color} onClick={callback_function} isLoading={running && running_button == callback.copy}>
           {localGetDisplayCopy(callback.copy)}
         </Button>
       );

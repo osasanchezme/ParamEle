@@ -38,7 +38,18 @@ function localGetDisplayCopy(key) {
   return utils.getDisplayCopy("version_history", key);
 }
 
-function VersionManager({ isOpen, onClose, file_history, file_name, file_path, model_id, current_version, setFileData, setModelLock, openConfirmationDialog }) {
+function VersionManager({
+  isOpen,
+  onClose,
+  file_history,
+  file_name,
+  file_path,
+  model_id,
+  current_version,
+  setFileData,
+  setModelLock,
+  openConfirmationDialog,
+}) {
   let versions_list = [];
   if (file_history) {
     versions_list = Object.entries(file_history).map(([version_key, version_data]) => (
@@ -113,9 +124,19 @@ function VersionItem({
   function handleClickOnDeleteButton() {
     let dialog_callbacks = [
       {
-        run: () => {
-          Firebase.deleteFileVersionFromCloud(file_name, file_path, model_id, version_key, version_data.results_available, current_version)
-          // WIP - Actually delete the version in firebase
+        run: (close_dialog_callback) => {
+          Firebase.deleteFileVersionFromCloud(
+            file_name,
+            file_path,
+            model_id,
+            version_key,
+            version_data.results_available,
+            current_version,
+            () => {
+              close_dialog_callback();
+              closeVersionManager();
+            }
+          );
         },
         copy: "ok",
         color: "red",
@@ -124,7 +145,7 @@ function VersionItem({
         run: () => {},
         copy: "cancel",
         color: "gray",
-        action: "close"
+        action: "close",
       },
     ];
     openConfirmationDialog("delete_version", dialog_callbacks);

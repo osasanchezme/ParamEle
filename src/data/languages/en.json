@@ -183,7 +183,8 @@
         "results_saved_title": "Results saved",
         "results_saved_desc": "Analysis results were successfully saved",
         "no_data_to_show": "No results to display",
-        "cannot_delete_version": "Cannot delete this version as it is the current one"
+        "cannot_delete_version_title": "Cannot delete",
+        "cannot_delete_version_desc": "This is the current version. Change it before deleting"
     },
     "navigator":{
         "model": "Main model"

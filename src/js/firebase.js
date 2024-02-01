@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getDatabase, ref as databaseRef, set, get, child, update, remove } from "firebase/database";
+import { getDatabase, ref as databaseRef, set, get, child, update } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getBlob, deleteObject } from "firebase/storage";
 import utils from "../utils";
 import { notify } from "../components/notification";
@@ -316,29 +316,34 @@ function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
     });
 }
 
-function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, results_available, current_version) {
+function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, results_available, current_version, callback) {
   // Delete the file (both model and results)
   const storage = getStorage();
-  // WIP - This conditional for the current version did not work
-  if (current_version === version_id) {
-    notify("warning", "cannot_delete_version")
+  if (String(current_version) === String(version_id)) {
+    notify("warning", "cannot_delete_version", "", true);
+    callback();
     return;
   }
+  // Something is not working when deleting the reference in the realtime database
   deleteFile("model", function() {
     if (results_available) {
-      deleteFile("model", deleteVersionReference);
+      deleteFile("results", () => {deleteVersionReference(callback)});
     } else {
-      deleteVersionReference();
+      deleteVersionReference(callback);
     }
   });
 
-  function deleteVersionReference() {
+  function deleteVersionReference(callback) {
     let db_path = getPathInDatabaseFromLocal(file_path);
     // Append the file name and version_id to the path
     db_path += `/${file_name}/history/${version_id}`;
-    remove(databaseRef(db_path))
+    let updates_remove = {};
+    updates_remove[db_path] = null;
+    update(databaseRef(getDatabase()), updates_remove)
       .then(() => {
         console.log("Deleted the reference");
+        callback();
+
       })
       .catch((error) => {
         console.error("Error deleting the version reference: ", error);
