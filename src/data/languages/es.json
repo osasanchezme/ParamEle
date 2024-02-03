@@ -184,7 +184,9 @@
         "results_saved_desc": "Los resultados del análisis fueron guardados con éxito",
         "no_data_to_show": "No hay resultados para mostrar",
         "cannot_delete_version_title": "No se puede eliminar",
-        "cannot_delete_version_desc": "Esta es la versión actual, cámbiala antes de eliminarla"
+        "cannot_delete_version_desc": "Esta es la versión actual, cámbiala antes de eliminarla",
+        "not_logged_in_cannot_access_file_title": "No has iniciado sesión",
+        "not_logged_in_cannot_access_file_desc": "Inicia sesión para poder acceder al archivo solicitado"
     },
     "navigator": {
         "model": "Modelo principal"

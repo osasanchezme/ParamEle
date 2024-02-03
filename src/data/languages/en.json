@@ -184,7 +184,9 @@
         "results_saved_desc": "Analysis results were successfully saved",
         "no_data_to_show": "No results to display",
         "cannot_delete_version_title": "Cannot delete",
-        "cannot_delete_version_desc": "This is the current version. Change it before deleting"
+        "cannot_delete_version_desc": "This is the current version. Change it before deleting",
+        "not_logged_in_cannot_access_file_title": "You are not logged in",
+        "not_logged_in_cannot_access_file_desc": "Please log in to access the requested file"
     },
     "navigator":{
         "model": "Main model"

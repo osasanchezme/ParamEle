@@ -179,9 +179,7 @@ function FileManager({ user, setFileData, setModelLock }) {
       });
     }
   }
-  if (user == null) {
-    // utils.openAuthentication();
-  } else {
+  if (user) {
     let files_to_display = getFilesAndFoldersToDisplay();
     let fileman_body = "";
     if (!fileManagerWaiting) {

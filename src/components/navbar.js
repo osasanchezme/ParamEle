@@ -55,11 +55,11 @@ function getNavBarOptions({ new_file_callback, solve_file_callback, open_version
   };
 }
 
-function getRightNavBarOptions() {
+function getRightNavBarOptions({open_authentication_callback}) {
   return {
     account: {
       icon: "MdAccountCircle",
-      callback: utils.openAuthentication,
+      callback: open_authentication_callback,
       auth_behavior: {
         auth: { visible: false },
         no_auth: { visible: true },
@@ -67,7 +67,7 @@ function getRightNavBarOptions() {
     },
     user: {
       icon: "MdAccountCircle",
-      callback: utils.openAuthentication,
+      callback: open_authentication_callback,
       auth_behavior: {
         auth: { visible: true },
         no_auth: { visible: false },
@@ -95,7 +95,11 @@ class NavBar extends React.Component {
         props.openVersionManager();
       }
     });
-    this.right_navbar_options = getRightNavBarOptions();
+    this.right_navbar_options = getRightNavBarOptions({
+      open_authentication_callback: function () {
+        props.openAuthenticationForm();
+      }
+    });
   }
   handleChange(dropdown_visible, mouse_on_menu) {
     this.setState({ dropdown_visible, mouse_on_menu });

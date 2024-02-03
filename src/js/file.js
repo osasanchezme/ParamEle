@@ -86,18 +86,19 @@ const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) =>
 };
 
 /**
- * 
- * @param {{id:string, current_version:number, history: Object.<number, object>}} data 
- * @param {*} file_name 
- * @param {*} fileManagerPath 
- * @param {*} setFileData 
- * @param {*} setModelLock 
+ *
+ * @param {{id:string, current_version:number, history: Object.<number, object>}} data
+ * @param {*} file_name
+ * @param {*} fileManagerPath
+ * @param {*} setFileData
+ * @param {*} setModelLock
  */
 const downloadAndOpenModel = (id, current_version, history, file_name, fileManagerPath, setFileData, setModelLock) => {
   utils.showLoadingDimmer("loading_model");
   let file_path = JSON.parse(JSON.stringify(fileManagerPath));
   let current_version_info = history[current_version];
   let { results_available } = current_version_info;
+  setURLParams(fileManagerPath, file_name);
   Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
     setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path, current_version });
     if (results_available) {
@@ -118,5 +119,45 @@ const downloadAndOpenModel = (id, current_version, history, file_name, fileManag
   });
 };
 
-const file = { downloadJSONFile, uploadJSONFile, newFile, getModelBlob, setModelAndResultsFromParsedBlob, getResultsBlob, downloadAndOpenModel };
+const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock) => {
+  Firebase.getProjectData(file_path, file_name, (file_data) => {
+    let { current_version, history, id } = file_data;
+    downloadAndOpenModel(id, current_version, history, file_name, file_path, setFileData, setModelLock);
+  });
+};
+
+const setURLParams = (fileManagerPath, file_name) => {
+  // Set query parameters based on user action
+  const queryParams = new URLSearchParams(window.location.search);
+  queryParams.delete("path");
+  queryParams.delete("name");
+  queryParams.append("path", fileManagerPath);
+  queryParams.append("name", file_name);
+
+  // Update URL with new query parameters
+  const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
+  window.history.pushState({}, "", newUrl);
+};
+
+const getURLParams = () => {
+  const queryParams = new URLSearchParams(window.location.search);
+  let important_params = ["path", "name"];
+  let params_object = {};
+  important_params.forEach((param_key) => {
+    params_object[param_key] = queryParams.get(param_key);
+  });
+  return params_object;
+}
+
+const file = {
+  downloadJSONFile,
+  uploadJSONFile,
+  newFile,
+  getModelBlob,
+  setModelAndResultsFromParsedBlob,
+  getResultsBlob,
+  downloadAndOpenModel,
+  getFileDataAndOpenModel,
+  getURLParams
+};
 export default file;

@@ -24,6 +24,8 @@ import Renderer from "./components/Renderer";
 import VersionManager from "./components/version_manager";
 import Firebase from "./js/firebase";
 import { ConfirmationDialog } from "./components/confirmation_dialog";
+import file from "./js/file";
+import { notify } from "./components/notification";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -56,6 +58,8 @@ class ParamEle extends React.Component {
       is_confirmation_open: false,
       confirmation_msg: false,
       confirmation_callbacks: false,
+      is_auth_form_open: false,
+      active_tab_auth_form: "sign_up",
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -80,6 +84,30 @@ class ParamEle extends React.Component {
     this.closeVersionManager = this.closeVersionManager.bind(this);
     this.openConfirmationDialog = this.openConfirmationDialog.bind(this);
     this.closeConfirmationDialog = this.closeConfirmationDialog.bind(this);
+    this.openAuthenticationForm = this.openAuthenticationForm.bind(this);
+    this.closeAuthenticationForm = this.closeAuthenticationForm.bind(this);
+    this.setActiveTabAuthenticationForm = this.setActiveTabAuthenticationForm.bind(this);
+
+    // Manage auth state changes - This is the last thing that loads
+    Firebase.attachToAuthChangeFirebaseEvent((user) => {
+      let params_object = file.getURLParams();
+      let { path, name } = params_object;
+      let is_params_available = path !== null && name !== null;
+      if (user) {
+        utils.setUser(user);
+        utils.hideLoadingDimmer();
+        let file_path = path.split(",");
+        if (is_params_available) file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock);
+      } else {
+        utils.setUser(null);
+        utils.hideLoadingDimmer();
+        if (is_params_available) {
+          // Show notification and open the auth form to log in
+          notify("warning", "not_logged_in_cannot_access_file", undefined, true);
+          this.openAuthenticationForm("log_in");
+        }
+      }
+    });
   }
   componentDidMount() {
     utils.showLoadingDimmer();
@@ -144,6 +172,15 @@ class ParamEle extends React.Component {
   }
   closeConfirmationDialog() {
     this.setState({ is_confirmation_open: false });
+  }
+  openAuthenticationForm(active_tab_auth_form) {
+    this.setState({ is_auth_form_open: true, active_tab_auth_form: active_tab_auth_form || 'sign_up' });
+  }
+  closeAuthenticationForm() {
+    this.setState({ is_auth_form_open: false });
+  }
+  setActiveTabAuthenticationForm(active_tab_auth_form) {
+    this.setState({ active_tab_auth_form });
   }
 
   /**
@@ -337,6 +374,7 @@ class ParamEle extends React.Component {
             model_locked={this.state.model_locked}
             setModelLock={this.setModelLock}
             openVersionManager={this.openVersionManager}
+            openAuthenticationForm={this.openAuthenticationForm}
           ></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
@@ -373,7 +411,13 @@ class ParamEle extends React.Component {
             mouse_y={this.state.mouse_y}
           ></SelectionBox>
           <GlobalSettings></GlobalSettings>
-          <Authentication user={this.state.user}></Authentication>
+          <Authentication
+            user={this.state.user}
+            is_auth_form_open={this.state.is_auth_form_open}
+            closeAuthenticationForm={this.closeAuthenticationForm}
+            active_tab_auth_form={this.state.active_tab_auth_form}
+            setActiveTabAuthenticationForm={this.setActiveTabAuthenticationForm}
+          ></Authentication>
           <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
           <VersionManager
             isOpen={this.state.is_version_manager_open}

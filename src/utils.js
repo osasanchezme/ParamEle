@@ -170,10 +170,6 @@ function openGlobalSettings() {
   return window.ParamEle.openGlobalSettings();
 }
 
-function openAuthentication() {
-  return window.ParamEle.openAuthentication();
-}
-
 function openFileManager(mode) {
   return window.ParamEle.openFileManager(mode);
 }
@@ -355,7 +351,6 @@ const utils = {
   openGlobalSettings,
   findHighestZCoordinate,
   allIndexOf,
-  openAuthentication,
   openFileManager,
   getUser,
   setUser,

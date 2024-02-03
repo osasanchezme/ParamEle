@@ -367,15 +367,9 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
   }
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    utils.setUser(user);
-    utils.hideLoadingDimmer();
-  } else {
-    utils.setUser(null);
-    utils.hideLoadingDimmer();
-  }
-});
+function attachToAuthChangeFirebaseEvent (function_to_attach) {
+  onAuthStateChanged(auth, function_to_attach)
+}
 
 const Firebase = {
   createUserWithEmail,
@@ -388,6 +382,7 @@ const Firebase = {
   getProjectData,
   updateCommitMsgForUser,
   deleteFileVersionFromCloud,
+  attachToAuthChangeFirebaseEvent
 };
 
 export default Firebase;
