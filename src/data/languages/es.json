@@ -186,7 +186,9 @@
         "cannot_delete_version_title": "No se puede eliminar",
         "cannot_delete_version_desc": "Esta es la versión actual, cámbiala antes de eliminarla",
         "not_logged_in_cannot_access_file_title": "No has iniciado sesión",
-        "not_logged_in_cannot_access_file_desc": "Inicia sesión para poder acceder al archivo solicitado"
+        "not_logged_in_cannot_access_file_desc": "Inicia sesión para poder acceder al archivo solicitado",
+        "file_does_not_exist_title": "Archivo no existente",
+        "file_does_not_exist_desc": "El archivo solicitado no existe para este usuario"
     },
     "navigator": {
         "model": "Modelo principal"

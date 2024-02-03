@@ -97,7 +97,10 @@ class ParamEle extends React.Component {
         utils.setUser(user);
         utils.hideLoadingDimmer();
         let file_path = path.split(",");
-        if (is_params_available) file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock);
+        if (is_params_available)
+          file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock, () => {
+            notify("warning", "file_does_not_exist", undefined, true);
+          });
       } else {
         utils.setUser(null);
         utils.hideLoadingDimmer();
@@ -174,7 +177,7 @@ class ParamEle extends React.Component {
     this.setState({ is_confirmation_open: false });
   }
   openAuthenticationForm(active_tab_auth_form) {
-    this.setState({ is_auth_form_open: true, active_tab_auth_form: active_tab_auth_form || 'sign_up' });
+    this.setState({ is_auth_form_open: true, active_tab_auth_form: active_tab_auth_form || "sign_up" });
   }
   closeAuthenticationForm() {
     this.setState({ is_auth_form_open: false });

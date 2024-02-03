@@ -119,10 +119,14 @@ const downloadAndOpenModel = (id, current_version, history, file_name, fileManag
   });
 };
 
-const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock) => {
+const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock, fileDoesNotExistCallback) => {
   Firebase.getProjectData(file_path, file_name, (file_data) => {
     let { current_version, history, id } = file_data;
-    downloadAndOpenModel(id, current_version, history, file_name, file_path, setFileData, setModelLock);
+    if (current_version == undefined || history == undefined || id == undefined) {
+      fileDoesNotExistCallback();
+    } else {
+      downloadAndOpenModel(id, current_version, history, file_name, file_path, setFileData, setModelLock);
+    }
   });
 };
 

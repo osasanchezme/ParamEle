@@ -133,7 +133,7 @@ function getProjectData(file_path, file_name, callback) {
       if (snapshot.exists()) {
         callback(snapshot.val());
       } else {
-        console.log("No data available for this user under projects");
+        console.log("That project does not exist for this user");
         // Return an empty object
         callback({});
       }
