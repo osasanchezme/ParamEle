@@ -6,6 +6,7 @@ import file from "../js/file";
 import structure from "../js/structure";
 import utils from "../utils";
 import FileStatusIndicator from "./file_status_indicator";
+import Firebase from "../js/firebase";
 
 function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
@@ -72,7 +73,7 @@ function getRightNavBarOptions({open_authentication_callback}) {
         auth: { visible: true },
         no_auth: { visible: false },
       },
-      options: [{ name: localGetCopy("log_out"), icon: "MdExitToApp", callback: utils.signOut }],
+      options: [{ name: localGetCopy("log_out"), icon: "MdExitToApp", callback: Firebase.signOutUser }],
     },
   };
 }

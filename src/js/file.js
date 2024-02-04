@@ -153,6 +153,22 @@ const getURLParams = () => {
   return params_object;
 }
 
+/**
+ * Clears all the URL params except the language
+ */
+const clearURLParams = () => {
+  const queryParams = new URLSearchParams(window.location.search);
+  let important_params = ["path", "name"];
+  important_params.forEach((param_key) => {
+    queryParams.delete(param_key);
+  });
+}
+
+const reloadToBlank = () => {
+  clearURLParams();
+  window.location.reload();
+}
+
 const file = {
   downloadJSONFile,
   uploadJSONFile,
@@ -162,6 +178,7 @@ const file = {
   getResultsBlob,
   downloadAndOpenModel,
   getFileDataAndOpenModel,
-  getURLParams
+  getURLParams,
+  reloadToBlank
 };
 export default file;

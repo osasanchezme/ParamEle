@@ -192,9 +192,6 @@ function setUser(auth) {
 function getUser() {
   window.ParamEle.getUser();
 }
-function signOut() {
-  window.ParamEle.signOut();
-}
 
 /**
  * Converts the arguments from a React flow node to structural arguments
@@ -354,7 +351,6 @@ const utils = {
   openFileManager,
   getUser,
   setUser,
-  signOut,
   generateUniqueID,
   isIdFromFolder,
   showLoadingDimmer,

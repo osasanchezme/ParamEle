@@ -26,7 +26,6 @@ function localGetDisplayCopy(copy_key) {
 }
 
 function Authentication({ user, is_auth_form_open, closeAuthenticationForm, active_tab_auth_form, setActiveTabAuthenticationForm }) {
-  window.ParamEle.signOut = Firebase.signOutUser;
   
   let [authFormState, setAuthFormState] = useState(getDefaultState(auth_form_fields));
   let [logInFormState, setLogInFormState] = useState(getDefaultState(log_in_form_fields));

@@ -6,6 +6,7 @@ import { getDatabase, ref as databaseRef, set, get, child, update } from "fireba
 import { getStorage, ref as storageRef, uploadBytes, getBlob, deleteObject } from "firebase/storage";
 import utils from "../utils";
 import { notify } from "../components/notification";
+import file from "./file";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -50,6 +51,7 @@ function signOutUser() {
   signOut(auth)
     .then(() => {
       utils.setUser(null);
+      file.reloadToBlank();
     })
     .catch((error) => {
       console.log("There was a problem: ", error);
