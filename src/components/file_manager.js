@@ -22,7 +22,6 @@ import {
   ButtonGroup,
   IconButton,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState, useRef, useEffect } from "react";
 import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdRefresh } from "react-icons/md";
@@ -37,9 +36,14 @@ function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
 }
 
-function FileManager({ user, setFileData, setModelLock }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  let [fileManagerMode, setFileManagerMode] = useState("open");
+function FileManager({
+  user,
+  is_file_manager_open,
+  closeFileManager,
+  file_manager_mode,
+  setFileData,
+  setModelLock,
+}) {
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
   let [fileManagerContent, setFileManagerContent] = useState(null);
   let [fileManagerWaiting, setFileManagerWaiting] = useState(true);
@@ -66,19 +70,15 @@ function FileManager({ user, setFileData, setModelLock }) {
    * Run every time the component renders to keep the focus on the file name field
    */
   useEffect(() => {
-    if (fileManagerMode === "save" && file_name_ref && file_name_ref.current) file_name_ref.current.focus();
+    if (file_manager_mode === "save" && file_name_ref && file_name_ref.current) file_name_ref.current.focus();
   });
-  /**
-   * Opens the file manager in a certain mode
-   * @param {"save"|open""} mode
-   */
-  window.ParamEle.openFileManager = (mode) => {
-    onOpen();
-    setFileManagerMode(mode);
-    getFilesDataFromDatabase();
-    // Reset the file name form
-    setFileNameForm(getDefaultState(fileNameFormFields));
-  };
+  useEffect(() => {
+    if (is_file_manager_open) {
+      getFilesDataFromDatabase();
+      // Reset the file name form
+      setFileNameForm(getDefaultState(fileNameFormFields));
+    }
+  }, [is_file_manager_open]);
   /**
    *
    * @param {object} data
@@ -136,11 +136,6 @@ function FileManager({ user, setFileData, setModelLock }) {
     });
     return files_to_display;
   }
-  function closeFileManager() {
-    setTimeout(() => {
-      onClose();
-    }, 500);
-  }
   function saveFile() {
     let { valid_data, new_state } = validateInputData(fileNameForm, fileNameFormFields);
     setFileNameForm(new_state);
@@ -190,7 +185,7 @@ function FileManager({ user, setFileData, setModelLock }) {
               data={files_to_display}
               setFileManagerPath={setFileManagerPath}
               fileManagerPath={fileManagerPath}
-              mode={fileManagerMode}
+              mode={file_manager_mode}
               closeFileManager={closeFileManager}
               setFileManagerWaiting={setFileManagerWaiting}
               setFileData={setFileData}
@@ -222,11 +217,11 @@ function FileManager({ user, setFileData, setModelLock }) {
     }
     let fileman_footer = "";
     let close_button = (
-      <Button variant="ghost" mr={3} onClick={onClose}>
+      <Button variant="ghost" mr={3} onClick={closeFileManager}>
         {utils.getDisplayCopy("auth", "close_modal")}
       </Button>
     );
-    if (fileManagerMode === "save") {
+    if (file_manager_mode === "save") {
       fileman_footer = (
         <>
           <FormComponent
@@ -283,7 +278,7 @@ function FileManager({ user, setFileData, setModelLock }) {
       </Flex>
     );
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="inside" isCentered>
+      <Modal isOpen={is_file_manager_open} onClose={closeFileManager} size="5xl" scrollBehavior="inside" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

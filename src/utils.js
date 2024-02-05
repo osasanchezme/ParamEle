@@ -170,10 +170,6 @@ function openGlobalSettings() {
   return window.ParamEle.openGlobalSettings();
 }
 
-function openFileManager(mode) {
-  return window.ParamEle.openFileManager(mode);
-}
-
 function showLoadingDimmer(msg) {
   return window.ParamEle.showLoadingDimmer(msg);
 }
@@ -348,7 +344,6 @@ const utils = {
   openGlobalSettings,
   findHighestZCoordinate,
   allIndexOf,
-  openFileManager,
   getUser,
   setUser,
   generateUniqueID,

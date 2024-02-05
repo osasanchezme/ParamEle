@@ -12,7 +12,7 @@ function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions({ new_file_callback, solve_file_callback, open_version_manager_callback }) {
+function getNavBarOptions({ new_file_callback, solve_file_callback, open_version_manager_callback, open_file_manager_callback }) {
   return {
     file: {
       icon: "MdInsertDriveFile",
@@ -22,14 +22,14 @@ function getNavBarOptions({ new_file_callback, solve_file_callback, open_version
           name: localGetCopy("open"),
           icon: "MdFolderOpen",
           callback: () => {
-            utils.openFileManager("open");
+            open_file_manager_callback("open");
           },
         },
         {
           name: localGetCopy("save"),
           icon: "MdSave",
           callback: () => {
-            utils.openFileManager("save");
+            open_file_manager_callback("save");
           },
         },
         { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: open_version_manager_callback },
@@ -56,7 +56,7 @@ function getNavBarOptions({ new_file_callback, solve_file_callback, open_version
   };
 }
 
-function getRightNavBarOptions({open_authentication_callback}) {
+function getRightNavBarOptions({ open_authentication_callback }) {
   return {
     account: {
       icon: "MdAccountCircle",
@@ -94,12 +94,15 @@ class NavBar extends React.Component {
       },
       open_version_manager_callback: function () {
         props.openVersionManager();
-      }
+      },
+      open_file_manager_callback: function (mode) {
+        props.openFileManager(mode);
+      },
     });
     this.right_navbar_options = getRightNavBarOptions({
       open_authentication_callback: function () {
         props.openAuthenticationForm();
-      }
+      },
     });
   }
   handleChange(dropdown_visible, mouse_on_menu) {
@@ -149,7 +152,13 @@ class NavBar extends React.Component {
             </Button>
           ))}
           <Spacer></Spacer>
-          <FileStatusIndicator file_data={this.props.file_data} setFileData={this.props.setFileData} model_locked={this.props.model_locked} setModelLock={this.props.setModelLock} />
+          <FileStatusIndicator
+            file_data={this.props.file_data}
+            setFileData={this.props.setFileData}
+            model_locked={this.props.model_locked}
+            setModelLock={this.props.setModelLock}
+            openFileManager={this.props.openFileManager}
+          />
           {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
             let display_copy = localGetCopy(nav_menu_key);
             if (nav_menu_key === "user" && this.props.user) display_copy = this.props.user.displayName || display_copy;

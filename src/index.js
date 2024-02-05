@@ -60,6 +60,8 @@ class ParamEle extends React.Component {
       confirmation_callbacks: false,
       is_auth_form_open: false,
       active_tab_auth_form: "sign_up",
+      is_file_manager_open: false,
+      file_manager_mode: "open",
     };
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
@@ -87,6 +89,8 @@ class ParamEle extends React.Component {
     this.openAuthenticationForm = this.openAuthenticationForm.bind(this);
     this.closeAuthenticationForm = this.closeAuthenticationForm.bind(this);
     this.setActiveTabAuthenticationForm = this.setActiveTabAuthenticationForm.bind(this);
+    this.openFileManager = this.openFileManager.bind(this);
+    this.closeFileManager = this.closeFileManager.bind(this);
 
     // Manage auth state changes - This is the last thing that loads
     Firebase.attachToAuthChangeFirebaseEvent((user) => {
@@ -96,11 +100,12 @@ class ParamEle extends React.Component {
       if (user) {
         utils.setUser(user);
         utils.hideLoadingDimmer();
-        let file_path = path.split(",");
-        if (is_params_available)
+        if (is_params_available){
+          let file_path = path.split(",");
           file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock, () => {
             notify("warning", "file_does_not_exist", undefined, true);
           });
+        }
       } else {
         utils.setUser(null);
         utils.hideLoadingDimmer();
@@ -184,6 +189,12 @@ class ParamEle extends React.Component {
   }
   setActiveTabAuthenticationForm(active_tab_auth_form) {
     this.setState({ active_tab_auth_form });
+  }
+  openFileManager(mode) {
+    this.setState({ is_file_manager_open: true, file_manager_mode: mode });
+  }
+  closeFileManager() {
+    this.setState({ is_file_manager_open: false });
   }
 
   /**
@@ -378,6 +389,7 @@ class ParamEle extends React.Component {
             setModelLock={this.setModelLock}
             openVersionManager={this.openVersionManager}
             openAuthenticationForm={this.openAuthenticationForm}
+            openFileManager={this.openFileManager}
           ></NavBar>
           <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
           {commands_bar}
@@ -421,7 +433,14 @@ class ParamEle extends React.Component {
             active_tab_auth_form={this.state.active_tab_auth_form}
             setActiveTabAuthenticationForm={this.setActiveTabAuthenticationForm}
           ></Authentication>
-          <FileManager user={this.state.user} setFileData={this.setFileData} setModelLock={this.setModelLock}></FileManager>
+          <FileManager
+            user={this.state.user}
+            is_file_manager_open={this.state.is_file_manager_open}
+            closeFileManager={this.closeFileManager}
+            file_manager_mode={this.state.file_manager_mode}
+            setFileData={this.setFileData}
+            setModelLock={this.setModelLock}
+          ></FileManager>
           <VersionManager
             isOpen={this.state.is_version_manager_open}
             file_history={this.state.file_history}

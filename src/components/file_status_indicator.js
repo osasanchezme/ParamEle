@@ -5,16 +5,15 @@ import { useRef } from "react";
 import Firebase from "../js/firebase";
 import file from "../js/file";
 import { MdLock, MdLockOpen } from "react-icons/md";
-import { setState } from "../state";
 
 function localGetCopy(copy_key) {
   return utils.getDisplayCopy("nav_bar", copy_key);
 }
 
-function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock }) {
+function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock, openFileManager }) {
   function localOpenFileManager() {
     if (file_name === null) {
-      utils.openFileManager("save");
+      openFileManager("save");
     }
   }
   function simulateClick() {
