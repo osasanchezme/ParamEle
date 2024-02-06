@@ -188,7 +188,11 @@
         "not_logged_in_cannot_access_file_title": "No has iniciado sesión",
         "not_logged_in_cannot_access_file_desc": "Inicia sesión para poder acceder al archivo solicitado",
         "file_does_not_exist_title": "Archivo no existente",
-        "file_does_not_exist_desc": "El archivo solicitado no existe para este usuario"
+        "file_does_not_exist_desc": "El archivo solicitado no existe para este usuario",
+        "log_in_to_save_title": "No se puede guardar",
+        "log_in_to_save_desc": "Inicia sesión para poder guardar el archivo",
+        "save_to_view_history_title": "Archivo no guardado",
+        "save_to_view_history_desc": "Guarda al menos una versión del archivo para ver su historial"
     },
     "navigator": {
         "model": "Modelo principal"

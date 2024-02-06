@@ -188,7 +188,11 @@
         "not_logged_in_cannot_access_file_title": "You are not logged in",
         "not_logged_in_cannot_access_file_desc": "Please log in to access the requested file",
         "file_does_not_exist_title": "File not found",
-        "file_does_not_exist_desc": "The requested file does not exist for this user"
+        "file_does_not_exist_desc": "The requested file does not exist for this user",
+        "log_in_to_save_title": "Cannot save without authentication",
+        "log_in_to_save_desc": "Please log in or sign up to save the file",
+        "save_to_view_history_title": "File not saved",
+        "save_to_view_history_desc": "Save at least one version of the file to review its history"
     },
     "navigator":{
         "model": "Main model"

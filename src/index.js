@@ -100,7 +100,7 @@ class ParamEle extends React.Component {
       if (user) {
         utils.setUser(user);
         utils.hideLoadingDimmer();
-        if (is_params_available){
+        if (is_params_available) {
           let file_path = path.split(",");
           file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock, () => {
             notify("warning", "file_does_not_exist", undefined, true);
@@ -166,11 +166,15 @@ class ParamEle extends React.Component {
     this.setState({ model_locked });
   }
   openVersionManager() {
-    Firebase.getProjectData(this.state.file_path, this.state.file_name, (full_file_data) => {
-      this.setState({ file_history: full_file_data.history }, () => {
-        this.setState({ is_version_manager_open: true });
+    if (this.state.is_saved) {
+      Firebase.getProjectData(this.state.file_path, this.state.file_name, (full_file_data) => {
+        this.setState({ file_history: full_file_data.history }, () => {
+          this.setState({ is_version_manager_open: true });
+        });
       });
-    });
+    } else {
+      notify("warning", "save_to_view_history", undefined, true);
+    }
   }
   closeVersionManager() {
     this.setState({ is_version_manager_open: false });
@@ -191,7 +195,12 @@ class ParamEle extends React.Component {
     this.setState({ active_tab_auth_form });
   }
   openFileManager(mode) {
-    this.setState({ is_file_manager_open: true, file_manager_mode: mode });
+    if (this.state.user == null && mode == "save") {
+      this.openAuthenticationForm("log_in");
+      notify("warning", "log_in_to_save", undefined, true);
+    } else {
+      this.setState({ is_file_manager_open: true, file_manager_mode: mode });
+    }
   }
   closeFileManager() {
     this.setState({ is_file_manager_open: false });

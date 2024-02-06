@@ -36,14 +36,7 @@ function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("file_manager", copy_key);
 }
 
-function FileManager({
-  user,
-  is_file_manager_open,
-  closeFileManager,
-  file_manager_mode,
-  setFileData,
-  setModelLock,
-}) {
+function FileManager({ user, is_file_manager_open, closeFileManager, file_manager_mode, setFileData, setModelLock }) {
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
   let [fileManagerContent, setFileManagerContent] = useState(null);
   let [fileManagerWaiting, setFileManagerWaiting] = useState(true);
