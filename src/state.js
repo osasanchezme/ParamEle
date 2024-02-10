@@ -96,6 +96,7 @@ function updateSettingsFromLocalState(settings_obj) {
   });
 }
 
+// TODO - Do not use this anymore, always use the model {nodes, edges} in the App state
 function updateStateFromFlow(force_update = false) {
   let settings = getState("settings")["general"];
   let model_path = getState("model_path");
@@ -118,27 +119,6 @@ function updateStateFromFlow(force_update = false) {
         }
       }
     }, 100);
-  }
-}
-
-/**
- *
- * @param {String} type Node type
- * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
- * @param {Object} [data] Initial data for the new node
- */
-function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true) {
-  let rfInstance = getRfInstance();
-  let position = html_position;
-  if (!is_rf_position) {
-    position = rfInstance.project(html_position);
-  }
-  let id = utils.nextNodeId();
-  setGlobalVariable("last_node_id_created", id);
-  if (add_to_the_editor) {
-    rfInstance.addNodes([{ id, type, position, data }]);
-  } else {
-    return { id, type, position, data };
   }
 }
 
@@ -236,18 +216,29 @@ function highlightSelectedNodes(x_i, y_i, x_f, y_f, rel_orig_x, rel_orig_y) {
     nds.map((node) => {
       let { x, y } = node.position;
       if (x >= point_i.x && x <= point_f.x && y >= point_i.y && y <= point_f.y) {
-        node.data.selected = node.data.selected ? false : true;
+        node.data.aux.selected = node.data.aux.selected ? false : true;
       }
       return node;
     })
   );
 }
 
-function deselectAllNodes() {
+function deselectAllNodesAndHandles() {
   let rf_instance = getRfInstance();
   rf_instance.setNodes((nds) =>
     nds.map((node) => {
-      if (node.data.selected) node.data.selected = false;
+      if (node.data.aux.selected) node.data.aux.selected = false;
+      node.data.aux.selected_handles = [];
+      return node;
+    })
+  );
+}
+
+function deselectAllHandles() {
+  let rf_instance = getRfInstance();
+  rf_instance.setNodes((nds) =>
+    nds.map((node) => {
+      node.data.aux.selected_handles = [];
       return node;
     })
   );
@@ -289,21 +280,21 @@ const state = {
   updateSettingsFromLocalState,
   setGlobalVariable,
   getGlobalVariable,
-  addNodeToTheEditor,
   getSectionColor,
   updateWordsMapFromLanguage,
   updateNodeData,
   zoomToCoordinate,
   copyStructureToClipboard,
   highlightSelectedNodes,
-  deselectAllNodes,
+  deselectAllNodesAndHandles,
   selectHandle,
   getModelFromRfInstance,
   removeNodesAndEdgesFromModel,
   setModelToEditor,
   resetView,
+  deselectAllHandles,
 };
 
 export default state;
 
-export {updateStateFromFlow, storeRfInstance, setInitialState, setState};
+export { updateStateFromFlow, storeRfInstance, setInitialState, setState, setGlobalVariable };

@@ -1,21 +1,12 @@
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  updateEdge,
-  useNodesState,
-  useEdgesState,
-} from "react-flow-renderer";
+import ReactFlow, { MiniMap, Controls, addEdge, applyEdgeChanges, applyNodeChanges, updateEdge } from "react-flow-renderer";
 import logic_runner from "../js/globalLogicRunner";
-import { storeRfInstance, updateStateFromFlow } from "../state";
+import { setGlobalVariable, storeRfInstance, updateStateFromFlow } from "../state";
 import { useEffect } from "react";
+import utils from "../utils";
 
-function VisualEditor({ width, model, show_mini_map, nodes_library, is_model_locked }) {
-  const [nodes, setNodes] = useNodesState(model.nodes);
-  const [edges, setEdges] = useEdgesState(model.edges);
+let rf_instance;
 
+function VisualEditor({ width, show_mini_map, nodes_library, is_model_locked, nodes, edges, setNodes, setEdges }) {
   // Whenever the model lock status changes the data on each node on that regard updates accordingly
   useEffect(() => {
     setNodes((nds) =>
@@ -25,11 +16,12 @@ function VisualEditor({ width, model, show_mini_map, nodes_library, is_model_loc
       })
     );
     updateStateFromFlow();
-  }, [is_model_locked, setNodes]);
+  }, [is_model_locked]);
 
   const saveRfInstance = (rfInstance) => {
+    rf_instance = rfInstance;
     storeRfInstance(rfInstance);
-    logic_runner.run();
+    logic_runner.run({ edges, nodes });
   };
 
   const onNodesChange = (changes) => {
@@ -82,4 +74,58 @@ function VisualEditor({ width, model, show_mini_map, nodes_library, is_model_loc
   );
 }
 
+/**
+ * Only place where I will directly modify data from the nodes from the rfInstance
+ * @param {*} node_id
+ * @param {*} data_key - Key under data to be modified
+ * @param {*} data_value - Value to set in the key
+ * @param {*} is_aux - Whether the key is under data.aux or under data directly
+ */
+function updateNodeDataKey(node_id, data_key, data_value, is_aux) {
+  rf_instance.setNodes((nds) =>
+    nds.map((node) => {
+      if (node.id === node_id) {
+        if (is_aux) {
+          if (data_key == "selected_handles") {
+            let id_index = node.data.aux[data_key].indexOf(data_value);
+            if (id_index != -1) {
+              node.data.aux[data_key].splice(id_index, 1);
+            } else {
+              node.data.aux[data_key].push(data_value);
+            }
+          } else {
+            node.data.aux[data_key] = data_value;
+          }
+        } else {
+          node.data[data_key] = data_value;
+        }
+      }
+      return node;
+    })
+  );
+}
+
+/**
+ *
+ * @param {String} type Node type
+ * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
+ * @param {Object} [data] Initial data for the new node
+ */
+function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true) {
+  let position = html_position;
+  if (!is_rf_position) {
+    position = rf_instance.project(html_position);
+  }
+  let id = utils.nextNodeId();
+  setGlobalVariable("last_node_id_created", id);
+  data.aux = utils.getDefaultAuxData();
+  if (add_to_the_editor) {
+    rf_instance.addNodes([{ id, type, position, data }]);
+  } else {
+    return { id, type, position, data };
+  }
+}
+
 export default VisualEditor;
+
+export { updateNodeDataKey, addNodeToTheEditor };

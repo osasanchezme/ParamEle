@@ -26,6 +26,7 @@ import Firebase from "./js/firebase";
 import { ConfirmationDialog } from "./components/confirmation_dialog";
 import file from "./js/file";
 import { notify } from "./components/notification";
+import { getInitialState } from "./initial_state";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -36,33 +37,7 @@ window.ParamEle.nodesLibrary = library;
 class ParamEle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ...getState(),
-      mouse_x: 0,
-      mouse_y: 0,
-      mode: "wait_action",
-      rel_orig_x: 0,
-      rel_orig_y: 0,
-      selection_top: 0,
-      selection_left: 0,
-      user: null,
-      file_name: null,
-      is_saved: false,
-      last_saved: null,
-      model_id: null,
-      file_path: null,
-      file_history: null,
-      model_locked: false,
-      current_version: null,
-      is_version_manager_open: false,
-      is_confirmation_open: false,
-      confirmation_msg: false,
-      confirmation_callbacks: false,
-      is_auth_form_open: false,
-      active_tab_auth_form: "sign_up",
-      is_file_manager_open: false,
-      file_manager_mode: "open",
-    };
+    this.state = getInitialState();
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     this.changeAppMode = this.changeAppMode.bind(this);
@@ -91,6 +66,8 @@ class ParamEle extends React.Component {
     this.setActiveTabAuthenticationForm = this.setActiveTabAuthenticationForm.bind(this);
     this.openFileManager = this.openFileManager.bind(this);
     this.closeFileManager = this.closeFileManager.bind(this);
+    this.setNodes = this.setNodes.bind(this);
+    this.setEdges = this.setEdges.bind(this);
 
     // Manage auth state changes - This is the last thing that loads
     Firebase.attachToAuthChangeFirebaseEvent((user) => {
@@ -134,6 +111,22 @@ class ParamEle extends React.Component {
   updateNodesFromLocalState() {
     let local_state = getState();
     this.setState({ model: local_state.model });
+  }
+  /**
+   * 
+   * @param {*} update_function Function that receives the original nodes and applies some update to them
+   */
+  setNodes(update_function) {
+    let nodes = update_function(this.state.nodes);
+    this.setState({ nodes });
+  }
+  /**
+   * 
+   * @param {*} update_function Function that receives the original edges and applies some update to them
+   */
+  setEdges(update_function) {
+    let edges = update_function(this.state.edges);
+    this.setState({ edges });
   }
   changeAppMode(mode) {
     this.setState({ mode });
@@ -302,7 +295,7 @@ class ParamEle extends React.Component {
   }
   activateNodeCreation(event) {
     if (this.state.mode === "wait_action") {
-      state.deselectAllNodes();
+      state.deselectAllNodesAndHandles();
       let bounding_rect = event.target.getBoundingClientRect();
       this.setState({
         mode: "add_node",
@@ -317,7 +310,7 @@ class ParamEle extends React.Component {
     switch (event.key) {
       case "Escape":
         this.setState({ mode: "wait_action" });
-        state.deselectAllNodes();
+        state.deselectAllNodesAndHandles();
         break;
       case "Enter":
         state.setGlobalVariable("user_interaction_step", "done");
@@ -413,7 +406,10 @@ class ParamEle extends React.Component {
             position={this.state.settings.layout.panel_width}
           ></ResizeBorder>
           <VisualEditor
-            model={this.state.model}
+            nodes={this.state.nodes}
+            setNodes={this.setNodes}
+            edges={this.state.edges}
+            setEdges={this.setEdges}
             show_mini_map={this.state.settings.general.mini_map}
             width={this.state.settings.layout.editor_width}
             nodes_library={nodes_library}

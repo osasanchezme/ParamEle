@@ -74,7 +74,7 @@ const uploadJSONFile = () => {
 
 const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) => {
   state_from_file.settings = repair.repairSettings(state_from_file.settings);
-  state.setState(repair.repairModel(state_from_file));
+  state.setState(state_from_file);
   if (results_from_file) state.setState(results_from_file, "results");
   let rf_instance = state.getRfInstance();
   let model = repair.repairModel(state_from_file.model);
@@ -82,7 +82,7 @@ const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) =>
   rf_instance.setEdges(model.edges);
   state.updateSettingsFromLocalState(state_from_file.settings);
   state.resetView();
-  logic_runner.run();
+  logic_runner.run(model);
 };
 
 /**

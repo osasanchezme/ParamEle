@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import { MdCode, MdLoop } from "react-icons/md";
 import SearchableDropdown from "../../components/searchable_dropdown";
 import Plot from "react-plotly.js";
+import { updateNodeDataKey } from "../../components/VisualEditor";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -24,6 +25,9 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   useEffect(() => {
     if (id === state.getGlobalVariable("last_node_id_created") && first_text_input.current) first_text_input.current.focus();
   });
+  let {
+    aux: { selected_handles },
+  } = data;
   // Check if the user defined a custom_label for the node
   node_label = data.custom_label || node_label;
   let source_copies = [];
@@ -33,15 +37,20 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   let target_handles = target_ids.map((handle_id, handle_counter) => {
     let handle_data = utils.splitArgName(handle_id);
     let handle_style = { top: top_pos_target };
+    let class_name = selected_handles.includes(handle_id) ? "selected" : "";
     top_pos_target += 20;
     return (
       <Handle
         type="target"
+        className={class_name}
         style={handle_style}
         position={Position.Left}
         id={handle_id}
         key={handle_id}
-        onClick={(event) => state.selectHandle(event, id, handle_id, node_label, handle_data.type)}
+        onClick={(event) => {
+          updateNodeDataKey(id, "selected_handles", handle_id, true);
+          state.selectHandle(event, id, handle_id, node_label, handle_data.type);
+        }}
       />
     );
   });
@@ -50,15 +59,20 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   let source_handles = source_ids.map((handle_id, handle_counter) => {
     let handle_data = utils.splitArgName(handle_id);
     let handle_style = { top: top_pos_source };
+    let class_name = selected_handles.includes(handle_id) ? "selected" : "";
     top_pos_source += 20;
     return (
       <Handle
         type="source"
+        className={class_name}
         style={handle_style}
         position={Position.Right}
         id={handle_id}
         key={handle_id}
-        onClick={(event) => state.selectHandle(event, id, handle_id, node_label, handle_data.type)}
+        onClick={(event) => {
+          updateNodeDataKey(id, "selected_handles", handle_id, true);
+          state.selectHandle(event, id, handle_id, node_label, handle_data.type);
+        }}
       />
     );
   });
@@ -111,15 +125,20 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     let handle_style = { top: top_pos_editable_handles };
     top_pos_editable_handles += 26;
     let handle_key = `${handle_data.name}-${handle_data.type}`;
+    let class_name = selected_handles.includes(handle_key) ? "selected" : "";
     if (handle_data.show_handle) {
       return (
         <Handle
           type="source"
+          className={class_name}
           style={handle_style}
           position={Position.Right}
           id={handle_key}
           key={handle_key}
-          onClick={(event) => state.selectHandle(event, id, handle_key, node_label, handle_data.type)}
+          onClick={(event) => {
+            updateNodeDataKey(id, "selected_handles", handle_key, true);
+            state.selectHandle(event, id, handle_key, node_label, handle_data.type);
+          }}
         />
       );
     } else {
@@ -129,16 +148,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   // Create the editable fields
   const onChange = (evt, data_key) => {
     state.setGlobalVariable("last_node_id_created", "");
-    // Update the component state (At React level)
-    let rf_instance = state.getRfInstance();
-    rf_instance.setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          node.data[data_key] = evt.target.value;
-        }
-        return node;
-      })
-    );
+    updateNodeDataKey(id, data_key, evt.target.value);
     state.updateStateFromFlow();
   };
   let top_pos_editable_inputs = Math.max(top_pos_source, top_pos_target) - 8;
@@ -316,7 +326,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   let node_height = 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length + plot_height;
   // Define the class name
   let class_name = "reactflow-node";
-  if (data.selected) class_name += " selected";
+  if (data.aux.selected) class_name += " selected";
   return (
     <div className={class_name} style={{ height: node_height, width: node_width }}>
       <EditableNodeHeader id={id} node_label={node_label} identifier_icon={data.iterating ? MdLoop : null}></EditableNodeHeader>

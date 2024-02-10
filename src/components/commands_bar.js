@@ -1,6 +1,6 @@
 import SearchableDropdown from "./searchable_dropdown";
 import utils from "../utils";
-import state from "../state";
+import { addNodeToTheEditor } from "./VisualEditor";
 
 function CommandsBar({ active, x, y, rel_orig_x, rel_orig_y }) {
   const available_nodes_mapping = utils.getNodesLibrary()["mapping"];
@@ -14,7 +14,7 @@ function CommandsBar({ active, x, y, rel_orig_x, rel_orig_y }) {
       options_map={available_nodes_mapping}
       coincidences_to_match={3}
       onChange={(node_class) => {
-        state.addNodeToTheEditor(node_class, { x: x - rel_orig_x, y: y - rel_orig_y });
+        addNodeToTheEditor(node_class, { x: x - rel_orig_x, y: y - rel_orig_y });
         utils.changeAppMode("wait_action");
       }}
       className="commands-bar"

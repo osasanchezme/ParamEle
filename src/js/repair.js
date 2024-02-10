@@ -1,6 +1,11 @@
+import utils from "../utils";
 import settings_template from "./../settings_template.json";
 
 function repairModel(model) {
+  model.nodes.forEach((node) => {
+    if (!node.data) node.data = {};
+    node.data.aux = utils.getDefaultAuxData();
+  });
   return model;
 }
 

@@ -71,6 +71,13 @@
   right: 0 !important;
 }
 
+.react-flow__handle.selected {
+  background-color: var(--chakra-colors-blue-500) !important;
+  outline-color: var(--chakra-colors-blue-400) !important;
+  outline-width: 1px !important;
+  outline-style: solid !important;
+}
+
 .reactflow-node {
   display: flex;
   flex-direction: column;

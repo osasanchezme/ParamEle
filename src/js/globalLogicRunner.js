@@ -2,8 +2,11 @@ import state from "../state";
 import getState from "../getState";
 import utils from "../utils";
 
-function run() {
-  let model = getState("model");
+function run(model) {
+  if (model == undefined) {
+    console.log('There are places not passing the model to the logic runner');
+    model = getState("model");
+  }
   // Restart the structure
   state.setState(utils.getEmptyStructuralModel(), "structure");
   let { nodes } = calculateModel(model);

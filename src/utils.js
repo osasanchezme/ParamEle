@@ -328,6 +328,17 @@ function getFormattedDate(timestamp) {
   return `${formatted_date.toDateString()}, ${formatted_date.toLocaleTimeString()}`;
 }
 
+/**
+ * Returns the default aux data that needs to be present on every node but should not be saved
+ * @returns 
+ */
+function getDefaultAuxData() {
+  return {
+    selected_handles: [],
+    selected: false,
+  };
+}
+
 const utils = {
   getClosestMatches,
   nextNodeId,
@@ -351,7 +362,8 @@ const utils = {
   showLoadingDimmer,
   setLoadingDimmerMsg,
   hideLoadingDimmer,
-  getFormattedDate
+  getFormattedDate,
+  getDefaultAuxData
 };
 
 export default utils;

@@ -3,6 +3,7 @@ import { Node, Edge } from "react-flow-renderer";
 import state from "../state";
 import utils from "../utils";
 import notification from "../components/notification";
+import { addNodeToTheEditor } from "../components/VisualEditor";
 const { notify, closeAllNotifications } = notification;
 
 function groupBoxes() {
@@ -62,7 +63,7 @@ function groupBoxesStepThree(data_to_keep) {
 
   let { nodes, edges } = getState("model");
   // Add the wrapper node to the original model
-  nodes.push(state.addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, false));
+  nodes.push(addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, false));
 
   // Remove the selected nodes and edges from the editor
   let new_model = state.removeNodesAndEdgesFromModel({ nodes, edges }, selected_node_ids, selected_edge_ids);
@@ -79,7 +80,7 @@ function editInternalLogic() {
   let selected_node_ids = [];
   let selected_node_location = [];
   nodes.forEach((node, i) => {
-    if (node.data.selected) {
+    if (node.data.aux.selected) {
       selected_nodes.push(node);
       selected_node_ids.push(node.id);
       selected_node_location.push(i);
@@ -114,6 +115,7 @@ function editInternalLogic() {
 function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
   utils.changeAppMode("selecting_handles");
   state.setGlobalVariable("selected_handles", []);
+  state.deselectAllHandles();
   state.setGlobalVariable("user_interaction_step", "wait");
   notify("info", message_key, null, true, 10000);
   let user_waiter = setInterval(() => {
@@ -153,7 +155,7 @@ function getSelectedModel() {
   let selected_edge_ids = [];
   let connected_nodes = [];
   nodes.forEach((node) => {
-    if (node.data.selected) {
+    if (node.data.aux.selected) {
       selected_nodes.push(node);
       selected_node_ids.push(node.id);
     }
