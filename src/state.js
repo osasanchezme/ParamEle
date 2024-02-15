@@ -244,7 +244,7 @@ function deselectAllHandles() {
   );
 }
 
-function selectHandle(event, node_id, handle_id, label, type) {
+function selectHandle(node_id, handle_id, label, type) {
   let selected_handles = getGlobalVariable("selected_handles");
   let this_handle = {
     data_key_to_map: handle_id,

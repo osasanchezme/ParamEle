@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Handle, Position } from "react-flow-renderer";
 import { Tag, Tooltip, Input, InputGroup, InputRightElement, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box } from "@chakra-ui/react";
 import utils from "../../utils";
@@ -9,6 +9,7 @@ import { MdCode, MdLoop } from "react-icons/md";
 import SearchableDropdown from "../../components/searchable_dropdown";
 import Plot from "react-plotly.js";
 import { updateNodeDataKey } from "../../components/VisualEditor";
+import { AppModeContext } from "../../Context";
 /**
  *
  * @param {Object} props Properties object to create the node
@@ -22,9 +23,18 @@ import { updateNodeDataKey } from "../../components/VisualEditor";
  */
 function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [], plot_settings }) {
   const first_text_input = useRef(null);
+  const app_mode = useContext(AppModeContext);
   useEffect(() => {
     if (id === state.getGlobalVariable("last_node_id_created") && first_text_input.current) first_text_input.current.focus();
   });
+
+  function handleClickOnHandle(id, handle_id, node_label, type) {
+    if (app_mode == "selecting_handles") {
+      updateNodeDataKey(id, "selected_handles", handle_id, true);
+      state.selectHandle(id, handle_id, node_label, type);
+    }
+  }
+
   let {
     aux: { selected_handles },
   } = data;
@@ -48,8 +58,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
         id={handle_id}
         key={handle_id}
         onClick={(event) => {
-          updateNodeDataKey(id, "selected_handles", handle_id, true);
-          state.selectHandle(event, id, handle_id, node_label, handle_data.type);
+          handleClickOnHandle(id, handle_id, node_label, handle_data.type);
         }}
       />
     );
@@ -70,8 +79,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
         id={handle_id}
         key={handle_id}
         onClick={(event) => {
-          updateNodeDataKey(id, "selected_handles", handle_id, true);
-          state.selectHandle(event, id, handle_id, node_label, handle_data.type);
+          handleClickOnHandle(id, handle_id, node_label, handle_data.type);
         }}
       />
     );
@@ -136,8 +144,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
           id={handle_key}
           key={handle_key}
           onClick={(event) => {
-            updateNodeDataKey(id, "selected_handles", handle_key, true);
-            state.selectHandle(event, id, handle_key, node_label, handle_data.type);
+            handleClickOnHandle(id, handle_key, node_label, handle_data.type);
           }}
         />
       );

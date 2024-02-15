@@ -12,7 +12,7 @@ function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions({ new_file_callback, solve_file_callback, open_version_manager_callback, open_file_manager_callback }) {
+function getNavBarOptions({ new_file_callback, solve_file_callback, open_version_manager_callback, open_file_manager_callback, change_app_mode_function }) {
   return {
     file: {
       icon: "MdInsertDriveFile",
@@ -40,7 +40,14 @@ function getNavBarOptions({ new_file_callback, solve_file_callback, open_version
     boxes: {
       icon: "MdCropSquare",
       options: [
-        { name: localGetCopy("group"), icon: "MdGroupWork", callback: boxes.groupBoxes },
+        { name: localGetCopy("group"), icon: "MdGroupWork", callback: () => {
+          change_app_mode_function('selecting_handles');
+          boxes.groupBoxes((success) => {
+            if (success){
+              change_app_mode_function('wait_action');
+            }
+          });
+        } },
         { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
         { name: localGetCopy("delete"), icon: "MdDelete", callback: boxes.deleteBoxes },
       ],
@@ -98,6 +105,9 @@ class NavBar extends React.Component {
       open_file_manager_callback: function (mode) {
         props.openFileManager(mode);
       },
+      change_app_mode_function: function (mode) {
+        props.changeAppMode(mode);
+      }
     });
     this.right_navbar_options = getRightNavBarOptions({
       open_authentication_callback: function () {

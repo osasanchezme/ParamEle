@@ -27,6 +27,7 @@ import { ConfirmationDialog } from "./components/confirmation_dialog";
 import file from "./js/file";
 import { notify } from "./components/notification";
 import { getInitialState } from "./initial_state";
+import { AppModeContext } from "./Context";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -41,7 +42,6 @@ class ParamEle extends React.Component {
     this.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     this.changeAppMode = this.changeAppMode.bind(this);
-    window.ParamEle.changeAppMode = this.changeAppMode.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.activateNodeCreation = this.activateNodeCreation.bind(this);
     this.handleMouseClick = this.handleMouseClick.bind(this);
@@ -113,7 +113,7 @@ class ParamEle extends React.Component {
     this.setState({ model: local_state.model });
   }
   /**
-   * 
+   *
    * @param {*} update_function Function that receives the original nodes and applies some update to them
    */
   setNodes(update_function) {
@@ -121,7 +121,7 @@ class ParamEle extends React.Component {
     this.setState({ nodes });
   }
   /**
-   * 
+   *
    * @param {*} update_function Function that receives the original edges and applies some update to them
    */
   setEdges(update_function) {
@@ -297,13 +297,19 @@ class ParamEle extends React.Component {
     if (this.state.mode === "wait_action") {
       state.deselectAllNodesAndHandles();
       let bounding_rect = event.target.getBoundingClientRect();
-      this.setState({
-        mode: "add_node",
-        mouse_x: event.clientX,
-        mouse_y: event.clientY,
-        rel_orig_x: bounding_rect.left,
-        rel_orig_y: bounding_rect.top,
-      });
+      let mouse_x = event.clientX;
+      let mouse_y = event.clientY;
+      let height = 50;
+      let width = 0;
+      if (mouse_y > 50 && mouse_y < window.innerHeight - height && mouse_x > 0 && mouse_x < window.innerWidth - width) {
+        this.setState({
+          mode: "add_node",
+          mouse_x: event.clientX,
+          mouse_y: event.clientY,
+          rel_orig_x: bounding_rect.left,
+          rel_orig_y: bounding_rect.top,
+        });
+      }
     }
   }
   handleKeyPress(event) {
@@ -336,8 +342,8 @@ class ParamEle extends React.Component {
         this.state.rel_orig_x,
         this.state.rel_orig_y
       );
+      this.changeAppMode("wait_action");
     }
-    this.changeAppMode("wait_action");
   }
   /**
    *
@@ -360,106 +366,116 @@ class ParamEle extends React.Component {
           y={this.state.mouse_y}
           rel_orig_x={this.state.rel_orig_x}
           rel_orig_y={this.state.rel_orig_y}
+          changeAppMode={this.changeAppMode}
         ></CommandsBar>
       );
     }
     let panel_plus_renderer = Number(this.state.settings.layout.renderer_width);
     if (this.state.settings.general.show_properties_panel) panel_plus_renderer += Number(this.state.settings.layout.panel_width);
     return (
-      <ChakraProvider theme={theme}>
-        <div
-          className="app-cont"
-          tabIndex={0}
-          onKeyDown={this.handleKeyPress}
-          onMouseMove={this.handleMouseMove}
-          onClick={this.handleMouseClick}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-        >
-          <LoadingDimmer></LoadingDimmer>
-          <ConfirmationDialog
-            isDialogOpen={this.state.is_confirmation_open}
-            closeDialog={this.closeConfirmationDialog}
-            callbacks={this.state.confirmation_callbacks}
-            message_copy={this.state.confirmation_msg}
-          ></ConfirmationDialog>
-          <NavBar
-            user={this.state.user}
-            file_data={this.getFileData()}
-            setFileData={this.setFileData}
-            model_locked={this.state.model_locked}
-            setModelLock={this.setModelLock}
-            openVersionManager={this.openVersionManager}
-            openAuthenticationForm={this.openAuthenticationForm}
-            openFileManager={this.openFileManager}
-          ></NavBar>
-          <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
-          {commands_bar}
-          <PropertiesPanel
-            visible={this.state.settings.general.show_properties_panel}
-            width={this.state.settings.layout.panel_width}
-            data={this.state.model}
-          ></PropertiesPanel>
-          <ResizeBorder
-            id="properties_panel"
-            visible={this.state.settings.general.show_properties_panel}
-            position={this.state.settings.layout.panel_width}
-          ></ResizeBorder>
-          <VisualEditor
-            nodes={this.state.nodes}
-            setNodes={this.setNodes}
-            edges={this.state.edges}
-            setEdges={this.setEdges}
-            show_mini_map={this.state.settings.general.mini_map}
-            width={this.state.settings.layout.editor_width}
-            nodes_library={nodes_library}
-            is_model_locked={this.state.model_locked}
-          ></VisualEditor>
-          <Navigator layout={this.state.settings.layout}></Navigator>
-          <ResizeBorder id="renderer_editor" visible={this.state.settings.general.side_by_side} position={panel_plus_renderer}></ResizeBorder>
-          <Renderer
-            visible={!this.state.settings.general.show_nodes}
-            width={this.state.settings.layout.renderer_width}
-            settings={this.state.settings.general}
-            layout={this.state.settings.layout}
-          ></Renderer>
-          <SelectionBox
-            visible={this.state.mode === "selecting_nodes"}
-            x={this.state.selection_left}
-            y={this.state.selection_top}
-            mouse_x={this.state.mouse_x}
-            mouse_y={this.state.mouse_y}
-          ></SelectionBox>
-          <GlobalSettings></GlobalSettings>
-          <Authentication
-            user={this.state.user}
-            is_auth_form_open={this.state.is_auth_form_open}
-            closeAuthenticationForm={this.closeAuthenticationForm}
-            active_tab_auth_form={this.state.active_tab_auth_form}
-            setActiveTabAuthenticationForm={this.setActiveTabAuthenticationForm}
-          ></Authentication>
-          <FileManager
-            user={this.state.user}
-            is_file_manager_open={this.state.is_file_manager_open}
-            closeFileManager={this.closeFileManager}
-            file_manager_mode={this.state.file_manager_mode}
-            setFileData={this.setFileData}
-            setModelLock={this.setModelLock}
-          ></FileManager>
-          <VersionManager
-            isOpen={this.state.is_version_manager_open}
-            file_history={this.state.file_history}
-            file_name={this.state.file_name}
-            file_path={this.state.file_path}
-            onClose={this.closeVersionManager}
-            model_id={this.state.model_id}
-            current_version={this.state.current_version}
-            setFileData={this.setFileData}
-            setModelLock={this.setModelLock}
-            openConfirmationDialog={this.openConfirmationDialog}
-          ></VersionManager>
-        </div>
-      </ChakraProvider>
+      <AppModeContext.Provider value={this.state.mode}>
+        <ChakraProvider theme={theme}>
+          <div
+            className="app-cont"
+            tabIndex={0}
+            onKeyDown={this.handleKeyPress}
+            onMouseMove={this.handleMouseMove}
+            onClick={this.handleMouseClick}
+            onMouseDown={this.handleMouseDown}
+            onMouseUp={this.handleMouseUp}
+          >
+            <LoadingDimmer></LoadingDimmer>
+            <ConfirmationDialog
+              isDialogOpen={this.state.is_confirmation_open}
+              closeDialog={this.closeConfirmationDialog}
+              callbacks={this.state.confirmation_callbacks}
+              message_copy={this.state.confirmation_msg}
+            ></ConfirmationDialog>
+            <NavBar
+              user={this.state.user}
+              file_data={this.getFileData()}
+              setFileData={this.setFileData}
+              model_locked={this.state.model_locked}
+              setModelLock={this.setModelLock}
+              openVersionManager={this.openVersionManager}
+              openAuthenticationForm={this.openAuthenticationForm}
+              openFileManager={this.openFileManager}
+              changeAppMode={this.changeAppMode}
+            ></NavBar>
+            <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
+            {commands_bar}
+            <PropertiesPanel
+              visible={this.state.settings.general.show_properties_panel}
+              width={this.state.settings.layout.panel_width}
+              data={this.state.model}
+            ></PropertiesPanel>
+            <ResizeBorder
+              id="properties_panel"
+              visible={this.state.settings.general.show_properties_panel}
+              position={this.state.settings.layout.panel_width}
+              changeAppMode={this.changeAppMode}
+            ></ResizeBorder>
+            <VisualEditor
+              nodes={this.state.nodes}
+              setNodes={this.setNodes}
+              edges={this.state.edges}
+              setEdges={this.setEdges}
+              show_mini_map={this.state.settings.general.mini_map}
+              width={this.state.settings.layout.editor_width}
+              nodes_library={nodes_library}
+              is_model_locked={this.state.model_locked}
+            ></VisualEditor>
+            <Navigator layout={this.state.settings.layout}></Navigator>
+            <ResizeBorder
+              id="renderer_editor"
+              visible={this.state.settings.general.side_by_side}
+              position={panel_plus_renderer}
+              changeAppMode={this.changeAppMode}
+            ></ResizeBorder>
+            <Renderer
+              visible={!this.state.settings.general.show_nodes}
+              width={this.state.settings.layout.renderer_width}
+              settings={this.state.settings.general}
+              layout={this.state.settings.layout}
+            ></Renderer>
+            <SelectionBox
+              visible={this.state.mode === "selecting_nodes"}
+              x={this.state.selection_left}
+              y={this.state.selection_top}
+              mouse_x={this.state.mouse_x}
+              mouse_y={this.state.mouse_y}
+            ></SelectionBox>
+            <GlobalSettings></GlobalSettings>
+            <Authentication
+              user={this.state.user}
+              is_auth_form_open={this.state.is_auth_form_open}
+              closeAuthenticationForm={this.closeAuthenticationForm}
+              active_tab_auth_form={this.state.active_tab_auth_form}
+              setActiveTabAuthenticationForm={this.setActiveTabAuthenticationForm}
+            ></Authentication>
+            <FileManager
+              user={this.state.user}
+              is_file_manager_open={this.state.is_file_manager_open}
+              closeFileManager={this.closeFileManager}
+              file_manager_mode={this.state.file_manager_mode}
+              setFileData={this.setFileData}
+              setModelLock={this.setModelLock}
+            ></FileManager>
+            <VersionManager
+              isOpen={this.state.is_version_manager_open}
+              file_history={this.state.file_history}
+              file_name={this.state.file_name}
+              file_path={this.state.file_path}
+              onClose={this.closeVersionManager}
+              model_id={this.state.model_id}
+              current_version={this.state.current_version}
+              setFileData={this.setFileData}
+              setModelLock={this.setModelLock}
+              openConfirmationDialog={this.openConfirmationDialog}
+            ></VersionManager>
+          </div>
+        </ChakraProvider>
+      </AppModeContext.Provider>
     );
   }
 }

@@ -6,7 +6,7 @@ import notification from "../components/notification";
 import { addNodeToTheEditor } from "../components/VisualEditor";
 const { notify, closeAllNotifications } = notification;
 
-function groupBoxes() {
+function groupBoxes(finish_callback) {
   // Get the selected model
   let { selected_nodes, selected_edges, selected_node_ids, selected_edge_ids, connected_nodes } = getSelectedModel();
 
@@ -49,15 +49,15 @@ function groupBoxes() {
   position.y /= selected_nodes.length;
 
   // Get the input handles
-  getHandlesFromUserInteraction(groupBoxesStepTwo, { internal_logic, position, selected_node_ids, selected_edge_ids }, "select_input_handles");
+  getHandlesFromUserInteraction(groupBoxesStepTwo, { internal_logic, position, selected_node_ids, selected_edge_ids }, "select_input_handles", finish_callback);
 }
 
-function groupBoxesStepTwo(data_to_keep) {
+function groupBoxesStepTwo(data_to_keep, finish_callback) {
   data_to_keep = { ...data_to_keep, input_handles: state.getGlobalVariable("selected_handles") };
-  getHandlesFromUserInteraction(groupBoxesStepThree, data_to_keep, "select_output_handles");
+  getHandlesFromUserInteraction(groupBoxesStepThree, data_to_keep, "select_output_handles", finish_callback);
 }
 
-function groupBoxesStepThree(data_to_keep) {
+function groupBoxesStepThree(data_to_keep, finish_callback) {
   data_to_keep = { ...data_to_keep, output_handles: state.getGlobalVariable("selected_handles") };
   let { internal_logic, input_handles, output_handles, position, selected_node_ids, selected_edge_ids } = data_to_keep;
 
@@ -71,6 +71,9 @@ function groupBoxesStepThree(data_to_keep) {
 
   // Zoom to the new node
   state.zoomToCoordinate(position.x, position.y);
+
+  // Call the finish callback
+  finish_callback(true);
 }
 
 function editInternalLogic() {
@@ -112,8 +115,7 @@ function editInternalLogic() {
   utils.updateNavigator();
 }
 
-function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
-  utils.changeAppMode("selecting_handles");
+function getHandlesFromUserInteraction(callback, data_to_keep, message_key, finish_callback) {
   state.setGlobalVariable("selected_handles", []);
   state.deselectAllHandles();
   state.setGlobalVariable("user_interaction_step", "wait");
@@ -122,7 +124,7 @@ function getHandlesFromUserInteraction(callback, data_to_keep, message_key) {
     if (state.getGlobalVariable("user_interaction_step") === "done") {
       state.setGlobalVariable("user_interaction_step", "none");
       closeAllNotifications();
-      callback(data_to_keep);
+      callback(data_to_keep, finish_callback);
       clearInterval(user_waiter);
     }
   }, 100);

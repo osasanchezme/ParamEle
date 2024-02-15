@@ -150,10 +150,6 @@ function getEmptyStructuralModel() {
   };
 }
 
-function changeAppMode(mode) {
-  window.ParamEle.changeAppMode(mode);
-}
-
 function updateRenderer() {
   window.ParamEle.updateRenderer();
 }
@@ -342,7 +338,6 @@ function getDefaultAuxData() {
 const utils = {
   getClosestMatches,
   nextNodeId,
-  changeAppMode,
   nextStructuralId,
   getEmptyStructuralModel,
   updateRenderer,
