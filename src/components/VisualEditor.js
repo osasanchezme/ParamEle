@@ -1,8 +1,9 @@
-import ReactFlow, { MiniMap, Controls, addEdge, applyEdgeChanges, applyNodeChanges, updateEdge } from "react-flow-renderer";
+import ReactFlow, { MiniMap, Controls, addEdge, applyEdgeChanges, applyNodeChanges, updateEdge } from "reactflow";
 import logic_runner from "../js/globalLogicRunner";
 import { setGlobalVariable, storeRfInstance, updateStateFromFlow } from "../state";
 import { useEffect } from "react";
 import utils from "../utils";
+import "reactflow/dist/style.css";
 
 let rf_instance;
 
@@ -16,7 +17,7 @@ function VisualEditor({ width, show_mini_map, nodes_library, is_model_locked, no
       })
     );
     updateStateFromFlow();
-  }, [is_model_locked]);
+  }, [is_model_locked, setNodes]);
 
   const saveRfInstance = (rfInstance) => {
     rf_instance = rfInstance;
@@ -126,6 +127,56 @@ function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = fal
   }
 }
 
+function removeNodesAndEdgesFromModel(node_ids, edge_ids) {
+  let nodes = [];
+  let edges = [];
+  node_ids.forEach((id) => {
+    nodes.push({ id });
+  });
+  edge_ids.forEach((id) => {
+    edges.push({ id });
+  });
+  rf_instance.deleteElements({ nodes, edges });
+}
+
+function getSelectedHandles() {
+  let selected_handles = [];
+  let nodes = rf_instance.getNodes();
+  nodes.forEach((node) => {
+    if (node.data.aux.selected_handles.length > 0) {
+      node.data.aux.selected_handles.forEach((selected_handle_id) => {
+        let { type } = utils.splitArgName(selected_handle_id);
+        selected_handles.push({
+          data_key_to_map: selected_handle_id,
+          node_id_to_map: node.id,
+          label: node.data.custom_label || utils.getDisplayCopy("nodes", node.type),
+          type,
+        });
+      });
+    }
+  });
+  return selected_handles;
+}
+
+function deselectAllNodesAndHandles() {
+  rf_instance.setNodes((nds) =>
+    nds.map((node) => {
+      if (node.data.aux.selected) node.data.aux.selected = false;
+      node.data.aux.selected_handles = [];
+      return node;
+    })
+  );
+}
+
+function deselectAllHandles() {
+  rf_instance.setNodes((nds) =>
+    nds.map((node) => {
+      node.data.aux.selected_handles = [];
+      return node;
+    })
+  );
+}
+
 export default VisualEditor;
 
-export { updateNodeDataKey, addNodeToTheEditor };
+export { updateNodeDataKey, addNodeToTheEditor, getSelectedHandles, deselectAllHandles, deselectAllNodesAndHandles, removeNodesAndEdgesFromModel };

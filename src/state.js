@@ -12,7 +12,7 @@ import getState from "./getState";
 import utils from "./utils";
 import repair from "./js/repair";
 import notification from "./components/notification";
-import { ReactFlowInstance } from "react-flow-renderer";
+import { ReactFlowInstance } from "reactflow";
 const { notify } = notification;
 
 function setInitialState() {
@@ -80,14 +80,6 @@ function getGlobalVariable(key) {
  */
 function getRfInstance() {
   return window.ParamEle.rfInstance;
-}
-
-function getModelFromRfInstance() {
-  let rfInstance = getRfInstance();
-  return {
-    nodes: rfInstance.getNodes(),
-    edges: rfInstance.getEdges(),
-  };
 }
 
 function updateSettingsFromLocalState(settings_obj) {
@@ -223,47 +215,6 @@ function highlightSelectedNodes(x_i, y_i, x_f, y_f, rel_orig_x, rel_orig_y) {
   );
 }
 
-function deselectAllNodesAndHandles() {
-  let rf_instance = getRfInstance();
-  rf_instance.setNodes((nds) =>
-    nds.map((node) => {
-      if (node.data.aux.selected) node.data.aux.selected = false;
-      node.data.aux.selected_handles = [];
-      return node;
-    })
-  );
-}
-
-function deselectAllHandles() {
-  let rf_instance = getRfInstance();
-  rf_instance.setNodes((nds) =>
-    nds.map((node) => {
-      node.data.aux.selected_handles = [];
-      return node;
-    })
-  );
-}
-
-function selectHandle(node_id, handle_id, label, type) {
-  let selected_handles = getGlobalVariable("selected_handles");
-  let this_handle = {
-    data_key_to_map: handle_id,
-    node_id_to_map: node_id,
-    label,
-    type,
-  };
-  let is_already_selected = false;
-  selected_handles.forEach(({ node_id_to_map, data_key_to_map }) => {
-    if (node_id_to_map === node_id && data_key_to_map === handle_id) {
-      is_already_selected = true;
-    }
-  });
-  if (!is_already_selected) {
-    selected_handles.push(this_handle);
-  }
-  setGlobalVariable("selected_handles", selected_handles);
-}
-
 function setModelToEditor(model) {
   let rf_instance = getRfInstance();
   let { nodes, edges } = model;
@@ -286,13 +237,9 @@ const state = {
   zoomToCoordinate,
   copyStructureToClipboard,
   highlightSelectedNodes,
-  deselectAllNodesAndHandles,
-  selectHandle,
-  getModelFromRfInstance,
   removeNodesAndEdgesFromModel,
   setModelToEditor,
   resetView,
-  deselectAllHandles,
 };
 
 export default state;

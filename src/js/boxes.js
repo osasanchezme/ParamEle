@@ -1,9 +1,9 @@
 import getState from "../getState";
-import { Node, Edge } from "react-flow-renderer";
+import { Node, Edge } from "reactflow";
 import state from "../state";
 import utils from "../utils";
 import notification from "../components/notification";
-import { addNodeToTheEditor } from "../components/VisualEditor";
+import { addNodeToTheEditor, deselectAllHandles, getSelectedHandles, removeNodesAndEdgesFromModel } from "../components/VisualEditor";
 const { notify, closeAllNotifications } = notification;
 
 function groupBoxes(finish_callback) {
@@ -49,31 +49,35 @@ function groupBoxes(finish_callback) {
   position.y /= selected_nodes.length;
 
   // Get the input handles
-  getHandlesFromUserInteraction(groupBoxesStepTwo, { internal_logic, position, selected_node_ids, selected_edge_ids }, "select_input_handles", finish_callback);
+  getHandlesFromUserInteraction(
+    groupBoxesStepTwo,
+    { internal_logic, position, selected_node_ids, selected_edge_ids },
+    "select_input_handles",
+    finish_callback
+  );
 }
 
 function groupBoxesStepTwo(data_to_keep, finish_callback) {
-  data_to_keep = { ...data_to_keep, input_handles: state.getGlobalVariable("selected_handles") };
+  let input_handles = getSelectedHandles();
+  data_to_keep = { ...data_to_keep, input_handles };
   getHandlesFromUserInteraction(groupBoxesStepThree, data_to_keep, "select_output_handles", finish_callback);
 }
 
 function groupBoxesStepThree(data_to_keep, finish_callback) {
-  data_to_keep = { ...data_to_keep, output_handles: state.getGlobalVariable("selected_handles") };
-  let { internal_logic, input_handles, output_handles, position, selected_node_ids, selected_edge_ids } = data_to_keep;
+  let output_handles = getSelectedHandles();
+  let { internal_logic, input_handles, position, selected_node_ids, selected_edge_ids } = data_to_keep;
 
-  let { nodes, edges } = getState("model");
-  // Add the wrapper node to the original model
-  nodes.push(addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, false));
+  // Add the wrapper node to the editor
+  addNodeToTheEditor("nodesWrapper", position, { internal_logic, input_handles, output_handles }, true, true);
 
-  // Remove the selected nodes and edges from the editor
-  let new_model = state.removeNodesAndEdgesFromModel({ nodes, edges }, selected_node_ids, selected_edge_ids);
-  state.setModelToEditor(new_model);
+  setTimeout(() => {
+    removeNodesAndEdgesFromModel(selected_node_ids, selected_edge_ids);
+    // Zoom to the new node
+    state.zoomToCoordinate(position.x, position.y);
 
-  // Zoom to the new node
-  state.zoomToCoordinate(position.x, position.y);
-
-  // Call the finish callback
-  finish_callback(true);
+    // Call the finish callback
+    finish_callback(true);
+  }, 100);
 }
 
 function editInternalLogic() {
@@ -116,8 +120,7 @@ function editInternalLogic() {
 }
 
 function getHandlesFromUserInteraction(callback, data_to_keep, message_key, finish_callback) {
-  state.setGlobalVariable("selected_handles", []);
-  state.deselectAllHandles();
+  deselectAllHandles();
   state.setGlobalVariable("user_interaction_step", "wait");
   notify("info", message_key, null, true, 10000);
   let user_waiter = setInterval(() => {

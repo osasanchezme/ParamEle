@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Handle, Position } from "react-flow-renderer";
+import { Handle, Position } from "reactflow";
 import { Tag, Tooltip, Input, InputGroup, InputRightElement, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box } from "@chakra-ui/react";
 import utils from "../../utils";
 import EditableNodeHeader from "../../components/editable_node_header";
@@ -31,7 +31,6 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
   function handleClickOnHandle(id, handle_id, node_label, type) {
     if (app_mode == "selecting_handles") {
       updateNodeDataKey(id, "selected_handles", handle_id, true);
-      state.selectHandle(id, handle_id, node_label, type);
     }
   }
 

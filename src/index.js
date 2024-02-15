@@ -18,7 +18,7 @@ import Authentication from "./components/authentication";
 import FileManager from "./components/file_manager";
 import { LoadingDimmer } from "./components/loading_dimmer";
 import utils from "./utils";
-import VisualEditor from "./components/VisualEditor";
+import VisualEditor, { deselectAllNodesAndHandles } from "./components/VisualEditor";
 import createNodesLibrary from "./flow-nodes/handler";
 import Renderer from "./components/Renderer";
 import VersionManager from "./components/version_manager";
@@ -295,7 +295,7 @@ class ParamEle extends React.Component {
   }
   activateNodeCreation(event) {
     if (this.state.mode === "wait_action") {
-      state.deselectAllNodesAndHandles();
+      deselectAllNodesAndHandles();
       let bounding_rect = event.target.getBoundingClientRect();
       let mouse_x = event.clientX;
       let mouse_y = event.clientY;
@@ -316,7 +316,7 @@ class ParamEle extends React.Component {
     switch (event.key) {
       case "Escape":
         this.setState({ mode: "wait_action" });
-        state.deselectAllNodesAndHandles();
+        deselectAllNodesAndHandles();
         break;
       case "Enter":
         state.setGlobalVariable("user_interaction_step", "done");
@@ -326,7 +326,7 @@ class ParamEle extends React.Component {
     }
   }
   handleMouseClick(event) {
-    if (event.target.className === "react-flow__pane react-flow__container") {
+    if (event.target.className === "react-flow__pane") {
       if (!event.ctrlKey) {
         this.activateNodeCreation(event);
       }
@@ -350,7 +350,7 @@ class ParamEle extends React.Component {
    * @param {MouseEvent} event
    */
   handleMouseDown(event) {
-    if (event.target.className === "react-flow__pane react-flow__container" && event.ctrlKey) {
+    if (event.target.className === "react-flow__pane" && event.ctrlKey) {
       let bounding_rect = event.target.getBoundingClientRect();
       this.changeAppMode("selecting_nodes");
       this.setState({ selection_top: event.clientY, selection_left: event.clientX, rel_orig_x: bounding_rect.left, rel_orig_y: bounding_rect.top });
