@@ -45,8 +45,11 @@ function Authentication({ user, is_auth_form_open, closeAuthenticationForm, acti
     let { valid_data, new_state } = validateInputData(logInFormState, log_in_form_fields);
     setLogInFormState(new_state);
     if (valid_data) {
-      Firebase.logInUserWithEmail(logInFormState);
-      closeAuthenticationForm();
+      utils.showLoadingDimmer("logging_in");
+      Firebase.logInUserWithEmail(logInFormState, () => {
+        closeAuthenticationForm();
+        utils.hideLoadingDimmer();
+      });
     }
   }
   const tab_keys = ["sign_up", "log_in"];

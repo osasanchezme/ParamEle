@@ -241,7 +241,9 @@
         "saving_new_version": "Guardando versión nueva",
         "saving_results": "Guardando resultados de análisis",
         "loading_model": "Cargando modelo",
-        "loading_results": "Cargando resultados"
+        "loading_results": "Cargando resultados",
+        "logging_in": "Iniciando sesión",
+        "logging_out": "Cerrando sesión"
     },
     "version_history": {
         "title": "Historial de versiones",

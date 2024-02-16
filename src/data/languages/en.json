@@ -241,7 +241,9 @@
         "saving_new_version": "Saving new version",
         "saving_results": "Saving analysis results",
         "loading_model": "Loading model",
-        "loading_results": "Loading results"
+        "loading_results": "Loading results",
+        "logging_in": "Logging in",
+        "logging_out": "Logging out"
     },
     "version_history": {
         "title": "Version history",

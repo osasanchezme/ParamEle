@@ -48,9 +48,11 @@ function createUserWithEmail(validated_user_data) {
 }
 
 function signOutUser() {
+  utils.showLoadingDimmer("logging_out");
   signOut(auth)
     .then(() => {
       utils.setUser(null);
+      utils.hideLoadingDimmer();
       file.reloadToBlank();
     })
     .catch((error) => {
@@ -58,12 +60,13 @@ function signOutUser() {
     });
 }
 
-function logInUserWithEmail(validated_user_data) {
+function logInUserWithEmail(validated_user_data, callback) {
   signInWithEmailAndPassword(auth, validated_user_data.email.value, validated_user_data.password.value)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
       // ...
+      callback();
     })
     .catch((error) => {
       const errorCode = error.code;
