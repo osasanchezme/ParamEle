@@ -5,12 +5,13 @@ import { useRef } from "react";
 import Firebase from "../js/firebase";
 import file from "../js/file";
 import { MdLock, MdLockOpen } from "react-icons/md";
+import { notify } from "./notification";
 
 function localGetCopy(copy_key) {
   return utils.getDisplayCopy("nav_bar", copy_key);
 }
 
-function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock, openFileManager }) {
+function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock, openFileManager, openAuthenticationForm, user }) {
   function localOpenFileManager() {
     if (file_name === null) {
       openFileManager("save");
@@ -22,44 +23,50 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
     }
   }
   function saveModelVersion(form_state) {
-    utils.showLoadingDimmer("saving_new_version");
-    let commit_msg = form_state.commit_msg.value;
-    let model_blob = file.getModelBlob();
-    let { model_id, file_name, file_path } = file_data;
-    let version_id = Date.now();
-    Firebase.saveFileToCloud(
-      model_blob,
-      file_name,
-      model_id,
-      version_id,
-      file_path,
-      (new_file) => {
-        // Update the file data in the app state
-        setFileData({ is_saved: true, last_saved: version_id, current_version: version_id });
-        // Save the results to the cloud
-        let results_blob = file.getResultsBlob();
-        if (results_blob !== false) {
-          utils.setLoadingDimmerMsg("saving_results");
-          Firebase.saveFileToCloud(
-            results_blob,
-            file_name,
-            model_id,
-            version_id,
-            file_path,
-            (new_file) => {
-              utils.hideLoadingDimmer();
-            },
-            true,
-            commit_msg,
-            "results"
-          );
-        } else {
-          utils.hideLoadingDimmer();
-        }
-      },
-      true,
-      commit_msg
-    );
+    if (user) {
+      utils.showLoadingDimmer("saving_new_version");
+      let commit_msg = form_state.commit_msg.value;
+      let model_blob = file.getModelBlob();
+      let { model_id, file_name, file_path } = file_data;
+      let version_id = Date.now();
+      Firebase.saveFileToCloud(
+        model_blob,
+        file_name,
+        model_id,
+        version_id,
+        file_path,
+        (new_file) => {
+          // Update the file data in the app state
+          setFileData({ is_saved: true, last_saved: version_id, current_version: version_id });
+          // Save the results to the cloud
+          let results_blob = file.getResultsBlob();
+          if (results_blob !== false) {
+            utils.setLoadingDimmerMsg("saving_results");
+            Firebase.saveFileToCloud(
+              results_blob,
+              file_name,
+              model_id,
+              version_id,
+              file_path,
+              (new_file) => {
+                utils.hideLoadingDimmer();
+              },
+              true,
+              commit_msg,
+              "results"
+            );
+          } else {
+            utils.hideLoadingDimmer();
+          }
+        },
+        true,
+        commit_msg
+      );
+    } else {
+      // Show notification and open the auth form to log in
+      notify("warning", "log_in_to_save", undefined, true);
+      openAuthenticationForm("log_in");
+    }
   }
   function toggleModelLock() {
     if (model_locked) {
@@ -109,24 +116,24 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
   } else {
     return (
       <>
-      {tag_lock_element}
-      <PopoverForm
-        action_button_text={localGetCopy("save")}
-        copies_key={"nav_bar"}
-        action_function={saveModelVersion}
-        fields={{
-          commit_msg: {
-            default: "",
-            type: "text",
-            validation: [],
-            is_first_field: true,
-            helper_text: formatted_time,
-          },
-        }}
-        options={{ placement: "bottom" }}
-      >   
+        {tag_lock_element}
+        <PopoverForm
+          action_button_text={localGetCopy("save")}
+          copies_key={"nav_bar"}
+          action_function={saveModelVersion}
+          fields={{
+            commit_msg: {
+              default: "",
+              type: "text",
+              validation: [],
+              is_first_field: true,
+              helper_text: formatted_time,
+            },
+          }}
+          options={{ placement: "bottom" }}
+        >
           {tag_element}
-      </PopoverForm>
+        </PopoverForm>
       </>
     );
   }

@@ -114,7 +114,8 @@ function updateUserProfile(validated_user_data) {
 function getUserProjects(callback) {
   let user = auth.currentUser;
   const dbRef = databaseRef(getDatabase());
-  get(child(dbRef, `users/${user.uid}/projects`))
+  let user_id = user ? user.uid : '_public';
+  get(child(dbRef, `users/${user_id}/projects`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         callback(snapshot.val());
@@ -150,7 +151,8 @@ function getProjectData(file_path, file_name, callback) {
 
 function getPathInDatabaseFromLocal(location) {
   let user = auth.currentUser;
-  let db_path = `users/${user.uid}/projects`;
+  let user_id = user ? user.uid : '_public';
+  let db_path = `users/${user_id}/projects`;
   // Get the path up to the grandparent of the new folder
   for (let i = 1; i < location.length - 1; i++) {
     db_path += `/${location[i]}/content`;

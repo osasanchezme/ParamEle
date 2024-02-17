@@ -40,6 +40,7 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
   let [fileManagerPath, setFileManagerPath] = useState(["home"]);
   let [fileManagerContent, setFileManagerContent] = useState(null);
   let [fileManagerWaiting, setFileManagerWaiting] = useState(true);
+  let [filesToDisplay, setFilesToDisplay] = useState({});
   const fileNameFormFields = {
     file_name: {
       default: "",
@@ -72,6 +73,17 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
       setFileNameForm(getDefaultState(fileNameFormFields));
     }
   }, [is_file_manager_open]);
+  useEffect(() => {
+    if (is_file_manager_open) {
+      let files_to_display = JSON.parse(JSON.stringify(fileManagerContent));
+      fileManagerPath.forEach((folder_name, i) => {
+        if (i > 0) {
+          files_to_display = files_to_display[folder_name].content || {};
+        }
+      });
+      setFilesToDisplay(files_to_display);
+    }
+  }, [fileManagerContent, fileManagerPath]);
   /**
    *
    * @param {object} data
@@ -101,8 +113,7 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
     Firebase.getUserProjects(updateFileManagerData);
   }
   function validateFolderName(folder_name, is_file) {
-    let files_to_display = getFilesAndFoldersToDisplay();
-    if (files_to_display.hasOwnProperty(folder_name)) {
+    if (filesToDisplay.hasOwnProperty(folder_name)) {
       return {
         valid: false,
         error_msg: is_file ? localGetDisplayCopy("existing_file") : localGetDisplayCopy("existing_folder"),
@@ -116,18 +127,8 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
   function createNewFolder(formState) {
     let folder_name = formState.folder_name.value;
     // Check if the parent folder has children
-    let files_to_display = getFilesAndFoldersToDisplay();
-    let is_first_child = Object.keys(files_to_display).length === 0;
+    let is_first_child = Object.keys(filesToDisplay).length === 0;
     Firebase.createNewFolderForUser(folder_name, JSON.parse(JSON.stringify(fileManagerPath)), is_first_child, updateFileManagerData);
-  }
-  function getFilesAndFoldersToDisplay() {
-    let files_to_display = JSON.parse(JSON.stringify(fileManagerContent));
-    fileManagerPath.forEach((folder_name, i) => {
-      if (i > 0) {
-        files_to_display = files_to_display[folder_name].content || {};
-      }
-    });
-    return files_to_display;
   }
   function saveFile() {
     let { valid_data, new_state } = validateInputData(fileNameForm, fileNameFormFields);
@@ -167,15 +168,14 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
       });
     }
   }
-  if (user) {
-    let files_to_display = getFilesAndFoldersToDisplay();
+  if (is_file_manager_open) {
     let fileman_body = "";
     if (!fileManagerWaiting) {
-      if (Object.keys(files_to_display).length > 0) {
+      if (Object.keys(filesToDisplay).length > 0) {
         fileman_body = (
           <SimpleGrid columns={4} spacing={5}>
             <FileManagerView
-              data={files_to_display}
+              data={filesToDisplay}
               setFileManagerPath={setFileManagerPath}
               fileManagerPath={fileManagerPath}
               mode={file_manager_mode}
@@ -241,12 +241,9 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
         </>
       );
     }
-    let path_navigator_and_buttons = (
-      <Flex minWidth="max-content" alignItems="center" gap="2">
-        <Box p="2">
-          <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath} />
-        </Box>
-        <Spacer />
+    let file_manager_buttons = "";
+    if (user) {
+      file_manager_buttons = (
         <ButtonGroup gap="2">
           <PopoverForm
             fields={{
@@ -268,6 +265,15 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
           </PopoverForm>
           <IconButton variant="ghost" icon={<Icon as={MdRefresh} boxSize={6} onClick={getFilesDataFromDatabase} />} />
         </ButtonGroup>
+      );
+    }
+    let path_navigator_and_buttons = (
+      <Flex minWidth="max-content" alignItems="center" gap="2">
+        <Box p="2">
+          <PathNavigator setFileManagerPath={setFileManagerPath} fileManagerPath={fileManagerPath} />
+        </Box>
+        <Spacer />
+        {file_manager_buttons}
       </Flex>
     );
     return (

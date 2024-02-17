@@ -76,21 +76,15 @@ class ParamEle extends React.Component {
       let is_params_available = path !== null && name !== null;
       if (user) {
         utils.setUser(user);
-        utils.hideLoadingDimmer();
-        if (is_params_available) {
-          let file_path = path.split(",");
-          file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock, () => {
-            notify("warning", "file_does_not_exist", undefined, true);
-          });
-        }
       } else {
         utils.setUser(null);
-        utils.hideLoadingDimmer();
-        if (is_params_available) {
-          // Show notification and open the auth form to log in
-          notify("warning", "not_logged_in_cannot_access_file", undefined, true);
-          this.openAuthenticationForm("log_in");
-        }
+      }
+      utils.hideLoadingDimmer();
+      if (is_params_available) {
+        let file_path = path.split(",");
+        file.getFileDataAndOpenModel(file_path, name, this.setFileData, this.setModelLock, () => {
+          notify("warning", "file_does_not_exist", undefined, true);
+        });
       }
     });
   }
@@ -159,7 +153,7 @@ class ParamEle extends React.Component {
     this.setState({ model_locked });
   }
   openVersionManager() {
-    if (this.state.is_saved) {
+    if (this.state.is_saved && this.state.user) {
       Firebase.getProjectData(this.state.file_path, this.state.file_name, (full_file_data) => {
         this.setState({ file_history: full_file_data.history }, () => {
           this.setState({ is_version_manager_open: true });

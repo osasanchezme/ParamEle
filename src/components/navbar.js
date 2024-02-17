@@ -168,6 +168,8 @@ class NavBar extends React.Component {
             model_locked={this.props.model_locked}
             setModelLock={this.props.setModelLock}
             openFileManager={this.props.openFileManager}
+            openAuthenticationForm={this.props.openAuthenticationForm}
+            user={this.props.user}
           />
           {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
             let display_copy = localGetCopy(nav_menu_key);
