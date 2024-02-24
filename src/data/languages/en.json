@@ -119,6 +119,7 @@
         "version_history": "History",
         "export_json": "Export JSON",
         "import_json": "Import JSON",
+        "export_sap": "Export SAP",
         "boxes": "Boxes",
         "group": "Group",
         "edit_logic": "Edit logic",

@@ -7,11 +7,15 @@ import utils from "../utils";
 import Firebase from "./firebase";
 
 const downloadJSONFile = () => {
-  var fileName = "modelo.json";
+  downloadAnyFile("modelo.json", "text/json", getModelBlob());
+};
+
+const downloadAnyFile = (file_name, type, file_blob, no_blob) => {
   let a = document.createElement("a");
-  a.download = fileName;
-  a.href = window.URL.createObjectURL(getModelBlob());
-  a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+  a.download = file_name;
+  let actual_file_blob = no_blob ? new Blob([file_blob], { type }) : file_blob;
+  a.href = window.URL.createObjectURL(actual_file_blob);
+  a.dataset.downloadurl = [type, a.download, a.href].join(":");
   a.click();
 };
 
@@ -151,7 +155,7 @@ const getURLParams = () => {
     params_object[param_key] = queryParams.get(param_key);
   });
   return params_object;
-}
+};
 
 /**
  * Clears all the URL params except the language
@@ -162,15 +166,16 @@ const clearURLParams = () => {
   important_params.forEach((param_key) => {
     queryParams.delete(param_key);
   });
-}
+};
 
 const reloadToBlank = () => {
   clearURLParams();
   window.location.reload();
-}
+};
 
 const file = {
   downloadJSONFile,
+  downloadAnyFile,
   uploadJSONFile,
   newFile,
   getModelBlob,
@@ -179,6 +184,6 @@ const file = {
   downloadAndOpenModel,
   getFileDataAndOpenModel,
   getURLParams,
-  reloadToBlank
+  reloadToBlank,
 };
 export default file;

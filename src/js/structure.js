@@ -6,6 +6,9 @@ import { Link, Icon } from "@chakra-ui/react";
 import { MdOpenInNew } from "react-icons/md";
 import logic_runner from "./globalLogicRunner";
 
+import file from "./file";
+import { parsers } from "../submodulesAPI";
+
 const solveStructure = () => {
   let structure = getState("structure");
   let global_settings = getState("settings")["global"];
@@ -108,5 +111,23 @@ const solveStructure = () => {
     });
 };
 
-const structure = { solveStructure };
+/**
+ *
+ * @param {"SAP2000"} format
+ */
+const downloadInputTextFile = (format) => {
+  let file_str = "";
+  let structure = getState("structure");
+  switch (format) {
+    case "SAP2000":
+      file_str = parsers.csi.getSAP2000Model(structure);
+      break;
+    default:
+      alert("Unsupported file format: " + format);
+      break;
+  }
+  file.downloadAnyFile("modelo_sap.$2k", "text", file_str, true);
+};
+
+const structure = { solveStructure, downloadInputTextFile };
 export default structure;

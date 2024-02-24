@@ -15,3 +15,6 @@ An open-source node based editor for graphical programming.
     - [ ] Add it to the handler of nodes
     - [ ] Add support for it in the renderer itself (Plotly.js)
 
+## Submodules
+
+In the `submodules` folder will be all the submodules that are used in the application. When possible and not too cumbersome, the functions in the submodules shouldn't be imported/used directly in any part of the code, the function should be added to the `submodulesAPI` file, exported and used from there.
