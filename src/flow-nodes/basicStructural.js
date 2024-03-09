@@ -215,7 +215,7 @@ function StructuralMomentExec(args) {
   return {
     "moment_out-id": {
       ...structural_args,
-      type: "n",
+      type: "N",
       load_group: "DL",
     },
   };
