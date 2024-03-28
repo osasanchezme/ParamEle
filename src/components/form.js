@@ -3,22 +3,9 @@ import utils from "../utils";
 import { FormControl, FormLabel, FormErrorMessage, FormHelperText, Button, Input, Select, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 /**
- * @typedef {Object} ValidationObject
- * @property {"equal_key"|"no"|"contains"} type
- * @property {string} criteria
- * @property {string} msg Key of the message in the copies
- */
-/**
- * @typedef {Object} FormField
- * @property {String} default Default value
- * @property {"text"|"email"|"dropdown"|"password"} type Type of the field
- * @property {Array.<ValidationObject>} validation
- * @property {Boolean} is_first_field
- */
-/**
  *
  * @param {Object} param0
- * @param {Object.<string, FormField>} param0.fields
+ * @param {Object.<string, import("../js/types").ParamEleDefaultFormField>} param0.fields
  * @param {function(evt:InputEvent, key:String)} param0.handleInputChange Function to update the given key
  * @param {Object} param0.formState Object that controls the state of the form directly from React's useState
  * @param {String} param0.copies_key Key under which all the copies are found
@@ -143,10 +130,18 @@ function PasswordInput({ onChange }) {
   );
 }
 
-function validateInputData(current_state, fields) {
+/**
+ * 
+ * @param {import("../js/types").ParamEleFormStateObject} current_state 
+ * @param {import("../js/types").ParamEleFormDefaultStateObject} fields 
+ * @param {string[]} ignore_fields List of fields (by key) not to validate in a specific validation
+ * @returns 
+ */
+function validateInputData(current_state, fields, ignore_fields = []) {
   let new_state = JSON.parse(JSON.stringify(current_state));
   let valid_data = true;
   Object.entries(fields).forEach(([key, data]) => {
+    if (ignore_fields.includes(key)) return;
     let user_input = new_state[key].value;
     data.validation.forEach((validation) => {
       switch (validation.type) {

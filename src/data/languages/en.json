@@ -193,7 +193,11 @@
         "log_in_to_save_title": "Cannot save without authentication",
         "log_in_to_save_desc": "Please log in or sign up to save the file",
         "save_to_view_history_title": "File not saved",
-        "save_to_view_history_desc": "Save at least one version of the file to review its history"
+        "save_to_view_history_desc": "Save at least one version of the file to review its history",
+        "reset_password_email_sent_title": "Email sent",
+        "reset_password_email_sent_desc": "Check your email and follow the instructions to reset your password",
+        "generic_unhandled_issue_title": "Something went wrong",
+        "generic_unhandled_issue_desc": "Please contact support and provide the following information:"
     },
     "navigator":{
         "model": "Main model"
@@ -203,6 +207,7 @@
         "close_modal": "Close",
         "sign_up": "Create account",
         "log_in": "Log in",
+        "reset_password": "Reset password",
         "email": "Email",
         "password": "Password",
         "verify_password": "Repeat Password",
@@ -219,7 +224,10 @@
         "hide": "Hide",
         "passwords_no_match": "Passwords do not match",
         "cannot_be_empty": "This field cannot be empty",
-        "no_valid_email": "This email does not seem valid"
+        "no_valid_email": "This email does not seem valid",
+        "auth/wrong-password": "Wrong password",
+        "auth/too-many-requests": "Too many failed authentication attempts. Please try later or reset your password.",
+        "auth/user-not-found": "User not found. Please contact support if this is a mistake." 
     },
     "file_manager":{
         "title": "My Files",

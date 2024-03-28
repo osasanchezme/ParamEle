@@ -14,11 +14,13 @@ import {
   Tab,
   TabPanel,
   SimpleGrid,
+  Link,
 } from "@chakra-ui/react";
 import utils from "../utils";
 import Firebase from "../js/firebase";
-import {auth_form_fields, log_in_form_fields} from "../js/form_fileds";
+import { auth_form_fields, log_in_form_fields } from "../js/form_fileds";
 import ParamEleForm from "./form";
+import { notify } from "./notification";
 const { FormComponent, getDefaultState, validateInputData } = ParamEleForm;
 
 function localGetDisplayCopy(copy_key) {
@@ -26,10 +28,9 @@ function localGetDisplayCopy(copy_key) {
 }
 
 function Authentication({ user, is_auth_form_open, closeAuthenticationForm, active_tab_auth_form, setActiveTabAuthenticationForm }) {
-  
   let [authFormState, setAuthFormState] = useState(getDefaultState(auth_form_fields));
   let [logInFormState, setLogInFormState] = useState(getDefaultState(log_in_form_fields));
-  useEffect(()=> {
+  useEffect(() => {
     setAuthFormState(getDefaultState(auth_form_fields));
     setLogInFormState(getDefaultState(log_in_form_fields));
   }, []);
@@ -46,9 +47,46 @@ function Authentication({ user, is_auth_form_open, closeAuthenticationForm, acti
     setLogInFormState(new_state);
     if (valid_data) {
       utils.showLoadingDimmer("logging_in");
-      Firebase.logInUserWithEmail(logInFormState, () => {
-        closeAuthenticationForm();
-        utils.hideLoadingDimmer();
+      Firebase.logInUserWithEmail(logInFormState, (process_response) => {
+        if (process_response.success) {
+          closeAuthenticationForm();
+          utils.hideLoadingDimmer();
+        } else {
+          utils.hideLoadingDimmer();
+          switch (process_response.msg) {
+            case "auth/wrong-password":
+            case "auth/too-many-requests":
+              logInFormState.password.error_msg = process_response.msg;
+              logInFormState.password.valid = false;
+              setLogInFormState(logInFormState);
+              break;
+            default:
+              console.log(`Issue when authenticating: ${process_response.msg}`);
+              break;
+          }
+        }
+      });
+    }
+  }
+  function resetPassword() {
+    let { valid_data, new_state } = validateInputData(logInFormState, log_in_form_fields, ["password"]);
+    setLogInFormState(new_state);
+    if (valid_data) {
+      Firebase.sendEmailToResetPassword(new_state, (process_response) => {
+        if (process_response.success) {
+          notify("success", "reset_password_email_sent", undefined, true);
+        } else {
+          switch (process_response.msg) {
+            case "auth/user-not-found":
+              logInFormState.email.error_msg = process_response.msg;
+              logInFormState.email.valid = false;
+              setLogInFormState(logInFormState);
+              break;
+            default:
+              notify("error", "generic_unhandled_issue", process_response.msg, true);
+              break;
+          }
+        }
       });
     }
   }
@@ -73,13 +111,24 @@ function Authentication({ user, is_auth_form_open, closeAuthenticationForm, acti
               <TabPanels>
                 <TabPanel key={"sign_up"}>
                   <SimpleGrid columns={2} spacing={4}>
-                    <FormComponent fields={auth_form_fields} formState={authFormState} setFormState={setAuthFormState} copies_key="auth"></FormComponent>
+                    <FormComponent
+                      fields={auth_form_fields}
+                      formState={authFormState}
+                      setFormState={setAuthFormState}
+                      copies_key="auth"
+                    ></FormComponent>
                   </SimpleGrid>
                 </TabPanel>
                 <TabPanel key={"log_in"}>
                   <SimpleGrid columns={1} spacing={4}>
-                    <FormComponent fields={log_in_form_fields} formState={logInFormState} setFormState={setLogInFormState} copies_key="auth"></FormComponent>
+                    <FormComponent
+                      fields={log_in_form_fields}
+                      formState={logInFormState}
+                      setFormState={setLogInFormState}
+                      copies_key="auth"
+                    ></FormComponent>
                   </SimpleGrid>
+                  <Link onClick={resetPassword}>{localGetDisplayCopy("reset_password")}</Link>
                 </TabPanel>
               </TabPanels>
             </Tabs>

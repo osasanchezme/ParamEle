@@ -1,12 +1,21 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  signInWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { getDatabase, ref as databaseRef, set, get, child, update } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getBlob, deleteObject } from "firebase/storage";
 import utils from "../utils";
 import { notify } from "../components/notification";
 import file from "./file";
+import { getProcessResponseObject } from "./processResponse";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -60,19 +69,44 @@ function signOutUser() {
     });
 }
 
+/**
+ * Logs a user in user email and password
+ * @param {*} validated_user_data
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
 function logInUserWithEmail(validated_user_data, callback) {
   signInWithEmailAndPassword(auth, validated_user_data.email.value, validated_user_data.password.value)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
       // ...
-      callback();
+      callback(getProcessResponseObject("success"));
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(`There was a problem: ${errorMessage} (${errorCode})`);
-      // TODO - Handle problems
+      callback(getProcessResponseObject("error", error.code));
+    });
+}
+
+/**
+ * Sends an email to reset the password to a user
+ * @param {import("./types").ParamEleFormStateObject} validated_user_data
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
+function sendEmailToResetPassword(validated_user_data, callback) {
+  const local_auth = getAuth();
+  const email = validated_user_data["email"].value;
+  sendPasswordResetEmail(local_auth, email)
+    .then(() => {
+      callback(getProcessResponseObject("success"));
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`There was a problem: ${errorMessage} (${errorCode})`);
+      callback(getProcessResponseObject("error", error.code));
     });
 }
 
@@ -114,7 +148,7 @@ function updateUserProfile(validated_user_data) {
 function getUserProjects(callback) {
   let user = auth.currentUser;
   const dbRef = databaseRef(getDatabase());
-  let user_id = user ? user.uid : '_public';
+  let user_id = user ? user.uid : "_public";
   get(child(dbRef, `users/${user_id}/projects`))
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -151,7 +185,7 @@ function getProjectData(file_path, file_name, callback) {
 
 function getPathInDatabaseFromLocal(location) {
   let user = auth.currentUser;
-  let user_id = user ? user.uid : '_public';
+  let user_id = user ? user.uid : "_public";
   let db_path = `users/${user_id}/projects`;
   // Get the path up to the grandparent of the new folder
   for (let i = 1; i < location.length - 1; i++) {
@@ -332,9 +366,11 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
     return;
   }
   // Something is not working when deleting the reference in the realtime database
-  deleteFile("model", function() {
+  deleteFile("model", function () {
     if (results_available) {
-      deleteFile("results", () => {deleteVersionReference(callback)});
+      deleteFile("results", () => {
+        deleteVersionReference(callback);
+      });
     } else {
       deleteVersionReference(callback);
     }
@@ -350,7 +386,6 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
       .then(() => {
         console.log("Deleted the reference");
         callback();
-
       })
       .catch((error) => {
         console.error("Error deleting the version reference: ", error);
@@ -374,8 +409,8 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
   }
 }
 
-function attachToAuthChangeFirebaseEvent (function_to_attach) {
-  onAuthStateChanged(auth, function_to_attach)
+function attachToAuthChangeFirebaseEvent(function_to_attach) {
+  onAuthStateChanged(auth, function_to_attach);
 }
 
 const Firebase = {
@@ -389,7 +424,8 @@ const Firebase = {
   getProjectData,
   updateCommitMsgForUser,
   deleteFileVersionFromCloud,
-  attachToAuthChangeFirebaseEvent
+  attachToAuthChangeFirebaseEvent,
+  sendEmailToResetPassword
 };
 
 export default Firebase;
