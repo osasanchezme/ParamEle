@@ -18,6 +18,7 @@ function getNavBarOptions({
   open_version_manager_callback,
   open_file_manager_callback,
   change_app_mode_function,
+  import_json_callback,
 }) {
   return {
     file: {
@@ -40,7 +41,7 @@ function getNavBarOptions({
         },
         { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: open_version_manager_callback },
         { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
-        { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: file.uploadJSONFile },
+        { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: import_json_callback },
       ],
     },
     boxes: {
@@ -111,8 +112,21 @@ class NavBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.navbar_options = getNavBarOptions({
       new_file_callback: function () {
-        props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
-        file.newFile();
+        props.openConfirmationDialog(
+          "blank_file",
+          [
+            {
+              run: (close_dialog_callback) => {
+                props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
+                file.newFile();
+                close_dialog_callback();
+              },
+              copy: "ok",
+              color: "blue",
+            },
+          ],
+          true
+        );
       },
       solve_file_callback: function () {
         props.setModelLock(true);
@@ -126,6 +140,23 @@ class NavBar extends React.Component {
       },
       change_app_mode_function: function (mode) {
         props.changeAppMode(mode);
+      },
+      import_json_callback: function () {
+        props.openConfirmationDialog(
+          "upload_file",
+          [
+            {
+              run: (close_dialog_callback) => {
+                props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
+                file.uploadJSONFile();
+                close_dialog_callback();
+              },
+              copy: "ok",
+              color: "blue",
+            },
+          ],
+          true
+        );
       },
     });
     this.right_navbar_options = getRightNavBarOptions({

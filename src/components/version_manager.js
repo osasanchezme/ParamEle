@@ -125,30 +125,16 @@ function VersionItem({
     let dialog_callbacks = [
       {
         run: (close_dialog_callback) => {
-          Firebase.deleteFileVersionFromCloud(
-            file_name,
-            file_path,
-            model_id,
-            version_key,
-            version_data.results_available,
-            current_version,
-            () => {
-              close_dialog_callback();
-              closeVersionManager();
-            }
-          );
+          Firebase.deleteFileVersionFromCloud(file_name, file_path, model_id, version_key, version_data.results_available, current_version, () => {
+            close_dialog_callback();
+            closeVersionManager();
+          });
         },
         copy: "ok",
         color: "red",
       },
-      {
-        run: () => {},
-        copy: "cancel",
-        color: "gray",
-        action: "close",
-      },
     ];
-    openConfirmationDialog("delete_version", dialog_callbacks);
+    openConfirmationDialog("delete_version", dialog_callbacks, true);
   }
   let version_props = Object.entries(version_data).map(([prop_key, prop_val]) => {
     let table_row = "";

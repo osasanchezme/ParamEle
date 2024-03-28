@@ -166,7 +166,22 @@ class ParamEle extends React.Component {
   closeVersionManager() {
     this.setState({ is_version_manager_open: false });
   }
-  openConfirmationDialog(message, callbacks) {
+  /**
+   * Opens a generic confirmation dialog before executing an action
+   * @param {string} message A copy key from confirmation_dialog group
+   * @param {{run: Function, copy: string, color: string}[]} callbacks Object with the keys for the action buttons and the associated callback function. Copies from the confirmation_dialog group
+   * - Each callback.run function receives as an argument the dialog close function to be called anywhere in the callback
+   * @param {boolean} show_cancel Whether or not to show the cancel button with no action
+   */
+  openConfirmationDialog(message, callbacks, show_cancel) {
+    if (show_cancel) {
+      callbacks.push({
+        run: () => {},
+        copy: "cancel",
+        color: "gray",
+        action: "close",
+      });
+    }
     this.setState({ is_confirmation_open: true, confirmation_msg: message, confirmation_callbacks: callbacks });
   }
   closeConfirmationDialog() {
@@ -395,6 +410,7 @@ class ParamEle extends React.Component {
               openAuthenticationForm={this.openAuthenticationForm}
               openFileManager={this.openFileManager}
               changeAppMode={this.changeAppMode}
+              openConfirmationDialog={this.openConfirmationDialog}
             ></NavBar>
             <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
             {commands_bar}

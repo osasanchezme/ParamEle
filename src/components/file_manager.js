@@ -140,6 +140,7 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
       let version_id = Date.now();
       let file_name = new_state.file_name.value;
       let file_path = JSON.parse(JSON.stringify(fileManagerPath));
+      file.setURLParams(file_path, file_name);
       Firebase.saveFileToCloud(model_blob, file_name, model_id, version_id, file_path, (new_file) => {
         updateFileManagerData(new_file, true);
         // Update the file data in the app state

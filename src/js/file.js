@@ -45,13 +45,14 @@ const getResultsBlob = () => {
 };
 
 const newFile = () => {
+  clearURLParams();
   blank_model.settings = repair.repairSettings(blank_model.settings);
-  state.setState(repair.repairModel(blank_model));
+  state.setState(repair.repairModel(blank_model.model));
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(blank_model.model.nodes);
   rf_instance.setEdges(blank_model.model.edges);
   state.updateSettingsFromLocalState(blank_model.settings);
-  logic_runner.run();
+  logic_runner.run(blank_model.model);
 };
 
 const uploadJSONFile = () => {
@@ -67,6 +68,7 @@ const uploadJSONFile = () => {
       let user_file = a.files[0];
       let fr = new FileReader();
       fr.onload = function (e) {
+        clearURLParams();
         let lines = e.target.result;
         var state_from_file = JSON.parse(lines);
         setModelAndResultsFromParsedBlob(state_from_file);
@@ -143,6 +145,14 @@ const setURLParams = (fileManagerPath, file_name) => {
   queryParams.append("name", file_name);
 
   // Update URL with new query parameters
+  appendParamsToCurrentURL(queryParams);
+};
+
+/**
+ * Updates the current URL in the browser with the parameters given in queryParams
+ * @param {URLSearchParams} queryParams
+ */
+const appendParamsToCurrentURL = (queryParams) => {
   const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
   window.history.pushState({}, "", newUrl);
 };
@@ -166,6 +176,9 @@ const clearURLParams = () => {
   important_params.forEach((param_key) => {
     queryParams.delete(param_key);
   });
+
+  // Update URL with new query parameters
+  appendParamsToCurrentURL(queryParams);
 };
 
 const reloadToBlank = () => {
@@ -185,5 +198,6 @@ const file = {
   getFileDataAndOpenModel,
   getURLParams,
   reloadToBlank,
+  setURLParams
 };
 export default file;
