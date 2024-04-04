@@ -243,7 +243,8 @@
         "folder_name": "Nombre de la carpeta",
         "existing_folder": "Nombre de carpeta existente",
         "existing_file": "Nombre de archivo o carpeta existente",
-        "file_name": "Nombre del archivo"
+        "file_name": "Nombre del archivo",
+        "_default_shared_with_me_": "Compartido conmigo"
     },
     "waiting_dimmer": {
         "loading": "Cargando",

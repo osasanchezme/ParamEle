@@ -243,7 +243,8 @@
         "folder_name": "Folder name",
         "existing_folder": "This folder name is already in use",
         "existing_file": "This file or folder name is already in use",
-        "file_name": "File name"
+        "file_name": "File name",
+        "_default_shared_with_me_": "Shared with me"
     },
     "waiting_dimmer":{
         "loading": "Loading",

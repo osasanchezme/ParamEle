@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import utils from "../utils";
 import { useState, useRef, useEffect } from "react";
-import { MdFolder, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdRefresh } from "react-icons/md";
+import { MdFolder, MdFolderShared, MdInsertDriveFile, MdHomeFilled, MdOutlineInsertDriveFile, MdCreateNewFolder, MdRefresh } from "react-icons/md";
 import Firebase from "../js/firebase";
 import PopoverForm from "./popover_form";
 import file from "../js/file";
@@ -127,8 +127,7 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
   function createNewFolder(formState) {
     let folder_name = formState.folder_name.value;
     // Check if the parent folder has children
-    let is_first_child = Object.keys(filesToDisplay).length === 0;
-    Firebase.createNewFolderForUser(folder_name, JSON.parse(JSON.stringify(fileManagerPath)), is_first_child, updateFileManagerData);
+    Firebase.createNewFolderForUser(folder_name, JSON.parse(JSON.stringify(fileManagerPath)), updateFileManagerData);
   }
   function saveFile() {
     let { valid_data, new_state } = validateInputData(fileNameForm, fileNameFormFields);
@@ -312,7 +311,7 @@ function PathNavigator({ fileManagerPath, setFileManagerPath }) {
             </BreadcrumbLink>
           );
         } else {
-          path_object = <BreadcrumbLink onClick={(event) => handleClick(event, index)}>{path}</BreadcrumbLink>;
+          path_object = <BreadcrumbLink onClick={(event) => handleClick(event, index)}>{getSpecialFolderDisplayName(path)}</BreadcrumbLink>;
         }
         return <BreadcrumbItem key={index}>{path_object}</BreadcrumbItem>;
       })}
@@ -335,14 +334,14 @@ function Folder({ folders, files, name, lastModified, onClick }) {
       onMouseLeave={() => setSelectedFolder(false)}
       onClick={onClick}
     >
-      <Icon as={MdFolder} boxSize={"100px"} color="gray.500" width="100%" />
+      <Icon as={getSpecialFolderIcon(name)} boxSize={"100px"} color="gray.500" width="100%" />
       <Box p="2">
         <Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="xs" textTransform="uppercase">
           {folders} {localGetDisplayCopy("folders")} &bull; {files} {localGetDisplayCopy("files")}
         </Box>
 
         <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" noOfLines={1}>
-          {name}
+          {getSpecialFolderDisplayName(name)}
         </Box>
 
         <Box as="span" color="gray.600" fontSize="sm">
@@ -441,6 +440,29 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
     }
   });
   return fileman_view;
+}
+
+function getSpecialFolderDisplayName(name) {
+  let display_name = name;
+  switch (name) {
+    case "_default_shared_with_me_":
+      display_name = localGetDisplayCopy(name);
+      break;
+    default:
+      break;
+  }
+  return display_name;
+}
+function getSpecialFolderIcon(name) {
+  let display_icon = MdFolder;
+  switch (name) {
+    case "_default_shared_with_me_":
+      display_icon = MdFolderShared;
+      break;
+    default:
+      break;
+  }
+  return display_icon;
 }
 
 export default FileManager;

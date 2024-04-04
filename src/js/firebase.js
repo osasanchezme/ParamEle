@@ -131,6 +131,7 @@ function updateUserProfile(validated_user_data) {
       })
         .then(() => {
           console.log("User profile updated successfully");
+          createNewFolderForUser("_default_shared_with_me_", ["home"]);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -198,7 +199,7 @@ function getPathInDatabaseFromLocal(location) {
   return db_path;
 }
 
-function createNewFolderForUser(folder_name, location, is_first_child, callback) {
+function createNewFolderForUser(folder_name, location, callback) {
   let db_path = getPathInDatabaseFromLocal(location);
   // Append the new folder name to the path
   db_path += `/${folder_name}`;
@@ -213,6 +214,7 @@ function createNewFolderForUser(folder_name, location, is_first_child, callback)
   let updates = {};
   updates[db_path] = new_folder;
   function returnDataToTheCallback(new_folder, callback) {
+    if (typeof callback == "undefined") return;
     let return_data = {};
     if (new_folder.hasOwnProperty("content")) new_folder = new_folder.content;
     return_data[folder_name] = new_folder;
@@ -425,7 +427,7 @@ const Firebase = {
   updateCommitMsgForUser,
   deleteFileVersionFromCloud,
   attachToAuthChangeFirebaseEvent,
-  sendEmailToResetPassword
+  sendEmailToResetPassword,
 };
 
 export default Firebase;
