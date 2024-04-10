@@ -39,7 +39,7 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
     let form_component = "";
     let form_error_msg = <FormErrorMessage>{localGetDisplayCopy(formState[key].error_msg)}</FormErrorMessage>;
     let form_label = use_placeholders ? "" : <FormLabel>{localGetDisplayCopy(key)}</FormLabel>;
-    let form_helper_text = data.helper_text !== undefined ? <FormHelperText>{data.helper_text}</FormHelperText> : ""
+    let form_helper_text = data.helper_text !== undefined ? <FormHelperText>{data.helper_text}</FormHelperText> : "";
     switch (data.type) {
       case "text":
       case "email":
@@ -131,11 +131,11 @@ function PasswordInput({ onChange }) {
 }
 
 /**
- * 
- * @param {import("../js/types").ParamEleFormStateObject} current_state 
- * @param {import("../js/types").ParamEleFormDefaultStateObject} fields 
+ *
+ * @param {import("../js/types").ParamEleFormStateObject} current_state
+ * @param {import("../js/types").ParamEleFormDefaultStateObject} fields
  * @param {string[]} ignore_fields List of fields (by key) not to validate in a specific validation
- * @returns 
+ * @returns
  */
 function validateInputData(current_state, fields, ignore_fields = []) {
   let new_state = JSON.parse(JSON.stringify(current_state));
@@ -193,6 +193,8 @@ function getDefaultState(fields) {
   });
   return default_state;
 }
+
+export { FormComponent, validateInputData, getDefaultState };
 
 const ParamEleForm = { FormComponent, validateInputData, getDefaultState };
 

@@ -17,6 +17,7 @@ function getNavBarOptions({
   solve_file_callback,
   open_version_manager_callback,
   open_file_manager_callback,
+  open_sharing_manager_callback,
   change_app_mode_function,
   import_json_callback,
 }) {
@@ -37,6 +38,13 @@ function getNavBarOptions({
           icon: "MdSave",
           callback: () => {
             open_file_manager_callback("save");
+          },
+        },
+        {
+          name: localGetCopy("share"),
+          icon: "MdShare",
+          callback: () => {
+            open_sharing_manager_callback();
           },
         },
         { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: open_version_manager_callback },
@@ -137,6 +145,9 @@ class NavBar extends React.Component {
       },
       open_file_manager_callback: function (mode) {
         props.openFileManager(mode);
+      },
+      open_sharing_manager_callback: function (mode) {
+        props.openSharingManager(mode);
       },
       change_app_mode_function: function (mode) {
         props.changeAppMode(mode);

@@ -116,6 +116,7 @@
         "new": "Nuevo",
         "open": "Abrir",
         "save": "Guardar",
+        "share": "Compartir",
         "version_history": "Historial",
         "export_json": "Exportar JSON",
         "import_json": "Importar JSON",
@@ -194,10 +195,14 @@
         "log_in_to_save_desc": "Inicia sesión para poder guardar el archivo",
         "save_to_view_history_title": "Archivo no guardado",
         "save_to_view_history_desc": "Guarda al menos una versión del archivo para ver su historial",
+        "save_to_share_title": "Archivo no guardado",
+        "save_to_share_desc": "Guarda al menos una versión del archivo para poderlo compartir",
         "reset_password_email_sent_title": "Correo enviado",
         "reset_password_email_sent_desc": "Revisa tu correo y sigue las instrucciones para restablecer la contraseña",
         "generic_unhandled_issue_title": "Algo salió mal",
-        "generic_unhandled_issue_desc": "Por favor contacta a soporte y compárteles esto:"
+        "generic_unhandled_issue_desc": "Por favor contacta a soporte y compárteles esto:",
+        "successfully_shared_title": "Archivo compartido con éxito",
+        "successfully_shared_desc": "El archivo fue compartido de manera exitosa"
     },
     "navigator": {
         "model": "Modelo principal"
@@ -245,6 +250,17 @@
         "existing_file": "Nombre de archivo o carpeta existente",
         "file_name": "Nombre del archivo",
         "_default_shared_with_me_": "Compartido conmigo"
+    },
+    "share_manager": {
+        "title": "Compartir",
+        "update": "Actualizar",
+        "close": "Cerrar",
+        "user_email": "Correo",
+        "cannot_be_empty": "Este campo no puede estar vacío",
+        "no_valid_email": "Este correo no parece ser válido",
+        "file_name": "Nombre del archivo",
+        "user_does_not_exist": "No existe un usuario registrado con este correo",
+        "cannot_share_with_yourself": "No es posible compartir un archivo contigo mismo"
     },
     "waiting_dimmer": {
         "loading": "Cargando",

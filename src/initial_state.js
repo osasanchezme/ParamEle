@@ -56,6 +56,7 @@ function getInitialState() {
     active_tab_auth_form: "sign_up",
     is_file_manager_open: false,
     file_manager_mode: "open",
+    is_sharing_manager_open: false,
   };
 }
 

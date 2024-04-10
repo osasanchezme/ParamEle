@@ -116,6 +116,7 @@
         "new": "New",
         "open": "Open",
         "save": "Save",
+        "share": "Share",
         "version_history": "History",
         "export_json": "Export JSON",
         "import_json": "Import JSON",
@@ -194,10 +195,14 @@
         "log_in_to_save_desc": "Please log in or sign up to save the file",
         "save_to_view_history_title": "File not saved",
         "save_to_view_history_desc": "Save at least one version of the file to review its history",
+        "save_to_share_title": "File not saved",
+        "save_to_share_desc": "Save at least one version of the file to share the file",
         "reset_password_email_sent_title": "Email sent",
         "reset_password_email_sent_desc": "Check your email and follow the instructions to reset your password",
         "generic_unhandled_issue_title": "Something went wrong",
-        "generic_unhandled_issue_desc": "Please contact support and provide the following information:"
+        "generic_unhandled_issue_desc": "Please contact support and provide the following information:",
+        "successfully_shared_title": "File successfully shared",
+        "successfully_shared_desc": "The file was successfully shared"
     },
     "navigator":{
         "model": "Main model"
@@ -245,6 +250,17 @@
         "existing_file": "This file or folder name is already in use",
         "file_name": "File name",
         "_default_shared_with_me_": "Shared with me"
+    },
+    "share_manager": {
+        "title": "Share",
+        "update": "Update",
+        "close": "Close",
+        "user_email": "Email",
+        "cannot_be_empty": "This field cannot be empty",
+        "no_valid_email": "This email does not seem valid",
+        "file_name": "File name",
+        "user_does_not_exist": "There is no user registered with this email address",
+        "cannot_share_with_yourself": "It is not possible to share a file with yourself"
     },
     "waiting_dimmer":{
         "loading": "Loading",

@@ -27,9 +27,18 @@
 
 /**
  * @typedef {Object} ParamEleFormValidationObject
- * @property {"equal_key"|"no"|"contains"} type
+ * @property {"equal_key"|"no"|"contains"|"custom_function"} type
  * @property {string} criteria String against which to apply the validation type
  * @property {string} msg Key of the message in the copies to display
+ */
+
+/**
+ * @typedef {Object} ParamEleFileData
+ * @property {string} file_name,
+ * @property {boolean} is_saved,
+ * @property {number} last_saved,
+ * @property {string} model_id,
+ * @property {string[]} file_path File path including "home" in the first position,
  */
 
 /**

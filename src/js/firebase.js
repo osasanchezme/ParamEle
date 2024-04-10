@@ -117,18 +117,22 @@ function sendEmailToResetPassword(validated_user_data, callback) {
 function updateUserProfile(validated_user_data) {
   let user = auth.currentUser;
   let username = validated_user_data.name.value.split(" ")[0];
+  let email_escaped = utils.encodeStringForDBKey(validated_user_data.email.value);
   updateProfile(user, {
     displayName: username,
   })
     .then(() => {
-      const db = getDatabase();
-      set(databaseRef(db, "users/" + user.uid), {
-        name: validated_user_data.name.value,
-        username,
-        email: validated_user_data.email.value,
-        company: validated_user_data.company.value,
-        industry: validated_user_data.industry.value,
-      })
+      let updates = {
+        [`users/${user.uid}`]: {
+          name: validated_user_data.name.value,
+          username,
+          email: validated_user_data.email.value,
+          company: validated_user_data.company.value,
+          industry: validated_user_data.industry.value,
+        },
+        [`users_map/${email_escaped}`]: user.uid,
+      };
+      update(databaseRef(getDatabase()), updates)
         .then(() => {
           console.log("User profile updated successfully");
           createNewFolderForUser("_default_shared_with_me_", ["home"]);
@@ -184,9 +188,10 @@ function getProjectData(file_path, file_name, callback) {
     });
 }
 
-function getPathInDatabaseFromLocal(location) {
+function getPathInDatabaseFromLocal(location, user_id_override) {
   let user = auth.currentUser;
   let user_id = user ? user.uid : "_public";
+  if (user_id_override != undefined) user_id = user_id_override;
   let db_path = `users/${user_id}/projects`;
   // Get the path up to the grandparent of the new folder
   for (let i = 1; i < location.length - 1; i++) {
@@ -410,6 +415,61 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
       });
   }
 }
+/**
+ * Shares a file with a user given their email
+ * @param {import("./types").ParamEleFormStateObject} validated_user_data
+ * @param {import("./types").ParamEleFileData} file_data
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
+function shareFileWithUser(validated_user_data, file_data, callback) {
+  let {
+    user_email: { value: user_email },
+  } = validated_user_data;
+  let encodedEmail = utils.encodeStringForDBKey(user_email);
+  get(child(databaseRef(getDatabase()), `users_map/${encodedEmail}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        let shared_user_id = snapshot.val();
+        if (getAuth().currentUser.uid == shared_user_id) {
+          callback(getProcessResponseObject("error", "cannot_share_with_yourself"));
+        } else {
+          let owner_id = getAuth().currentUser.uid;
+          let model_name = file_data.file_name;
+          let role = "editor"; // TODO - Get the roles from the form
+          let db_path_in_owner = getPathInDatabaseFromLocal(file_data.file_path);
+          db_path_in_owner += `/${model_name}`;
+          let db_path_in_shared = getPathInDatabaseFromLocal(["home", "_default_shared_with_me_"], shared_user_id);
+          db_path_in_shared += `/${utils.encodeNameToUniqueID(model_name)}`;
+          let updates = {
+            [`${db_path_in_shared}`]: {
+              owner: owner_id,
+              path: db_path_in_owner,
+            },
+            [`${db_path_in_owner}/shared/${shared_user_id}`]: {
+              role,
+              date: Date.now(),
+              path: db_path_in_shared,
+            },
+          };
+          update(databaseRef(getDatabase()), updates)
+            .then(() => {
+              callback(getProcessResponseObject("success"));
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(`There was a problem: ${errorMessage} (${errorCode})`);
+              callback(getProcessResponseObject("error", errorCode));
+            });
+        }
+      } else {
+        callback(getProcessResponseObject("error", "user_does_not_exist"));
+      }
+    })
+    .catch((error) => {
+      callback(getProcessResponseObject("error", error.code));
+    });
+}
 
 function attachToAuthChangeFirebaseEvent(function_to_attach) {
   onAuthStateChanged(auth, function_to_attach);
@@ -428,6 +488,7 @@ const Firebase = {
   deleteFileVersionFromCloud,
   attachToAuthChangeFirebaseEvent,
   sendEmailToResetPassword,
+  shareFileWithUser,
 };
 
 export default Firebase;

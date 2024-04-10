@@ -28,6 +28,7 @@ import file from "./js/file";
 import { notify } from "./components/notification";
 import { getInitialState } from "./initial_state";
 import { AppModeContext } from "./Context";
+import SharingManager from "./components/sharing_manager";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -66,6 +67,8 @@ class ParamEle extends React.Component {
     this.setActiveTabAuthenticationForm = this.setActiveTabAuthenticationForm.bind(this);
     this.openFileManager = this.openFileManager.bind(this);
     this.closeFileManager = this.closeFileManager.bind(this);
+    this.openSharingManager = this.openSharingManager.bind(this);
+    this.closeSharingManager = this.closeSharingManager.bind(this);
     this.setNodes = this.setNodes.bind(this);
     this.setEdges = this.setEdges.bind(this);
 
@@ -139,6 +142,10 @@ class ParamEle extends React.Component {
     });
     this.setState(actual_update_object);
   }
+  /**
+   * Get the file data from the state
+   * @returns {import("./js/types").ParamEleFileData}
+   */
   getFileData() {
     return {
       file_name: this.state.file_name,
@@ -165,6 +172,16 @@ class ParamEle extends React.Component {
   }
   closeVersionManager() {
     this.setState({ is_version_manager_open: false });
+  }
+  openSharingManager() {
+    if (this.state.is_saved && this.state.user) {
+      this.setState({ is_sharing_manager_open: true });
+    } else {
+      notify("warning", "save_to_share", undefined, true);
+    }
+  }
+  closeSharingManager() {
+    this.setState({ is_sharing_manager_open: false });
   }
   /**
    * Opens a generic confirmation dialog before executing an action
@@ -411,6 +428,7 @@ class ParamEle extends React.Component {
               openFileManager={this.openFileManager}
               changeAppMode={this.changeAppMode}
               openConfirmationDialog={this.openConfirmationDialog}
+              openSharingManager={this.openSharingManager}
             ></NavBar>
             <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
             {commands_bar}
@@ -471,6 +489,11 @@ class ParamEle extends React.Component {
               setFileData={this.setFileData}
               setModelLock={this.setModelLock}
             ></FileManager>
+            <SharingManager
+              is_sharing_manager_open={this.state.is_sharing_manager_open}
+              closeSharingManager={this.closeSharingManager}
+              file_data={this.getFileData()}
+            ></SharingManager>
             <VersionManager
               isOpen={this.state.is_version_manager_open}
               file_history={this.state.file_history}

@@ -17,6 +17,10 @@ An open-source node based editor for graphical programming.
 
 - [ ] Create types for each new object type that will be used in the app
 
+- [ ] Protocol to add a new modal
+
+- [ ] Protocol to add a form
+
 ## Submodules
 
 In the `submodules` folder will be all the submodules that are used in the application. When possible and not too cumbersome, the functions in the submodules shouldn't be imported/used directly in any part of the code, the function should be added to the `submodulesAPI` file, exported and used from there.

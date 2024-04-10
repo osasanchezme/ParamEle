@@ -296,19 +296,39 @@ function allIndexOf(arr, value) {
 
 /**
  * Generates a unique ID with a prefix fo (folder) or fi (file), the date in ms and 5 random letters
- * @param {"folder|"file"} mode 
+ * @param {"folder"|"file"} mode
  * @returns {string} Unique ID
  */
 function generateUniqueID(mode) {
-  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let uid = Date.now();
-  let prefix = (mode === "folder" ? "fo" : "fi");
+  let prefix = mode === "folder" ? "fo" : "fi";
+  uid = prefix + uid + getRandomSuffix();
+  return uid;
+}
+
+function encodeNameToUniqueID(name) {
+  return `${name}__${getRandomSuffix(10)}`;
+}
+
+/**
+ * 
+ * @param {string} unique_id 
+ * @returns {string}
+ */
+function decodeUniqueIDToName(unique_id) {
+  let regex_match = unique_id.match(/(.*)__[a-zA-Z]+$/);
+  if (regex_match == null) throw new Error(`Couldn't decode unique id: ${unique_id}!`);
+  return regex_match[1];
+}
+
+function getRandomSuffix(suffix_length) {
+  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (suffix_length == undefined) suffix_length = 5;
   let suffix = "";
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i <= suffix_length; i++) {
     suffix += letters[Math.round(Math.random() * 51)];
   }
-  uid = prefix + uid + suffix;
-  return uid;
+  return suffix;
 }
 
 function isIdFromFolder(id) {
@@ -317,7 +337,7 @@ function isIdFromFolder(id) {
 
 /**
  * Converts a UNIX timestamp to a formatted string
- * @param {number} timestamp 
+ * @param {number} timestamp
  */
 function getFormattedDate(timestamp) {
   let formatted_date = new Date(timestamp);
@@ -326,13 +346,33 @@ function getFormattedDate(timestamp) {
 
 /**
  * Returns the default aux data that needs to be present on every node but should not be saved
- * @returns 
+ * @returns
  */
 function getDefaultAuxData() {
   return {
     selected_handles: [],
     selected: false,
   };
+}
+
+const encoding_map = {
+  ".": "_DOT_",
+  "#": "_HASHTAG_",
+  $: "_DOLLAR_",
+  "/": "_SLASH_",
+  "[": "_OPEN_BRACKET_",
+  "]": "_CLOSE_BRACKET_",
+};
+
+/**
+ * Encode any string to make it a valid DB key
+ * @param {string} input_string
+ */
+function encodeStringForDBKey(input_string) {
+  Object.entries(encoding_map).forEach(([search_str, replace_str]) => {
+    input_string = input_string.replaceAll(search_str, replace_str);
+  });
+  return input_string;
 }
 
 const utils = {
@@ -358,7 +398,10 @@ const utils = {
   setLoadingDimmerMsg,
   hideLoadingDimmer,
   getFormattedDate,
-  getDefaultAuxData
+  getDefaultAuxData,
+  encodeStringForDBKey,
+  encodeNameToUniqueID,
+  decodeUniqueIDToName
 };
 
 export default utils;
