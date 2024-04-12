@@ -57,6 +57,7 @@ class ParamEle extends React.Component {
     this.setUser = this.setUser.bind(this);
     window.ParamEle.setUser = this.setUser.bind(this);
     this.setFileData = this.setFileData.bind(this);
+    this.getFileData = this.getFileData.bind(this);
     this.setModelLock = this.setModelLock.bind(this);
     this.openVersionManager = this.openVersionManager.bind(this);
     this.closeVersionManager = this.closeVersionManager.bind(this);
@@ -134,13 +135,12 @@ class ParamEle extends React.Component {
   setUser(user) {
     this.setState({ user });
   }
-  setFileData({ file_name, is_saved, last_saved, model_id, file_path, current_version }) {
-    let update_obj = { file_name, is_saved, last_saved, model_id, file_path, current_version };
-    let actual_update_object = {};
-    Object.entries(update_obj).forEach(([key, val]) => {
-      if (val !== undefined) actual_update_object[key] = val;
-    });
-    this.setState(actual_update_object);
+  /**
+   * Sets the file data to the state
+   * @param {import("./js/types").ParamEleFileData} file_data
+   */
+  setFileData(file_data) {
+    this.setState(file_data);
   }
   /**
    * Get the file data from the state
@@ -153,6 +153,10 @@ class ParamEle extends React.Component {
       last_saved: this.state.last_saved,
       model_id: this.state.model_id,
       file_path: this.state.file_path,
+      current_version: this.state.current_version,
+      file_owner_path: this.state.file_owner_path,
+      file_shared_with_me: this.state.file_shared_with_me,
+      file_history: this.state.file_history,
     };
   }
   setModelLock(model_locked) {
@@ -503,6 +507,7 @@ class ParamEle extends React.Component {
               model_id={this.state.model_id}
               current_version={this.state.current_version}
               setFileData={this.setFileData}
+              getFileData={this.getFileData}
               setModelLock={this.setModelLock}
               openConfirmationDialog={this.openConfirmationDialog}
             ></VersionManager>

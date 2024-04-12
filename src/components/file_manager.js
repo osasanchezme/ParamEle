@@ -384,7 +384,13 @@ function File({ nodes, name, lastModified, onClick }) {
     </Box>
   );
 }
-
+/**
+ *
+ * @param {Object} param0
+ * @param {Object.<string, import("../js/types").ParamEleFireBaseCompleteSharedProjectData>} param0.data
+ * @param {import("../js/types").ParamEleSetFileDataCallback} param0.setFileData
+ * @returns
+ */
 function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, closeFileManager, setFileManagerWaiting, setFileData, setModelLock }) {
   function handleClick(event, folder_name) {
     let new_path = JSON.parse(JSON.stringify(fileManagerPath));
@@ -394,8 +400,17 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
   function handleClickOnFile(event, file_name) {
     if (mode === "open") {
       closeFileManager();
-      let { id, current_version, history } = data[file_name];
-      file.downloadAndOpenModel(id, current_version, history, file_name, fileManagerPath, setFileData, setModelLock);
+      let { id, current_version, history, path, is_shared_with_me} = data[file_name];
+      let local_file_data = {
+        model_id: id,
+        current_version,
+        file_history: history,
+        file_name,
+        file_path: fileManagerPath,
+        file_owner_path: path,
+        file_shared_with_me: is_shared_with_me,
+      };
+      file.downloadAndOpenModel(local_file_data, setFileData, setModelLock);
     }
   }
   let fileman_view = Object.entries(data).map(([name, content]) => {
@@ -426,11 +441,12 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
     } else {
       let current_version = content.current_version;
       let current_stats = content.history[current_version];
+      let is_shared_with_me = content.is_shared_with_me;
       return (
         <File
           nodes={current_stats.num_nodes}
           lastModified={current_version}
-          name={name}
+          name={is_shared_with_me ? utils.decodeUniqueIDToName(name) : name}
           key={name}
           onClick={(evt) => {
             handleClickOnFile(evt, name);

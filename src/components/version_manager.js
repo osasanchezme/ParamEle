@@ -47,6 +47,7 @@ function VersionManager({
   model_id,
   current_version,
   setFileData,
+  getFileData,
   setModelLock,
   openConfirmationDialog,
 }) {
@@ -62,6 +63,7 @@ function VersionManager({
         model_id={model_id}
         current_version={current_version}
         setFileData={setFileData}
+        getFileData={getFileData}
         setModelLock={setModelLock}
         file_history={file_history}
         closeVersionManager={onClose}
@@ -82,6 +84,13 @@ function VersionManager({
     </Modal>
   );
 }
+/**
+ *
+ * @param {Object} param0
+ * @param {import("../js/types").ParamEleSetFileDataCallback} param0.setFileData
+ * @param {import("../js/types").ParamEleGetFileDataCallback} param0.getFileData
+ * @returns
+ */
 function VersionItem({
   version_key,
   version_data,
@@ -90,6 +99,7 @@ function VersionItem({
   model_id,
   current_version,
   setFileData,
+  getFileData,
   setModelLock,
   file_history,
   closeVersionManager,
@@ -118,7 +128,8 @@ function VersionItem({
     setCommitMsg(event.target.value);
   }
   function handleClickOnLoadButton() {
-    file.downloadAndOpenModel(model_id, version_key, file_history, file_name, file_path, setFileData, setModelLock);
+    let local_file_data = { ...getFileData(), current_version: version_key };
+    file.downloadAndOpenModel(local_file_data, setFileData, setModelLock);
     closeVersionManager();
   }
   function handleClickOnDeleteButton() {

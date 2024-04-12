@@ -157,7 +157,31 @@ function getUserProjects(callback) {
   get(child(dbRef, `users/${user_id}/projects`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        callback(snapshot.val());
+        let user_projects = snapshot.val();
+        if (user_projects["_default_shared_with_me_"].content) {
+          let all_shared_keys = Object.keys(user_projects["_default_shared_with_me_"].content);
+          function getOneProjectData(shared_project_index) {
+            let { path } = user_projects["_default_shared_with_me_"].content[all_shared_keys[shared_project_index]];
+            get(child(dbRef, path))
+              .then((owner_snapshot) => {
+                if (owner_snapshot.exists()) {
+                  let owner_project_data = owner_snapshot.val();
+                  let project_data = user_projects["_default_shared_with_me_"].content[all_shared_keys[shared_project_index]];
+                  completeSharedProjectData(project_data, owner_project_data)
+                  if (shared_project_index < all_shared_keys.length - 1) {
+                    getOneProjectData(shared_project_index + 1);
+                  } else {
+                    callback(user_projects);
+                  }
+                } else {
+                }
+              })
+              .catch();
+          }
+          getOneProjectData(0);
+        } else {
+          callback(user_projects);
+        }
       } else {
         console.log("No data available for this user under projects");
         // Return an empty object
@@ -168,7 +192,12 @@ function getUserProjects(callback) {
       console.error(error);
     });
 }
-
+/**
+ * Retrieves a specific project data from the database
+ * @param {string[]} file_path
+ * @param {string} file_name
+ * @param {import("./types").ParamEleFireBaseProjectDataCallback} callback
+ */
 function getProjectData(file_path, file_name, callback) {
   const dbRef = databaseRef(getDatabase());
   let db_path = getPathInDatabaseFromLocal(file_path);
@@ -176,7 +205,24 @@ function getProjectData(file_path, file_name, callback) {
   get(child(dbRef, db_path))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        callback(snapshot.val());
+        let project_data = snapshot.val();
+        if (project_data.owner && project_data.path) {
+          // Shared file, need to complete data from the owner path
+          get(child(dbRef, project_data.path))
+            .then((owner_snapshot) => {
+              if (owner_snapshot.exists()) {
+                let owner_project_data = owner_snapshot.val();
+                callback(completeSharedProjectData(project_data, owner_project_data));
+              } else {
+                console.log("Couldn't get data for the shared project");
+                // Return an empty object
+                callback({});
+              }
+            })
+            .catch();
+        } else {
+          callback(project_data);
+        }
       } else {
         console.log("That project does not exist for this user");
         // Return an empty object
@@ -186,6 +232,28 @@ function getProjectData(file_path, file_name, callback) {
     .catch((error) => {
       console.error(error);
     });
+}
+
+/**
+ * Completes the project data for the current user
+ * @param {import("./types").ParamEleFireBaseSharedProjectData} project_data
+ * @param {import("./types").ParamEleFireBaseProjectData} owner_project_data
+ * @returns {import("./types").ParamEleFireBaseCompleteSharedProjectData}
+ */
+function completeSharedProjectData(project_data, owner_project_data) {
+  if (owner_project_data.shared[auth.currentUser.uid]) {
+    project_data.role = owner_project_data.shared[auth.currentUser.uid].role;
+    project_data.is_shared_with_me = true;
+    // Synchronize the needed data from the owner project data
+    let keys_to_copy = ["created", "current_version", "history", "shared", "id"];
+    keys_to_copy.forEach((key_to_copy) => {
+      project_data[key_to_copy] = owner_project_data[key_to_copy];
+    });
+  } else {
+    console.log("User does not have access anymore");
+    project_data = {};
+  }
+  return project_data;
 }
 
 function getPathInDatabaseFromLocal(location, user_id_override) {
@@ -343,7 +411,6 @@ function createRefToModelFileForUser(location, file_name, file_id, version_id, c
       console.log(`There was a problem: ${errorMessage} (${errorCode})`);
     });
 }
-
 function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
   const storage = getStorage();
   const file_ref = storageRef(storage, `projects/${file_id}/${version_id}/${file_type}.json`);

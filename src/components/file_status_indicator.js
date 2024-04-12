@@ -10,7 +10,12 @@ import { notify } from "./notification";
 function localGetCopy(copy_key) {
   return utils.getDisplayCopy("nav_bar", copy_key);
 }
-
+/**
+ * 
+ * @param {Object} param0 
+ * @param {import("../js/types").ParamEleFileData} param0.file_data 
+ * @returns 
+ */
 function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLock, openFileManager, openAuthenticationForm, user }) {
   function localOpenFileManager() {
     if (file_name === null) {
@@ -75,11 +80,11 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
       setModelLock(true);
     }
   }
-  let { file_name, is_saved, last_saved } = file_data;
+  let { file_name, is_saved, last_saved, file_shared_with_me } = file_data;
   let tag_ref = useRef(null);
   let tag_element = (
     <Tag height="30px" marginTop="10px" marginRight="10px" cursor="pointer" ref={tag_ref} onMouseOver={simulateClick} onClick={localOpenFileManager}>
-      {file_name !== null ? file_name : localGetCopy("file_not_saved")}
+      {file_name !== null ? (file_shared_with_me ? utils.decodeUniqueIDToName(file_name) : file_name) : localGetCopy("file_not_saved")}
       {is_saved ? "" : " *"}
     </Tag>
   );

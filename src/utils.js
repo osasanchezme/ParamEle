@@ -311,14 +311,19 @@ function encodeNameToUniqueID(name) {
 }
 
 /**
- * 
- * @param {string} unique_id 
+ *
+ * @param {string} unique_id
  * @returns {string}
  */
 function decodeUniqueIDToName(unique_id) {
+  let name;
   let regex_match = unique_id.match(/(.*)__[a-zA-Z]+$/);
-  if (regex_match == null) throw new Error(`Couldn't decode unique id: ${unique_id}!`);
-  return regex_match[1];
+  name = regex_match[1];
+  if (name == null) {
+    console.log(`Couldn't decode unique id: ${unique_id}!`);
+    name = unique_id;
+  }
+  return name;
 }
 
 function getRandomSuffix(suffix_length) {
@@ -401,7 +406,7 @@ const utils = {
   getDefaultAuxData,
   encodeStringForDBKey,
   encodeNameToUniqueID,
-  decodeUniqueIDToName
+  decodeUniqueIDToName,
 };
 
 export default utils;

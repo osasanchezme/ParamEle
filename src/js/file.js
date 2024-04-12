@@ -92,24 +92,22 @@ const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) =>
 };
 
 /**
- *
- * @param {{id:string, current_version:number, history: Object.<number, object>}} data
- * @param {*} file_name
- * @param {*} fileManagerPath
- * @param {*} setFileData
+ * Downloads a file from the storage service using data in the state itself
+ * @param {import("./types").ParamEleFileData} local_file_data
+ * @param {import("./types").ParamEleSetFileDataCallback} setFileData
  * @param {*} setModelLock
  */
-const downloadAndOpenModel = (id, current_version, history, file_name, fileManagerPath, setFileData, setModelLock) => {
+const downloadAndOpenModel = (local_file_data, setFileData, setModelLock) => {
   utils.showLoadingDimmer("loading_model");
-  let file_path = JSON.parse(JSON.stringify(fileManagerPath));
-  let current_version_info = history[current_version];
+  let { file_path, file_history, current_version, model_id, file_name } = local_file_data;
+  let current_version_info = file_history[current_version];
   let { results_available } = current_version_info;
-  setURLParams(fileManagerPath, file_name);
-  Firebase.openFileFromCloud(id, current_version, "model", (model_data) => {
-    setFileData({ file_name, is_saved: true, last_saved: current_version, model_id: id, file_path, current_version });
+  setURLParams(file_path, file_name);
+  Firebase.openFileFromCloud(model_id, current_version, "model", (model_data) => {
+    setFileData({ ...local_file_data, is_saved: true, last_saved: current_version });
     if (results_available) {
       utils.setLoadingDimmerMsg("loading_results");
-      Firebase.openFileFromCloud(id, current_version, "results", (results_data) => {
+      Firebase.openFileFromCloud(model_id, current_version, "results", (results_data) => {
         setModelAndResultsFromParsedBlob(model_data, results_data);
         // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
         setTimeout(() => {
@@ -124,14 +122,30 @@ const downloadAndOpenModel = (id, current_version, history, file_name, fileManag
     }
   });
 };
-
+/**
+ * Gets the latest version of a file from the storage service
+ * @param {string[]} file_path
+ * @param {string} file_name
+ * @param {import("./types").ParamEleSetFileDataCallback} setFileData
+ * @param {function(boolean)} setModelLock
+ * @param {function()} fileDoesNotExistCallback
+ */
 const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock, fileDoesNotExistCallback) => {
   Firebase.getProjectData(file_path, file_name, (file_data) => {
-    let { current_version, history, id } = file_data;
+    let { current_version, history, id, path, is_shared_with_me } = file_data;
     if (current_version == undefined || history == undefined || id == undefined) {
       fileDoesNotExistCallback();
     } else {
-      downloadAndOpenModel(id, current_version, history, file_name, file_path, setFileData, setModelLock);
+      let local_file_data = {
+        current_version,
+        file_history: history,
+        file_name,
+        file_owner_path: path,
+        file_path,
+        file_shared_with_me: is_shared_with_me,
+        model_id: id,
+      };
+      downloadAndOpenModel(local_file_data, setFileData, setModelLock);
     }
   });
 };
@@ -198,6 +212,6 @@ const file = {
   getFileDataAndOpenModel,
   getURLParams,
   reloadToBlank,
-  setURLParams
+  setURLParams,
 };
 export default file;

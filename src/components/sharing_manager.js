@@ -47,7 +47,7 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, file_dat
     setShareFileFormState(new_state);
     if (valid_data) {
       Firebase.shareFileWithUser(new_state, file_data, (process_response) => {
-        setShareFileFormState(false);
+        setShareButtonLoading(false);
         if (process_response.success) {
           closeSharingManager();
           notify("success", "successfully_shared", undefined, true);
@@ -57,6 +57,8 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, file_dat
           setShareFileFormState(shareFileFormState);
         }
       });
+    } else {
+      setShareButtonLoading(false);
     }
   };
   return (

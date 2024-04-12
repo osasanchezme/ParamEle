@@ -125,7 +125,16 @@ class NavBar extends React.Component {
           [
             {
               run: (close_dialog_callback) => {
-                props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
+                props.setFileData({
+                  file_name: null,
+                  is_saved: false,
+                  last_saved: null,
+                  model_id: null,
+                  file_path: null,
+                  current_version: null,
+                  file_owner_path: null,
+                  file_shared_with_me: null,
+                });
                 file.newFile();
                 close_dialog_callback();
               },
@@ -158,7 +167,16 @@ class NavBar extends React.Component {
           [
             {
               run: (close_dialog_callback) => {
-                props.setFileData({ file_name: null, is_saved: false, last_saved: null, model_id: null, file_path: null, current_version: null });
+                props.setFileData({
+                  file_name: null,
+                  is_saved: false,
+                  last_saved: null,
+                  model_id: null,
+                  file_path: null,
+                  current_version: null,
+                  file_owner_path: null,
+                  file_shared_with_me: null,
+                });
                 file.uploadJSONFile();
                 close_dialog_callback();
               },

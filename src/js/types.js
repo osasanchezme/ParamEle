@@ -39,6 +39,63 @@
  * @property {number} last_saved,
  * @property {string} model_id,
  * @property {string[]} file_path File path including "home" in the first position,
+ * @property {number} current_version
+ * @property {string} file_owner_path
+ * @property {boolean} file_shared_with_me
+ * @property {ParamEleFileHistory} file_history
+ */
+
+/**
+ * @callback ParamEleSetFileDataCallback
+ * @param {ParamEleFileData} file_data
+ */
+
+/**
+ * @callback ParamEleGetFileDataCallback
+ * @returns {ParamEleFileData}
+ */
+
+/**
+ * @typedef {Object} ParamEleFireBaseProjectData
+ * @property {number} created
+ * @property {number} current_version
+ * @property {ParamEleFileHistory} history
+ * @property {string} id Model ID
+ * @property {ParamEleUserRole} role
+ * @property {Object.<string,{date: number, path: string, role: ParamEleUserRole}>} shared
+ */
+
+/**
+ * @typedef {Object} ParamEleFireBaseSharedProjectData
+ * @property {string} id Model ID
+ * @property {string} owner User ID of the file owner
+ * @property {string} path Full path in the database to the actual project data
+ */
+
+/**
+ * @typedef {Object} ParamEleFireBaseCompleteSharedProjectData
+ * @property {number} created
+ * @property {number} current_version
+ * @property {ParamEleFileHistory} history
+ * @property {string} id Model ID
+ * @property {ParamEleUserRole} role
+ * @property {Object.<string,{date: number, path: string, role: ParamEleUserRole}>} shared
+ * @property {string} owner User ID of the file owner
+ * @property {string} path Full path in the database to the actual project data
+ * @property {boolean} is_shared_with_me Whether or not this file is shared with me
+ */
+
+/**
+ * @typedef {Object.<number, {commit_msg: string, num_nodes: number, results_available: boolean}>} ParamEleFileHistory
+ */
+
+/**
+ * @callback ParamEleFireBaseProjectDataCallback
+ * @param {ParamEleFireBaseCompleteSharedProjectData} project_data
+ */
+
+/**
+ * @typedef {'owner'|'admin'|'editor'} ParamEleUserRole
  */
 
 /**
