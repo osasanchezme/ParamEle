@@ -202,7 +202,9 @@
         "generic_unhandled_issue_title": "Something went wrong",
         "generic_unhandled_issue_desc": "Please contact support and provide the following information:",
         "successfully_shared_title": "File successfully shared",
-        "successfully_shared_desc": "The file was successfully shared"
+        "successfully_shared_desc": "The file was successfully shared",
+        "storage/object-not-found_title": "File not found",
+        "storage/object-not-found_desc": "The file/version required does not exist in the storage"
     },
     "navigator":{
         "model": "Main model"

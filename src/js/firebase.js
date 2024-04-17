@@ -259,28 +259,29 @@ function completeSharedProjectData(project_data, owner_project_data) {
  * Gets the full path to a folder or model in the file structure of the current user unless overwritten. If the file is shared, returns the file_owner_path
  * @param {import("./types").ParamEleFileData} local_file_data Ideally, should be the one from the state or a local version. As a minimum, should have the file_path and the file_name
  * @param {string} user_id_override
- * @param {{do_not_append_file_name: boolean}} options
  * @returns
  */
-function getPathInDatabaseFromLocal(local_file_data, user_id_override, { do_not_append_file_name } = {}) {
-  // WIP - Use the local file data to extract the file_path and file_name
-  // TODO - Append the file_name by default
+function getPathInDatabaseFromLocal(local_file_data, user_id_override) {
   let user = auth.currentUser;
   let user_id = user ? user.uid : "_public";
   if (user_id_override != undefined) user_id = user_id_override;
   let db_path = `users/${user_id}/projects`;
   // Get the file name and file_path
   let { file_name, file_path, file_shared_with_me, file_owner_path } = local_file_data;
-  // Get the path up to the grandparent of the new folder
-  for (let i = 1; i < file_path.length - 1; i++) {
-    db_path += `/${file_path[i]}/content`;
+  if (!file_shared_with_me) {
+    // Get the path up to the grandparent of the new folder
+    for (let i = 1; i < file_path.length - 1; i++) {
+      db_path += `/${file_path[i]}/content`;
+    }
+    // Add the parent folder (if it is not home)
+    if (file_path.length > 1) {
+      db_path += `/${file_path[file_path.length - 1]}/content`;
+    }
+    // Append the file name
+    db_path += `/${file_name}`;
+  } else {
+    db_path = file_owner_path;
   }
-  // Add the parent folder (if it is not home)
-  if (file_path.length > 1) {
-    db_path += `/${file_path[file_path.length - 1]}/content`;
-  }
-  // Append the file name
-  if (!do_not_append_file_name) db_path += `/${file_name}`;
   return db_path;
 }
 
@@ -395,6 +396,7 @@ function updateCommitMsgForUser(local_file_data, version_key_to_update, commit_m
 function createRefToModelFileForUser(local_file_data, callback, is_new_version, commit_msg) {
   let { model_id, current_version, file_name } = local_file_data;
   let db_path = getPathInDatabaseFromLocal(local_file_data);
+  let author = auth.currentUser.uid;
   // Create the updates object
   let updates = {};
   // Create the new_file object
@@ -410,6 +412,7 @@ function createRefToModelFileForUser(local_file_data, callback, is_new_version, 
     new_file.history[current_version] = {
       num_nodes: 12,
       results_available: false,
+      author,
     };
     updates[db_path] = new_file;
   } else {
@@ -418,7 +421,7 @@ function createRefToModelFileForUser(local_file_data, callback, is_new_version, 
     // Update the current_version
     updates[`${db_path}/current_version`] = current_version;
     // Update the history
-    updates[`${db_path}/history/${current_version}`] = { num_nodes: 13, commit_msg, results_available: false };
+    updates[`${db_path}/history/${current_version}`] = { num_nodes: 13, commit_msg, results_available: false, author };
   }
   update(databaseRef(getDatabase()), updates)
     .then(() => {
@@ -433,6 +436,13 @@ function createRefToModelFileForUser(local_file_data, callback, is_new_version, 
       console.log(`There was a problem: ${errorMessage} (${errorCode})`);
     });
 }
+/**
+ *
+ * @param {string} file_id
+ * @param {number} version_id
+ * @param {'model'|'results'} file_type
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
 function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
   const storage = getStorage();
   const file_ref = storageRef(storage, `projects/${file_id}/${version_id}/${file_type}.json`);
@@ -442,7 +452,7 @@ function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
       blob
         .text()
         .then((data) => {
-          callback(JSON.parse(data));
+          callback(getProcessResponseObject("success", "", JSON.parse(data)));
         })
         .catch((error) => {
           console.log(`Error parsing the blob: ${error}`);
@@ -450,13 +460,23 @@ function openFileFromCloud(file_id, version_id, file_type = "model", callback) {
     })
     .catch((error) => {
       console.error("Error getting the download URL:", error);
+      callback(getProcessResponseObject("error", error.code));
     });
 }
 
-function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, results_available, current_version, callback) {
+/**
+ * Deletes the files and the reference in the database
+ * @param {import("./types").ParamEleFileData} local_file_data
+ * @param {boolean} results_available
+ * @param {number} version_to_delete
+ * @param {function()} callback
+ * @returns
+ */
+function deleteFileVersionFromCloud(local_file_data, results_available, version_to_delete, callback) {
+  let { model_id, current_version } = local_file_data;
   // Delete the file (both model and results)
   const storage = getStorage();
-  if (String(current_version) === String(version_id)) {
+  if (String(current_version) === String(version_to_delete)) {
     notify("warning", "cannot_delete_version", "", true);
     callback();
     return;
@@ -473,9 +493,9 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
   });
 
   function deleteVersionReference(callback) {
-    let db_path = getPathInDatabaseFromLocal({ file_name, file_path });
-    // Append the file name and version_id to the path
-    db_path += `/history/${version_id}`;
+    let db_path = getPathInDatabaseFromLocal(local_file_data);
+    // Append the file name and version_to_delete to the path
+    db_path += `/history/${version_to_delete}`;
     let updates_remove = {};
     updates_remove[db_path] = null;
     update(databaseRef(getDatabase()), updates_remove)
@@ -493,7 +513,7 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
    * @param {Function} success_callback
    */
   function deleteFile(type, success_callback) {
-    const file_ref = storageRef(storage, `projects/${model_id}/${version_id}/${type}.json`);
+    const file_ref = storageRef(storage, `projects/${model_id}/${version_to_delete}/${type}.json`);
     deleteObject(file_ref)
       .then(() => {
         console.log(`Deleted the ${type}!`);

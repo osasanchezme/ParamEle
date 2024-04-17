@@ -202,7 +202,9 @@
         "generic_unhandled_issue_title": "Algo salió mal",
         "generic_unhandled_issue_desc": "Por favor contacta a soporte y compárteles esto:",
         "successfully_shared_title": "Archivo compartido con éxito",
-        "successfully_shared_desc": "El archivo fue compartido de manera exitosa"
+        "successfully_shared_desc": "El archivo fue compartido de manera exitosa",
+        "storage/object-not-found_title": "Archivo no encontrado",
+        "storage/object-not-found_desc": "El archivo/versión solicitado no existe en el almacenamiento"
     },
     "navigator": {
         "model": "Modelo principal"

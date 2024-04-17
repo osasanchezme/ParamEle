@@ -5,6 +5,7 @@ import blank_model from "../data/template-0.json";
 import repair from "./repair";
 import utils from "../utils";
 import Firebase from "./firebase";
+import { notify } from "../components/notification";
 
 const downloadJSONFile = () => {
   downloadAnyFile("modelo.json", "text/json", getModelBlob());
@@ -103,12 +104,24 @@ const downloadAndOpenModel = (local_file_data, setFileData, setModelLock) => {
   let current_version_info = file_history[current_version];
   let { results_available } = current_version_info;
   setURLParams(file_path, file_name);
-  Firebase.openFileFromCloud(model_id, current_version, "model", (model_data) => {
+  Firebase.openFileFromCloud(model_id, current_version, "model", (process_response) => {
+    if (!process_response.success) {
+      utils.hideLoadingDimmer();
+      switch (process_response.msg) {
+        case "storage/object-not-found":
+          notify("error", "storage/object-not-found", undefined, true);
+          break;
+        default:
+          notify("error", "generic_unhandled_issue", process_response.msg, true);
+          break;
+      }
+      return;
+    }
     setFileData({ ...local_file_data, is_saved: true, last_saved: current_version });
     if (results_available) {
       utils.setLoadingDimmerMsg("loading_results");
       Firebase.openFileFromCloud(model_id, current_version, "results", (results_data) => {
-        setModelAndResultsFromParsedBlob(model_data, results_data);
+        setModelAndResultsFromParsedBlob(process_response.data, results_data);
         // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
         setTimeout(() => {
           setModelLock(true);
@@ -116,7 +129,7 @@ const downloadAndOpenModel = (local_file_data, setFileData, setModelLock) => {
         }, 1000);
       });
     } else {
-      setModelAndResultsFromParsedBlob(model_data);
+      setModelAndResultsFromParsedBlob(process_response.data);
       setModelLock(false);
       utils.hideLoadingDimmer();
     }

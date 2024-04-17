@@ -137,7 +137,7 @@ function VersionItem({
     let dialog_callbacks = [
       {
         run: (close_dialog_callback) => {
-          Firebase.deleteFileVersionFromCloud(file_name, file_path, model_id, version_key, version_data.results_available, current_version, () => {
+          Firebase.deleteFileVersionFromCloud(getFileData(), version_data.results_available, version_key, () => {
             close_dialog_callback();
             closeVersionManager();
           });

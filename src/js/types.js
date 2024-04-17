@@ -86,7 +86,7 @@
  */
 
 /**
- * @typedef {Object.<number, {commit_msg: string, num_nodes: number, results_available: boolean}>} ParamEleFileHistory
+ * @typedef {Object.<number, {commit_msg: string, num_nodes: number, results_available: boolean, author: string}>} ParamEleFileHistory
  */
 
 /**
