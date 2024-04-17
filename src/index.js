@@ -72,6 +72,7 @@ class ParamEle extends React.Component {
     this.closeSharingManager = this.closeSharingManager.bind(this);
     this.setNodes = this.setNodes.bind(this);
     this.setEdges = this.setEdges.bind(this);
+    this.getContactInformation = this.getContactInformation.bind(this);
 
     // Manage auth state changes - This is the last thing that loads
     Firebase.attachToAuthChangeFirebaseEvent((user) => {
@@ -228,7 +229,26 @@ class ParamEle extends React.Component {
   closeFileManager() {
     this.setState({ is_file_manager_open: false });
   }
-
+  /**
+   * @type {import("./js/state_types").ParamEleStateGetContactInformation}
+   */
+  getContactInformation(query, mode = "uid", callback) {
+    if (mode == "uid") {
+      if (this.state.local_people_directory[query]) {
+        callback(this.state.local_people_directory[query]);
+      } else {
+        Firebase.getContactInformationFromDataBase(query, mode, (process_response) => {
+          if (process_response.success) {
+            let local_people_directory = { ...this.state.local_people_directory, [query]: process_response.data };
+            callback(local_people_directory[query]);
+            this.setState({ local_people_directory });
+          } else {
+            notify("error", process_response.msg, undefined, true);
+          }
+        });
+      }
+    }
+  }
   /**
    *
    * @param {MouseEvent} event
@@ -500,16 +520,14 @@ class ParamEle extends React.Component {
             ></SharingManager>
             <VersionManager
               isOpen={this.state.is_version_manager_open}
-              file_history={this.state.file_history}
-              file_name={this.state.file_name}
-              file_path={this.state.file_path}
               onClose={this.closeVersionManager}
-              model_id={this.state.model_id}
-              current_version={this.state.current_version}
+              file_history={this.state.file_history}
               setFileData={this.setFileData}
               getFileData={this.getFileData}
               setModelLock={this.setModelLock}
               openConfirmationDialog={this.openConfirmationDialog}
+              getContactInformation={this.getContactInformation}
+              user={this.state.user}
             ></VersionManager>
           </div>
         </ChakraProvider>

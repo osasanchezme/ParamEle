@@ -282,7 +282,8 @@
         "save": "Guardar",
         "close": "Cerrar",
         "load": "Cargar",
-        "delete": "Eliminar"
+        "delete": "Eliminar",
+        "you": "Tú"
     },
     "confirmation_dialog": {
         "title": "Confirmación",

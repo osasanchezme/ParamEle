@@ -584,6 +584,34 @@ function attachToAuthChangeFirebaseEvent(function_to_attach) {
   onAuthStateChanged(auth, function_to_attach);
 }
 
+/**
+ * Retrieves contact information from the database
+ * @param {string} query
+ * @param {"uid"|"email"} mode
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
+function getContactInformationFromDataBase(query, mode, callback) {
+  /** @type {import("./types").ParamEleContact} */
+  let contact_data = {};
+  if (mode == "uid") {
+    get(child(databaseRef(getDatabase()), `users/${query}/email`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        contact_data.email = snapshot.val();
+        get(child(databaseRef(getDatabase()), `users/${query}/username`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            contact_data.username = snapshot.val();
+            callback(getProcessResponseObject("success", "", contact_data));
+          } else {
+            callback(getProcessResponseObject("error", "username_not_found"));
+          }
+        });
+      } else {
+        callback(getProcessResponseObject("error", "user_by_uid_does_not_exist"));
+      }
+    });
+  }
+}
+
 const Firebase = {
   createUserWithEmail,
   signOutUser,
@@ -598,6 +626,7 @@ const Firebase = {
   attachToAuthChangeFirebaseEvent,
   sendEmailToResetPassword,
   shareFileWithUser,
+  getContactInformationFromDataBase,
 };
 
 export default Firebase;

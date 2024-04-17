@@ -25,6 +25,8 @@ import {
   Center,
   Tooltip,
   ButtonGroup,
+  Avatar,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import { MdCancel, MdCheckCircle, MdDelete, MdEdit, MdSave } from "react-icons/md";
@@ -38,19 +40,7 @@ function localGetDisplayCopy(key) {
   return utils.getDisplayCopy("version_history", key);
 }
 
-function VersionManager({
-  isOpen,
-  onClose,
-  file_history,
-  file_name,
-  file_path,
-  model_id,
-  current_version,
-  setFileData,
-  getFileData,
-  setModelLock,
-  openConfirmationDialog,
-}) {
+function VersionManager({ isOpen, onClose, file_history, setFileData, getFileData, setModelLock, openConfirmationDialog, getContactInformation, user }) {
   let versions_list = [];
   if (file_history) {
     versions_list = Object.entries(file_history).map(([version_key, version_data]) => (
@@ -58,16 +48,13 @@ function VersionManager({
         version_data={version_data}
         version_key={version_key}
         key={version_key}
-        file_name={file_name}
-        file_path={file_path}
-        model_id={model_id}
-        current_version={current_version}
         setFileData={setFileData}
         getFileData={getFileData}
         setModelLock={setModelLock}
-        file_history={file_history}
         closeVersionManager={onClose}
         openConfirmationDialog={openConfirmationDialog}
+        getContactInformation={getContactInformation}
+        user={user}
       ></VersionItem>
     ));
   }
@@ -87,28 +74,29 @@ function VersionManager({
 /**
  *
  * @param {Object} param0
+ * @param {import("../js/types").ParamEleFileVersionItem} param0.version_data
  * @param {import("../js/types").ParamEleSetFileDataCallback} param0.setFileData
  * @param {import("../js/types").ParamEleGetFileDataCallback} param0.getFileData
+ * @param {import("../js/state_types").ParamEleStateGetContactInformation} param0.getContactInformation
  * @returns
  */
 function VersionItem({
   version_key,
   version_data,
-  file_name,
-  file_path,
-  model_id,
-  current_version,
   setFileData,
   getFileData,
   setModelLock,
-  file_history,
   closeVersionManager,
   openConfirmationDialog,
+  getContactInformation,
+  user
 }) {
   let reportable_props = ["num_nodes", "results_available"];
   const [commitMsgActive, setCommitMsgActive] = useState(false);
   const [commitMsg, setCommitMsg] = useState(version_data.commit_msg);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  /** @type {[import("../js/types").ParamEleContact, any]} */
+  const [authorData, setAuthorData] = useState(null);
   const text_area_ref = useRef(null);
   function handleClickEditCommitMessage() {
     if (commitMsgActive) {
@@ -125,6 +113,13 @@ function VersionItem({
   useEffect(() => {
     if (commitMsgActive) text_area_ref.current.focus();
   }, [commitMsgActive]);
+  useEffect(() => {
+    if (version_data.author) {
+      getContactInformation(version_data.author, "uid", (contact_data) => {
+        setAuthorData(contact_data);
+      });
+    }
+  }, []);
   function handleOnChangeTextArea(event) {
     setCommitMsg(event.target.value);
   }
@@ -215,6 +210,31 @@ function VersionItem({
       </Td>
     </Tr>
   );
+  function getAuthorTag() {
+    if (!authorData) {
+      return (
+        <Flex paddingTop={3}>
+          <Avatar size="sm" />
+          <Box ml="3">
+            <Skeleton height="10px" width="30px" marginTop="5px" />
+            <Skeleton height="8px" width="60px" marginTop="6px" />
+          </Box>
+        </Flex>
+      );
+    } else {
+      return (
+        <Flex paddingTop={3}>
+          <Avatar size="sm" name={version_data.author == user.uid ? null : authorData.username} />
+          <Box ml="3">
+            <Text fontSize="small" fontWeight="bold">
+              {version_data.author == user.uid ? localGetDisplayCopy("you") : authorData.username}
+            </Text>
+            <Text fontSize="smaller" marginTop={"-1.5"}>{authorData.email}</Text>
+          </Box>
+        </Flex>
+      );
+    }
+  }
   return (
     <Card variant="elevated" key={version_key}>
       <CardBody>
@@ -234,6 +254,7 @@ function VersionItem({
             </Button>
           </ButtonGroup>
         </Flex>
+        {getAuthorTag()}
         <TableContainer marginTop="3">
           <Table size="sm">
             <Tbody>{version_props}</Tbody>

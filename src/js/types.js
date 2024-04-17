@@ -86,7 +86,21 @@
  */
 
 /**
- * @typedef {Object.<number, {commit_msg: string, num_nodes: number, results_available: boolean, author: string}>} ParamEleFileHistory
+ * @typedef {Object.<number, ParamEleFileVersionItem>} ParamEleFileHistory
+ */
+
+/**
+ * @typedef {{commit_msg: string, num_nodes: number, results_available: boolean, author: string}} ParamEleFileVersionItem
+ */
+
+/**
+ * @description Basic object with contact information
+ * @typedef {{email: string, username: string}} ParamEleContact
+ */
+
+/**
+ * @callback ParamEleContactHandlerCallback
+ * @param {ParamEleContact} contact
  */
 
 /**

@@ -282,7 +282,8 @@
         "save": "Save",
         "close": "Close",
         "load": "Load",
-        "delete": "Delete"
+        "delete": "Delete",
+        "you": "You"
     },
     "confirmation_dialog": {
         "title": "Confirmation",
