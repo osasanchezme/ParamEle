@@ -32,27 +32,21 @@ function FileStatusIndicator({ file_data, setFileData, model_locked, setModelLoc
       utils.showLoadingDimmer("saving_new_version");
       let commit_msg = form_state.commit_msg.value;
       let model_blob = file.getModelBlob();
-      let { model_id, file_name, file_path } = file_data;
       let version_id = Date.now();
+      let local_updated_file_data = {...file_data, current_version: version_id, last_saved: version_id, is_saved: true};
       Firebase.saveFileToCloud(
         model_blob,
-        file_name,
-        model_id,
-        version_id,
-        file_path,
+        local_updated_file_data,
         (new_file) => {
           // Update the file data in the app state
-          setFileData({ is_saved: true, last_saved: version_id, current_version: version_id });
+          setFileData(local_updated_file_data);
           // Save the results to the cloud
           let results_blob = file.getResultsBlob();
           if (results_blob !== false) {
             utils.setLoadingDimmerMsg("saving_results");
             Firebase.saveFileToCloud(
               results_blob,
-              file_name,
-              model_id,
-              version_id,
-              file_path,
+              local_updated_file_data,
               (new_file) => {
                 utils.hideLoadingDimmer();
               },

@@ -167,7 +167,7 @@ function getUserProjects(callback) {
                 if (owner_snapshot.exists()) {
                   let owner_project_data = owner_snapshot.val();
                   let project_data = user_projects["_default_shared_with_me_"].content[all_shared_keys[shared_project_index]];
-                  completeSharedProjectData(project_data, owner_project_data)
+                  completeSharedProjectData(project_data, owner_project_data);
                   if (shared_project_index < all_shared_keys.length - 1) {
                     getOneProjectData(shared_project_index + 1);
                   } else {
@@ -200,8 +200,7 @@ function getUserProjects(callback) {
  */
 function getProjectData(file_path, file_name, callback) {
   const dbRef = databaseRef(getDatabase());
-  let db_path = getPathInDatabaseFromLocal(file_path);
-  db_path += `/${file_name}`;
+  let db_path = getPathInDatabaseFromLocal({ file_path, file_name });
   get(child(dbRef, db_path))
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -256,26 +255,37 @@ function completeSharedProjectData(project_data, owner_project_data) {
   return project_data;
 }
 
-function getPathInDatabaseFromLocal(location, user_id_override) {
+/**
+ * Gets the full path to a folder or model in the file structure of the current user unless overwritten. If the file is shared, returns the file_owner_path
+ * @param {import("./types").ParamEleFileData} local_file_data Ideally, should be the one from the state or a local version. As a minimum, should have the file_path and the file_name
+ * @param {string} user_id_override
+ * @param {{do_not_append_file_name: boolean}} options
+ * @returns
+ */
+function getPathInDatabaseFromLocal(local_file_data, user_id_override, { do_not_append_file_name } = {}) {
+  // WIP - Use the local file data to extract the file_path and file_name
+  // TODO - Append the file_name by default
   let user = auth.currentUser;
   let user_id = user ? user.uid : "_public";
   if (user_id_override != undefined) user_id = user_id_override;
   let db_path = `users/${user_id}/projects`;
+  // Get the file name and file_path
+  let { file_name, file_path, file_shared_with_me, file_owner_path } = local_file_data;
   // Get the path up to the grandparent of the new folder
-  for (let i = 1; i < location.length - 1; i++) {
-    db_path += `/${location[i]}/content`;
+  for (let i = 1; i < file_path.length - 1; i++) {
+    db_path += `/${file_path[i]}/content`;
   }
   // Add the parent folder (if it is not home)
-  if (location.length > 1) {
-    db_path += `/${location[location.length - 1]}/content`;
+  if (file_path.length > 1) {
+    db_path += `/${file_path[file_path.length - 1]}/content`;
   }
+  // Append the file name
+  if (!do_not_append_file_name) db_path += `/${file_name}`;
   return db_path;
 }
 
 function createNewFolderForUser(folder_name, location, callback) {
-  let db_path = getPathInDatabaseFromLocal(location);
-  // Append the new folder name to the path
-  db_path += `/${folder_name}`;
+  let db_path = getPathInDatabaseFromLocal({ file_name: folder_name, file_path: location });
   const current_time = Date.now();
   let new_folder = {
     id: utils.generateUniqueID("folder"),
@@ -311,35 +321,37 @@ function createNewFolderForUser(folder_name, location, callback) {
 /**
  * Saves a file to the cloud in the right location and creates a reference to the file in the database if needed
  * @param {*} model_blob
- * @param {*} file_name
- * @param {*} file_id
- * @param {*} version_id
- * @param {*} location
+ * @param {import("./types").ParamEleFileData} local_file_data
  * @param {*} callback
  * @param {*} is_new_version
  * @param {*} commit_msg
  * @param {"model"|"results"} file_type
  */
-function saveFileToCloud(model_blob, file_name, file_id, version_id, location, callback, is_new_version, commit_msg, file_type = "model") {
+function saveFileToCloud(model_blob, local_file_data, callback, is_new_version, commit_msg, file_type = "model") {
+  let { model_id, current_version } = local_file_data;
   const storage = getStorage();
-  const model_ref = storageRef(storage, `projects/${file_id}/${version_id}/${file_type}.json`);
+  const model_ref = storageRef(storage, `projects/${model_id}/${current_version}/${file_type}.json`);
   uploadBytes(model_ref, model_blob).then((snapshot) => {
     console.log("File uploaded successfully!");
     if (file_type === "model") {
-      createRefToModelFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg);
+      createRefToModelFileForUser(local_file_data, callback, is_new_version, commit_msg);
     } else {
-      updateRefToResultsFileForUser(location, file_name, file_id, version_id, callback);
+      updateRefToResultsFileForUser(local_file_data, callback);
     }
   });
 }
 
-function updateRefToResultsFileForUser(location, file_name, file_id, version_id, callback) {
-  let db_path = getPathInDatabaseFromLocal(location);
-  // Append the new file name to the path
-  db_path += `/${file_name}`;
+/**
+ *
+ * @param {import("./types").ParamEleFileData} local_file_data
+ * @param {*} callback
+ */
+function updateRefToResultsFileForUser(local_file_data, callback) {
+  let { current_version } = local_file_data;
+  let db_path = getPathInDatabaseFromLocal(local_file_data);
   // Create the updates object
   let updates = {};
-  updates[`${db_path}/history/${version_id}/results_available`] = true;
+  updates[`${db_path}/history/${current_version}/results_available`] = true;
   update(databaseRef(getDatabase()), updates)
     .then(() => {
       callback(true);
@@ -351,13 +363,17 @@ function updateRefToResultsFileForUser(location, file_name, file_id, version_id,
     });
 }
 
-function updateCommitMsgForUser(location, file_name, version_id, commit_msg, callback) {
-  let db_path = getPathInDatabaseFromLocal(location);
-  // Append the new file name to the path
-  db_path += `/${file_name}`;
+/**
+ *
+ * @param {import("./types").ParamEleFileData} local_file_data
+ * @param {number} version_key_to_update
+ * @param {*} commit_msg
+ * @param {*} callback
+ */
+function updateCommitMsgForUser(local_file_data, version_key_to_update, commit_msg, callback) {
+  let db_path = getPathInDatabaseFromLocal(local_file_data);
   // Create the updates object
-  let updates = {};
-  updates[`${db_path}/history/${version_id}/commit_msg`] = commit_msg;
+  let updates = { [`${db_path}/history/${version_key_to_update}/commit_msg`]: commit_msg };
   update(databaseRef(getDatabase()), updates)
     .then(() => {
       callback(true);
@@ -369,23 +385,29 @@ function updateCommitMsgForUser(location, file_name, version_id, commit_msg, cal
     });
 }
 
-function createRefToModelFileForUser(location, file_name, file_id, version_id, callback, is_new_version, commit_msg) {
-  let db_path = getPathInDatabaseFromLocal(location);
-  // Append the new file name to the path
-  db_path += `/${file_name}`;
+/**
+ *
+ * @param {import("./types").ParamEleFileData} local_file_data
+ * @param {*} callback
+ * @param {*} is_new_version
+ * @param {*} commit_msg
+ */
+function createRefToModelFileForUser(local_file_data, callback, is_new_version, commit_msg) {
+  let { model_id, current_version, file_name } = local_file_data;
+  let db_path = getPathInDatabaseFromLocal(local_file_data);
   // Create the updates object
   let updates = {};
   // Create the new_file object
   let new_file = {
-    id: file_id,
-    current_version: version_id,
-    created: version_id,
+    id: model_id,
+    current_version,
+    created: current_version,
     role: "owner",
     shared: false,
     history: {},
   };
   if (!is_new_version) {
-    new_file.history[version_id] = {
+    new_file.history[current_version] = {
       num_nodes: 12,
       results_available: false,
     };
@@ -394,9 +416,9 @@ function createRefToModelFileForUser(location, file_name, file_id, version_id, c
     // Set the new file equal to null not to return useless data
     new_file = null;
     // Update the current_version
-    updates[`${db_path}/current_version`] = version_id;
+    updates[`${db_path}/current_version`] = current_version;
     // Update the history
-    updates[`${db_path}/history/${version_id}`] = { num_nodes: 13, commit_msg, results_available: false };
+    updates[`${db_path}/history/${current_version}`] = { num_nodes: 13, commit_msg, results_available: false };
   }
   update(databaseRef(getDatabase()), updates)
     .then(() => {
@@ -451,9 +473,9 @@ function deleteFileVersionFromCloud(file_name, file_path, model_id, version_id, 
   });
 
   function deleteVersionReference(callback) {
-    let db_path = getPathInDatabaseFromLocal(file_path);
+    let db_path = getPathInDatabaseFromLocal({ file_name, file_path });
     // Append the file name and version_id to the path
-    db_path += `/${file_name}/history/${version_id}`;
+    db_path += `/history/${version_id}`;
     let updates_remove = {};
     updates_remove[db_path] = null;
     update(databaseRef(getDatabase()), updates_remove)
@@ -501,12 +523,12 @@ function shareFileWithUser(validated_user_data, file_data, callback) {
           callback(getProcessResponseObject("error", "cannot_share_with_yourself"));
         } else {
           let owner_id = getAuth().currentUser.uid;
-          let model_name = file_data.file_name;
           let role = "editor"; // TODO - Get the roles from the form
-          let db_path_in_owner = getPathInDatabaseFromLocal(file_data.file_path);
-          db_path_in_owner += `/${model_name}`;
-          let db_path_in_shared = getPathInDatabaseFromLocal(["home", "_default_shared_with_me_"], shared_user_id);
-          db_path_in_shared += `/${utils.encodeNameToUniqueID(model_name)}`;
+          let db_path_in_owner = getPathInDatabaseFromLocal(file_data);
+          let db_path_in_shared = getPathInDatabaseFromLocal(
+            { file_path: ["home", "_default_shared_with_me_"], file_name: utils.encodeNameToUniqueID(file_data.file_name) },
+            shared_user_id
+          );
           let updates = {
             [`${db_path_in_shared}`]: {
               owner: owner_id,

@@ -113,7 +113,8 @@ function VersionItem({
   function handleClickEditCommitMessage() {
     if (commitMsgActive) {
       setIsButtonLoading(true);
-      Firebase.updateCommitMsgForUser(file_path, file_name, version_key, commitMsg, (data) => {
+      let local_file_data = getFileData();
+      Firebase.updateCommitMsgForUser(local_file_data, version_key, commitMsg, (data) => {
         setIsButtonLoading(false);
         setCommitMsgActive(false);
       });
