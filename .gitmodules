@@ -1,3 +1,0 @@
-[submodule "src/submodules/paramele-parsers"]
-	path = src/submodules/paramele-parsers
-	url = git@github.com:osasanchezme/paramele-parsers.git
