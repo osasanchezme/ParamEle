@@ -1,4 +1,4 @@
-import notification from "../components/notification";
+import notification, { notify } from "../components/notification";
 import getState from "../getState";
 import state from "../state";
 import utils from "../utils";
@@ -118,15 +118,20 @@ const solveStructure = () => {
 const downloadInputTextFile = (format) => {
   let file_str = "";
   let structure = getState("structure");
-  switch (format) {
-    case "SAP2000":
-      file_str = parsers.csi.getSAP2000Model(structure, "25.1.0");
-      break;
-    default:
-      alert("Unsupported file format: " + format);
-      break;
+  try {
+    switch (format) {
+      case "SAP2000":
+        file_str = parsers.csi.getSAP2000Model(structure, "25.1.0");
+        break;
+      default:
+        alert("Unsupported file format: " + format);
+        break;
+    }
+    notify("success", "converted_model_downloading", undefined, true);
+    file.downloadAnyFile("modelo_sap.$2k", "text", file_str, true);
+  } catch {
+    notify("error", "export_model_failed", undefined, true);
   }
-  file.downloadAnyFile("modelo_sap.$2k", "text", file_str, true);
 };
 
 const structure = { solveStructure, downloadInputTextFile };

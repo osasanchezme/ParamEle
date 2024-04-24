@@ -204,7 +204,11 @@
         "successfully_shared_title": "Archivo compartido con éxito",
         "successfully_shared_desc": "El archivo fue compartido de manera exitosa",
         "storage/object-not-found_title": "Archivo no encontrado",
-        "storage/object-not-found_desc": "El archivo/versión solicitado no existe en el almacenamiento"
+        "storage/object-not-found_desc": "El archivo/versión solicitado no existe en el almacenamiento",
+        "converted_model_downloading_title": "Descarga comenzada",
+        "converted_model_downloading_desc": "El modelo convertido al formato seleccionado se está descargando",
+        "export_model_failed_title": "Exportación fallida",
+        "export_model_failed_desc": "En el proceso de exportación algo salió mal. Contacta a soporte"
     },
     "navigator": {
         "model": "Modelo principal"
