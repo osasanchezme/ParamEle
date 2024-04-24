@@ -120,7 +120,7 @@ const downloadInputTextFile = (format) => {
   let structure = getState("structure");
   switch (format) {
     case "SAP2000":
-      file_str = parsers.csi.getSAP2000Model(structure, "SAP2000", "25.1.0");
+      file_str = parsers.csi.getSAP2000Model(structure, "25.1.0");
       break;
     default:
       alert("Unsupported file format: " + format);

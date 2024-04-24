@@ -1,10 +1,8 @@
-// import generateInputFileESM from "./submodules/paramele-parsers/structural/csi/generateInputFileESM.js";
-
+import generateInputFile from "./submodules/paramele-parsers/structural/csi/generateInputFile";
 
 const parsers = {
   csi: {
-    // getSAP2000Model: (s3d_model) => generateInputFileESM(s3d_model, "SAP2000", "25.1.0"),
-    getSAP2000Model: (s3d_model) => 'Feature temporarily disabled',
+    getSAP2000Model: (s3d_model, version) => generateInputFile(s3d_model, "SAP2000", version),
   },
 };
 export { parsers };
