@@ -203,6 +203,8 @@
         "generic_unhandled_issue_desc": "Please contact support and provide the following information:",
         "successfully_shared_title": "File successfully shared",
         "successfully_shared_desc": "The file was successfully shared",
+        "successfully_updated_title": "Access updated",
+        "successfully_updated_desc": "Access was updated successfully",
         "storage/object-not-found_title": "File not found",
         "storage/object-not-found_desc": "The file/version required does not exist in the storage",
         "converted_model_downloading_title": "Download started",
@@ -262,11 +264,19 @@
         "update": "Update",
         "close": "Close",
         "user_email": "Email",
+        "user_role": "Role",
         "cannot_be_empty": "This field cannot be empty",
         "no_valid_email": "This email does not seem valid",
         "file_name": "File name",
         "user_does_not_exist": "There is no user registered with this email address",
-        "cannot_share_with_yourself": "It is not possible to share a file with yourself"
+        "cannot_share_with_yourself": "It is not possible to share a file with yourself",
+        "shared_with": "Shared with",
+        "guest": "Guest",
+        "editor": "Editor",
+        "admin": "Admin",
+        "owner": "Owner",
+        "remove_access": "Remove access",
+        "file_not_shared": "The file hasn't been shared yet. Use the inputs above to share it."
     },
     "waiting_dimmer":{
         "loading": "Loading",
@@ -296,5 +306,8 @@
         "upload_file": "Are you sure you want to upload a new file? Any unsaved changes will be lost.",
         "ok": "OK",
         "cancel": "Cancel"
+    },
+    "general_forms": {
+        "select": "Select..."
     }
 }

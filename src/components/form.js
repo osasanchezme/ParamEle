@@ -70,7 +70,8 @@ function FormComponent({ fields, setFormState, formState, copies_key, firstField
             {form_label}
             {error_msg_pos === "top" ? form_error_msg : ""}
             <Select
-              placeholder={localGetDisplayCopy("select")}
+              placeholder={utils.getDisplayCopy("general_forms", "select")}
+              defaultValue={data.default ? data.default : ""}
               onChange={(evt) => {
                 handleInputChange(evt, key);
               }}

@@ -531,9 +531,8 @@ function deleteFileVersionFromCloud(local_file_data, results_available, version_
  * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
  */
 function shareFileWithUser(validated_user_data, file_data, callback) {
-  let {
-    user_email: { value: user_email },
-  } = validated_user_data;
+  let user_email = validated_user_data.user_email.value;
+  let user_role = validated_user_data?.user_role?.value;
   let encodedEmail = utils.encodeStringForDBKey(user_email);
   get(child(databaseRef(getDatabase()), `users_map/${encodedEmail}`))
     .then((snapshot) => {
@@ -542,27 +541,28 @@ function shareFileWithUser(validated_user_data, file_data, callback) {
         if (getAuth().currentUser.uid == shared_user_id) {
           callback(getProcessResponseObject("error", "cannot_share_with_yourself"));
         } else {
-          let owner_id = getAuth().currentUser.uid;
-          let role = "editor"; // TODO - Get the roles from the form
+          let owner_id = getAuth().currentUser.uid; // TODO - Handle the case when the admin shares
+          let role = user_role;
           let db_path_in_owner = getPathInDatabaseFromLocal(file_data);
           let db_path_in_shared = getPathInDatabaseFromLocal(
             { file_path: ["home", "_default_shared_with_me_"], file_name: utils.encodeNameToUniqueID(file_data.file_name) },
             shared_user_id
           );
+          let updated_file_shared_data = {
+            role,
+            date: Date.now(),
+            path: db_path_in_shared,
+          };
           let updates = {
             [`${db_path_in_shared}`]: {
               owner: owner_id,
               path: db_path_in_owner,
             },
-            [`${db_path_in_owner}/shared/${shared_user_id}`]: {
-              role,
-              date: Date.now(),
-              path: db_path_in_shared,
-            },
+            [`${db_path_in_owner}/shared/${shared_user_id}`]: updated_file_shared_data,
           };
           update(databaseRef(getDatabase()), updates)
             .then(() => {
-              callback(getProcessResponseObject("success"));
+              callback(getProcessResponseObject("success", null, { [shared_user_id]: updated_file_shared_data }));
             })
             .catch((error) => {
               const errorCode = error.code;
@@ -577,6 +577,40 @@ function shareFileWithUser(validated_user_data, file_data, callback) {
     })
     .catch((error) => {
       callback(getProcessResponseObject("error", error.code));
+    });
+}
+
+/**
+ * 
+ * @param {string} shared_user_id
+ * @param {import("./types").ParamEleFileSharedSubData} new_file_shared_data 
+ * @param {boolean} is_remove_access 
+ * @param {import("./types").ParamEleFileData} file_data
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
+function updateSharedFileData(shared_user_id, new_file_shared_data, is_remove_access, file_data, callback) {
+  let db_path_in_owner = getPathInDatabaseFromLocal(file_data);
+  let db_path_in_shared = new_file_shared_data.path;
+  let updates;
+  if (!is_remove_access) {
+    updates = {
+      [`${db_path_in_owner}/shared/${shared_user_id}`]: new_file_shared_data,
+    };
+  } else {
+    updates = {
+      [`${db_path_in_owner}/shared/${shared_user_id}`]: null,
+      [db_path_in_shared]: null,
+    };
+  }
+  update(databaseRef(getDatabase()), updates)
+    .then(() => {
+      callback(getProcessResponseObject("success", null));
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`There was a problem: ${errorMessage} (${errorCode})`);
+      callback(getProcessResponseObject("error", errorCode));
     });
 }
 
@@ -626,6 +660,7 @@ const Firebase = {
   attachToAuthChangeFirebaseEvent,
   sendEmailToResetPassword,
   shareFileWithUser,
+  updateSharedFileData,
   getContactInformationFromDataBase,
 };
 

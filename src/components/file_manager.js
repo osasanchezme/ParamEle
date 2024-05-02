@@ -149,6 +149,7 @@ function FileManager({ user, is_file_manager_open, closeFileManager, file_manage
         model_id,
         file_shared_with_me: false,
         file_owner_path: null,
+        file_shared_data: null,
       };
       file.setURLParams(file_path, file_name);
       Firebase.saveFileToCloud(model_blob, local_file_data, (new_file) => {
@@ -408,7 +409,8 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
   function handleClickOnFile(event, file_name) {
     if (mode === "open") {
       closeFileManager();
-      let { id, current_version, history, path, is_shared_with_me } = data[file_name];
+      let { id, current_version, history, path, is_shared_with_me, shared } = data[file_name];
+      /** @type {import("../js/types").ParamEleFileData} */
       let local_file_data = {
         model_id: id,
         current_version,
@@ -417,6 +419,7 @@ function FileManagerView({ data, mode, setFileManagerPath, fileManagerPath, clos
         file_path: fileManagerPath,
         file_owner_path: path,
         file_shared_with_me: is_shared_with_me,
+        file_shared_data: shared,
       };
       file.downloadAndOpenModel(local_file_data, setFileData, setModelLock);
     }

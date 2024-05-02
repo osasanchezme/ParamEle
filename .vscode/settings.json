@@ -2,5 +2,6 @@
     "cSpell.words": [
         "Chakra"
     ],
-    "cSpell.language": "en,es-ES"
+    "cSpell.language": "en,es-ES",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

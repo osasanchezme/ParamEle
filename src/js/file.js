@@ -145,10 +145,11 @@ const downloadAndOpenModel = (local_file_data, setFileData, setModelLock) => {
  */
 const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock, fileDoesNotExistCallback) => {
   Firebase.getProjectData(file_path, file_name, (file_data) => {
-    let { current_version, history, id, path, is_shared_with_me } = file_data;
+    let { current_version, history, id, path, is_shared_with_me, shared } = file_data;
     if (current_version == undefined || history == undefined || id == undefined) {
       fileDoesNotExistCallback();
     } else {
+      /** @type {import("./types").ParamEleFileData} */
       let local_file_data = {
         current_version,
         file_history: history,
@@ -156,6 +157,7 @@ const getFileDataAndOpenModel = (file_path, file_name, setFileData, setModelLock
         file_owner_path: path,
         file_path,
         file_shared_with_me: is_shared_with_me,
+        file_shared_data: shared,
         model_id: id,
       };
       downloadAndOpenModel(local_file_data, setFileData, setModelLock);

@@ -201,8 +201,12 @@
         "reset_password_email_sent_desc": "Revisa tu correo y sigue las instrucciones para restablecer la contraseña",
         "generic_unhandled_issue_title": "Algo salió mal",
         "generic_unhandled_issue_desc": "Por favor contacta a soporte y compárteles esto:",
+        "generic_unhandled_issue_try_again_title": "Algo salió mal",
+        "generic_unhandled_issue_try_again_desc": "Por favor intenta realizar la acción de nuevo en unos momentos o contacta a soporte",
         "successfully_shared_title": "Archivo compartido con éxito",
         "successfully_shared_desc": "El archivo fue compartido de manera exitosa",
+        "successfully_updated_title": "Acceso actualizado",
+        "successfully_updated_desc": "El acceso al archivo fue actualizado exitosamente",
         "storage/object-not-found_title": "Archivo no encontrado",
         "storage/object-not-found_desc": "El archivo/versión solicitado no existe en el almacenamiento",
         "converted_model_downloading_title": "Descarga comenzada",
@@ -262,11 +266,19 @@
         "update": "Actualizar",
         "close": "Cerrar",
         "user_email": "Correo",
+        "user_role": "Rol",
         "cannot_be_empty": "Este campo no puede estar vacío",
         "no_valid_email": "Este correo no parece ser válido",
         "file_name": "Nombre del archivo",
         "user_does_not_exist": "No existe un usuario registrado con este correo",
-        "cannot_share_with_yourself": "No es posible compartir un archivo contigo mismo"
+        "cannot_share_with_yourself": "No es posible compartir un archivo contigo mismo",
+        "shared_with": "Compartido con",
+        "guest": "Invitado",
+        "editor": "Editor",
+        "admin": "Administrador",
+        "owner": "Propietario",
+        "remove_access": "Quitar acceso",
+        "file_not_shared": "El archivo no ha sido compartido todavía. Utiliza los campos de arriba para compartirlo."
     },
     "waiting_dimmer": {
         "loading": "Cargando",
@@ -296,5 +308,8 @@
         "upload_file": "¿Estás seguro de que deseas importar un archivo nuevo? Los cambios actuales sin guardar se perderán.",
         "ok": "Confirmar",
         "cancel": "Cancelar"
+    },
+    "general_forms": {
+        "select": "Selecciona..."
     }
 }

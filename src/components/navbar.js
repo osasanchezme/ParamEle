@@ -134,6 +134,7 @@ class NavBar extends React.Component {
                   current_version: null,
                   file_owner_path: null,
                   file_shared_with_me: null,
+                  file_shared_data: null,
                 });
                 file.newFile();
                 close_dialog_callback();
@@ -176,6 +177,7 @@ class NavBar extends React.Component {
                   current_version: null,
                   file_owner_path: null,
                   file_shared_with_me: null,
+                  file_shared_data: null,
                 });
                 file.uploadJSONFile();
                 close_dialog_callback();

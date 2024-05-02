@@ -158,6 +158,7 @@ class ParamEle extends React.Component {
       file_owner_path: this.state.file_owner_path,
       file_shared_with_me: this.state.file_shared_with_me,
       file_history: this.state.file_history,
+      file_shared_data: this.state.file_shared_data,
     };
   }
   setModelLock(model_locked) {
@@ -516,7 +517,9 @@ class ParamEle extends React.Component {
             <SharingManager
               is_sharing_manager_open={this.state.is_sharing_manager_open}
               closeSharingManager={this.closeSharingManager}
+              getContactInformation={this.getContactInformation}
               file_data={this.getFileData()}
+              setFileData={this.setFileData}
             ></SharingManager>
             <VersionManager
               isOpen={this.state.is_version_manager_open}

@@ -43,6 +43,7 @@
  * @property {string} file_owner_path
  * @property {boolean} file_shared_with_me
  * @property {ParamEleFileHistory} file_history
+ * @property {Object.<string, {date: number, path: string, role: ParamEleUserRole}>} file_shared_data
  */
 
 /**
@@ -62,7 +63,7 @@
  * @property {ParamEleFileHistory} history
  * @property {string} id Model ID
  * @property {ParamEleUserRole} role
- * @property {Object.<string,{date: number, path: string, role: ParamEleUserRole}>} shared
+ * @property {ParamEleFileSharedData} shared
  */
 
 /**
@@ -79,7 +80,7 @@
  * @property {ParamEleFileHistory} history
  * @property {string} id Model ID
  * @property {ParamEleUserRole} role
- * @property {Object.<string,{date: number, path: string, role: ParamEleUserRole}>} shared
+ * @property {ParamEleFileSharedData} shared
  * @property {string} owner User ID of the file owner
  * @property {string} path Full path in the database to the actual project data
  * @property {boolean} is_shared_with_me Whether or not this file is shared with me
@@ -96,6 +97,16 @@
 /**
  * @description Basic object with contact information
  * @typedef {{email: string, username: string}} ParamEleContact
+ */
+
+/**
+ * @description Object with the data for all the contacts with the model shared
+ * @typedef {Object.<string,ParamEleFileSharedSubData>} ParamEleFileSharedData
+ */
+
+/**
+ * @description Object with the sharing data for one contact
+ * @typedef {{date: number, path: string, role: ParamEleUserRole}} ParamEleFileSharedSubData
  */
 
 /**

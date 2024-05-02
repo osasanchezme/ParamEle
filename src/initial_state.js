@@ -48,6 +48,7 @@ function getInitialState() {
     file_history: null,
     file_owner_path: null,
     file_shared_with_me: null,
+    file_shared_data: null,
     model_locked: false,
     current_version: null,
     is_version_manager_open: false,
