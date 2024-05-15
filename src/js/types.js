@@ -120,7 +120,11 @@
  */
 
 /**
- * @typedef {'owner'|'admin'|'editor'} ParamEleUserRole
+ * @typedef {'owner'|'admin'|'editor'|'guest'} ParamEleUserRole
+ */
+
+/**
+ * @typedef {'view'|'make_copy'|'edit'|'delete'|'save'|'share'|'transfer'} ParamElePermissions
  */
 
 /**

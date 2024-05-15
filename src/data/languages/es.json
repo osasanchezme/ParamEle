@@ -151,7 +151,8 @@
         "edit": "Editar",
         "save": "Guardar",
         "discard": "Cancelar",
-        "iterating_box": "Esta caja está generando las diferentes posibilidades"
+        "iterating_box": "Esta caja está generando las diferentes posibilidades",
+        "no_permissions": "No tienes permisos para realizar esta acción. Pide los permisos necesarios a los administradores."
     },
     "properties_panel": {
         "title": "EXPLORADOR",

@@ -28,6 +28,7 @@ import {
   Spinner,
   Grid,
   GridItem,
+  Tooltip,
 } from "@chakra-ui/react";
 import utils from "../utils";
 import { FormComponent, getDefaultState, validateInputData } from "./form";
@@ -35,7 +36,7 @@ import { useState } from "react";
 import Firebase from "../js/firebase";
 import { notify } from "./notification";
 import { MdArrowDropDown, MdCheck, MdOutlinePersonAddAlt } from "react-icons/md";
-import { getPublicRolesKeys } from "../js/userRoles";
+import { getPublicRolesKeys, useUserAllowed } from "../js/userRoles";
 import { cloneDeep } from "lodash";
 function localGetDisplayCopy(copy_key) {
   return utils.getDisplayCopy("share_manager", copy_key);
@@ -73,6 +74,7 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, getConta
   };
   let [shareFileFormState, setShareFileFormState] = useState(getDefaultState(share_file_form_fields));
   let [shareButtonLoading, setShareButtonLoading] = useState(false);
+  let userAllowedShare = useUserAllowed("share");
   let { file_name, file_shared_data } = file_data;
   const shareFileWithUser = () => {
     setShareButtonLoading(true);
@@ -111,9 +113,11 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, getConta
           ></FormComponent>
           <Flex pt={2}>
             <Spacer />
-            <Button colorScheme="blue" onClick={shareFileWithUser} isLoading={shareButtonLoading}>
-              {localGetDisplayCopy("title")}
-            </Button>
+            <Tooltip label={userAllowedShare ? "" : utils.getDisplayCopy("tooltips", "no_permissions")}>
+              <Button isDisabled={!userAllowedShare} colorScheme="blue" onClick={shareFileWithUser} isLoading={shareButtonLoading}>
+                {localGetDisplayCopy("title")}
+              </Button>
+            </Tooltip>
           </Flex>
           <Divider mt={6} mb={3} />
           <FormLabel>{localGetDisplayCopy("shared_with")}</FormLabel>
@@ -126,6 +130,7 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, getConta
                 getContactInformation={getContactInformation}
                 file_data={file_data}
                 setFileData={setFileData}
+                userAllowedShare={userAllowedShare}
               />
             ))
           ) : (
@@ -157,8 +162,9 @@ function SharingManager({ is_sharing_manager_open, closeSharingManager, getConta
  * @param {import("../js/state_types").ParamEleStateGetContactInformation} param0.getContactInformation
  * @param {import("../js/types").ParamEleFileData} param0.file_data
  * @param {import("../js/types").ParamEleSetFileDataCallback} param0.setFileData
+ * @param {boolean} userAllowedShare
  */
-function PersonItem({ file_shared_data, shared_user_id, getContactInformation, file_data, setFileData }) {
+function PersonItem({ file_shared_data, shared_user_id, getContactInformation, file_data, setFileData, userAllowedShare }) {
   /** @type {[import("../js/types").ParamEleContact]} */
   let [contactData, setContactData] = useState(null);
   let [accessMenuLoading, setAccessMenuLoading] = useState(false);
@@ -214,16 +220,19 @@ function PersonItem({ file_shared_data, shared_user_id, getContactInformation, f
             <Spacer />
             <Box ml="3">
               <Menu>
-                <MenuButton as={Button} rightIcon={<MdArrowDropDown />}>
-                  {accessMenuLoading ? <Spinner mt={2} /> : localGetDisplayCopy(file_shared_data[shared_user_id].role)}
-                </MenuButton>
+                <Tooltip label={userAllowedShare ? "" : utils.getDisplayCopy("tooltips", "no_permissions")}>
+                  <MenuButton as={Button} rightIcon={<MdArrowDropDown />}>
+                    {accessMenuLoading ? <Spinner mt={2} /> : localGetDisplayCopy(file_shared_data[shared_user_id].role)}
+                  </MenuButton>
+                </Tooltip>
                 <MenuList>
                   {getPublicRolesKeys().map((role_key) => (
                     <MenuItem
-                      key={role_key}
                       onClick={() => {
                         handleSharingUpdate({ action: "change_role", value: role_key });
                       }}
+                      isDisabled={!userAllowedShare}
+                      key={role_key}
                     >
                       <Icon mr={4} as={MdCheck} visibility={role_key == file_shared_data[shared_user_id].role ? "visible" : "hidden"} />
                       {localGetDisplayCopy(role_key)}
@@ -234,6 +243,7 @@ function PersonItem({ file_shared_data, shared_user_id, getContactInformation, f
                     onClick={() => {
                       handleSharingUpdate({ action: "remove" });
                     }}
+                    isDisabled={!userAllowedShare}
                   >
                     <Icon mr={4} as={MdCheck} visibility={"hidden"} />
                     {localGetDisplayCopy("remove_access")}

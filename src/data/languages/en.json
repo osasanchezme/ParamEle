@@ -151,7 +151,8 @@
         "edit": "Edit",
         "save": "Save",
         "discard": "Discard",
-        "iterating_box": "This box is generating all the possibilities"
+        "iterating_box": "This box is generating all the possibilities",
+        "no_permissions": "You don't have permissions to perform this action. Ask the admins to grant permissions."
     },
     "properties_panel": {
         "title": "EXPLORER",
