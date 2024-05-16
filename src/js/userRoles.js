@@ -3,11 +3,11 @@ import { UserDataContext } from "../Context";
 
 const roles_map = {
   owner: {
-    permissions: ["view", "make_copy", "edit", "delete", "save", "share", "transfer"],
+    permissions: ["view", "make_copy", "edit", "delete", "save", "share", "transfer", "manage_versions"],
     public: false,
   },
   admin: {
-    permissions: ["view", "make_copy", "edit", "delete", "save"], //, "share"],
+    permissions: ["view", "make_copy", "edit", "delete", "save", "manage_versions"], //, "share"],
     public: true,
   },
   editor: {
@@ -28,7 +28,6 @@ const roles_map = {
 const useUserAllowed = (permission) => {
   const user_role = useContext(UserDataContext).role;
   if (user_role == null) return false;
-  console.log(`${user_role} ${permission}? ${roles_map[user_role].permissions.includes(permission)}`);
   return roles_map[user_role].permissions.includes(permission);
 };
 

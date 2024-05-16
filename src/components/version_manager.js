@@ -35,13 +35,25 @@ import utils from "../utils";
 import Firebase from "../js/firebase";
 import file from "../js/file";
 import { useState, useRef, useEffect } from "react";
+import { useUserAllowed } from "../js/userRoles";
 
 function localGetDisplayCopy(key) {
   return utils.getDisplayCopy("version_history", key);
 }
 
-function VersionManager({ isOpen, onClose, file_history, setFileData, getFileData, setModelLock, openConfirmationDialog, getContactInformation, user }) {
+function VersionManager({
+  isOpen,
+  onClose,
+  file_history,
+  setFileData,
+  getFileData,
+  setModelLock,
+  openConfirmationDialog,
+  getContactInformation,
+  user,
+}) {
   let versions_list = [];
+  let userAllowedManageVersions = useUserAllowed("manage_versions");
   if (file_history) {
     versions_list = Object.entries(file_history).map(([version_key, version_data]) => (
       <VersionItem
@@ -55,6 +67,7 @@ function VersionManager({ isOpen, onClose, file_history, setFileData, getFileDat
         openConfirmationDialog={openConfirmationDialog}
         getContactInformation={getContactInformation}
         user={user}
+        allowed_to_manage_versions={userAllowedManageVersions}
       ></VersionItem>
     ));
   }
@@ -89,7 +102,8 @@ function VersionItem({
   closeVersionManager,
   openConfirmationDialog,
   getContactInformation,
-  user
+  user,
+  allowed_to_manage_versions,
 }) {
   let reportable_props = ["num_nodes", "results_available"];
   const [commitMsgActive, setCommitMsgActive] = useState(false);
@@ -118,6 +132,9 @@ function VersionItem({
       getContactInformation(version_data.author, "uid", (contact_data) => {
         setAuthorData(contact_data);
       });
+    } else {
+      // The version was not saved by a known author
+      setAuthorData(undefined);
     }
   }, []);
   function handleOnChangeTextArea(event) {
@@ -195,14 +212,21 @@ function VersionItem({
       <Td borderBottom="none">{localGetDisplayCopy(localGetDisplayCopy("commit_msg"))}:</Td>
       <Td textAlign="center" borderBottom="none">
         {commitMsgActive ? (
-          <Tooltip label={localGetDisplayCopy("save")}>
+          <Tooltip label={allowed_to_manage_versions ? localGetDisplayCopy("save") : utils.getDisplayCopy("tooltips", "no_permissions")}>
             <Tag size="sm" backgroundColor="blue.600" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
               {isButtonLoading ? <Spinner size="xs" speed="0.7s" /> : <Icon as={MdSave} />}
             </Tag>
           </Tooltip>
         ) : (
-          <Tooltip label={localGetDisplayCopy("edit")}>
-            <Tag size="sm" backgroundColor="gray.500" color="white" textTransform="uppercase" cursor="pointer" onClick={handleClickEditCommitMessage}>
+          <Tooltip label={allowed_to_manage_versions ? localGetDisplayCopy("edit") : utils.getDisplayCopy("tooltips", "no_permissions")}>
+            <Tag
+              size="sm"
+              backgroundColor="gray.500"
+              color="white"
+              textTransform="uppercase"
+              cursor={allowed_to_manage_versions ? "pointer" : "not-allowed"}
+              onClick={allowed_to_manage_versions ? handleClickEditCommitMessage : () => {}}
+            >
               <Icon as={MdEdit} />
             </Tag>
           </Tooltip>
@@ -211,7 +235,7 @@ function VersionItem({
     </Tr>
   );
   function getAuthorTag() {
-    if (!authorData) {
+    if (authorData == null && typeof authorData == "object") {
       return (
         <Flex paddingTop={3}>
           <Avatar size="sm" />
@@ -224,12 +248,14 @@ function VersionItem({
     } else {
       return (
         <Flex paddingTop={3}>
-          <Avatar size="sm" name={version_data.author == user.uid ? null : authorData.username} />
+          <Avatar size="sm" name={version_data.author == user.uid ? null : authorData ? authorData.username : "?"} />
           <Box ml="3">
             <Text fontSize="small" fontWeight="bold">
-              {version_data.author == user.uid ? localGetDisplayCopy("you") : authorData.username}
+              {version_data.author == user.uid ? localGetDisplayCopy("you") : authorData ? authorData.username : localGetDisplayCopy("unknown")}
             </Text>
-            <Text fontSize="smaller" marginTop={"-1.5"}>{authorData.email}</Text>
+            <Text fontSize="smaller" marginTop={"-1.5"}>
+              {authorData ? authorData.email : ""}
+            </Text>
           </Box>
         </Flex>
       );
@@ -244,8 +270,8 @@ function VersionItem({
           </Center>
           <Spacer />
           <ButtonGroup size="sm">
-            <Tooltip label={localGetDisplayCopy("delete")}>
-              <Button colorScheme="red" onClick={handleClickOnDeleteButton} padding={0.5}>
+            <Tooltip label={allowed_to_manage_versions ? localGetDisplayCopy("delete") : utils.getDisplayCopy("tooltips", "no_permissions")}>
+              <Button colorScheme="red" onClick={handleClickOnDeleteButton} padding={0.5} isDisabled={!allowed_to_manage_versions}>
                 <Icon as={MdDelete} />
               </Button>
             </Tooltip>

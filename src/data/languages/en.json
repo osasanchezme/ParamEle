@@ -298,7 +298,8 @@
         "close": "Close",
         "load": "Load",
         "delete": "Delete",
-        "you": "You"
+        "you": "You",
+        "unknown": "Unknown"
     },
     "confirmation_dialog": {
         "title": "Confirmation",

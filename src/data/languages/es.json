@@ -300,7 +300,8 @@
         "close": "Cerrar",
         "load": "Cargar",
         "delete": "Eliminar",
-        "you": "Tú"
+        "you": "Tú",
+        "unknown": "Desconocido"
     },
     "confirmation_dialog": {
         "title": "Confirmación",
