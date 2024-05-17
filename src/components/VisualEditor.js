@@ -141,6 +141,14 @@ function addEdgesArrayToTheEditor(edges_array) {
   rf_instance.addEdges(edges_array);
 }
 
+function getZoom() {
+  return rf_instance.getZoom();
+}
+
+function setZoom(zoom = 0.5) {
+  rf_instance.zoomTo(zoom);
+}
+
 function removeNodesAndEdgesFromModel(node_ids, edge_ids) {
   let nodes = [];
   let edges = [];
@@ -202,4 +210,6 @@ export {
   deselectAllHandles,
   deselectAllNodesAndHandles,
   removeNodesAndEdgesFromModel,
+  getZoom,
+  setZoom,
 };

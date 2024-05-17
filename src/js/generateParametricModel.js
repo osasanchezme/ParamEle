@@ -1,20 +1,23 @@
-import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor } from "../components/VisualEditor";
+import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, getZoom } from "../components/VisualEditor";
 import utils from "../utils";
 
 /**
- * Generates a parametric model in the reactflow editor
+ * Generates a parametric model in the reactflow editor starting from an S3D model
  * @param {import("../submodules/paramele-parsers/types").s3d_model} s3d_model
  * @returns
  */
 const generateParametricModel = (s3d_model) => {
-  let { nodes } = s3d_model;
+  let zoom = getZoom();
+  let { nodes, members } = s3d_model;
   let faces = findFaces(nodes);
   let x_orig = 100;
   let y_orig = 100;
   let number_nodes = 0;
-  let master_spacing = 50;
+  let master_spacing = 50 * (zoom / 0.5); // Normalize the spacing so it is independent of the zoom level
+
   let paramele_model_nodes_coordinates = [];
   let paramele_model_nodes_structural_nodes = [];
+  let paramele_model_nodes_structural_members = [];
 
   let paramele_model_edges = [];
 
@@ -23,6 +26,9 @@ const generateParametricModel = (s3d_model) => {
 
   let column_2_x_acc = x_orig + 3 * master_spacing;
   let column_2_y_acc = y_orig;
+
+  let column_3_x_acc = x_orig + 6 * master_spacing;
+  let column_3_y_acc = y_orig;
 
   let structural_node_to_paramele_node_map = {};
   Object.entries(faces).forEach(([face_axis, face_object]) => {
@@ -45,7 +51,7 @@ const generateParametricModel = (s3d_model) => {
       if (face_axis == "x") {
         node_ids.forEach((node_id) => {
           number_nodes += 1;
-          column_2_y_acc += master_spacing * 2;
+          column_2_y_acc += master_spacing * 1.5;
           paramele_model_nodes_structural_nodes.push(
             addNodeToTheEditor("structuralNode", { x: column_2_x_acc, y: column_2_y_acc }, { custom_label: `${node_id}` }, false, false, number_nodes)
           );
@@ -70,8 +76,46 @@ const generateParametricModel = (s3d_model) => {
     });
     column_1_y_acc += master_spacing;
   });
-  addNodesArrayToTheEditor([...paramele_model_nodes_coordinates, ...paramele_model_nodes_structural_nodes]);
-  addEdgesArrayToTheEditor([...paramele_model_edges])
+  Object.entries(members).forEach(([member_id, { node_A, node_B }]) => {
+    // Define the nodes with the structural members
+    number_nodes += 1;
+    column_3_y_acc += master_spacing * 1.5;
+    paramele_model_nodes_structural_members.push(
+      addNodeToTheEditor("structuralMember", { x: column_3_x_acc, y: column_3_y_acc }, { custom_label: `${member_id}` }, false, false, number_nodes)
+    );
+    let paramele_number_node_id = utils.getNodeFullID(number_nodes);
+    // Add the edge to node_A
+    let source = structural_node_to_paramele_node_map[node_A];
+    let sourceHandle = "node_out-id";
+    let target = paramele_number_node_id;
+    let targetHandle = "node_A-id";
+    paramele_model_edges.push({
+      id: `reactflow__edge-${source}${sourceHandle}__${target}${targetHandle}`,
+      source,
+      sourceHandle,
+      target,
+      targetHandle,
+    });
+    // Add the edges to node_B
+    source = structural_node_to_paramele_node_map[node_B];
+    sourceHandle = "node_out-id";
+    target = paramele_number_node_id;
+    targetHandle = "node_B-id";
+    paramele_model_edges.push({
+      id: `reactflow__edge-${source}${sourceHandle}__${target}${targetHandle}`,
+      source,
+      sourceHandle,
+      target,
+      targetHandle,
+    });
+  });
+  // Add everything to the editor
+  addNodesArrayToTheEditor([
+    ...paramele_model_nodes_coordinates,
+    ...paramele_model_nodes_structural_nodes,
+    ...paramele_model_nodes_structural_members,
+  ]);
+  addEdgesArrayToTheEditor([...paramele_model_edges]);
 };
 
 /**
