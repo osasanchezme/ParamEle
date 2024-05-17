@@ -108,16 +108,22 @@ function updateNodeDataKey(node_id, data_key, data_value, is_aux) {
 
 /**
  *
- * @param {String} type Node type
+ * @param {import("../js/types").ParamEleNodesTypes} type Node type
  * @param {{x: Number, y: Number}} html_position Desired position for the node in the document space
  * @param {Object} [data] Initial data for the new node
+ * @param {number} [index] Index of the node to add
  */
-function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true) {
+function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = false, add_to_the_editor = true, index) {
   let position = html_position;
   if (!is_rf_position) {
     position = rf_instance.project(html_position);
   }
-  let id = utils.nextNodeId();
+  let id;
+  if (typeof index == "undefined") {
+    id = utils.nextNodeId();
+  } else {
+    id = utils.getNodeFullID(index);
+  }
   setGlobalVariable("last_node_id_created", id);
   data.aux = utils.getDefaultAuxData();
   if (add_to_the_editor) {
@@ -125,6 +131,14 @@ function addNodeToTheEditor(type, html_position, data = {}, is_rf_position = fal
   } else {
     return { id, type, position, data };
   }
+}
+
+function addNodesArrayToTheEditor(nodes_array) {
+  rf_instance.addNodes(nodes_array);
+}
+
+function addEdgesArrayToTheEditor(edges_array) {
+  rf_instance.addEdges(edges_array);
 }
 
 function removeNodesAndEdgesFromModel(node_ids, edge_ids) {
@@ -179,4 +193,13 @@ function deselectAllHandles() {
 
 export default VisualEditor;
 
-export { updateNodeDataKey, addNodeToTheEditor, getSelectedHandles, deselectAllHandles, deselectAllNodesAndHandles, removeNodesAndEdgesFromModel };
+export {
+  updateNodeDataKey,
+  addNodeToTheEditor,
+  addNodesArrayToTheEditor,
+  addEdgesArrayToTheEditor,
+  getSelectedHandles,
+  deselectAllHandles,
+  deselectAllNodesAndHandles,
+  removeNodesAndEdgesFromModel,
+};

@@ -121,6 +121,7 @@
         "export_json": "Exportar JSON",
         "import_json": "Importar JSON",
         "export_sap": "Exportar SAP",
+        "import": "Importar",
         "boxes": "Cajas",
         "group": "Agrupar",
         "edit_logic": "Editar lógica",

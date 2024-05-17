@@ -82,6 +82,13 @@ function getNavBarOptions({
             structure.downloadInputTextFile("SAP2000");
           },
         },
+        {
+          name: localGetCopy("import"),
+          icon: "MdFileUpload",
+          callback: () => {
+            structure.importStructureModel();
+          },
+        },
       ],
     },
     settings: {

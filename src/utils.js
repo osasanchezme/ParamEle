@@ -60,16 +60,18 @@ function scoreCompareStrings(text1, text2) {
 
 function nextNodeId() {
   let nodes = getState("model")["nodes"];
-  let possible_id = 1;
+  let possible_index = 1;
   let node_ids = nodes.map((node) => {
     return node.id;
   });
   let found_id = false;
   while (!found_id) {
-    node_ids.includes(`node-${possible_id}`) ? possible_id++ : (found_id = true);
+    node_ids.includes(`node-${possible_index}`) ? possible_index++ : (found_id = true);
   }
-  return `node-${possible_id}`;
+  return getNodeFullID(possible_index);
 }
+
+const getNodeFullID = (node_index) => `node-${node_index}`;
 
 /**
  *
@@ -407,6 +409,7 @@ const utils = {
   encodeStringForDBKey,
   encodeNameToUniqueID,
   decodeUniqueIDToName,
+  getNodeFullID,
 };
 
 export default utils;
