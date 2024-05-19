@@ -4,12 +4,12 @@ import utils from "../utils";
 
 function run(model) {
   if (model == undefined) {
-    console.log('There are places not passing the model to the logic runner');
+    console.log("There are places not passing the model to the logic runner");
     model = getState("model");
   }
   // Restart the structure
   state.setState(utils.getEmptyStructuralModel(), "structure");
-  let { nodes } = calculateModel(model);
+  let { nodes } = calculateModel(model, true);
   // Update the whole ReactFlow
   let rf_instance = state.getRfInstance();
   rf_instance.setNodes(nodes);
@@ -22,8 +22,9 @@ function run(model) {
 /**
  *
  * @param {object} model - Processes a reactflow model of nodes and edges to calculate their outputs
+ * @param {boolean} is_from_main_model
  */
-function calculateModel(model) {
+function calculateModel(model, is_from_main_model) {
   let nodes = model.nodes;
   let edges = model.edges;
   let connected_nodes = {};
@@ -95,13 +96,13 @@ function calculateModel(model) {
       state.setGlobalVariable("iterating_node_data", {});
     }
   }
-  // If there are no range nodes, add an empty combination
-  if (model_combinations.length === 0) model_combinations.push({});
+  // If there are no range nodes, add null
+  if (model_combinations.length === 0) model_combinations.push(null);
 
   // Run all the combinations
   model_combinations.forEach((model_combination, combination_i) => {
     // Update the model with the given combination
-    if (JSON.stringify(model_combination) !== "{}") {
+    if (model_combination !== null) {
       let structural_nodes = getState("structure")["nodes"];
       state.setGlobalVariable(
         "structure_nodes_shift",
@@ -110,6 +111,9 @@ function calculateModel(model) {
       Object.entries(model_combination).forEach(([node_id, new_node_data]) => {
         nodes_data[node_id] = new_node_data;
       });
+    } else if (is_from_main_model) {
+      // Case with no range iterators and not from a wrapper node (there should not be shift)
+      state.setGlobalVariable("structure_nodes_shift", 0);
     }
     // Run all the logic
     Object.entries(connected_nodes).forEach(([node_id, node]) => {
