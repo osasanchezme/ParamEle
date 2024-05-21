@@ -20,10 +20,14 @@ const generateParametricModel = (s3d_model) => {
       nodes: { coords: { x: x_orig + 3 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
       members: { coords: { x: x_orig + 6 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
       plates: { coords: { x: x_orig + 9 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
+      supports: { coords: { x: x_orig + 12 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
     },
     edges: [],
     addInputNode: (custom_label, value) => {
       paramele_interface.addNode("parameters", "inputNumber", custom_label, { "value-value": value });
+    },
+    addStringNode: (custom_label, value) => {
+      paramele_interface.addNode("parameters", "inputString", custom_label, { "value-string": value });
     },
     spaceNodesGroup: (group_name, spacing_multiplier = 1) => {
       paramele_interface.nodes[group_name].coords.y += master_spacing * spacing_multiplier;
@@ -97,7 +101,7 @@ const generateParametricModel = (s3d_model) => {
    * @param {import("./types").ParamEleNodesTypes} node_type
    * @param {number} id
    */
-  let { nodes, members, plates } = s3d_model;
+  let { nodes, members, plates, supports } = s3d_model;
   // Process the nodes by faces
   let faces = findParameters(nodes, { x: {}, y: {}, z: {} });
   Object.entries(faces).forEach(([face_axis, face_object]) => {
@@ -139,7 +143,7 @@ const generateParametricModel = (s3d_model) => {
   Object.entries(thicknesses).forEach(([parameter_name, parameter_object], parameter_index) => {
     Object.entries(parameter_object).forEach(([parameter_value, element_ids], sub_parameter_index) => {
       // Define the nodes with the coordinate numbers
-      let sub_parameter_id = `${parameter_name.toUpperCase()}-${sub_parameter_index + 1}`;
+      let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1}`;
       paramele_interface.addInputNode(sub_parameter_id, parameter_value);
       // Define the nodes with the nodes themselves
       if (parameter_index == 0) {
@@ -164,6 +168,36 @@ const generateParametricModel = (s3d_model) => {
             "nodes-ids"
           );
         });
+      });
+    });
+    paramele_interface.spaceNodesGroup("plates");
+  });
+
+  // Process the supports by fixity code
+  let restraints = findParameters(supports, { restraint_code: {} });
+  Object.entries(restraints).forEach(([parameter_name, parameter_object], parameter_index) => {
+    Object.entries(parameter_object).forEach(([parameter_value, element_ids], sub_parameter_index) => {
+      let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1}`;
+      paramele_interface.addStringNode(sub_parameter_id, parameter_value);
+      if (parameter_index == 0) {
+        element_ids.forEach((element_id) => {
+          paramele_interface.addNode("supports", "structuralGenericSupport", element_id, undefined, 1.5);
+        });
+        paramele_interface.spaceNodesGroup("supports");
+      }
+      element_ids.forEach((element_id) => {
+        paramele_interface.addEdge(
+          { group_name: "parameters", map_key: sub_parameter_id },
+          "value-string",
+          { group_name: "supports", map_key: element_id },
+          "restraint_code-string-FFFFFF"
+        );
+        paramele_interface.addEdge(
+          { group_name: "nodes", map_key: supports[element_id].node },
+          "node_out-id",
+          { group_name: "supports", map_key: element_id },
+          "node-id"
+        );
       });
     });
     paramele_interface.spaceNodesGroup("plates");

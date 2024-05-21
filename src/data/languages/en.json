@@ -53,7 +53,9 @@
         "all": "all",
         "plot_selector": "Filter",
         "reaction": "reaction",
-        "displacement": "displacement"
+        "displacement": "displacement",
+        "direction_code": "direction",
+        "restraint_code": "restraint"
     },
     "types": {
         "id": "ID",
