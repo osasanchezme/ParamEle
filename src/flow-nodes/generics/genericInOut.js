@@ -170,6 +170,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     let input_component = "";
     switch (editable_data.input_type) {
       case "number":
+      case "string":
         top_pos_editable_inputs += 0;
         input_component = (
           <InputGroup size="xs" style={{ marginBottom: "2px", top: top_pos_editable_inputs }} key={editable_data.name + "-input_group"}>

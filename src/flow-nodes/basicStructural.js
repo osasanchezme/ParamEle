@@ -1,7 +1,7 @@
 import utils from "../utils";
 import GenericInOutNode from "./generics/genericInOut";
 
-function localGetCopy(node_name){
+function localGetCopy(node_name) {
   return utils.getDisplayCopy("nodes", node_name);
 }
 
@@ -24,16 +24,24 @@ function StructuralNodeExec(args) {
   let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
   return {
     "node_out-id": {
-      ...structural_args
+      ...structural_args,
     },
-    "node_list_out-ids": []
+    "node_list_out-ids": [],
   };
 }
 
 // Member
 const member_target_ids = ["node_A-id", "node_B-id", "section_id-id-1"];
 function StructuralMember({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralMember")} data={data} id={id} target_ids={member_target_ids} source_ids={["member_out-id", "member_list_out-ids"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralMember")}
+      data={data}
+      id={id}
+      target_ids={member_target_ids}
+      source_ids={["member_out-id", "member_list_out-ids"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralMemberExec(args) {
@@ -58,13 +66,21 @@ function StructuralMemberExec(args) {
       stiffness_B_Ry: 0,
       stiffness_B_Rz: 0,
     },
-    "member_list_out-ids": []
+    "member_list_out-ids": [],
   };
 }
 
 // Fixed support
 function StructuralFixedSupport({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralFixedSupport")} data={data} id={id} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralFixedSupport")}
+      data={data}
+      id={id}
+      target_ids={["node-id"]}
+      source_ids={["support_out-id"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralFixedSupportExec(args) {
@@ -87,7 +103,15 @@ function StructuralFixedSupportExec(args) {
 
 // Pinned support
 function StructuralPinSupport({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralPinSupport")} data={data} id={id} target_ids={["node-id"]} source_ids={["support_out-id"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralPinSupport")}
+      data={data}
+      id={id}
+      target_ids={["node-id"]}
+      source_ids={["support_out-id"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralPinSupportExec(args) {
@@ -104,6 +128,36 @@ function StructuralPinSupportExec(args) {
       type: "node",
       node,
       restraint_code: "FFFFFR",
+    },
+  };
+}
+
+// Generic support
+const gen_support_target_ids = ["node-id", "restraint_code-string-FFFFFF", "direction_code-string-BBBBBB"];
+function StructuralGenericSupport({ data, id }) {
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralGenericSupport")}
+      data={data}
+      id={id}
+      target_ids={gen_support_target_ids}
+      source_ids={["support_out-id"]}
+    ></GenericInOutNode>
+  );
+}
+
+function StructuralGenericSupportExec(args) {
+  let structural_args = utils.convertNodeToStructuralArgs(args, gen_support_target_ids);
+  return {
+    "support_out-id": {
+      ...structural_args,
+      tx: 0,
+      ty: 0,
+      tz: 0,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+      type: "node",
     },
   };
 }
@@ -180,7 +234,15 @@ function StructuralDistributedLoadExec(args) {
 // Plate
 const plate_target_ids = ["nodes-ids", "thickness-value"];
 function StructuralPlate({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralPlate")} data={data} id={id} target_ids={plate_target_ids} source_ids={["plate_out-id"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralPlate")}
+      data={data}
+      id={id}
+      target_ids={plate_target_ids}
+      source_ids={["plate_out-id"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralPlateExec(args) {
@@ -206,7 +268,15 @@ function StructuralPlateExec(args) {
 // Point moment
 const moment_target_ids = ["node-id", "x_mag-value", "y_mag-value", "z_mag-value"];
 function StructuralMoment({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralMoment")} data={data} id={id} target_ids={moment_target_ids} source_ids={["moment_out-id"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralMoment")}
+      data={data}
+      id={id}
+      target_ids={moment_target_ids}
+      source_ids={["moment_out-id"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralMomentExec(args) {
@@ -222,9 +292,23 @@ function StructuralMomentExec(args) {
 }
 
 // Material
-const material_target_ids = ["name-name-Concrete", "density-value", "elasticity_modulus-value-20000", "poissons_ratio-value-0.3", "class-name-concrete"];
+const material_target_ids = [
+  "name-name-Concrete",
+  "density-value",
+  "elasticity_modulus-value-20000",
+  "poissons_ratio-value-0.3",
+  "class-name-concrete",
+];
 function StructuralMaterial({ data, id }) {
-  return <GenericInOutNode node_label={localGetCopy("structuralMaterial")} data={data} id={id} target_ids={material_target_ids} source_ids={["material_out-id"]}></GenericInOutNode>;
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralMaterial")}
+      data={data}
+      id={id}
+      target_ids={material_target_ids}
+      source_ids={["material_out-id"]}
+    ></GenericInOutNode>
+  );
 }
 
 function StructuralMaterialExec(args) {
@@ -242,6 +326,7 @@ const BasicStructuralNodes = {
   StructuralMemberNode: { Node: StructuralMember, Exec: StructuralMemberExec },
   StructuralFixedSupportNode: { Node: StructuralFixedSupport, Exec: StructuralFixedSupportExec },
   StructuralPinSupportNode: { Node: StructuralPinSupport, Exec: StructuralPinSupportExec },
+  StructuralGenericSupportNode: { Node: StructuralGenericSupport, Exec: StructuralGenericSupportExec },
   StructuralPointLoadNode: { Node: StructuralPointLoad, Exec: StructuralPointLoadExec },
   StructuralDistributedLoadNode: { Node: StructuralDistributedLoad, Exec: StructuralDistributedLoadExec },
   StructuralPlateNode: { Node: StructuralPlate, Exec: StructuralPlateExec },

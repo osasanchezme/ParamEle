@@ -59,10 +59,12 @@
         "id": "ID",
         "ids": "IDs",
         "value": "value",
-        "name": "name"
+        "name": "name",
+        "string": "text"
     },
     "nodes":{
         "inputNumber": "Number",
+        "inputString": "Texto",
         "sumNumbers": "Sum",
         "multiplyNumbers": "Multiply",
         "divideNumbers": "Divide",
@@ -80,6 +82,7 @@
         "structuralMember": "Member",
         "structuralFixedSupport": "Fixed Support",
         "structuralPinSupport": "Pin Support",
+        "structuralGenericSupport": "Generic Support",
         "structuralPointLoad": "Point load",
         "structuralDistributedLoad": "Distributed load",
         "structuralPlate": "Plate",

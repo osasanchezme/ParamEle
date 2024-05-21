@@ -14,6 +14,7 @@ function createNodesLibrary() {
   }
   const global_library_wrapper = {
     inputNumber: { node_component: BasicInputNodes.InputNumberNode, label: localGetCopy("inputNumber") },
+    inputString: { node_component: BasicInputNodes.InputStringNode, label: localGetCopy("inputString") },
     variableRange: { node_component: BasicInputNodes.VariableRangeNode, label: localGetCopy("variableRange") },
     // Basic math
     sumNumbers: { node_component: BasicMathNodes.MathSumNode, label: localGetCopy("sumNumbers") },
@@ -35,6 +36,7 @@ function createNodesLibrary() {
     structuralMember: { node_component: BasicStructuralNodes.StructuralMemberNode, label: localGetCopy("structuralMember") },
     structuralFixedSupport: { node_component: BasicStructuralNodes.StructuralFixedSupportNode, label: localGetCopy("structuralFixedSupport") },
     structuralPinSupport: { node_component: BasicStructuralNodes.StructuralPinSupportNode, label: localGetCopy("structuralPinSupport") },
+    structuralGenericSupport: { node_component: BasicStructuralNodes.StructuralGenericSupportNode, label: localGetCopy("structuralGenericSupport") },
     structuralPointLoad: { node_component: BasicStructuralNodes.StructuralPointLoadNode, label: localGetCopy("structuralPointLoad") },
     structuralDistributedLoad: {
       node_component: BasicStructuralNodes.StructuralDistributedLoadNode,

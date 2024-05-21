@@ -208,6 +208,7 @@ function convertNodeToStructuralArgs(args, full_args_key_list) {
         structural_args[structural_key] = isNaN(potential_value) ? Number(arg_default) : potential_value;
         break;
       case "name":
+      case "string":
         if (typeof arg_default === "undefined") arg_default = "default";
         structural_args[structural_key] = String(arg_value) === "null" ? arg_default : String(arg_value);
         break;

@@ -59,10 +59,12 @@
         "id": "ID",
         "ids": "IDs",
         "value": "valor",
-        "name": "nombre"
+        "name": "nombre",
+        "string": "texto"
     },
     "nodes": {
         "inputNumber": "Número",
+        "inputString": "Texto",
         "sumNumbers": "Sumar",
         "multiplyNumbers": "Multiplicar",
         "divideNumbers": "Dividir",
@@ -80,6 +82,7 @@
         "structuralMember": "Elemento",
         "structuralFixedSupport": "Apoyo empotrado",
         "structuralPinSupport": "Apoyo articulado",
+        "structuralGenericSupport": "Apoyo genérico",
         "structuralPointLoad": "Carga puntual",
         "structuralDistributedLoad": "Carga distribuida",
         "structuralPlate": "Placa",

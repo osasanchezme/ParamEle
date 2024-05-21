@@ -18,6 +18,23 @@ function InputNumber({ data, id }) {
   );
 }
 
+const string_input_source_ids = [];
+const string_input_target_ids = [];
+const string_input_editable_ids = [{ id: "value-string", show_handle: true, input_type: "string" }];
+function InputString({ data, id }) {
+  return (
+    <GenericInOutNode
+      node_label={utils.getDisplayCopy("nodes", "inputString")}
+      data={data}
+      id={id}
+      key={id}
+      target_ids={string_input_target_ids}
+      source_ids={string_input_source_ids}
+      editable_ids={string_input_editable_ids}
+    ></GenericInOutNode>
+  );
+}
+
 const range_source_ids = [];
 const range_target_ids = [];
 const range_editable_ids = [
@@ -40,6 +57,10 @@ function VariableRange({ data, id }) {
   );
 }
 
-const BasicInputNodes = { InputNumberNode: { Node: InputNumber }, VariableRangeNode: { Node: VariableRange } };
+const BasicInputNodes = {
+  InputNumberNode: { Node: InputNumber },
+  InputStringNode: { Node: InputString },
+  VariableRangeNode: { Node: VariableRange },
+};
 
 export default BasicInputNodes;
