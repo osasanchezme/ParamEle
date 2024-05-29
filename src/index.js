@@ -256,7 +256,7 @@ class ParamEle extends React.Component {
    */
   getUserRole() {
     if (!this.state.user) return "guest";
-    if (!this.state.file_shared_with_me && !this.state.file_shared_data?.[this.state.user.uid]) return "admin";
+    if (!this.state.file_shared_with_me && !this.state.file_shared_data?.[this.state.user.uid]) return "owner";
     return this.state.file_shared_data[this.state.user.uid].role;
   }
   /**
