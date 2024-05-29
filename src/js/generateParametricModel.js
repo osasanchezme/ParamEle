@@ -1,4 +1,4 @@
-import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, getZoom } from "../components/VisualEditor";
+import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, fitView, getZoom } from "../components/VisualEditor";
 import utils from "../utils";
 
 /**
@@ -8,8 +8,8 @@ import utils from "../utils";
  */
 const generateParametricModel = (s3d_model) => {
   let zoom = getZoom();
-  let x_orig = 100;
-  let y_orig = 100;
+  let x_orig = -1500;
+  let y_orig = -1500;
   let number_nodes = 0;
   let master_spacing = 50 * (zoom / 0.5); // Normalize the spacing so it is independent of the zoom level
 
@@ -21,6 +21,9 @@ const generateParametricModel = (s3d_model) => {
       members: { coords: { x: x_orig + 6 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
       plates: { coords: { x: x_orig + 9 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
       supports: { coords: { x: x_orig + 12 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
+      distributed_loads: { coords: { x: x_orig + 15 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
+      point_loads: { coords: { x: x_orig + 18 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
+      moments: { coords: { x: x_orig + 21 * master_spacing, y: y_orig }, nodes_list: [], maps: {} },
     },
     edges: [],
     addInputNode: (custom_label, value) => {
@@ -85,6 +88,72 @@ const generateParametricModel = (s3d_model) => {
         throw new Error(`Element id ${element_id} under ${group_name} already taken!`);
       paramele_interface.nodes[group_name].maps[element_id] = new_node_id;
     },
+    /**
+     *
+     * @param {*} elements_collection
+     * @param {Object.<string, {type: "value"|"string", target_handle: string, data: Object.<string, string[]>}>} parameters
+     * @param {*} dependencies
+     * @param {*} param3
+     */
+    addNodesAndEdgesFromParameters: (
+      elements_collection,
+      parameters,
+      dependencies,
+      { elements_group_name, elements_node_type, elements_node_spacing }
+    ) => {
+      Object.entries(parameters).forEach(([parameter_name, parameter_object], parameter_index) => {
+        Object.entries(parameter_object.data).forEach(([parameter_value, element_ids], sub_parameter_index) => {
+          // Define the nodes with the parameters (number or string)
+          let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1} (${utils.getDisplayCopy("nodes", elements_node_type).toUpperCase()})`;
+          switch (parameter_object.type) {
+            case "string":
+              paramele_interface.addStringNode(sub_parameter_id, parameter_value);
+              break;
+            case "value":
+              paramele_interface.addInputNode(sub_parameter_id, parameter_value);
+              break;
+            default:
+              throw new Error(`Unknown parameter type ${parameter_object.type} for parameter ${parameter_name}`);
+          }
+
+          // Define the structural nodes
+          if (parameter_index == 0) {
+            element_ids.forEach((element_id) => {
+              paramele_interface.addNode(elements_group_name, elements_node_type, element_id, undefined, elements_node_spacing);
+
+              // Connect the dependencies with the recently added structural nodes
+              dependencies.forEach(({ key, group_name, target_handle, source_handle, multi_source_function }) => {
+                let sources_list =
+                  multi_source_function == undefined
+                    ? [elements_collection[element_id][key]]
+                    : multi_source_function(elements_collection[element_id][key]);
+
+                sources_list.forEach((source_id) => {
+                  paramele_interface.addEdge(
+                    { group_name, map_key: source_id },
+                    source_handle,
+                    { group_name: elements_group_name, map_key: element_id },
+                    target_handle
+                  );
+                });
+              });
+            });
+            paramele_interface.spaceNodesGroup(elements_group_name);
+          }
+
+          // Connect the parameters with the structural node
+          element_ids.forEach((element_id) => {
+            paramele_interface.addEdge(
+              { group_name: "parameters", map_key: sub_parameter_id },
+              `value-${parameter_object.type}`,
+              { group_name: elements_group_name, map_key: element_id },
+              parameter_object.target_handle
+            );
+          });
+        });
+        paramele_interface.spaceNodesGroup("parameters");
+      });
+    },
     getAllNodes: () => {
       let all_nodes = [];
       Object.values(paramele_interface.nodes).forEach(({ nodes_list }) => {
@@ -101,32 +170,14 @@ const generateParametricModel = (s3d_model) => {
    * @param {import("./types").ParamEleNodesTypes} node_type
    * @param {number} id
    */
-  let { nodes, members, plates, supports } = s3d_model;
+  let { nodes, members, plates, supports, distributed_loads, point_loads, moments } = s3d_model;
   // Process the nodes by faces
-  let faces = findParameters(nodes, { x: {}, y: {}, z: {} });
-  Object.entries(faces).forEach(([face_axis, face_object]) => {
-    Object.entries(face_object).forEach(([face_value, node_ids], face_i) => {
-      // Define the nodes with the coordinate numbers
-      let face_id = `${face_axis.toUpperCase()}-${face_i + 1}`;
-      paramele_interface.addInputNode(face_id, face_value);
-      // Define the nodes with the nodes themselves
-      if (face_axis == "x") {
-        node_ids.forEach((node_id) => {
-          paramele_interface.addNode("nodes", "structuralNode", node_id, undefined, 1.5);
-        });
-        paramele_interface.spaceNodesGroup("nodes");
-      }
-      // Define the edges connecting the coordinate numbers with the structural nodes
-      node_ids.forEach((node_id) => {
-        paramele_interface.addEdge(
-          { group_name: "parameters", map_key: face_id },
-          "value-value",
-          { group_name: "nodes", map_key: node_id },
-          `${face_axis}-value`
-        );
-      });
-    });
-    paramele_interface.spaceNodesGroup("parameters");
+  let nodes_faces = findParameters(nodes, { x: {}, y: {}, z: {} });
+  let nodes_dependencies = [];
+  paramele_interface.addNodesAndEdgesFromParameters(nodes, nodes_faces, nodes_dependencies, {
+    elements_group_name: "nodes",
+    elements_node_type: "structuralNode",
+    elements_node_spacing: 1.5,
   });
 
   // Add the members
@@ -139,87 +190,103 @@ const generateParametricModel = (s3d_model) => {
   });
 
   // Process the plates by thickness
-  let thicknesses = findParameters(plates, { thickness: {} });
-  Object.entries(thicknesses).forEach(([parameter_name, parameter_object], parameter_index) => {
-    Object.entries(parameter_object).forEach(([parameter_value, element_ids], sub_parameter_index) => {
-      // Define the nodes with the coordinate numbers
-      let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1}`;
-      paramele_interface.addInputNode(sub_parameter_id, parameter_value);
-      // Define the nodes with the nodes themselves
-      if (parameter_index == 0) {
-        element_ids.forEach((element_id) => {
-          paramele_interface.addNode("plates", "structuralPlate", element_id, undefined, 1.5);
-        });
-        paramele_interface.spaceNodesGroup("plates");
-      }
-      // Define the edges connecting the coordinate numbers with the structural nodes
-      element_ids.forEach((element_id) => {
-        paramele_interface.addEdge(
-          { group_name: "parameters", map_key: sub_parameter_id },
-          "value-value",
-          { group_name: "plates", map_key: element_id },
-          "thickness-value"
-        );
-        plates[element_id].nodes.split(",").forEach((node_id) => {
-          paramele_interface.addEdge(
-            { group_name: "nodes", map_key: node_id },
-            "node_out-id",
-            { group_name: "plates", map_key: element_id },
-            "nodes-ids"
-          );
-        });
-      });
-    });
-    paramele_interface.spaceNodesGroup("plates");
+  let plates_thicknesses = findParameters(plates, { thickness: {} });
+  let plates_dependencies = [
+    {
+      key: "nodes",
+      group_name: "nodes",
+      target_handle: "nodes-ids",
+      source_handle: "node_out-id",
+      multi_source_function: (element_data) => element_data.split(","),
+    },
+  ];
+  paramele_interface.addNodesAndEdgesFromParameters(plates, plates_thicknesses, plates_dependencies, {
+    elements_group_name: "plates",
+    elements_node_type: "structuralPlate",
+    elements_node_spacing: 1.5,
   });
 
   // Process the supports by fixity code
-  let restraints = findParameters(supports, { restraint_code: {} });
-  Object.entries(restraints).forEach(([parameter_name, parameter_object], parameter_index) => {
-    Object.entries(parameter_object).forEach(([parameter_value, element_ids], sub_parameter_index) => {
-      let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1}`;
-      paramele_interface.addStringNode(sub_parameter_id, parameter_value);
-      if (parameter_index == 0) {
-        element_ids.forEach((element_id) => {
-          paramele_interface.addNode("supports", "structuralGenericSupport", element_id, undefined, 1.5);
-        });
-        paramele_interface.spaceNodesGroup("supports");
-      }
-      element_ids.forEach((element_id) => {
-        paramele_interface.addEdge(
-          { group_name: "parameters", map_key: sub_parameter_id },
-          "value-string",
-          { group_name: "supports", map_key: element_id },
-          "restraint_code-string-FFFFFF"
-        );
-        paramele_interface.addEdge(
-          { group_name: "nodes", map_key: supports[element_id].node },
-          "node_out-id",
-          { group_name: "supports", map_key: element_id },
-          "node-id"
-        );
-      });
-    });
-    paramele_interface.spaceNodesGroup("plates");
+  let supports_restraints = findParameters(supports, { restraint_code: { type: "string", target_handle: "restraint_code-string-FFFFFF" } });
+  let supports_dependencies = [{ key: "node", group_name: "nodes", target_handle: "node-id", source_handle: "node_out-id" }];
+  paramele_interface.addNodesAndEdgesFromParameters(supports, supports_restraints, supports_dependencies, {
+    elements_group_name: "supports",
+    elements_node_type: "structuralGenericSupport",
+    elements_node_spacing: 1.5,
   });
+
+  // Process the distributed loads by magnitude
+  paramele_interface.spaceNodesGroup("parameters");
+  let dl_magnitudes = findParameters(distributed_loads, {
+    x_mag_A: {},
+    y_mag_A: {},
+    z_mag_A: {},
+    x_mag_B: {},
+    y_mag_B: {},
+    z_mag_B: {},
+  });
+  let dl_dependencies = [{ key: "member", group_name: "members", target_handle: "member-id", source_handle: "member_out-id" }];
+  paramele_interface.addNodesAndEdgesFromParameters(distributed_loads, dl_magnitudes, dl_dependencies, {
+    elements_group_name: "distributed_loads",
+    elements_node_type: "structuralDistributedLoad",
+    elements_node_spacing: 2,
+  });
+
+  // Process the point loads by magnitude
+  paramele_interface.spaceNodesGroup("parameters");
+  let pl_magnitudes = findParameters(point_loads, {
+    x_mag: {},
+    y_mag: {},
+    z_mag: {},
+  });
+  let pl_dependencies = [{ key: "node", group_name: "nodes", target_handle: "node-id", source_handle: "node_out-id" }];
+  paramele_interface.addNodesAndEdgesFromParameters(point_loads, pl_magnitudes, pl_dependencies, {
+    elements_group_name: "point_loads",
+    elements_node_type: "structuralPointLoad",
+    elements_node_spacing: 1.5,
+  });
+
+  // Process the moments by magnitude
+  paramele_interface.spaceNodesGroup("parameters");
+  let moments_magnitudes = findParameters(moments, {
+    x_mag: {},
+    y_mag: {},
+    z_mag: {},
+  });
+  let moments_dependencies = [{ key: "node", group_name: "nodes", target_handle: "node-id", source_handle: "node_out-id" }];
+  paramele_interface.addNodesAndEdgesFromParameters(moments, moments_magnitudes, moments_dependencies, {
+    elements_group_name: "moments",
+    elements_node_type: "structuralMoment",
+    elements_node_spacing: 1.5,
+  });
+
   // Add everything to the editor
   addNodesArrayToTheEditor(paramele_interface.getAllNodes());
   addEdgesArrayToTheEditor(paramele_interface.getAllEdges());
+  // TODO - Improve this temporal fix to ensure the Visual Editor doesn't break
+  setTimeout(() => {
+    fitView();
+  }, 3000);
 };
 
 /**
  *  Groups items of an object by shared keys
  * @param {{[string]: {[string]: number}}} source_obj - Any object with multiple keys of the same kind which are groupable by some second level keys
- * @param {{[string]: number[]}} parameters_obj - Object in which to store the parameters, Each key in the object will be populated by the shared parameters
+ * @param {Object.<string, {type: "value"|"string", target_handle: string, data: Object.<string, string[]>}>} parameters_obj - Object in which to store the parameters, Each key in the object will be populated by the shared parameters
  */
 const findParameters = (source_obj, parameters_obj) => {
   Object.entries(source_obj).forEach(([element_id, element_data]) => {
     Object.keys(parameters_obj).forEach((parameter_name) => {
       let parameter_value = element_data[parameter_name];
-      if (!parameters_obj[parameter_name][parameter_value]) {
-        parameters_obj[parameter_name][parameter_value] = [];
+      if (parameters_obj[parameter_name].type == undefined) parameters_obj[parameter_name].type = "value";
+      // If undefined fill the target handle with the predefined name-type
+      if (parameters_obj[parameter_name].target_handle == undefined)
+        parameters_obj[parameter_name].target_handle = `${parameter_name}-${parameters_obj[parameter_name].type}`;
+      if (parameters_obj[parameter_name].data == undefined) parameters_obj[parameter_name].data = {};
+      if (!parameters_obj[parameter_name].data[parameter_value]) {
+        parameters_obj[parameter_name].data[parameter_value] = [];
       }
-      parameters_obj[parameter_name][parameter_value].push(element_id);
+      parameters_obj[parameter_name].data[parameter_value].push(element_id);
     });
   });
   return parameters_obj;

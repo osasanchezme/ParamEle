@@ -149,6 +149,10 @@ function setZoom(zoom = 0.5) {
   rf_instance.zoomTo(zoom);
 }
 
+function fitView() {
+  rf_instance.fitView();
+}
+
 function removeNodesAndEdgesFromModel(node_ids, edge_ids) {
   let nodes = [];
   let edges = [];
@@ -212,4 +216,5 @@ export {
   removeNodesAndEdgesFromModel,
   getZoom,
   setZoom,
+  fitView,
 };

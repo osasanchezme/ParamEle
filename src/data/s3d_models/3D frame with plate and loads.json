@@ -11082,7 +11082,7 @@
   "settlements": {},
   "groups": {},
   "point_loads": { "1": { "x_mag": 10, "y_mag": 10, "z_mag": 10, "load_group": "LG", "type": "N", "node": 6 } },
-  "moments": { "1": { "x_mag": 10, "y_mag": 0, "z_mag": 0, "load_group": "DL", "type": "N", "node": 8 } },
+  "moments":     { "1": { "x_mag": 10, "y_mag": 0, "z_mag": 0, "load_group": "DL", "type": "N", "node": 8 } },
   "distributed_loads": {
     "1": {
       "member": 8,
