@@ -47,6 +47,7 @@ function createNodesLibrary() {
     structuralMaterial: { node_component: BasicStructuralNodes.StructuralMaterialNode, label: localGetCopy("structuralMaterial") },
     // Section shapes
     structuralRectangleSection: { node_component: StructuralSectionNodes.RectangleNode, label: localGetCopy("structuralRectangleSection") },
+    structuralGenericSection: { node_component: StructuralSectionNodes.GenericNode, label: localGetCopy("structuralGenericSection") },
     // Nodes Wrapper
     nodesWrapper: { node_component: NodesWrapperNode, label: localGetCopy("nodesWrapper") },
     // Structural results

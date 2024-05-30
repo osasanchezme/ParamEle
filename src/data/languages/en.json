@@ -91,6 +91,7 @@
         "structuralMoment": "Moment",
         "structuralMaterial": "Material",
         "structuralRectangleSection": "Rectangular Section",
+        "structuralGenericSection": "Generic Section",
         "nodesWrapper": "Nodes Group",
         "variableRange": "Range",
         "structuralMemberResult": "Element Result",

@@ -242,7 +242,7 @@ const generateParametricModel = (s3d_model) => {
       base: { location: ["aux", "polygons", "0", "dimensions", "b", "value"], target_handle: "base-value-1" },
       height: { location: ["aux", "polygons", "0", "dimensions", "h", "value"], target_handle: "height-value-1" },
     },
-    (section) => section?.aux?.polygons[0]?.shape == "rectangle",
+    (section) => section.aux && section.aux.polygons[0].shape == "rectangle",
     "sections"
   );
   let sections_dependencies = [{ key: "material_id", group_name: "materials", target_handle: "material_id-id-1", source_handle: "material_out-id" }];
@@ -251,7 +251,26 @@ const generateParametricModel = (s3d_model) => {
     elements_node_type: "structuralRectangleSection",
     elements_node_spacing: 1.5,
   });
-  // TODO - Process generic sections (not to leave those unsupported)
+
+  // Process the other sections by properties
+  paramele_interface.spaceNodesGroup("parameters");
+  let sections_properties = paramele_interface.findParameters(
+    sections,
+    {
+      area: { target_handle: "area-value-1" },
+      Iz: { target_handle: "Iz-value-1" },
+      Iy: { target_handle: "Iy-value-1" },
+      J: { target_handle: "J-value-1" },
+    },
+    (section) => !section.aux || section.aux.polygons[0].shape != "rectangle",
+    "sections"
+  );
+  let sections_gen_dependencies = [{ key: "material_id", group_name: "materials", target_handle: "material_id-id-1", source_handle: "material_out-id" }];
+  paramele_interface.addNodesAndEdgesFromParameters(sections, sections_properties, sections_gen_dependencies, {
+    elements_group_name: "sections",
+    elements_node_type: "structuralGenericSection",
+    elements_node_spacing: 1.5,
+  });
 
   // Add the members
   Object.entries(members).forEach(([member_id, { node_A, node_B, section_id }]) => {
@@ -261,7 +280,12 @@ const generateParametricModel = (s3d_model) => {
     // Add the edges to node_B
     paramele_interface.addEdge({ group_name: "nodes", map_key: node_B }, "node_out-id", { group_name: "members", map_key: member_id }, "node_B-id");
     // Add the edges to section_id
-    paramele_interface.addEdge({ group_name: "sections", map_key: section_id }, "section_out-id", { group_name: "members", map_key: member_id }, "section_id-id-1");
+    paramele_interface.addEdge(
+      { group_name: "sections", map_key: section_id },
+      "section_out-id",
+      { group_name: "members", map_key: member_id },
+      "section_id-id-1"
+    );
   });
 
   // Process the plates by thickness
