@@ -91,6 +91,7 @@ class ParameleInterface {
     { elements_group_name, elements_node_type, elements_node_spacing }
   ) => {
     Object.entries(parameters).forEach(([parameter_name, parameter_object], parameter_index) => {
+      if (!parameter_object.data) return; // Skip processing the parameter if there is no data
       Object.entries(parameter_object.data).forEach(([parameter_value, element_ids], sub_parameter_index) => {
         // Define the nodes with the parameters (number or string)
         let sub_parameter_id = `${utils.getDisplayCopy("tags", parameter_name).toUpperCase()}-${sub_parameter_index + 1} (${utils
