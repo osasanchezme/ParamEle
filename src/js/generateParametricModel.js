@@ -201,7 +201,7 @@ class ParameleInterface {
  * @param {import("../submodules/paramele-parsers/types").s3d_model} s3d_model
  * @returns
  */
-const generateParametricModel = (s3d_model) => {
+const generateParametricModel = (s3d_model, callback) => {
   let zoom = getZoom();
   let x_orig = -3500;
   let y_orig = -3500;
@@ -266,7 +266,9 @@ const generateParametricModel = (s3d_model) => {
     (section) => !section.aux || section.aux.polygons[0].shape != "rectangle",
     "sections"
   );
-  let sections_gen_dependencies = [{ key: "material_id", group_name: "materials", target_handle: "material_id-id-1", source_handle: "material_out-id" }];
+  let sections_gen_dependencies = [
+    { key: "material_id", group_name: "materials", target_handle: "material_id-id-1", source_handle: "material_out-id" },
+  ];
   paramele_interface.addNodesAndEdgesFromParameters(sections, sections_properties, sections_gen_dependencies, {
     elements_group_name: "sections",
     elements_node_type: "structuralGenericSection",
@@ -368,8 +370,10 @@ const generateParametricModel = (s3d_model) => {
   addNodesArrayToTheEditor(paramele_interface.getAllNodes());
   addEdgesArrayToTheEditor(paramele_interface.getAllEdges());
   // TODO - Improve this temporal fix to ensure the Visual Editor doesn't break
+  // TODO - Get the log back to the user so they know what happened
   setTimeout(() => {
     fitView();
+    callback(paramele_interface.log);
   }, 3000);
 };
 

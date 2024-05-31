@@ -135,11 +135,13 @@ const downloadInputTextFile = (format) => {
   }
 };
 
-const importStructureModel = () => {
+const importStructureModel = (callback) => {
   file.newFile();
   let a = document.createElement("input");
   a.type = "file";
-  a.click();
+  a.addEventListener("cancel", () => {
+    callback();
+  });
   a.onchange = () => {
     if (a.files.length > 0) {
       if (typeof window.FileReader !== "function") {
@@ -151,11 +153,14 @@ const importStructureModel = () => {
       fr.onload = function (e) {
         let lines = e.target.result;
         var structure_from_file = JSON.parse(lines);
-        generateParametricModel(structure_from_file);
+        generateParametricModel(structure_from_file, (process_response) => {
+          callback(process_response);
+        });
       };
       fr.readAsText(user_file);
     }
   };
+  a.click();
 };
 
 const structure = { solveStructure, downloadInputTextFile, importStructureModel };

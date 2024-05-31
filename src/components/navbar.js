@@ -1,5 +1,5 @@
 import { Button, List, ListIcon, ListItem, Icon, Flex, Spacer } from "@chakra-ui/react";
-import React from "react";
+import React, { useRef, useState } from "react";
 import * as MaterialDesign from "react-icons/md";
 import boxes from "../js/boxes";
 import file from "../js/file";
@@ -7,348 +7,344 @@ import structure from "../js/structure";
 import utils from "../utils";
 import FileStatusIndicator from "./file_status_indicator";
 import Firebase from "../js/firebase";
+import { useGlobalLoading } from "../Context";
 
 function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
 }
 
-function getNavBarOptions({
-  new_file_callback,
-  solve_file_callback,
-  open_version_manager_callback,
-  open_file_manager_callback,
-  open_sharing_manager_callback,
-  change_app_mode_function,
-  import_json_callback,
+function NavBar({
+  user,
+  file_data,
+  setFileData,
+  model_locked,
+  setModelLock,
+  openVersionManager,
+  openAuthenticationForm,
+  openFileManager,
+  changeAppMode,
+  openConfirmationDialog,
+  openSharingManager,
 }) {
-  return {
-    file: {
-      icon: "MdInsertDriveFile",
-      options: [
-        { name: localGetCopy("new"), icon: "MdInsertDriveFile", callback: new_file_callback },
-        {
-          name: localGetCopy("open"),
-          icon: "MdFolderOpen",
-          callback: () => {
-            open_file_manager_callback("open");
-          },
-        },
-        {
-          name: localGetCopy("save"),
-          icon: "MdSave",
-          callback: () => {
-            open_file_manager_callback("save");
-          },
-        },
-        {
-          name: localGetCopy("share"),
-          icon: "MdShare",
-          callback: () => {
-            open_sharing_manager_callback();
-          },
-        },
-        { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: open_version_manager_callback },
-        { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
-        { name: localGetCopy("import_json"), icon: "MdFileUpload", callback: import_json_callback },
-      ],
-    },
-    boxes: {
-      icon: "MdCropSquare",
-      options: [
-        {
-          name: localGetCopy("group"),
-          icon: "MdGroupWork",
-          callback: () => {
-            change_app_mode_function("selecting_handles");
-            boxes.groupBoxes((success) => {
-              if (success) {
-                change_app_mode_function("wait_action");
-              }
-            });
-          },
-        },
-        { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
-        { name: localGetCopy("delete"), icon: "MdDelete", callback: boxes.deleteBoxes },
-      ],
-    },
-    structure: {
-      icon: "MdFoundation",
-      options: [
-        { name: localGetCopy("solve"), icon: "MdPlayCircle", callback: solve_file_callback },
-        {
-          name: localGetCopy("export_sap"),
-          icon: "MdFileDownload",
-          callback: () => {
-            structure.downloadInputTextFile("SAP2000");
-          },
-        },
-        {
-          name: localGetCopy("import"),
-          icon: "MdFileUpload",
-          callback: () => {
-            structure.importStructureModel();
-          },
-        },
-      ],
-    },
-    settings: {
-      icon: "MdSettings",
-      callback: utils.openGlobalSettings,
-    },
-  };
-}
+  let [dropdownState, setDropdownState] = useState({ dropdown_visible: false, mouse_on_menu: false });
+  let [currentMenu, setCurrentMenu] = useState("file");
+  let [currentMenuIndex, setCurrentMenuIndex] = useState(0);
+  let [activeGroup, setActiveGroup] = useState("left");
+  const { showGlobalLoading, hideGlobalLoading } = useGlobalLoading();
 
-function getRightNavBarOptions({ open_authentication_callback }) {
-  return {
-    account: {
-      icon: "MdAccountCircle",
-      callback: open_authentication_callback,
-      auth_behavior: {
-        auth: { visible: false },
-        no_auth: { visible: true },
-      },
-    },
-    user: {
-      icon: "MdAccountCircle",
-      callback: open_authentication_callback,
-      auth_behavior: {
-        auth: { visible: true },
-        no_auth: { visible: false },
-      },
-      options: [{ name: localGetCopy("log_out"), icon: "MdExitToApp", callback: Firebase.signOutUser }],
-    },
-  };
-}
-
-class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { dropdown_visible: false, mouse_on_menu: false, current_menu: "file", current_menu_index: 0, active_group: "left" };
-    this.handleChange = this.handleChange.bind(this);
-    this.navbar_options = getNavBarOptions({
-      new_file_callback: function () {
-        props.openConfirmationDialog(
-          "blank_file",
-          [
-            {
-              run: (close_dialog_callback) => {
-                props.setFileData({
-                  file_name: null,
-                  is_saved: false,
-                  last_saved: null,
-                  model_id: null,
-                  file_path: null,
-                  current_version: null,
-                  file_owner_path: null,
-                  file_shared_with_me: null,
-                  file_shared_data: null,
-                });
-                file.newFile();
-                close_dialog_callback();
-              },
-              copy: "ok",
-              color: "blue",
-            },
-          ],
-          true
-        );
-      },
-      solve_file_callback: function () {
-        props.setModelLock(true);
-        structure.solveStructure();
-      },
-      open_version_manager_callback: function () {
-        props.openVersionManager();
-      },
-      open_file_manager_callback: function (mode) {
-        props.openFileManager(mode);
-      },
-      open_sharing_manager_callback: function (mode) {
-        props.openSharingManager(mode);
-      },
-      change_app_mode_function: function (mode) {
-        props.changeAppMode(mode);
-      },
-      import_json_callback: function () {
-        props.openConfirmationDialog(
-          "upload_file",
-          [
-            {
-              run: (close_dialog_callback) => {
-                props.setFileData({
-                  file_name: null,
-                  is_saved: false,
-                  last_saved: null,
-                  model_id: null,
-                  file_path: null,
-                  current_version: null,
-                  file_owner_path: null,
-                  file_shared_with_me: null,
-                  file_shared_data: null,
-                });
-                file.uploadJSONFile();
-                close_dialog_callback();
-              },
-              copy: "ok",
-              color: "blue",
-            },
-          ],
-          true
-        );
-      },
-    });
-    this.right_navbar_options = getRightNavBarOptions({
-      open_authentication_callback: function () {
-        props.openAuthenticationForm();
-      },
-    });
-  }
-  handleChange(dropdown_visible, mouse_on_menu) {
-    this.setState({ dropdown_visible, mouse_on_menu });
-  }
-  render() {
-    let current_options = [];
-    let right_style = "";
-    let left_style = "";
-    let right_index = 0;
-    if (this.state.active_group === "left") {
-      current_options = this.navbar_options[this.state.current_menu]["options"];
-      left_style = String(150 * this.state.current_menu_index) + "px";
-    } else if (this.state.active_group === "right") {
-      current_options = this.right_navbar_options[this.state.current_menu]["options"];
-      right_style = String(150 * this.state.current_menu_index) + "px";
-    }
-    if (!current_options) current_options = [];
-    return (
-      <div className="nav-bar">
-        <Flex direction="row" spacing={0} className="nav-bar-button-group">
-          {Object.entries(this.navbar_options).map(([nav_menu_key, nav_menu_options], index) => (
-            <Button
-              key={`${nav_menu_key}-nav-bar-btn`}
-              width="150px"
-              className="nav-bar-button"
-              leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
-              rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
-              colorScheme="gray"
-              variant="ghost"
-              onMouseEnter={() => {
-                this.handleChange(true, false);
-                this.setState({ current_menu: nav_menu_key, current_menu_index: index + 1, active_group: "left" });
-              }}
-              onMouseLeave={() => {
-                if (!this.state.mouse_on_menu) {
-                  this.handleChange(false, false);
-                }
-              }}
-              onClick={() => {
-                if (!nav_menu_options.options) {
-                  nav_menu_options.callback();
-                }
-              }}
-            >
-              {localGetCopy(nav_menu_key)}
-            </Button>
-          ))}
-          <Spacer></Spacer>
-          <FileStatusIndicator
-            file_data={this.props.file_data}
-            setFileData={this.props.setFileData}
-            model_locked={this.props.model_locked}
-            setModelLock={this.props.setModelLock}
-            openFileManager={this.props.openFileManager}
-            openAuthenticationForm={this.props.openAuthenticationForm}
-            user={this.props.user}
-          />
-          {Object.entries(this.right_navbar_options).map(([nav_menu_key, nav_menu_options], index) => {
-            let display_copy = localGetCopy(nav_menu_key);
-            if (nav_menu_key === "user" && this.props.user) display_copy = this.props.user.displayName || display_copy;
-            if (
-              (this.props.user === null && nav_menu_options.auth_behavior.no_auth.visible) ||
-              (this.props.user !== null && nav_menu_options.auth_behavior.auth.visible)
-            ) {
-              right_index++;
-              return (
-                <Button
-                  key={`${nav_menu_key}-nav-bar-btn`}
-                  width="150px"
-                  className="nav-bar-button"
-                  leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
-                  rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
-                  // colorScheme="gray"
-                  // variant="ghost"
-                  onMouseEnter={() => {
-                    this.handleChange(true, false);
-                    this.setState({ current_menu: nav_menu_key, current_menu_index: right_index - 1, active_group: "right" });
-                  }}
-                  onMouseLeave={() => {
-                    if (!this.state.mouse_on_menu) {
-                      this.handleChange(false, false);
-                    }
-                  }}
-                  onClick={() => {
-                    if (!nav_menu_options.options) {
-                      nav_menu_options.callback();
-                    }
-                  }}
-                >
-                  {display_copy}
-                </Button>
+  const navbar_options = useRef(null);
+  if (navbar_options.current == null) {
+    navbar_options.current = {
+      file: {
+        icon: "MdInsertDriveFile",
+        options: [
+          {
+            name: localGetCopy("new"),
+            icon: "MdInsertDriveFile",
+            callback: () => {
+              openConfirmationDialog(
+                "blank_file",
+                [
+                  {
+                    run: (close_dialog_callback) => {
+                      setFileData({
+                        file_name: null,
+                        is_saved: false,
+                        last_saved: null,
+                        model_id: null,
+                        file_path: null,
+                        current_version: null,
+                        file_owner_path: null,
+                        file_shared_with_me: null,
+                        file_shared_data: null,
+                      });
+                      file.newFile();
+                      close_dialog_callback();
+                    },
+                    copy: "ok",
+                    color: "blue",
+                  },
+                ],
+                true
               );
-            }
-          })}
-        </Flex>
-        <NavMenu
-          left={left_style}
-          right={right_style}
-          options={current_options}
-          visibility={this.state.dropdown_visible ? "visible" : "hidden"}
-          handleChange={this.handleChange}
-        ></NavMenu>
-      </div>
-    );
+            },
+          },
+          {
+            name: localGetCopy("open"),
+            icon: "MdFolderOpen",
+            callback: () => {
+              openFileManager("open");
+            },
+          },
+          {
+            name: localGetCopy("save"),
+            icon: "MdSave",
+            callback: () => {
+              openFileManager("save");
+            },
+          },
+          {
+            name: localGetCopy("share"),
+            icon: "MdShare",
+            callback: () => {
+              openSharingManager();
+            },
+          },
+          { name: localGetCopy("version_history"), icon: "MdOutlineHistory", callback: openVersionManager },
+          { name: localGetCopy("export_json"), icon: "MdFileDownload", callback: file.downloadJSONFile },
+          {
+            name: localGetCopy("import_json"),
+            icon: "MdFileUpload",
+            callback: () => {
+              openConfirmationDialog(
+                "upload_file",
+                [
+                  {
+                    run: (close_dialog_callback) => {
+                      setFileData({
+                        file_name: null,
+                        is_saved: false,
+                        last_saved: null,
+                        model_id: null,
+                        file_path: null,
+                        current_version: null,
+                        file_owner_path: null,
+                        file_shared_with_me: null,
+                        file_shared_data: null,
+                      });
+                      file.uploadJSONFile();
+                      close_dialog_callback();
+                    },
+                    copy: "ok",
+                    color: "blue",
+                  },
+                ],
+                true
+              );
+            },
+          },
+        ],
+      },
+      boxes: {
+        icon: "MdCropSquare",
+        options: [
+          {
+            name: localGetCopy("group"),
+            icon: "MdGroupWork",
+            callback: () => {
+              changeAppMode("selecting_handles");
+              boxes.groupBoxes((success) => {
+                if (success) {
+                  changeAppMode("wait_action");
+                }
+              });
+            },
+          },
+          { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
+          { name: localGetCopy("delete"), icon: "MdDelete", callback: boxes.deleteBoxes },
+        ],
+      },
+      structure: {
+        icon: "MdFoundation",
+        options: [
+          {
+            name: localGetCopy("solve"),
+            icon: "MdPlayCircle",
+            callback: () => {
+              setModelLock(true);
+              structure.solveStructure();
+            },
+          },
+          {
+            name: localGetCopy("export_sap"),
+            icon: "MdFileDownload",
+            callback: () => {
+              structure.downloadInputTextFile("SAP2000");
+            },
+          },
+          {
+            name: localGetCopy("import"),
+            icon: "MdFileUpload",
+            callback: () => {
+              showGlobalLoading("generating_parametric_model");
+              structure.importStructureModel(() => {
+                hideGlobalLoading();
+              });
+            },
+          },
+        ],
+      },
+      settings: {
+        icon: "MdSettings",
+        callback: utils.openGlobalSettings,
+      },
+    };
   }
+  const right_navbar_options = useRef(null);
+  if (right_navbar_options.current == null) {
+    right_navbar_options.current = {
+      account: {
+        icon: "MdAccountCircle",
+        callback: openAuthenticationForm,
+        auth_behavior: {
+          auth: { visible: false },
+          no_auth: { visible: true },
+        },
+      },
+      user: {
+        icon: "MdAccountCircle",
+        callback: openAuthenticationForm,
+        auth_behavior: {
+          auth: { visible: true },
+          no_auth: { visible: false },
+        },
+        options: [{ name: localGetCopy("log_out"), icon: "MdExitToApp", callback: Firebase.signOutUser }],
+      },
+    };
+  }
+  const handleChange = (dropdown_visible, mouse_on_menu) => {
+    setDropdownState({ dropdown_visible, mouse_on_menu });
+  };
+  let current_options = [];
+  let right_style = "";
+  let left_style = "";
+  let right_index = 0;
+  if (activeGroup === "left") {
+    current_options = navbar_options.current[currentMenu]["options"];
+    left_style = String(150 * currentMenuIndex) + "px";
+  } else if (activeGroup === "right") {
+    current_options = right_navbar_options.current[currentMenu]["options"];
+    right_style = String(150 * currentMenuIndex) + "px";
+  }
+  if (!current_options) current_options = [];
+  return (
+    <div className="nav-bar">
+      <Flex direction="row" spacing={0} className="nav-bar-button-group">
+        {Object.entries(navbar_options.current).map(([nav_menu_key, nav_menu_options], index) => (
+          <Button
+            key={`${nav_menu_key}-nav-bar-btn`}
+            width="150px"
+            className="nav-bar-button"
+            leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
+            rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
+            colorScheme="gray"
+            variant="ghost"
+            onMouseEnter={() => {
+              handleChange(true, false);
+              setCurrentMenu(nav_menu_key);
+              setCurrentMenuIndex(index + 1);
+              setActiveGroup("left");
+            }}
+            onMouseLeave={() => {
+              if (!dropdownState.mouse_on_menu) {
+                handleChange(false, false);
+              }
+            }}
+            onClick={() => {
+              if (!nav_menu_options.options) {
+                nav_menu_options.callback();
+              }
+            }}
+          >
+            {localGetCopy(nav_menu_key)}
+          </Button>
+        ))}
+        <Spacer></Spacer>
+        <FileStatusIndicator
+          file_data={file_data}
+          setFileData={setFileData}
+          model_locked={model_locked}
+          setModelLock={setModelLock}
+          openFileManager={openFileManager}
+          openAuthenticationForm={openAuthenticationForm}
+          user={user}
+        />
+        {Object.entries(right_navbar_options.current).map(([nav_menu_key, nav_menu_options], index) => {
+          let display_copy = localGetCopy(nav_menu_key);
+          if (nav_menu_key === "user" && user) display_copy = user.displayName || display_copy;
+          if ((user === null && nav_menu_options.auth_behavior.no_auth.visible) || (user !== null && nav_menu_options.auth_behavior.auth.visible)) {
+            right_index++;
+            return (
+              <Button
+                key={`${nav_menu_key}-nav-bar-btn`}
+                width="150px"
+                className="nav-bar-button"
+                leftIcon={<Icon as={MaterialDesign[nav_menu_options.icon]} />}
+                rightIcon={nav_menu_options.options ? <MaterialDesign.MdKeyboardArrowDown /> : ""}
+                // colorScheme="gray"
+                // variant="ghost"
+                onMouseEnter={() => {
+                  handleChange(true, false);
+                  setCurrentMenu(nav_menu_key);
+                  setCurrentMenuIndex(right_index - 1);
+                  setActiveGroup("right");
+                }}
+                onMouseLeave={() => {
+                  if (!dropdownState.mouse_on_menu) {
+                    handleChange(false, false);
+                  }
+                }}
+                onClick={() => {
+                  if (!nav_menu_options.options) {
+                    nav_menu_options.callback();
+                  }
+                }}
+              >
+                {display_copy}
+              </Button>
+            );
+          }
+        })}
+      </Flex>
+      <NavMenu
+        left={left_style}
+        right={right_style}
+        options={current_options}
+        visibility={dropdownState.dropdown_visible ? "visible" : "hidden"}
+        handleChange={handleChange}
+      ></NavMenu>
+    </div>
+  );
 }
 
-class NavMenu extends React.Component {
-  render() {
-    const options_list = this.props.options.map((option) => {
-      return (
-        <ListItem
-          height="40px"
-          paddingTop="7px"
-          paddingLeft="7px"
-          _hover={{ background: "whitesmoke" }}
-          cursor="pointer"
-          key={option.name}
-          onClick={() => option.callback()}
-        >
-          <ListIcon as={MaterialDesign[option.icon]} />
-          {option.name}
-        </ListItem>
-      );
-    });
-
+function NavMenu({ left, right, options, visibility, handleChange }) {
+  const options_list = options.map((option) => {
     return (
-      <List
-        position="absolute"
-        left={this.props.left}
-        right={this.props.right}
-        spacing={0}
-        border="2px"
-        borderBottomRadius="md"
-        borderColor="whitesmoke"
-        backgroundColor="white"
-        width="150px"
-        visibility={this.props.visibility}
-        onMouseLeave={() => {
-          this.props.handleChange(false, false);
-        }}
-        onMouseEnter={() => this.props.handleChange(true, true)}
+      <ListItem
+        height="40px"
+        paddingTop="7px"
+        paddingLeft="7px"
+        _hover={{ background: "whitesmoke" }}
+        cursor="pointer"
+        key={option.name}
+        onClick={() => option.callback()}
       >
-        {options_list}
-      </List>
+        <ListIcon as={MaterialDesign[option.icon]} />
+        {option.name}
+      </ListItem>
     );
-  }
+  });
+
+  return (
+    <List
+      position="absolute"
+      left={left}
+      right={right}
+      spacing={0}
+      border="2px"
+      borderBottomRadius="md"
+      borderColor="whitesmoke"
+      backgroundColor="white"
+      width="150px"
+      visibility={visibility}
+      onMouseLeave={() => {
+        handleChange(false, false);
+      }}
+      onMouseEnter={() => handleChange(true, true)}
+    >
+      {options_list}
+    </List>
+  );
 }
 
 export default NavBar;

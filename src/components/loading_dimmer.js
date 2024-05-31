@@ -1,5 +1,5 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody, useDisclosure, Spinner, Center, VStack, Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { Modal, ModalOverlay, ModalContent, ModalBody, Spinner, Center, VStack, Box } from "@chakra-ui/react";
+import { useGlobalLoading } from "../Context";
 import utils from "../utils";
 
 function localGetDisplayCopy(copy_key) {
@@ -7,22 +7,18 @@ function localGetDisplayCopy(copy_key) {
 }
 
 function LoadingDimmer() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [dimmer_msg, setDimmerMsg] = useState(localGetDisplayCopy("loading"));
+  const {globalLoadingContent, globalLoadingVisible, hideGlobalLoading, showGlobalLoading} = useGlobalLoading();
   window.ParamEle.showLoadingDimmer = (msg) => {
-    onOpen();
-    msg = localGetDisplayCopy(msg);
-    if (msg !== undefined) setDimmerMsg(msg);
+    showGlobalLoading(msg);
   };
   window.ParamEle.hideLoadingDimmer = () => {
-    onClose();
+    hideGlobalLoading();
   };
   window.ParamEle.setLoadingDimmerMsg = (msg) => {
-    msg = localGetDisplayCopy(msg);
-    setDimmerMsg(msg);
+    showGlobalLoading(msg)
   };
   return (
-    <Modal onClose={onClose} isOpen={isOpen} closeOnOverlayClick={false} isCentered>
+    <Modal isOpen={globalLoadingVisible} closeOnOverlayClick={false} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
@@ -31,7 +27,7 @@ function LoadingDimmer() {
               <Box maxW="sm">
                 <Spinner size="xl" speed="0.8s" />
               </Box>
-              <Box>{dimmer_msg}...</Box>
+              <Box>{localGetDisplayCopy(globalLoadingContent)}...</Box>
             </VStack>
           </Center>
         </ModalBody>

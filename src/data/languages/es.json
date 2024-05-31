@@ -295,7 +295,8 @@
         "loading_model": "Cargando modelo",
         "loading_results": "Cargando resultados",
         "logging_in": "Iniciando sesión",
-        "logging_out": "Cerrando sesión"
+        "logging_out": "Cerrando sesión",
+        "generating_parametric_model": "Generando modelo paramétrico"
     },
     "version_history": {
         "title": "Historial de versiones",
