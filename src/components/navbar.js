@@ -8,6 +8,7 @@ import utils from "../utils";
 import FileStatusIndicator from "./file_status_indicator";
 import Firebase from "../js/firebase";
 import { useGlobalLoading } from "../Context";
+import { notify } from "./notification";
 
 function localGetCopy(node_name) {
   return utils.getDisplayCopy("nav_bar", node_name);
@@ -167,8 +168,15 @@ function NavBar({
             icon: "MdFileUpload",
             callback: () => {
               showGlobalLoading("generating_parametric_model");
-              structure.importStructureModel(() => {
+              structure.importStructureModel((process_response) => {
                 hideGlobalLoading();
+                if (!process_response.success) {
+                  if (process_response.msg === "parametricGenerator/generic_fail") {
+                    notify("error", "generic_unhandled_issue", process_response.msg, true);
+                  } else {
+                    notify("error", process_response.msg, undefined, true);
+                  }
+                }
               });
             },
           },

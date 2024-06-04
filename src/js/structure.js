@@ -9,6 +9,8 @@ import logic_runner from "./globalLogicRunner";
 import file from "./file";
 import { parsers } from "../submodulesAPI";
 import generateParametricModel from "./generateParametricModel";
+import { getProcessResponseObject } from "./processResponse";
+import { dxf2s3d } from "../submodules/paramele-parsers/structural/dxf/generateS3DModel";
 
 const solveStructure = () => {
   let structure = getState("structure");
@@ -135,6 +137,10 @@ const downloadInputTextFile = (format) => {
   }
 };
 
+/**
+ *
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
+ */
 const importStructureModel = (callback) => {
   file.newFile();
   let a = document.createElement("input");
@@ -151,11 +157,29 @@ const importStructureModel = (callback) => {
       let user_file = a.files[0];
       let fr = new FileReader();
       fr.onload = function (e) {
-        let lines = e.target.result;
-        var structure_from_file = JSON.parse(lines);
-        generateParametricModel(structure_from_file, (process_response) => {
-          callback(process_response);
-        });
+        try {
+          let lines = e.target.result;
+          let file_extension_match = user_file.name.match(/.*\.([0-9A-Za-z]+)$/);
+          let file_extension = file_extension_match ? file_extension_match[1] : null;
+          if (!file_extension) callback(getProcessResponseObject("error", "parametricGenerator/no_extension_on_file"));
+          let structure_from_file;
+          let call_generator = true;
+          switch (file_extension) {
+            case "json":
+              structure_from_file = JSON.parse(lines);
+              break;
+            case "dxf":
+              structure_from_file = dxf2s3d(lines);
+              break;
+            default:
+              callback(getProcessResponseObject("error", "parametricGenerator/not_supported_format", file_extension));
+              call_generator = false;
+              break;
+          }
+          if (call_generator) generateParametricModel(structure_from_file, callback);
+        } catch (error) {
+          callback(getProcessResponseObject("error", "parametricGenerator/generic_fail"));
+        }
       };
       fr.readAsText(user_file);
     }

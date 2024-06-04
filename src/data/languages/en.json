@@ -218,7 +218,11 @@
         "converted_model_downloading_title": "Download started",
         "converted_model_downloading_desc": "The converted model is now being downloaded",
         "export_model_failed_title": "Export failed",
-        "export_model_failed_desc": "While exporting something went wrong. Please contact support"
+        "export_model_failed_desc": "While exporting something went wrong. Please contact support",
+        "parametricGenerator/no_extension_on_file_title": "Imported file with no extension",
+        "parametricGenerator/no_extension_on_file_desc": "The selected file has no extension, make sure you select the right file",
+        "parametricGenerator/not_supported_format_title": "Not supported file",
+        "parametricGenerator/not_supported_format_desc": "The selected file has a not supported format"
     },
     "navigator":{
         "model": "Main model"

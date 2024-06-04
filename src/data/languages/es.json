@@ -220,7 +220,11 @@
         "converted_model_downloading_title": "Descarga comenzada",
         "converted_model_downloading_desc": "El modelo convertido al formato seleccionado se está descargando",
         "export_model_failed_title": "Exportación fallida",
-        "export_model_failed_desc": "En el proceso de exportación algo salió mal. Contacta a soporte"
+        "export_model_failed_desc": "En el proceso de exportación algo salió mal. Contacta a soporte",
+        "parametricGenerator/no_extension_on_file_title": "Archivo a importar sin extensión",
+        "parametricGenerator/no_extension_on_file_desc": "El archivo seleccionado no tiene ninguna extensión, asegúrate que el archivo sea correcto",
+        "parametricGenerator/not_supported_format_title": "Archivo no soportado",
+        "parametricGenerator/not_supported_format_desc": "El archivo seleccionado no tiene un formato soportado"
     },
     "navigator": {
         "model": "Modelo principal"

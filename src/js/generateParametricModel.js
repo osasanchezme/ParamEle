@@ -1,5 +1,6 @@
 import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, fitView, getZoom } from "../components/VisualEditor";
 import utils from "../utils";
+import { getProcessResponseObject } from "./processResponse";
 
 class ParameleInterface {
   constructor(x_orig, y_orig, master_spacing) {
@@ -199,6 +200,7 @@ class ParameleInterface {
 /**
  * Generates a parametric model in the reactflow editor starting from an S3D model
  * @param {import("../submodules/paramele-parsers/types").s3d_model} s3d_model
+ * @param {import("./types").ParamEleProcessResponseHandlerCallback} callback
  * @returns
  */
 const generateParametricModel = (s3d_model, callback) => {
@@ -282,13 +284,15 @@ const generateParametricModel = (s3d_model, callback) => {
     paramele_interface.addEdge({ group_name: "nodes", map_key: node_A }, "node_out-id", { group_name: "members", map_key: member_id }, "node_A-id");
     // Add the edges to node_B
     paramele_interface.addEdge({ group_name: "nodes", map_key: node_B }, "node_out-id", { group_name: "members", map_key: member_id }, "node_B-id");
-    // Add the edges to section_id
-    paramele_interface.addEdge(
-      { group_name: "sections", map_key: section_id },
-      "section_out-id",
-      { group_name: "members", map_key: member_id },
-      "section_id-id-1"
-    );
+    // Add the edges to section_id if the section id is defined
+    if (section_id != undefined) {
+      paramele_interface.addEdge(
+        { group_name: "sections", map_key: section_id },
+        "section_out-id",
+        { group_name: "members", map_key: member_id },
+        "section_id-id-1"
+      );
+    }
   });
 
   // Process the plates by thickness
@@ -373,8 +377,8 @@ const generateParametricModel = (s3d_model, callback) => {
   // TODO - Get the log back to the user so they know what happened
   setTimeout(() => {
     fitView();
-    callback(paramele_interface.log);
-  }, 3000);
+    callback(getProcessResponseObject("success", "", paramele_interface.log));
+  }, 1000);
 };
 
 const getValueByPath = (obj, path) => {

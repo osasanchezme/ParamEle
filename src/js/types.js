@@ -7,7 +7,12 @@
  */
 
 /**
- * @typedef {'success'|'error'} ParamEleProcessStatus
+ * @typedef {'success'|'error'|'running'|'warning'} ParamEleProcessStatus
+ */
+
+/**
+ * @callback ParamEleProcessResponseHandlerCallback
+ * @param {ParamEleProcessResponse} response_object
  */
 
 /**
@@ -137,11 +142,6 @@
 
 /**
  * @typedef {Object.<string, ParamEleDefaultFormField>} ParamEleFormDefaultStateObject
- */
-
-/**
- * @callback ParamEleProcessResponseHandlerCallback
- * @param {ParamEleProcessResponse} response_object
  */
 
 exports.unused = {};
