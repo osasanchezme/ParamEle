@@ -303,7 +303,10 @@ const generateParametricModel = (s3d_model, callback) => {
       group_name: "nodes",
       target_handle: "nodes-ids",
       source_handle: "node_out-id",
-      multi_source_function: (element_data) => element_data.split(","),
+      multi_source_function: (element_data) => {
+        let plate_nodes_as_array = Array.isArray(element_data) ? element_data : element_data.split(",");
+        return plate_nodes_as_array;
+      },
     },
   ];
   paramele_interface.addNodesAndEdgesFromParameters(plates, plates_thicknesses, plates_dependencies, {

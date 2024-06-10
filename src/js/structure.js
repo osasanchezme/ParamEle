@@ -11,6 +11,7 @@ import { parsers } from "../submodulesAPI";
 import generateParametricModel from "./generateParametricModel";
 import { getProcessResponseObject } from "./processResponse";
 import { dxf2s3d } from "../submodules/paramele-parsers/structural/dxf/generateS3DModel";
+import { csi2s3d } from "../submodules/paramele-parsers/structural/csi/csi2s3d";
 
 const solveStructure = () => {
   let structure = getState("structure");
@@ -159,7 +160,7 @@ const importStructureModel = (callback) => {
       fr.onload = function (e) {
         try {
           let lines = e.target.result;
-          let file_extension_match = user_file.name.match(/.*\.([0-9A-Za-z]+)$/);
+          let file_extension_match = user_file.name.match(/.*\.([0-9A-Za-z\$]+)$/);
           let file_extension = file_extension_match ? file_extension_match[1] : null;
           if (!file_extension) callback(getProcessResponseObject("error", "parametricGenerator/no_extension_on_file"));
           let structure_from_file;
@@ -170,6 +171,9 @@ const importStructureModel = (callback) => {
               break;
             case "dxf":
               structure_from_file = dxf2s3d(lines);
+              break;
+            case "$2k":
+              structure_from_file = csi2s3d(lines);
               break;
             default:
               callback(getProcessResponseObject("error", "parametricGenerator/not_supported_format", file_extension));
