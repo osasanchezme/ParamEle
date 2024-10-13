@@ -34,6 +34,8 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     }
   }
 
+  if (data.aux == undefined) data.aux = utils.getDefaultAuxData();
+
   let {
     aux: { selected_handles },
   } = data;
