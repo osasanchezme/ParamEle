@@ -377,7 +377,7 @@ const generateParametricModel = (s3d_model, callback) => {
   addNodesArrayToTheEditor(paramele_interface.getAllNodes());
   addEdgesArrayToTheEditor(paramele_interface.getAllEdges());
   // TODO - Improve this temporal fix to ensure the Visual Editor doesn't break
-  // TODO - Get the log back to the user so they know what happened
+  // TODO - Get the log back to the user so they know what happened (summarize what was imported)
   setTimeout(() => {
     fitView();
     callback(getProcessResponseObject("success", "", paramele_interface.log));

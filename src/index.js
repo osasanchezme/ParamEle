@@ -418,15 +418,15 @@ class ParamEle extends React.Component {
   }
   render() {
     let commands_bar;
-    if (this.state.mode === "add_node") {
+    if (this.state.mode === "add_node" || this.state.mode === "change_node_type") {
       commands_bar = (
         <CommandsBar
-          active={this.state.mode === "add_node"}
           x={this.state.mouse_x}
           y={this.state.mouse_y}
           rel_orig_x={this.state.rel_orig_x}
           rel_orig_y={this.state.rel_orig_y}
           changeAppMode={this.changeAppMode}
+          app_mode={this.state.mode}
         ></CommandsBar>
       );
     }

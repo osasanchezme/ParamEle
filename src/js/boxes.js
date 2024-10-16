@@ -180,6 +180,73 @@ function getSelectedModel() {
   return { selected_nodes, selected_edges, selected_node_ids, selected_edge_ids, connected_nodes };
 }
 
-const boxes = { groupBoxes, editInternalLogic, deleteBoxes };
+function changeNodesType(new_node_type) {
+  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
+  let { nodes, edges } = getState("model");
+  let { selected_nodes, selected_node_ids, selected_edges, selected_edge_ids } = getSelectedModel();
+  if (selected_nodes.length === 0) {
+    notify("warning", "no_nodes_selected", null, true);
+    return;
+  }
+  for (let { type: node_type } of selected_nodes) {
+    if (node_type !== selected_nodes[0].type) {
+      notify("warning", "no_same_type", null, true);
+      return;
+    }
+  }
+  let new_nodes = [];
+  let new_edges = [];
+  let edges_to_update = {};
+  const handles_map = {
+    "slider-value": "value-value",
+  };
+  const supported_types = ["inputNumber", "variableRange"];
+  let selected_are_supported = selected_nodes.reduce((prev, curr) => {
+    if (prev && supported_types.includes(curr.type)) return true;
+    return false;
+  }, true);
+  if (selected_are_supported && !supported_types.includes(new_node_type)) selected_are_supported = false;
+  if (!selected_are_supported) {
+    notify("warning", "no_supported_type", null, true);
+    return;
+  }
+  nodes.forEach((node) => {
+    if (selected_node_ids.includes(node.id)) {
+      node.type = new_node_type;
+      Object.entries(handles_map).forEach(([handle_1_id, handle_2_id]) => {
+        let old_data;
+        let old_key;
+        let new_key;
+        if (node.data[handle_1_id] != undefined) {
+          old_data = JSON.parse(JSON.stringify(node.data[handle_1_id]));
+          new_key = handle_2_id;
+          old_key = handle_1_id;
+          delete node.data[handle_1_id];
+        } else if (node.data[handle_2_id] != undefined) {
+          old_data = JSON.parse(JSON.stringify(node.data[handle_2_id]));
+          new_key = handle_1_id;
+          old_key = handle_2_id;
+          delete node.data[handle_2_id];
+        }
+        node.data[new_key] = old_data;
+        selected_edges.forEach((edge) => {
+          if (edge.sourceHandle == old_key) edge.sourceHandle = new_key;
+          if (edge.targetHandle == old_key) edge.targetHandle = new_key;
+          edges_to_update[edge.id] = JSON.parse(JSON.stringify(edge));
+        });
+      });
+    }
+    new_nodes.push(node);
+  });
+  edges.forEach((edge) => {
+    if (edges_to_update[edge.id] != undefined) {
+      edge = edges_to_update[edge.id];
+    }
+    new_edges.push(edge);
+  });
+  state.setModelToEditor({ nodes: new_nodes, edges: new_edges });
+}
+
+const boxes = { groupBoxes, editInternalLogic, deleteBoxes, changeNodesType };
 
 export default boxes;
