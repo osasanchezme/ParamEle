@@ -29,6 +29,7 @@ import { notify } from "./components/notification";
 import { getInitialState } from "./initial_state";
 import { AppModeContext, GlobalLoadingProvider, UserDataContext } from "./Context";
 import SharingManager from "./components/sharing_manager";
+import StatusBar from "./components/status_bar";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -466,6 +467,7 @@ class ParamEle extends React.Component {
                   openConfirmationDialog={this.openConfirmationDialog}
                   openSharingManager={this.openSharingManager}
                 ></NavBar>
+                <StatusBar app_mode={this.state.mode} changeAppMode={this.changeAppMode}></StatusBar>
                 <GlobalControls onSettingChange={this.changeGeneralSettingValue} settings={this.state.settings.general}></GlobalControls>
                 {commands_bar}
                 <PropertiesPanel

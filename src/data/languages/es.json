@@ -330,5 +330,13 @@
     },
     "general_forms": {
         "select": "Selecciona..."
+    },
+    "status_bar": {
+        "wait_action": "Haz click en cualquier lugar del editor gráfico para agregar una caja",
+        "selecting_nodes": "Selecciona las cajas, para terminar suelta el botón del mouse",
+        "selecting_handles": "Haz click en los puntos de entrada o salida de entrada",
+        "change_node_type": "Selecciona el nuevo tipo de caja para la selección",
+        "resizing_modules": "Cambiando el tamaño de los componentes. Para terminar suelta el botón del mouse",
+        "add_node": "Selecciona el tipo de caja para agregar al modelo"
     }
 }
