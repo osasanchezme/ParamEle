@@ -132,6 +132,7 @@
         "group": "Agrupar",
         "edit_logic": "Editar lógica",
         "change_type": "Cambiar tipo",
+        "duplicate": "Duplicar",
         "structure": "Estructura",
         "solve": "Resolver",
         "settings": "Configuración",
@@ -337,6 +338,8 @@
         "selecting_handles": "Haz click en los puntos de entrada o salida de entrada",
         "change_node_type": "Selecciona el nuevo tipo de caja para la selección",
         "resizing_modules": "Cambiando el tamaño de los componentes. Para terminar suelta el botón del mouse",
-        "add_node": "Selecciona el tipo de caja para agregar al modelo"
+        "add_node": "Selecciona el tipo de caja para agregar al modelo",
+        "duplicate_point_1": "Selecciona el punto de referencia para duplicar la selección",
+        "duplicate_point_2": "Selecciona el punto de destino para pegar"
     }
 }

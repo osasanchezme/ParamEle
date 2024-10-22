@@ -3,7 +3,8 @@ import { Node, Edge } from "reactflow";
 import state from "../state";
 import utils from "../utils";
 import notification from "../components/notification";
-import { addNodeToTheEditor, deselectAllHandles, getSelectedHandles, removeNodesAndEdgesFromModel } from "../components/VisualEditor";
+import { addNodesArrayToTheEditor, addNodeToTheEditor, deselectAllHandles, getSelectedHandles, removeNodesAndEdgesFromModel, screenCoordsToReactFlow } from "../components/VisualEditor";
+import { cloneDeep } from "lodash";
 const { notify, closeAllNotifications } = notification;
 
 function groupBoxes(finish_callback) {
@@ -247,6 +248,27 @@ function changeNodesType(new_node_type) {
   state.setModelToEditor({ nodes: new_nodes, edges: new_edges });
 }
 
-const boxes = { groupBoxes, editInternalLogic, deleteBoxes, changeNodesType };
+function duplicateNodes(first_point, second_point) {
+  /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
+  let { nodes, edges } = getState("model");
+  let { selected_nodes, selected_node_ids, selected_edges, selected_edge_ids } = getSelectedModel();
+  if (selected_nodes.length === 0) {
+    notify("warning", "no_nodes_selected", null, true);
+    return;
+  }
+  let new_nodes = [];
+  let new_edges = [];
+  selected_nodes.forEach((node) => {
+    let { type, position, data } = cloneDeep(node);
+    let x_relative = position.x - first_point.x;
+    let y_relative = position.y - first_point.y;
+    position.x = second_point.x + x_relative;
+    position.y = second_point.y + y_relative;
+    new_nodes.push(addNodeToTheEditor(type, position, data, true, false, utils.nextNodeIndex([...nodes, ...new_nodes])));
+  });
+  addNodesArrayToTheEditor(new_nodes);
+}
+
+const boxes = { groupBoxes, editInternalLogic, deleteBoxes, changeNodesType, duplicateNodes };
 
 export default boxes;

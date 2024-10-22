@@ -18,7 +18,7 @@ import Authentication from "./components/authentication";
 import FileManager from "./components/file_manager";
 import { LoadingDimmer } from "./components/loading_dimmer";
 import utils from "./utils";
-import VisualEditor, { deselectAllNodesAndHandles } from "./components/VisualEditor";
+import VisualEditor, { deselectAllNodesAndHandles, screenCoordsToReactFlow } from "./components/VisualEditor";
 import createNodesLibrary from "./flow-nodes/handler";
 import Renderer from "./components/Renderer";
 import VersionManager from "./components/version_manager";
@@ -30,6 +30,7 @@ import { getInitialState } from "./initial_state";
 import { AppModeContext, GlobalLoadingProvider, UserDataContext } from "./Context";
 import SharingManager from "./components/sharing_manager";
 import StatusBar from "./components/status_bar";
+import boxes from "./js/boxes";
 
 setInitialState();
 const library = createNodesLibrary();
@@ -45,7 +46,7 @@ class ParamEle extends React.Component {
     window.ParamEle.changeGeneralSettingValue = this.changeGeneralSettingValue.bind(this);
     this.changeAppMode = this.changeAppMode.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.activateNodeCreation = this.activateNodeCreation.bind(this);
+    this.getStateUpdateFromClickEvent = this.getStateUpdateFromClickEvent.bind(this);
     this.handleMouseClick = this.handleMouseClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -354,23 +355,25 @@ class ParamEle extends React.Component {
       });
     }
   }
-  activateNodeCreation(event) {
-    if (this.state.mode === "wait_action") {
-      deselectAllNodesAndHandles();
-      let bounding_rect = event.target.getBoundingClientRect();
-      let mouse_x = event.clientX;
-      let mouse_y = event.clientY;
-      let height = 50;
-      let width = 0;
-      if (mouse_y > 50 && mouse_y < window.innerHeight - height && mouse_x > 0 && mouse_x < window.innerWidth - width) {
-        this.setState({
-          mode: "add_node",
-          mouse_x: event.clientX,
-          mouse_y: event.clientY,
-          rel_orig_x: bounding_rect.left,
-          rel_orig_y: bounding_rect.top,
-        });
+  getStateUpdateFromClickEvent(event, next_mode, store_rf_coords) {
+    let bounding_rect = event.target.getBoundingClientRect();
+    let mouse_x = event.clientX;
+    let mouse_y = event.clientY;
+    let height = 50;
+    let width = 0;
+    if (mouse_y > 50 && mouse_y < window.innerHeight - height && mouse_x > 0 && mouse_x < window.innerWidth - width) {
+      let state_update = {
+        mode: next_mode,
+        mouse_x: event.clientX,
+        mouse_y: event.clientY,
+        rel_orig_x: bounding_rect.left,
+        rel_orig_y: bounding_rect.top,
+      };
+      if (store_rf_coords) {
+        let rf_coords = screenCoordsToReactFlow({ x: mouse_x, y: mouse_y });
+        Object.assign(state_update, { rf_mouse_x: rf_coords.x, rf_mouse_y: rf_coords.y });
       }
+      return state_update;
     }
   }
   handleKeyPress(event) {
@@ -389,7 +392,20 @@ class ParamEle extends React.Component {
   handleMouseClick(event) {
     if (event.target.className === "react-flow__pane") {
       if (!event.ctrlKey) {
-        this.activateNodeCreation(event);
+        switch (this.state.mode) {
+          case "wait_action":
+            deselectAllNodesAndHandles();
+            this.setState(this.getStateUpdateFromClickEvent(event, "add_node"));
+            break;
+          case "duplicate_point_1":
+            this.setState(this.getStateUpdateFromClickEvent(event, "duplicate_point_2", true));
+            break;
+          case "duplicate_point_2":
+            let state_update = this.getStateUpdateFromClickEvent(event, "wait_action", true);
+            boxes.duplicateNodes({ x: this.state.rf_mouse_x, y: this.state.rf_mouse_y }, { x: state_update.rf_mouse_x, y: state_update.rf_mouse_y });
+            this.setState(state_update);
+            break;
+        }
       }
     }
   }
@@ -490,6 +506,7 @@ class ParamEle extends React.Component {
                   width={this.state.settings.layout.editor_width}
                   nodes_library={nodes_library}
                   is_model_locked={this.state.model_locked}
+                  app_mode={this.state.mode}
                 ></VisualEditor>
                 <Navigator layout={this.state.settings.layout}></Navigator>
                 <ResizeBorder

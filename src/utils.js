@@ -72,6 +72,19 @@ function nextNodeId() {
   return getNodeFullID(possible_index);
 }
 
+function nextNodeIndex(nodes) {
+  nodes = nodes == undefined ? getState("model")["nodes"] : nodes;
+  let possible_index = 1;
+  let node_ids = nodes.map((node) => {
+    return node.id;
+  });
+  let found_id = false;
+  while (!found_id) {
+    node_ids.includes(`node-${possible_index}`) ? possible_index++ : (found_id = true);
+  }
+  return possible_index;
+}
+
 const getNodeFullID = (node_index) => `node-${node_index}`;
 
 /**
@@ -353,6 +366,7 @@ const utils = {
   encodeNameToUniqueID,
   decodeUniqueIDToName,
   getNodeFullID,
+  nextNodeIndex
 };
 
 export default utils;

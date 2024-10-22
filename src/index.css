@@ -143,3 +143,9 @@ div.modebar {
   padding: 2px;
   font-weight: 600;
 }
+
+.react-flow.mode-duplicate_point_1 .react-flow__pane,
+.react-flow.mode-duplicate_point_2 .react-flow__pane,
+.react-flow.mode-selecting_nodes .react-flow__pane {
+  cursor: crosshair !important;
+}

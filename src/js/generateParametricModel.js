@@ -1,4 +1,4 @@
-import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, fitView, getZoom } from "../components/VisualEditor";
+import { addEdgesArrayToTheEditor, addNodesArrayToTheEditor, addNodeToTheEditor, fitView, getEdgeObject, getZoom } from "../components/VisualEditor";
 import utils from "../utils";
 import { getProcessResponseObject } from "./processResponse";
 
@@ -49,13 +49,7 @@ class ParameleInterface {
       let { group_name, map_key } = target;
       target = this.nodes[group_name].maps[map_key];
     }
-    this.edges.push({
-      id: `reactflow__edge-${source}${sourceHandle}__${target}${targetHandle}`,
-      source,
-      sourceHandle,
-      target,
-      targetHandle,
-    });
+    this.edges.push(getEdgeObject(source, sourceHandle, target, targetHandle));
   };
   /**
    *

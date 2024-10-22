@@ -7,7 +7,7 @@ import "reactflow/dist/style.css";
 
 let rf_instance;
 
-function VisualEditor({ width, show_mini_map, nodes_library, is_model_locked, nodes, edges, setNodes, setEdges }) {
+function VisualEditor({ width, show_mini_map, nodes_library, is_model_locked, nodes, edges, setNodes, setEdges, app_mode }) {
   // Whenever the model lock status changes the data on each node on that regard updates accordingly
   useEffect(() => {
     setNodes((nds) =>
@@ -67,6 +67,7 @@ function VisualEditor({ width, show_mini_map, nodes_library, is_model_locked, no
         onInit={saveRfInstance}
         selectionKeyCode={null}
         deleteKeyCode={null}
+        className={`mode-${app_mode}`}
       >
         {mini_map}
         <Controls />
@@ -203,6 +204,20 @@ function deselectAllHandles() {
   );
 }
 
+function getEdgeObject(source, sourceHandle, target, targetHandle) {
+  return {
+    id: `reactflow__edge-${source}${sourceHandle}__${target}${targetHandle}`,
+    source,
+    sourceHandle,
+    target,
+    targetHandle,
+  };
+}
+
+function screenCoordsToReactFlow(point_on_screen) {
+  return rf_instance.screenToFlowPosition(point_on_screen);
+}
+
 export default VisualEditor;
 
 export {
@@ -217,4 +232,6 @@ export {
   getZoom,
   setZoom,
   fitView,
+  getEdgeObject,
+  screenCoordsToReactFlow
 };

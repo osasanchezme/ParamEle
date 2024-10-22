@@ -34,6 +34,8 @@ function getInitialState() {
     model_path_print: ["model"], // Path to the current editable model in the state
     mouse_x: 0,
     mouse_y: 0,
+    rf_mouse_x: 0,
+    rf_mouse_y: 0,
     mode: "wait_action",
     rel_orig_x: 0,
     rel_orig_y: 0,

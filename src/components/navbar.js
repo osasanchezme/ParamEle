@@ -143,9 +143,20 @@ function NavBar({
           },
           { name: localGetCopy("edit_logic"), icon: "MdEdit", callback: boxes.editInternalLogic },
           { name: localGetCopy("delete"), icon: "MdDelete", callback: boxes.deleteBoxes },
-          { name: localGetCopy("change_type"), icon: "MdSwapHoriz", callback: () => {
-            changeAppMode("change_node_type"); // This change will trigger the commands bar for the user to select the type and the bar will handle the update
-          } },
+          {
+            name: localGetCopy("change_type"),
+            icon: "MdSwapHoriz",
+            callback: () => {
+              changeAppMode("change_node_type"); // This change will trigger the commands bar for the user to select the type and the bar will handle the update
+            },
+          },
+          {
+            name: localGetCopy("duplicate"),
+            icon: "MdContentCopy",
+            callback: () => {
+              changeAppMode("duplicate_point_1");
+            },
+          },
         ],
       },
       structure: {

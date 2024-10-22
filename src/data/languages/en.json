@@ -132,6 +132,7 @@
         "group": "Group",
         "edit_logic": "Edit logic",
         "change_type": "Change type",
+        "duplicate": "Duplicar",
         "structure": "Structure",
         "solve": "Solve",
         "settings": "Settings",
@@ -335,6 +336,8 @@
         "selecting_handles": "Click on the input or output handles",
         "change_node_type": "Select the new type for the selected boxes",
         "resizing_modules": "Resizing modules, to finish release the mouse button",
-        "add_node": "Select the box type to add to the editor"
+        "add_node": "Select the box type to add to the editor",
+        "duplicate_point_1": "Select the reference position to duplicate the selection",
+        "duplicate_point_2": "Select the target position to paste the selection"
     }
 }
