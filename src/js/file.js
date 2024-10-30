@@ -6,6 +6,7 @@ import repair from "./repair";
 import utils from "../utils";
 import Firebase from "./firebase";
 import { notify } from "../components/notification";
+import { getInitialState } from "../initial_state";
 
 const downloadJSONFile = () => {
   downloadAnyFile("modelo.json", "text/json", getModelBlob());
@@ -81,7 +82,12 @@ const uploadJSONFile = () => {
 
 const setModelAndResultsFromParsedBlob = (state_from_file, results_from_file) => {
   state_from_file.settings = repair.repairSettings(state_from_file.settings);
-  state.setState(state_from_file);
+  let state_reset = getInitialState();
+  let keys_to_reset = ["globals", "model_path", "model_path_print", "mode"];
+  Object.keys(state_reset).forEach((state_key) => {
+    if (!keys_to_reset.includes(state_key)) delete state_reset[state_key];
+  });
+  state.setState(Object.assign(state_from_file, state_reset));
   if (results_from_file) state.setState(results_from_file, "results");
   let rf_instance = state.getRfInstance();
   let model = repair.repairModel(state_from_file.model);
@@ -121,7 +127,7 @@ const downloadAndOpenModel = (local_file_data, setFileData, setModelLock) => {
     if (results_available) {
       utils.setLoadingDimmerMsg("loading_results");
       Firebase.openFileFromCloud(model_id, current_version, "results", (results_data) => {
-        setModelAndResultsFromParsedBlob(process_response.data, results_data);
+        setModelAndResultsFromParsedBlob(process_response.data, results_data.data);
         // TODO - Do not use the timeout, working everywhere with app state a no window variables should fix it
         setTimeout(() => {
           setModelLock(true);

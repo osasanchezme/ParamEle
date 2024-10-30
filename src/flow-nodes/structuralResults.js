@@ -34,6 +34,7 @@ function NodeResultExec(args, data) {
   let { nodes } = structural_args;
   let y = [];
   let x = [];
+  let xaxis_title = "";
   let plotly_data = [{ x, y, xaxis_title: "", yaxis_title: "", title: utils.getDisplayCopy("notifications", "no_data_to_show") }];
   let iterating_node_data = state.getGlobalVariable("iterating_node_data");
   if (Object.keys(results).length > 0) {
@@ -41,6 +42,7 @@ function NodeResultExec(args, data) {
     let result_direction = data["direction-value"];
     let result_type = "node";
     if (result_value !== undefined && result_type !== undefined && result_direction !== undefined) {
+      if (!Array.isArray(nodes)) nodes = [nodes]; // Support single node as input
       nodes.forEach((node_id) => {
         let node_result = structural_utils.getResult(results, result_value, result_direction, result_type, node_id, 0);
         y.push(node_result);
@@ -48,10 +50,14 @@ function NodeResultExec(args, data) {
     }
     if (Object.keys(iterating_node_data).length > 0) {
       x = iterating_node_data.variation_values;
+      xaxis_title = iterating_node_data.node_label;
+    } else {
+      x = nodes;
+      xaxis_title = utils.getDisplayCopy("tags", "node");
     }
     let result_label = utils.getDisplayCopy("tags", result_value);
     let plot_title = `${result_label} (${result_direction})`;
-    plotly_data[0] = { x, y, xaxis_title: iterating_node_data.node_label, yaxis_title: result_label, title: plot_title };
+    plotly_data[0] = { x, y, xaxis_title, yaxis_title: result_label, title: plot_title };
   }
   return {
     "plotable_out-plotly_data": plotly_data,
