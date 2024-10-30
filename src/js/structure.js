@@ -86,10 +86,18 @@ const solveStructure = () => {
         data.functions.forEach((func) => {
           switch (func.function) {
             case "S3D.model.solve":
-              state.setState(func.data, "results");
-              notification.notify("info", "results_saved", null, true);
-              // Run the logic to get the results plot
-              logic_runner.run();
+              if (func.status == 0) {
+                state.setState(func.data, "results");
+                notification.notify("info", "results_saved", null, true);
+                // Run the logic to get the results plot
+                logic_runner.run();
+              } else {
+                notification.notify(
+                  "error",
+                  utils.getDisplayCopy("notifications", "solve_failed_title"),
+                  `${utils.getDisplayCopy("notifications", "solve_failed_desc")} ${data.response.msg}`
+                );
+              }
               break;
             case "S3D.file.save":
               if (!already_open) {

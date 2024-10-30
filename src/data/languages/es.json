@@ -198,6 +198,8 @@
         "range_nodes_selected_for_grouping_desc": "Los nodos tipo rango no se pueden agrupar",
         "results_saved_title": "Resultados guardados",
         "results_saved_desc": "Los resultados del análisis fueron guardados con éxito",
+        "solve_failed_title": "Petición fallida",
+        "solve_failed_desc": "Algo salió mal:",
         "no_data_to_show": "No hay resultados para mostrar",
         "cannot_delete_version_title": "No se puede eliminar",
         "cannot_delete_version_desc": "Esta es la versión actual, cámbiala antes de eliminarla",

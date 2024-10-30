@@ -198,6 +198,8 @@
         "range_nodes_selected_for_grouping_desc": "Nodes of type 'Range' cannot be grouped",
         "results_saved_title": "Results saved",
         "results_saved_desc": "Analysis results were successfully saved",
+        "solve_failed_title": "Request failed",
+        "solve_failed_desc": "Something went wrong:",
         "no_data_to_show": "No results to display",
         "cannot_delete_version_title": "Cannot delete",
         "cannot_delete_version_desc": "This is the current version. Change it before deleting",
