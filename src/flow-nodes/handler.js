@@ -55,6 +55,7 @@ function createNodesLibrary() {
     structuralNodeResult: { node_component: StructuralResultsNodes.NodeResultNode, label: localGetCopy("structuralNodeResult") },
     // Data display
     dataDisplay2DPlot: { node_component: DataDisplayNodes.Display2DPlotNode, label: localGetCopy("dataDisplay2DPlot") },
+    dataDisplayTable: { node_component: DataDisplayNodes.DisplayTableNode, label: localGetCopy("dataDisplayTable") },
   };
 
   let nodes = {};

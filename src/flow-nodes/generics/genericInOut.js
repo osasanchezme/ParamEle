@@ -1,6 +1,25 @@
 import React, { useContext } from "react";
 import { Handle, Position } from "reactflow";
-import { Tag, Tooltip, Input, InputGroup, InputRightElement, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Box } from "@chakra-ui/react";
+import {
+  Tag,
+  Tooltip,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Box,
+  TableContainer,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  Th,
+  Text,
+} from "@chakra-ui/react";
 import utils from "../../utils";
 import EditableNodeHeader from "../../components/editable_node_header";
 import state from "../../state";
@@ -18,10 +37,11 @@ import { AppModeContext } from "../../Context";
  * @param {string[]} props.target_ids IDs of the target (input) handles for the node
  * @param {string[]} props.editable_ids IDs of the input fields that can be edited by the user
  * @param {string[]} props.source_ids IDs of the source (output) handles for the node
- * @param {Object} props.plot_settings Settings for the plt inside the node
+ * @param {Object} props.plot_settings Settings for the plot inside the node
+ * @param {Boolean} props.include_table Whether or not to include a table in the box body
  * @returns {React.DOMElement} div element representing the ReactFlow node
  */
-function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [], plot_settings }) {
+function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = [], editable_ids = [], plot_settings, include_table }) {
   const first_text_input = useRef(null);
   const app_mode = useContext(AppModeContext);
   useEffect(() => {
@@ -322,6 +342,52 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
         break;
     }
   }
+  // Add table if needed
+  let table_top_pos = plot_top_pos + plot_height;
+  let table_component = "";
+  let table_width = 0;
+  let table_height = 0;
+  if (include_table && data && data.input && data.input.plotable) {
+    let raw_data_to_plot = data.input.plotable;
+    let column_min_width = 90;
+    table_width = 2 * column_min_width;
+    table_component = raw_data_to_plot.map((plotable_data, index) => {
+      let { x, y, name } = plotable_data;
+      let { xaxis_title, yaxis_title, title } = plotable_data;
+      let table_width_candidate = xaxis_title.length * 12 + yaxis_title.length * 12;
+      if (table_width_candidate > table_width) table_width = table_width_candidate;
+      let title_height = name != undefined && name != '' ? 10 : 0;
+      let table_spacing = 15;
+      table_height += (x.length + 1) * 33 + (index > 0 ? title_height + table_spacing : 0);
+      table_top_pos += index > 0 ? (raw_data_to_plot[index - 1].x.length + 1) * 33 + title_height + table_spacing : title_height;
+      let title_top_pos = table_top_pos - 20;
+      return (
+        <>
+        <Text style={{position: "absolute", top: title_top_pos, right: table_width / 2}} fontWeight={"bold"}>
+        {name}
+        </Text>
+        <TableContainer style={{position: "absolute", top: table_top_pos}}>
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Th>{xaxis_title}</Th>
+                <Th>{yaxis_title}</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {x.map((x_value, x_index) => (
+                <Tr>
+                  <Td>{x_value}</Td>
+                  <Td>{y[x_index]}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        </>
+      );
+    });
+  }
   // Get the longest string for defining width
   let max_copy_length = Math.max(source_copies.length, target_copies.length);
   let max_length = 0;
@@ -331,8 +397,8 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     let sum_length = source_length + target_length;
     if (sum_length > max_length) max_length = sum_length;
   }
-  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 20, 100, editable_ids.length > 0 ? 150 : 0, plot_width + 20);
-  let node_height = 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length + plot_height;
+  let node_width = Math.max(max_length * 5 + 45, node_label.length * 8 + 20, 100, editable_ids.length > 0 ? 150 : 0, plot_width + 20, table_width);
+  let node_height = 20 * (Math.max(target_ids.length, source_ids.length) + 2) + 26 * editable_ids.length + plot_height + table_height;
   // Define the class name
   let class_name = "reactflow-node";
   if (data.aux.selected) class_name += " selected";
@@ -346,6 +412,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
           {source_labels}
           {editable_fields}
           {plot_component}
+          {table_component}
         </div>
         {source_handles}
         {editable_handles}

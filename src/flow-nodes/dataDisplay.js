@@ -32,8 +32,35 @@ function Display2DPlotExec(args) {
   };
 }
 
+// Table
+const table_target_ids = ["plotable-plotly_data"];
+function DisplayTable({ data, id }) {
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("dataDisplayTable")}
+      data={data}
+      id={id}
+      target_ids={table_target_ids}
+      editable_ids={[]}
+      source_ids={[]}
+      include_table={true}
+    ></GenericInOutNode>
+  );
+}
+
+function DisplayTableExec(args) {
+  let full_args = table_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "input": {
+      ...structural_args,
+    }
+  };
+}
+
 const DataDisplayNodes = {
     Display2DPlotNode: { Node: Display2DPlot, Exec: Display2DPlotExec },
+    DisplayTableNode: { Node: DisplayTable, Exec: DisplayTableExec },
 };
 
 export default DataDisplayNodes;

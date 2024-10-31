@@ -96,7 +96,8 @@
         "variableRange": "Rango",
         "structuralMemberResult": "Resultado Elemento",
         "dataDisplay2DPlot": "Gráfico 2D",
-        "structuralNodeResult": "Resultado Nodal"
+        "structuralNodeResult": "Resultado Nodal",
+        "dataDisplayTable": "Tabla"
     },
     "settings": {
         "auto_update": "Actualizar automáticamente",
