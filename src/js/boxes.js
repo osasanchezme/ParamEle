@@ -3,7 +3,13 @@ import { Node, Edge } from "reactflow";
 import state from "../state";
 import utils from "../utils";
 import notification from "../components/notification";
-import { addNodesArrayToTheEditor, addNodeToTheEditor, deselectAllHandles, getSelectedHandles, removeNodesAndEdgesFromModel, screenCoordsToReactFlow } from "../components/VisualEditor";
+import {
+  addNodesArrayToTheEditor,
+  addNodeToTheEditor,
+  deselectAllHandles,
+  getSelectedHandles,
+  removeNodesAndEdgesFromModel,
+} from "../components/VisualEditor";
 import { cloneDeep } from "lodash";
 const { notify, closeAllNotifications } = notification;
 
@@ -168,7 +174,7 @@ function getSelectedModel() {
   });
   // Get the connected edges to the selected nodes
   edges.forEach((edge) => {
-    if (selected_node_ids.includes(edge.source) || selected_node_ids.includes(edge.target)) {
+    if (selected_node_ids.includes(edge.source) || selected_node_ids.includes(edge.target) || edge.selected) {
       connected_nodes.push(edge.source);
       connected_nodes.push(edge.target);
       selected_edges.push(edge);
