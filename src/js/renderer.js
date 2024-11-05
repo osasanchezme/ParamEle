@@ -3,7 +3,7 @@ import geom_utils from "../geom_utils";
 import state from "../state";
 import utils from "../utils";
 
-function localGetCopy(node_name){
+function localGetCopy(node_name) {
   return utils.getDisplayCopy("renderer", node_name);
 }
 
@@ -11,6 +11,9 @@ function getData() {
   let structure = getState("structure");
   let units = structure.settings.units;
   let plotly_data = [];
+  const global_settings = getState("settings")["global"];
+  const physical_load_size = global_settings["physical_load_size"];
+  const show_proportional_loads = global_settings["show_proportional_loads"];
 
   // Add axes
   let axes_length = 2;
@@ -57,7 +60,7 @@ function getData() {
     nodes.x.push(node_data.x);
     nodes.y.push(node_data.y);
     nodes.z.push(node_data.z);
-    nodes.text.push( localGetCopy("node") + " " + node_id);
+    nodes.text.push(localGetCopy("node") + " " + node_id);
   });
   plotly_data.push(nodes);
 
@@ -120,6 +123,26 @@ function getData() {
     plotly_data.push(support);
   });
 
+  // Find the max magnitude to normalize the others
+  let magnitude_sources = {
+    point_loads: [["x_mag", "y_mag", "z_mag"]],
+    moments: [["x_mag", "y_mag", "z_mag"]],
+    distributed_loads: [
+      ["x_mag_A", "y_mag_A", "z_mag_A"],
+      ["x_mag_B", "y_mag_B", "z_mag_B"],
+    ],
+  };
+  let max_abs_mag = 0;
+  Object.entries(magnitude_sources).forEach(([source_key, magnitude_keys]) => {
+    Object.values(structure[source_key]).forEach((source_object) => {
+      magnitude_keys.forEach(([mag_key_x, mag_key_y, mag_key_z]) => {
+        let abs_candidate = Math.sqrt(source_object[mag_key_x] ** 2 + source_object[mag_key_y] ** 2 + source_object[mag_key_z] ** 2);
+        if (abs_candidate > max_abs_mag) max_abs_mag = abs_candidate;
+      });
+    });
+  });
+  if (max_abs_mag == 0) max_abs_mag = 1;
+
   // Point loads
   Object.entries(structure.point_loads).forEach(([pl_id, pl_data]) => {
     let pl = {
@@ -132,7 +155,7 @@ function getData() {
       line: { width: 4, color: "red" },
     };
     let node = structure.nodes[pl_data.node];
-    let pl_coords = createPointLoad(node, pl_data.x_mag, pl_data.y_mag, pl_data.z_mag);
+    let pl_coords = createPointLoad(node, pl_data.x_mag, pl_data.y_mag, pl_data.z_mag, max_abs_mag, physical_load_size, show_proportional_loads);
     pl.x.push(...pl_coords.pl_x);
     pl.y.push(...pl_coords.pl_y);
     pl.z.push(...pl_coords.pl_z);
@@ -162,9 +185,12 @@ function getData() {
       dl_data.z_mag_A,
       dl_data.x_mag_B,
       dl_data.y_mag_B,
-      dl_data.z_mag_B
+      dl_data.z_mag_B,
+      max_abs_mag,
+      physical_load_size,
+      show_proportional_loads
     );
-    for (let i in dl_coords.dl_x){
+    for (let i in dl_coords.dl_x) {
       dl.x.push(...dl_coords.dl_x[i]);
       dl.y.push(...dl_coords.dl_y[i]);
       dl.z.push(...dl_coords.dl_z[i]);
@@ -193,7 +219,7 @@ function getData() {
       hoverinfo: "none",
       opacity: 0.5,
     };
-    plate_data.nodes.forEach(node_id => {
+    plate_data.nodes.forEach((node_id) => {
       let node_data = structure.nodes[node_id];
       plate.x.push(node_data.x);
       plate.y.push(node_data.y);
@@ -205,7 +231,7 @@ function getData() {
     let avg_x = 0;
     let avg_y = 0;
     let avg_z = 0;
-    for (let i in plate.x){
+    for (let i in plate.x) {
       avg_x += plate.x[i];
       avg_y += plate.y[i];
       avg_z += plate.z[i];
@@ -220,7 +246,7 @@ function getData() {
     selection_nodes_plates.z.push(node_middle.z);
     selection_nodes_plates.text.push(plate_label);
   });
-  plotly_data.push(selection_nodes_plates)
+  plotly_data.push(selection_nodes_plates);
   // Moments
   Object.entries(structure.moments).forEach(([mm_id, mm_data]) => {
     let mm = {
@@ -233,7 +259,7 @@ function getData() {
       line: { width: 4, color: "green" },
     };
     let node = structure.nodes[mm_data.node];
-    let mm_coords = createMoment(node, mm_data.x_mag, mm_data.y_mag, mm_data.z_mag);
+    let mm_coords = createMoment(node, mm_data.x_mag, mm_data.y_mag, mm_data.z_mag, max_abs_mag, physical_load_size, show_proportional_loads);
     mm.x.push(...mm_coords.mm_x);
     mm.y.push(...mm_coords.mm_y);
     mm.z.push(...mm_coords.mm_z);
@@ -374,9 +400,7 @@ function createSupport(restraint_code, node) {
   return { support_x, support_y, support_z };
 }
 
-function createPointLoad(node, x_mag, y_mag, z_mag) {
-  let load_size = 2;
-
+function createPointLoad(node, x_mag, y_mag, z_mag, max_abs_mag, physical_load_size, show_proportional_loads) {
   let xi = node.x;
   let yi = node.y;
   let zi = node.z;
@@ -386,7 +410,8 @@ function createPointLoad(node, x_mag, y_mag, z_mag) {
   let zf = node.z - z_mag;
 
   let pl_vector = new geom_utils.Vector(xf, yf, zf, xi, yi, zi);
-  let plotable_vector = geom_utils.getPlotableArrow(pl_vector, load_size);
+  let vector_norm = show_proportional_loads ? (physical_load_size * pl_vector.getLength()) / max_abs_mag : physical_load_size;
+  let plotable_vector = geom_utils.getPlotableArrow(pl_vector, vector_norm);
 
   let pl_x = plotable_vector.x;
   let pl_y = plotable_vector.y;
@@ -395,9 +420,7 @@ function createPointLoad(node, x_mag, y_mag, z_mag) {
   return { pl_x, pl_y, pl_z };
 }
 
-function createMoment(node, x_mag, y_mag, z_mag){
-  let moment_size = 2;
-  let second_arrow_size = 2 * 0.8;
+function createMoment(node, x_mag, y_mag, z_mag, max_abs_mag, physical_load_size, show_proportional_loads) {
   let second_arrow_lines_size = 0.2 / 0.8;
   let xi = node.x;
   let yi = node.y;
@@ -408,8 +431,10 @@ function createMoment(node, x_mag, y_mag, z_mag){
   let zf = node.z + z_mag;
 
   let mm_vector = new geom_utils.Vector(xf, yf, zf, xi, yi, zi);
-  let plotable_vector = geom_utils.getPlotableArrow(mm_vector, moment_size, "end");
-  let plotable_vector_2 = geom_utils.getPlotableArrow(mm_vector, second_arrow_size, "end", second_arrow_lines_size);
+  let vector_norm = show_proportional_loads ? (physical_load_size * mm_vector.getLength()) / max_abs_mag : physical_load_size;
+  let vector_norm_2 = show_proportional_loads ? (0.8 * physical_load_size * mm_vector.getLength()) / max_abs_mag : 0.8 * physical_load_size;
+  let plotable_vector = geom_utils.getPlotableArrow(mm_vector, vector_norm, "end");
+  let plotable_vector_2 = geom_utils.getPlotableArrow(mm_vector, vector_norm_2, "end", second_arrow_lines_size);
 
   let mm_x = [...plotable_vector.x, ...plotable_vector_2.x];
   let mm_y = [...plotable_vector.y, ...plotable_vector_2.y];
@@ -418,8 +443,19 @@ function createMoment(node, x_mag, y_mag, z_mag){
   return { mm_x, mm_y, mm_z };
 }
 
-function createDistributedLoad(node_A, node_B, x_mag_A, y_mag_A, z_mag_A, x_mag_B, y_mag_B, z_mag_B) {
-  let load_size = 2;
+function createDistributedLoad(
+  node_A,
+  node_B,
+  x_mag_A,
+  y_mag_A,
+  z_mag_A,
+  x_mag_B,
+  y_mag_B,
+  z_mag_B,
+  max_abs_mag,
+  physical_load_size,
+  show_proportional_loads
+) {
   // Global coords for scatter
   let dl_x = [];
   let dl_y = [];
@@ -435,7 +471,8 @@ function createDistributedLoad(node_A, node_B, x_mag_A, y_mag_A, z_mag_A, x_mag_
   let zf_start = node_A.z - z_mag_A;
 
   let arrow_vector_start = new geom_utils.Vector(xf_start, yf_start, zf_start, xi_start, yi_start, zi_start);
-  let plotable_vector_start = geom_utils.getPlotableArrow(arrow_vector_start, load_size);
+  let vector_start_norm = show_proportional_loads ? (physical_load_size * arrow_vector_start.getLength()) / max_abs_mag : physical_load_size;
+  let plotable_vector_start = geom_utils.getPlotableArrow(arrow_vector_start, vector_start_norm);
 
   dl_x.push(plotable_vector_start.x);
   dl_y.push(plotable_vector_start.y);
@@ -451,7 +488,8 @@ function createDistributedLoad(node_A, node_B, x_mag_A, y_mag_A, z_mag_A, x_mag_
   let zf_end = node_B.z - z_mag_B;
 
   let arrow_vector_end = new geom_utils.Vector(xf_end, yf_end, zf_end, xi_end, yi_end, zi_end);
-  let plotable_vector_end = geom_utils.getPlotableArrow(arrow_vector_end, load_size);
+  let vector_end_norm = show_proportional_loads ? (physical_load_size * arrow_vector_end.getLength()) / max_abs_mag : physical_load_size;
+  let plotable_vector_end = geom_utils.getPlotableArrow(arrow_vector_end, vector_end_norm);
 
   dl_x.push(plotable_vector_end.x);
   dl_y.push(plotable_vector_end.y);

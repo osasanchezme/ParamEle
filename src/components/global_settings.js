@@ -21,6 +21,7 @@ import {
   Link,
   Icon,
   Select,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import utils from "../utils";
@@ -40,9 +41,17 @@ function GlobalSettings() {
   window.ParamEle.openGlobalSettings = onOpen;
   let settings = getState("settings")["global"];
   let [localSettings, setLocalSettings] = useState(settings);
-  function handleChange(event, id) {
-    localSettings[id] = event.target.value;
-    setLocalSettings(localSettings);
+  function handleChange(event, id, type) {
+    let new_value;
+    switch (type) {
+      case "check":
+        new_value = event.target.checked;
+        break;
+      default:
+        new_value = event.target.value;
+        break;
+    }
+    setLocalSettings({ ...localSettings, [id]: new_value });
   }
   function saveSettings() {
     let original_settings = getState("settings");
@@ -87,6 +96,20 @@ function GlobalSettings() {
                                 handleChange(event, setting.name);
                               }}
                             />
+                          </FormControl>
+                        );
+                        break;
+                      case "check":
+                        setting_block = (
+                          <FormControl key={setting.name}>
+                            <Checkbox
+                              isChecked={localSettings[setting.name]}
+                              onChange={(event) => {
+                                handleChange(event, setting.name, setting.type);
+                              }}
+                            >
+                              {localGetDisplayCopy(setting.name)}
+                            </Checkbox>
                           </FormControl>
                         );
                         break;

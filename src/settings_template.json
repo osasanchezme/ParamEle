@@ -64,6 +64,16 @@
             "default": 1,
             "type": "text",
             "tab": "structure_tab"
+        },
+        "physical_load_size": {
+            "default": 2,
+            "type": "text",
+            "tab": "structure_tab"
+        },
+        "show_proportional_loads": {
+            "default": true,
+            "type": "check",
+            "tab": "structure_tab"
         }
     }
 }
