@@ -4,9 +4,11 @@ import state from "../state";
 import utils from "../utils";
 import notification from "../components/notification";
 import {
+  addEdgesArrayToTheEditor,
   addNodesArrayToTheEditor,
   addNodeToTheEditor,
   deselectAllHandles,
+  getEdgeObject,
   getSelectedHandles,
   removeNodesAndEdgesFromModel,
 } from "../components/VisualEditor";
@@ -257,6 +259,8 @@ function changeNodesType(new_node_type) {
 function duplicateNodes(first_point, second_point) {
   /** @type {{nodes: Array<Node>, edges: Array<Edge>}} */
   let { nodes, edges } = getState("model");
+  const global_settings = getState("settings")["global"];
+  let duplicate_connected_edges = global_settings.duplicate_connected_edges;
   let { selected_nodes, selected_node_ids, selected_edges, selected_edge_ids } = getSelectedModel();
   if (selected_nodes.length === 0) {
     notify("warning", "no_nodes_selected", null, true);
@@ -273,6 +277,13 @@ function duplicateNodes(first_point, second_point) {
     new_nodes.push(addNodeToTheEditor(type, position, data, true, false, utils.nextNodeIndex([...nodes, ...new_nodes])));
   });
   addNodesArrayToTheEditor(new_nodes);
+  if (duplicate_connected_edges) {
+    edges.forEach(({ source, sourceHandle, target, targetHandle }) => {
+      let node_id_index = selected_node_ids.indexOf(target);
+      if (node_id_index != -1) new_edges.push(getEdgeObject(source, sourceHandle, new_nodes[node_id_index].id, targetHandle));
+    });
+  }
+  addEdgesArrayToTheEditor(new_edges);
 }
 
 const boxes = { groupBoxes, editInternalLogic, deleteBoxes, changeNodesType, duplicateNodes };

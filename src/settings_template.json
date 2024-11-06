@@ -74,6 +74,11 @@
             "default": true,
             "type": "check",
             "tab": "structure_tab"
+        },
+        "duplicate_connected_edges": {
+            "default": true,
+            "type": "check",
+            "tab": "structure_tab"
         }
     }
 }

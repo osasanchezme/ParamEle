@@ -118,7 +118,8 @@
         "sliders_single": "Una posibilidad",
         "spacing_between_combinations": "Espaciamiento entre combinaciones",
         "physical_load_size": "Tamaño físico para escalar cargas",
-        "show_proportional_loads": "Mostrar cargas proporcionales"
+        "show_proportional_loads": "Mostrar cargas proporcionales",
+        "duplicate_connected_edges": "Al duplicar incluir conectores asociados"
     },
     "nav_bar": {
         "file": "Archivo",

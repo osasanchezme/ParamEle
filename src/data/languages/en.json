@@ -118,7 +118,8 @@
         "sliders_single": "Only one possibility",
         "spacing_between_combinations": "Spacing between combinations",
         "physical_load_size": "Physical size to scale loads",
-        "show_proportional_loads": "Display proportional loads"
+        "show_proportional_loads": "Display proportional loads",
+        "duplicate_connected_edges": "When duplicating include associated links"
     },
     "nav_bar":{
         "file": "File",
