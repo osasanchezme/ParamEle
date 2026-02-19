@@ -164,27 +164,65 @@ function point_distance(point) {
 }
 
 /**
- * 
- * @param {Vector} vector_1 
- * @param {Vector} vector_2 
- * @returns 
+ *
+ * @param {Vector} vector_1
+ * @param {Vector} vector_2
+ * @returns
  */
 function getMostPerpendicularAxisToPlane(vector_1, vector_2) {
   let perp_point = cross_product(vector_1.getDirectional(), vector_2.getDirectional());
   let perp_vector = new Vector(perp_point.x, perp_point.y, perp_point.z);
-  let plotly_x = new Vector(1,0,0);
-  let plotly_y = new Vector(0,1,0);
-  let plotly_z = new Vector(0,0,1);
+  let plotly_x = new Vector(1, 0, 0);
+  let plotly_y = new Vector(0, 1, 0);
+  let plotly_z = new Vector(0, 0, 1);
 
-  let plotly_x_angle = Math.abs(dot_product(plotly_x.getDirectional(), perp_vector.getDirectional()) / (plotly_x.getLength() * perp_vector.getLength()));
-  let plotly_y_angle = Math.abs(dot_product(plotly_y.getDirectional(), perp_vector.getDirectional()) / (plotly_y.getLength() * perp_vector.getLength()));
-  let plotly_z_angle = Math.abs(dot_product(plotly_z.getDirectional(), perp_vector.getDirectional()) / (plotly_z.getLength() * perp_vector.getLength()));
+  let plotly_x_angle = Math.abs(
+    dot_product(plotly_x.getDirectional(), perp_vector.getDirectional()) / (plotly_x.getLength() * perp_vector.getLength())
+  );
+  let plotly_y_angle = Math.abs(
+    dot_product(plotly_y.getDirectional(), perp_vector.getDirectional()) / (plotly_y.getLength() * perp_vector.getLength())
+  );
+  let plotly_z_angle = Math.abs(
+    dot_product(plotly_z.getDirectional(), perp_vector.getDirectional()) / (plotly_z.getLength() * perp_vector.getLength())
+  );
 
   let angles_array = [plotly_x_angle, plotly_y_angle, plotly_z_angle];
 
   return ["x", "y", "z"][angles_array.indexOf(Math.max(...angles_array))];
 }
 
-const geom_utils = { Vector, getPlotableArrow, getMostPerpendicularAxisToPlane, cross_product };
+/**
+ *
+ * @param {Array<import("./submodules/paramele-parsers/types").s3d_node>} nodes_list
+ */
+function findNotParallelVectorsInNodesList(nodes_list) {
+  for (let node_index = 0; node_index < nodes_list.length; node_index++) {
+    const total_nodes = nodes_list.length;
+    let node_1 = nodes_list[node_index];
+    let node_2 = nodes_list[node_index + 1];
+    let node_3 = nodes_list[node_index + 2];
+    if (node_index === total_nodes - 2) node_3 = nodes_list[0];
+    if (node_index === total_nodes - 1) {
+      node_2 = nodes_list[0];
+      node_3 = nodes_list[1];
+    }
+
+    let vector_1 = new Vector(node_1.x, node_1.y, node_1.z, node_2.x, node_2.y, node_2.z);
+    let vector_2 = new Vector(node_3.x, node_3.y, node_3.z, node_2.x, node_2.y, node_2.z);
+    let vector_1_dir = vector_1.getDirectional();
+    let vector_2_dir = vector_2.getDirectional();
+    let cross_vector = cross_product(vector_1_dir, vector_2_dir);
+    let cross_norm = new Vector(cross_vector.x, cross_vector.y, cross_vector.z).getLength();
+    if (cross_norm !== 0) {
+      return {
+        vector_1,
+        vector_2,
+      };
+    }
+  }
+  throw new Error("It was not possible to find not in line consecutive points");
+}
+
+const geom_utils = { Vector, getPlotableArrow, getMostPerpendicularAxisToPlane, cross_product, findNotParallelVectorsInNodesList };
 
 export default geom_utils;

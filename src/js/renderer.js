@@ -212,13 +212,11 @@ function getData() {
   Object.entries(structure.plates).forEach(([plate_id, plate_data]) => {
     if (!plate_data.nodes || !Array.isArray(plate_data.nodes)) return;
     // Find the best Delaunay axis
-    let p0 = structure.nodes[plate_data.nodes[0]];
-    let p1 = structure.nodes[plate_data.nodes[1]];
-    let p2 = structure.nodes[plate_data.nodes[2]];
-    let vector_1 = new geom_utils.Vector(p1.x, p1.y, p1.z, p0.x, p0.y, p0.z);
-    let vector_2 = new geom_utils.Vector(p2.x, p2.y, p2.z, p0.x, p0.y, p0.z);
-    let delaunayaxis = geom_utils.getMostPerpendicularAxisToPlane(vector_1, vector_2);
-    
+    let delaunayaxis = "x";
+    if (plate_data.nodes.length > 2) {
+      let { vector_1, vector_2 } = geom_utils.findNotParallelVectorsInNodesList(plate_data.nodes.map((node_id) => structure.nodes[node_id]));
+      delaunayaxis = geom_utils.getMostPerpendicularAxisToPlane(vector_1, vector_2);
+    }
     let plate = {
       x: [],
       y: [],
