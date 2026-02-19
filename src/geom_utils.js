@@ -147,6 +147,10 @@ function cross_product(point_1, point_2) {
   };
 }
 
+function dot_product(point_1, point_2) {
+  return point_1.x * point_2.x + point_1.y * point_2.y + point_1.z * point_2.z;
+}
+
 function scale_point(point, scalar) {
   return {
     x: point.x * scalar,
@@ -159,6 +163,28 @@ function point_distance(point) {
   return Math.sqrt(point.x ** 2 + point.y ** 2 + point.z ** 2);
 }
 
-const geom_utils = { Vector, getPlotableArrow };
+/**
+ * 
+ * @param {Vector} vector_1 
+ * @param {Vector} vector_2 
+ * @returns 
+ */
+function getMostPerpendicularAxisToPlane(vector_1, vector_2) {
+  let perp_point = cross_product(vector_1.getDirectional(), vector_2.getDirectional());
+  let perp_vector = new Vector(perp_point.x, perp_point.y, perp_point.z);
+  let plotly_x = new Vector(1,0,0);
+  let plotly_y = new Vector(0,1,0);
+  let plotly_z = new Vector(0,0,1);
+
+  let plotly_x_angle = Math.abs(dot_product(plotly_x.getDirectional(), perp_vector.getDirectional()) / (plotly_x.getLength() * perp_vector.getLength()));
+  let plotly_y_angle = Math.abs(dot_product(plotly_y.getDirectional(), perp_vector.getDirectional()) / (plotly_y.getLength() * perp_vector.getLength()));
+  let plotly_z_angle = Math.abs(dot_product(plotly_z.getDirectional(), perp_vector.getDirectional()) / (plotly_z.getLength() * perp_vector.getLength()));
+
+  let angles_array = [plotly_x_angle, plotly_y_angle, plotly_z_angle];
+
+  return ["x", "y", "z"][angles_array.indexOf(Math.max(...angles_array))];
+}
+
+const geom_utils = { Vector, getPlotableArrow, getMostPerpendicularAxisToPlane, cross_product };
 
 export default geom_utils;
