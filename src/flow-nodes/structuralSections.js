@@ -36,7 +36,7 @@ function RectangleExec(args) {
   };
 }
 
-// Rectangular
+// Generic
 const generic_target_ids = ["area-value-1", "Iz-value-1", "Iy-value-1", "J-value-1", "material_id-id-1"];
 function Generic({ data, id }) {
   return (
@@ -60,8 +60,39 @@ function GenericExec(args) {
   };
 }
 
+// Circular
+const circular_target_ids = ["material_id-id-1", "diameter-value-1"];
+function Circular({ data, id }) {
+  return (
+    <GenericInOutNode
+      node_label={localGetCopy("structuralCircularSection")}
+      data={data}
+      id={id}
+      target_ids={circular_target_ids}
+      source_ids={["section_out-id"]}
+    ></GenericInOutNode>
+  );
+}
+
+function CircularExec(args) {
+  let full_args = circular_target_ids;
+  let structural_args = utils.convertNodeToStructuralArgs(args, full_args);
+  return {
+    "section_out-id": {
+      ...structural_args,
+      info: {
+        shape: "circle",
+        dimensions: {
+          D: structural_args["diameter"],
+        },
+      },
+    },
+  };
+}
+
 const StructuralSectionNodes = {
   RectangleNode: { Node: Rectangle, Exec: RectangleExec },
+  CircularNode: { Node: Circular, Exec: CircularExec },
   GenericNode: { Node: Generic, Exec: GenericExec },
 };
 
