@@ -36,6 +36,15 @@
         }
     },
     "global": {
+        "solver_engine": {
+            "default": "pynite",
+            "type": "dropdown",
+            "data": [
+                "pynite",
+                "skyciv"
+            ],
+            "tab": "solver_tab"
+        },
         "get_auth": {
             "type": "link",
             "tab": "solver_tab",

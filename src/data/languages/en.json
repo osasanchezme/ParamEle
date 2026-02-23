@@ -121,7 +121,10 @@
         "spacing_between_combinations": "Spacing between combinations",
         "physical_load_size": "Physical size to scale loads",
         "show_proportional_loads": "Display proportional loads",
-        "duplicate_connected_edges": "When duplicating include associated links"
+        "duplicate_connected_edges": "When duplicating include associated links",
+        "solver_engine": "Solve engine",
+        "pynite": "Pynite (local)",
+        "skyciv": "SkyCiv S3D (cloud)"
     },
     "nav_bar":{
         "file": "File",

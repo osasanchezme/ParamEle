@@ -12,115 +12,138 @@ import generateParametricModel from "./generateParametricModel";
 import { getProcessResponseObject } from "./processResponse";
 import { dxf2s3d } from "../submodules/paramele-parsers/structural/dxf/generateS3DModel";
 import { csi2s3d } from "../submodules/paramele-parsers/structural/csi/csi2s3d";
+import repair from "./repair";
 
 const solveStructure = () => {
-  let structure = getState("structure");
   let global_settings = getState("settings")["global"];
-  //   let file_name = Date.now();
-  let file_name = "my_model_" + Date.now();
-  let api_object = {
-    auth: {
-      // username: "oscar.sanchez@skyciv.com",
-      // key: "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
-      username: global_settings.solver_username,
-      key: global_settings.solver_key,
-    },
-    functions: [
-      {
-        function: "S3D.session.start",
-        arguments: {
-          keep_open: false,
-        },
-      },
-      {
-        function: "S3D.model.set",
-        arguments: {
-          s3d_model: structure,
-        },
-      },
-      {
-        function: "S3D.model.mesh",
-        arguments: {
-          method: "delaunay",
-          granularity: 3,
-        },
-      },
-      {
-        function: "S3D.file.save",
-        arguments: {
-          name: file_name,
-          path: "api/paramele/",
-          public_share: false,
-        },
-      },
-      {
-        function: "S3D.model.solve",
-        arguments: {
-          analysis_type: "linear",
-          repair_model: true,
-        },
-      },
-      {
-        function: "S3D.file.save",
-        arguments: {
-          name: file_name,
-          path: "api/paramele/",
-          public_share: false,
-        },
-      },
-    ],
-  };
+  const { solver_engine } = global_settings;
+  let structure = repair.repairStructuralModel(getState("structure"), solver_engine);
   notification.notify("info", "requested_solve", "", true, 90000);
-  fetch("https://api.skyciv.com/v3", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(api_object),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success");
-      console.log(data);
-      let already_open = false;
-      notification.closeAllNotifications();
-      if (data.functions) {
-        data.functions.forEach((func) => {
-          switch (func.function) {
-            case "S3D.model.solve":
-              if (func.status == 0) {
-                state.setState(func.data, "results");
-                notification.notify("info", "results_saved", null, true);
-                // Run the logic to get the results plot
-                logic_runner.run();
-              } else {
-                notification.notify(
-                  "error",
-                  utils.getDisplayCopy("notifications", "solve_failed_title"),
-                  `${utils.getDisplayCopy("notifications", "solve_failed_desc")} ${data.response.msg}`
-                );
-              }
-              break;
-            case "S3D.file.save":
-              if (!already_open) {
-                already_open = true;
-                notification.notify(
-                  "info",
-                  utils.getDisplayCopy("notifications", "saved_model"),
-                  <Link href={func.data} isExternal>
-                    {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px" />
-                  </Link>
-                );
-              }
-              break;
-            default:
-              break;
-          }
-        });
-      }
-      if (!already_open) notification.notify("info", utils.getDisplayCopy("notifications", "response_back"), data.response.msg);
+  function setResults(results) {
+    state.setState(results, "results");
+    notification.notify("info", "results_saved", null, true);
+    // Run the logic to get the results plot
+    logic_runner.run();
+  }
+  if (solver_engine === "skyciv") {
+    let file_name = "my_model_" + Date.now();
+    let api_object = {
+      auth: {
+        // username: "oscar.sanchez@skyciv.com",
+        // key: "1zQdtsDoca671lIvToi5laZjMWnc33UrBQZL5YYeagvn8fPRRMQwmEVubyIguj88",
+        username: global_settings.solver_username,
+        key: global_settings.solver_key,
+      },
+      functions: [
+        {
+          function: "S3D.session.start",
+          arguments: {
+            keep_open: false,
+          },
+        },
+        {
+          function: "S3D.model.set",
+          arguments: {
+            s3d_model: structure,
+          },
+        },
+        {
+          function: "S3D.model.mesh",
+          arguments: {
+            method: "delaunay",
+            granularity: 3,
+          },
+        },
+        {
+          function: "S3D.file.save",
+          arguments: {
+            name: file_name,
+            path: "api/paramele/",
+            public_share: false,
+          },
+        },
+        {
+          function: "S3D.model.solve",
+          arguments: {
+            analysis_type: "linear",
+            repair_model: true,
+          },
+        },
+        {
+          function: "S3D.file.save",
+          arguments: {
+            name: file_name,
+            path: "api/paramele/",
+            public_share: false,
+          },
+        },
+      ],
+    };
+    fetch("https://api.skyciv.com/v3", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(api_object),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success");
+        console.log(data);
+        let already_open = false;
+        notification.closeAllNotifications();
+        if (data.functions) {
+          data.functions.forEach((func) => {
+            switch (func.function) {
+              case "S3D.model.solve":
+                if (func.status == 0) {
+                  setResults(func.data);
+                } else {
+                  notification.notify(
+                    "error",
+                    utils.getDisplayCopy("notifications", "solve_failed_title"),
+                    `${utils.getDisplayCopy("notifications", "solve_failed_desc")} ${data.response.msg}`
+                  );
+                }
+                break;
+              case "S3D.file.save":
+                if (!already_open) {
+                  already_open = true;
+                  notification.notify(
+                    "info",
+                    utils.getDisplayCopy("notifications", "saved_model"),
+                    <Link href={func.data} isExternal>
+                      {utils.getDisplayCopy("notifications", "open_model")} <Icon as={MdOpenInNew} mx="2px" />
+                    </Link>
+                  );
+                }
+                break;
+              default:
+                break;
+            }
+          });
+        }
+        if (!already_open) notification.notify("info", utils.getDisplayCopy("notifications", "response_back"), data.response.msg);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else if (solver_engine === "pynite") {
+    fetch("http://127.0.0.1:5013/solve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ solver: solver_engine, model: structure }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success");
+        console.log(data);
+        setResults(data);
+        notification.closeAllNotifications();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+  //   let file_name = Date.now();
 };
 
 /**
@@ -129,7 +152,7 @@ const solveStructure = () => {
  */
 const downloadInputTextFile = (format) => {
   let file_str = "";
-  let structure = getState("structure");
+  let structure = repair.repairStructuralModel(getState("structure"), "csi");
   try {
     switch (format) {
       case "SAP2000":

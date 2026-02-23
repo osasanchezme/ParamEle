@@ -174,7 +174,7 @@ function defineSectionColor(section_id) {
 }
 
 function copyStructureToClipboard() {
-  let structure = getState("structure");
+  let structure = repair.repairStructuralModel(getState("structure"), "skyciv");
   navigator.clipboard
     .writeText(JSON.stringify(structure))
     .then((value) => {
