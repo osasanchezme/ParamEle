@@ -354,7 +354,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
     table_component = raw_data_to_plot.map((plotable_data, index) => {
       let { x, y, name } = plotable_data;
       let { xaxis_title, yaxis_title, title } = plotable_data;
-      let table_width_candidate = xaxis_title.length * 12 + yaxis_title.length * 12;
+      let table_width_candidate = (xaxis_title ? xaxis_title.length * 12 : 0) + (yaxis_title ? yaxis_title.length * 12 : 0);
       if (table_width_candidate > table_width) table_width = table_width_candidate;
       let title_height = name != undefined && name != '' ? 10 : 0;
       let table_spacing = 15;
