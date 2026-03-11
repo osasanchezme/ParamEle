@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 import { Handle, Position } from "reactflow";
 import {
   Tag,
@@ -362,7 +362,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
       table_top_pos += index > 0 ? (raw_data_to_plot[index - 1].x.length + 1) * 33 + title_height + table_spacing : title_height;
       let title_top_pos = table_top_pos - 20;
       return (
-        <>
+        <Fragment key={`fragment_${index}`}>
         <Text style={{position: "absolute", top: title_top_pos, right: table_width / 2}} fontWeight={"bold"}>
         {name}
         </Text>
@@ -370,21 +370,21 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
           <Table size="sm">
             <Thead>
               <Tr>
-                <Th>{xaxis_title}</Th>
-                <Th>{yaxis_title}</Th>
+                <Th key={`head_1`}>{xaxis_title}</Th>
+                <Th key={`head_2`}>{yaxis_title}</Th>
               </Tr>
             </Thead>
             <Tbody>
               {x.map((x_value, x_index) => (
-                <Tr>
-                  <Td>{x_value}</Td>
-                  <Td>{y[x_index]}</Td>
+                <Tr key={`row_${x_index}`}>
+                  <Td key={`cell_${x_index}_1`}>{x_value}</Td>
+                  <Td key={`cell_${x_index}_2`}>{y[x_index]}</Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </TableContainer>
-        </>
+        </Fragment>
       );
     });
   }

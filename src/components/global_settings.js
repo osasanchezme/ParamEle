@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FormControl,
   FormLabel,
@@ -39,8 +39,12 @@ function localGetDisplayCopy(copy_key) {
 function GlobalSettings() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   window.ParamEle.openGlobalSettings = onOpen;
-  let settings = getState("settings")["global"];
-  let [localSettings, setLocalSettings] = useState(settings);
+  let [localSettings, setLocalSettings] = useState(() => ({...getState("settings")["global"]}));
+  useEffect(() => {
+    if (isOpen) {
+      setLocalSettings({...getState("settings")["global"]});
+    }
+  }, [isOpen]);
   function handleChange(event, id, type) {
     let new_value;
     switch (type) {
@@ -51,7 +55,7 @@ function GlobalSettings() {
         new_value = event.target.value;
         break;
     }
-    setLocalSettings({ ...localSettings, [id]: new_value });
+    setLocalSettings((currentSettings) => ({...currentSettings, [id]: new_value }));
   }
   function saveSettings() {
     let original_settings = getState("settings");
@@ -91,7 +95,7 @@ function GlobalSettings() {
                             <FormLabel>{localGetDisplayCopy(setting.name)}</FormLabel>
                             <Input
                               type="text"
-                              defaultValue={localSettings[setting.name]}
+                              value={localSettings[setting.name] ?? ""}
                               onChange={(event) => {
                                 handleChange(event, setting.name);
                               }}
@@ -130,7 +134,7 @@ function GlobalSettings() {
                               onChange={(event) => {
                                 handleChange(event, setting.name);
                               }}
-                              defaultValue={localSettings[setting.name]}
+                              value={localSettings[setting.name] ?? ""}
                             >
                               {setting.data.map((option) => (
                                 <option value={option} key={option}>
