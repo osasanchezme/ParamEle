@@ -70,7 +70,7 @@ function NodeResultExec(args, data) {
 // Member results
 const member_result_target_ids = ["members-ids"];
 const member_result_editable_ids = [
-  { id: "result-value", show_handle: false, input_type: "dropdown", data: ["moment", "shear", "axial", "displacement"] },
+  { id: "result-value", show_handle: false, input_type: "dropdown", data: ["moment", "shear", "axial", "displacement", "local-displacement"] },
   { id: "direction-value", show_handle: false, input_type: "dropdown", data: ["x", "y", "z"] },
   { id: "result_type-value", show_handle: false, input_type: "dropdown", data: ["mid-span", "max", "min", "average", "start", "end", "full"] },
 ];

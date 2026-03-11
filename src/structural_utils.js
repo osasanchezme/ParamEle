@@ -67,6 +67,21 @@ function getResult(results, result_name, result_direction, operation_type, eleme
             break;
         }
         break;
+      case "local-displacement":
+        switch (result_direction) {
+          case "x":
+            actual_result = lc_results.member_displacements.displacement_local_x[element_id];
+            break;
+          case "y":
+            actual_result = lc_results.member_displacements.displacement_local_y[element_id];
+            break;
+          case "z":
+            actual_result = lc_results.member_displacements.displacement_local_z[element_id];
+            break;
+          default:
+            break;
+        }
+        break;
       default:
         break;
     }

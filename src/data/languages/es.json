@@ -55,6 +55,7 @@
         "plot_selector": "Filtrar",
         "reaction": "reacción",
         "displacement": "desplazamiento",
+        "local-displacement": "desplazamiento local",
         "direction_code": "dirección",
         "restraint_code": "fijación"
     },
