@@ -320,7 +320,7 @@ function GenericInOutNode({ data, id, node_label, target_ids = [], source_ids = 
             });
           });
           let { xaxis_title, yaxis_title, title } = raw_data_to_plot[0];
-          let layout = { width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title }, updatemenus: [] };
+          let layout = { width, height, title, xaxis: { title: xaxis_title }, yaxis: { title: yaxis_title }, updatemenus: [], showlegend: true };
           if (raw_data_to_plot.length > 1) {
             layout.updatemenus = update_menus;
             layout.annotations = [

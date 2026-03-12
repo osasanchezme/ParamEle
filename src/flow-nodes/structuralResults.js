@@ -103,6 +103,7 @@ function MemberResultExec(args, data) {
     let result_type = data["result_type-value"];
     let result_direction = data["direction-value"];
     if (result_value !== undefined && result_type !== undefined && result_direction !== undefined) {
+      if (!Array.isArray(members)) members = [members]; // Support single member as input
       members.forEach((member_id) => {
         let member_result = structural_utils.getResult(results, result_value, result_direction, result_type, member_id, 0);
         if (isNaN(Number(member_result))) {
@@ -121,6 +122,11 @@ function MemberResultExec(args, data) {
           x_y_data[index]["name"] = iterating_node_data.node_label + " = " + String(variation_value);
         });
       }
+    } else {
+      x_y_data = x_y_data.map((dataset, index) => {
+        dataset.name = `${utils.getDisplayCopy("tags", "member")} ${member_ids[index]}`;
+        return dataset;
+      });
     }
     let result_label = utils.getDisplayCopy("tags", result_value);
     let position_label = utils.getDisplayCopy("tags", "position");
